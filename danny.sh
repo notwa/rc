@@ -43,7 +43,6 @@ while true; do
 			fi
 			echo $tags | grep -F -- "$faketag" > /dev/null
 			result=$?
-			echo $faketag $result $unwanted
 			if [[ $result != $unwanted ]]; then
 				nomatch=1
 				break

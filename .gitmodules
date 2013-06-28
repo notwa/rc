@@ -1,0 +1,15 @@
+[submodule "sh/z"]
+	path = sh/z
+	url = https://github.com/rupa/z.git
+[submodule "sh/meow.sh"]
+	path = sh/meow.sh
+	url = https://github.com/notwa/meow.sh.git
+[submodule "sh/lsf.sh"]
+	path = sh/lsf.sh
+	url = https://gist.github.com/5581118.git
+[submodule "sh/danny.sh"]
+	path = sh/danny.sh
+	url = https://gist.github.com/3393717.git
+[submodule "sh/4graze.sh"]
+	path = sh/4graze.sh
+	url = https://gist.github.com/2975511.git

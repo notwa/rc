@@ -3,7 +3,7 @@ set -o nounset
 
 # danny wants $20 to search for more than 2 tags
 # so we'll search for realtags and grep for faketags
-# note that special tags like "score:>10" must be the first or second
+# note that special tags like "score:>10" must be a realtag
 realtags="$1"
 faketags=${2:-}
 
@@ -20,8 +20,8 @@ term()
 }
 trap 'term' TERM INT
 
-get='wget -q -erobots=off -O-' # mimic curl
-#get='curl'
+#get='wget -q -erobots=off -O-' # mimic curl
+get='curl -s'
 
 page=1
 while true; do
@@ -34,7 +34,7 @@ while true; do
 		tags=$(echo $post | grep -oP '(?<=tags":")([^"]+)')
 		if [ -z "$tags" ]; then continue; fi
 
-		nomatch=0
+		badmatch=0
 		for faketag in $faketags; do
 			unwanted=0
 			if [[ $faketag == -* ]]; then
@@ -44,11 +44,11 @@ while true; do
 			echo $tags | grep -F -- "$faketag" > /dev/null
 			result=$?
 			if [[ $result != $unwanted ]]; then
-				nomatch=1
+				badmatch=1
 				break
 			fi
 		done
-		if (($nomatch)); then continue; fi
+		if (($badmatch)); then continue; fi
 
 		url=$(echo "$post" | grep -oP '(?<=file_url":")([^"]+)')
 		if [ -z "$url" ]; then continue; fi

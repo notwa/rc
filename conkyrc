@@ -1,0 +1,20 @@
+background yes
+own_window yes
+own_window_type desktop
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+use_xft yes
+xftfont DejaVu Sans Mono:size=12
+gap_x 18
+gap_y 18
+alignment bottom_left
+
+TEXT
+${color grey} RAM:$color $mem / $memmax $alignr($memperc%)
+${color grey}Swap:$color $swap / $swapmax $alignr($swapperc%)
+${color grey} CPU:$color ${cpugraph 24,210}
+${color grey}Proc:$color $processes $color($running_processes)\
+   ${color grey}Up:$color ${upspeed eth0} ${color grey}Down:$color ${downspeed eth0}
+${color lightgrey}${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
+${color lightgrey}${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}

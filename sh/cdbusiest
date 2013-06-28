@@ -1,0 +1,4 @@
+#!/bin/zsh
+dbusiest | read -r c d
+<<<"$c $d"
+cd $d

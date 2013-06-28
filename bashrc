@@ -1,0 +1,33 @@
+[ -z "$PS1" ] && return
+
+if [[ "$TERM" == "rxvt-unicode-256color" ]]; then
+    export TERM=xterm-256color
+fi
+
+HISTCONTROL=erasedups
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+shopt -s histappend
+shopt -s checkwinsize
+#shopt -s physical # chaselinks (doesn't exist?)
+
+if [[ "$TERM" = xterm* ]]; then
+    _title="\[\033]2;\w\a\]"
+else
+    _title=""
+fi
+
+Csucc=$'\\[\e[42m\\]'
+Cfail=$'\\[\e[41m\\]'
+_line1=$' \\[\e[0m\\]'
+_line2=$'\\[\e[1;37m\\]\\$\\[\e[0m\\] '
+ret_succ="$_title${Csucc}$_line1\n${Csucc}$_line2"
+ret_fail="$_title${Cfail}$_line1\n${Cfail}$_line2"
+
+PROMPT_COMMAND='[ $? = 0 ] && PS1=${ret_succ} || PS1=${ret_fail}'
+
+. ~/shrc.zsh
+
+# this doesn't work for all scripts at the moment, but
+PATH="$PATH:$HOME/sh"

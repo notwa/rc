@@ -1,0 +1,8 @@
+#!/bin/zsh
+find ~ -name .git -type d \
+| grep -v '/src/\|/work/' \
+| while read -r fp; do
+  cd "${fp%/.git}"
+  pwd
+  confirm && git pull
+done

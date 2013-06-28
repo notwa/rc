@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+printf "\e[%dm$(printf " \e[%dm mV \e[40m" {4,10}{0..7})\e[0m\n" {3,9}{0..7}

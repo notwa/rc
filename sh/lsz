@@ -1,0 +1,126 @@
+#!/bin/zsh
+# TODO: safe-ify echos and prints
+local din=${1:-$(pwd)}
+din=${din%/} # TODO: hackish
+
+local -A unames gnames us
+while IFS=: read -rA A; do unames[${A[3]}]=${A[1]} done < /etc/passwd
+while IFS=: read -rA A; do gnames[${A[3]}]=${A[1]} done < /etc/group
+for x in $(groups); do us[$x]=1 done
+
+local -a colors
+colors=(bla red gre yel blu pur cya whi)
+local i= $=colors ${(U)=colors} clr=$'\e[0m'
+for i in {0..7}; do
+    local x=${colors[$((i+1))]}
+    eval "$x=$'\\e[3${i}m'" "${(U)x}=$'\\e[9${i}m'"
+done
+
+local s=1 m h d y B=1 K M G T
+noglob let m=60*s h=60*m d=24*h y=365*d K=1024*B M=1024*K G=1024*M T=1024*G 
+
+local -a ft fut fct fs fus fcs
+
+local s_ft='
+y*10 y BLA
+y*2  y blu
+y    d BLU
+d*30 d cya
+d*7  d CYA
+d    h gre
+h*12 h GRE
+h    m yel
+m*10 m YEL
+m    s pur
+0    s PUR
+'
+local s_fs='
+T*8 T red
+T   G red
+G*8 G pur
+G   M pur
+M   M yel
+M   K yel
+K   B CYA
+1   B cya
+0   B BLA
+'
+
+local permcolors="$BLA $WHI $yel $YEL $blu $BLU $gre $GRE"
+permcolors=($=permcolors)
+
+# TODO: functionize for better locals
+local min unit color
+for min unit color in $=s_ft; do
+    # TODO: consider dereferencing color, [no]and coloring unit itself[/no]
+    ft+=($(($min)) $unit $color)
+done
+for min unit color in $=s_fs; do
+    fs+=($(($min)) $unit $color)
+done
+
+trunc() { # deprecate me for speed...
+    local len=${1:-$COLUMNS} c='…' L
+    local end=$((len-1))
+    while read -r L; do
+        [ ${#L} -gt $len ] && echo ${L[1,$end]}$c || echo $L
+    done
+}
+
+prettify() {
+    local min unit color
+    for min unit color in ${(P)2}; do
+        [ $1 -lt $min ] && continue
+        local unitified=$(($1/$unit))
+        echo -n "${(P)color}${(l:4:)unitified}$clr$unit "
+        break
+    done
+}
+
+min() {
+    local min=99999999999 x
+    for x; do [ $x -lt $min ] && min=$x; done
+    echo $min
+}
+
+permprint() {
+    echo -n ${permcolors[$(($1+1))]}$1
+}
+
+local now=$(date +%s)
+local f="$din/*(D)"
+stat -t -- ${~f} | while read -rA A; do
+    prettify ${A[-15]} fs
+
+    local uid=${A[-12]} gid=${A[-11]} is_me=0 is_us=0
+    local uname=${unames[$uid]} gname=${gnames[$gid]}
+    [ $uid -eq $UID ] && is_me=1
+    [ -n "$gname" ] && [[ ${us[$gname]} -eq 1 ]] && is_us=1
+
+    local bits=$((16#${A[-13]})) type= uperm= gperm= operm= our_perm=
+    let 'type=(bits & 8#170000) >> 12'
+    let 'uperm=(bits & 8#700) >> 6'
+    let 'gperm=(bits & 8#70) >> 3'
+    let 'operm=bits & 8#7'
+    let 'our_perm=(is_me?uperm:0) | (is_us?gperm:0) | operm'
+
+    permprint $our_perm
+
+    true && {
+        echo -n ' '
+        permprint $uperm
+        permprint $gperm
+        permprint $operm
+    }
+
+    echo -n "$clr"
+
+    local da=${A[-5]} dc=${A[-4]} dm=${A[-3]}
+    let da=now-da dc=now-dc dm=now-dm
+    prettify $(min $da $dc $dm) ft
+    #prettify $da ft
+    #prettify $dm ft
+    #prettify $dc ft
+
+    echo ${A[1,-16]}
+done

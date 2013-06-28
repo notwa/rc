@@ -1,0 +1,8 @@
+sh/WIP
+ssh/*
+!ssh/known_hosts
+!ssh/crawl
+vim/backup/*
+vim/.*
+*.swp
+*.swo

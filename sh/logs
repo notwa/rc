@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+if [ -n "${ZSH_VERSION:-}" ]; then
+    logs() {
+        local last="${@: -1}"
+        [ -n "$last" ] && [ ${last[1]} != '-' ] && last="-u $last"
+        journalctl ${@:1:-1} $last
+    }
+else
+    logs() {
+        local last="${@: -1}"
+        [ -n "$last" ] && [ ${last:0:1} != '-' ] && last="-u $last"
+        journalctl ${@:1:$(($#-1))} $last
+    }
+fi
+logs "$@"

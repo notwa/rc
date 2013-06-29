@@ -3,7 +3,7 @@ note() {
     echo -E "$@"
 }
 
-crap() {
+die() {
     echo -E "$@">&2
     exit 1
 }
@@ -16,10 +16,10 @@ hardlink() {
     [ -e "$1" ] && {
         [ "$1" -ef "$2" ] && return
         [ -h "$1" ] && note "removing symbolic link $1" && echo rm "$1"
-        [ -s "$1" ] && crap "$1 already exists" || echo rm "$1"
+        [ -s "$1" ] && die "$1 already exists" || echo rm "$1"
     }
 
-    ln "$2" "$1" || crap "couldn't hardlink $1"
+    ln "$2" "$1" || die "couldn't hardlink $1"
 }
 
 softlink() {
@@ -28,10 +28,10 @@ softlink() {
             [ "$(readlink "$1")" == "$2" ] && return
             note "removing symbolic link $1"
             echo rm "$1"
-        } || crap "$1 already exists and is not a symbolic link"
+        } || die "$1 already exists and is not a symbolic link"
     }
 
-    ln -s "$2" "$1" || crap "couldn't symlink $1"
+    ln -s "$2" "$1" || die "couldn't symlink $1"
 }
 
 rc="$(readlink -f "$(dirname "$0")" )"

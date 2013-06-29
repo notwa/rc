@@ -3,7 +3,11 @@
 umask 027 # screw others
 
 export PATH="$PATH:$HOME/opt/local/bin"
-export PATH="$PATH:$HOME/opt/mingw-w64/bin"
+
+# cleanup in case of inherited exports
+for x in AR CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS RANLIB RC WINDRES; do
+    export $x=
+done
 
 export PREFIX="$HOME/opt/local"
 export CC=clang
@@ -24,6 +28,7 @@ alias make="colormake"
 
 # just flags
 export LESS='-SR'
+alias makedbg='CFLAGS="-O0" LDFLAGS="-g" make'
 alias fils="du -bad1"
 alias lsfm="lsf -ugpms"
 alias lsa="ls -A --group-directories-first"
@@ -36,7 +41,6 @@ alias erc="e ~/.zshrc ~/shrc.zsh ~/.bashrc"
 alias irc="screen -dR irc irssi"
 alias crawl='screen -dR crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
 alias crawla='screen -dR crawl ssh crawl@crawl.akrasiac.org -l joshua -i ~/.ssh/crawl'
-alias cmakem="cmake -G \"Unix Makefiles\" -DCMAKE_TOOLCHAIN_FILE=~/mingw.cmake"
 
 # providing extra functionality
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
@@ -49,5 +53,6 @@ alias unwrap='awk '"'"'BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$
 alias picky='{ pacman -Qgq base base-devel; pacman -Qtq; } | sort | uniq -u'
 alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
 
+. ~/mingw.sh
 . ~/sh/lsf.sh/lsf.sh
 . ~/sh/z/z.sh

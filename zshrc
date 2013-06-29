@@ -77,10 +77,10 @@ bindkey '^Xe' edit-command-line # ctrl+x -> e
 
 alias -g STFU="2>/dev/null"
 
-for c in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
-  alias $c="nocorrect $c"
-for c in arith fc find ftp history let locate rsync scp sftp wget
-  alias $c="noglob $c"
+for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
+  alias $x="nocorrect $x"
+for x in arith fc find ftp history let locate rsync scp sftp wget
+  alias $x="noglob $x"
 
 if [[ "$TERM" = xterm* ]]; then
   precmd() { print -Pn "\e]2;%M: %~\a" }
@@ -101,3 +101,5 @@ reload() {
   [ -f .zcompdump.zwc.old ] && rm -f .zcompdump.zwc.old
   exec zsh # reload zsh (ends script execution)
 }
+
+unset x

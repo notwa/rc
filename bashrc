@@ -31,3 +31,5 @@ PROMPT_COMMAND='[ $? = 0 ] && PS1=${ret_succ} || PS1=${ret_fail}'
 
 # this doesn't work for all scripts at the moment, but
 PATH="$PATH:$HOME/sh"
+
+unset x

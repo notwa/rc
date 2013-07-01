@@ -55,6 +55,7 @@ function {
         complete_aliases # allow original command completion within alias
         complete_in_word # enable tab completion when cursor between words
         rc_quotes # 'you''re dumb' like "you're dumb"
+        brace_ccl # for character ranges like {a-z}
     )
     setopt "${opts[@]}"
     unsetopt rm_star_silent rm_star_wait # yolo
@@ -99,7 +100,7 @@ reload() {
   rm -f .zcompdump
   [ -f .zshrc.zwc.old ] && rm -f .zshrc.zwc.old
   [ -f .zcompdump.zwc.old ] && rm -f .zcompdump.zwc.old
-  exec zsh # reload zsh (ends script execution)
+  exec zsh # reload shell, inheriting environment
 }
 
 unset x

@@ -2,7 +2,11 @@
 
 umask 027 # screw others
 
-export PATH="$PATH:$HOME/opt/local/bin"
+ADDPATH() {
+    grep ":$1:" <<<":$PATH:" >/dev/null || export PATH="$PATH:$1"
+}
+
+ADDPATH "$HOME/opt/local/bin"
 
 # cleanup in case of inherited exports
 for x in AR CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS RANLIB RC WINDRES; do

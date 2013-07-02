@@ -57,8 +57,8 @@ for r in $rc/ssh/* $rc/config/menus/*; do
     hardlink "$f" "$r"
 done
 
-grep .bashrc .bash_profile >/dev/null 2>&1 || \
-  echo -e '\n[[ -f ~/.bashrc ]] && . ~/.bashrc' >> .bash_profile
+grep .bashrc .bash_profile >/dev/null 2>&1 \
+ || echo -e '\n[[ -f ~/.bashrc ]] && . ~/.bashrc' >> .bash_profile
 
 for d in Desktop Documents Downloads Music Pictures Public Templates Video; do
     [ -d "$d" ] || continue

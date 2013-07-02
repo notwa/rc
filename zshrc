@@ -79,9 +79,9 @@ bindkey '^Xe' edit-command-line # ctrl+x -> e
 alias -g STFU="2>/dev/null"
 
 for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
-  alias $x="nocorrect $x"
+    alias $x="nocorrect $x"
 for x in arith fc find ftp history let locate rsync scp sftp wget
-  alias $x="noglob $x"
+    alias $x="noglob $x"
 
 if [[ "$TERM" = xterm* ]]; then
   precmd() { print -Pn "\e]2;%M: %~\a" }
@@ -92,15 +92,15 @@ PROMPT='%b%(?.%2K.%1K)%15F%#%f%k '
 RPROMPT='%8F%h%b'
 
 reload() {
-  # This doesn't seem to help with _vim_files errors, ehh
-  # you wanna rm .zcompdump then exit, that's why
-  cd ~
-  autoload -U zrecompile
-  [ -f .zshrc ] && zrecompile -p .zshrc
-  rm -f .zcompdump
-  [ -f .zshrc.zwc.old ] && rm -f .zshrc.zwc.old
-  [ -f .zcompdump.zwc.old ] && rm -f .zcompdump.zwc.old
-  exec zsh # reload shell, inheriting environment
+    # This doesn't seem to help with _vim_files errors, ehh
+    # you wanna rm .zcompdump then exit, that's why
+    cd ~
+    autoload -U zrecompile
+    [ -f .zshrc ] && zrecompile -p .zshrc
+    rm -f .zcompdump
+    [ -f .zshrc.zwc.old ] && rm -f .zshrc.zwc.old
+    [ -f .zcompdump.zwc.old ] && rm -f .zcompdump.zwc.old
+    exec zsh # reload shell, inheriting environment
 }
 
 unset x

@@ -40,7 +40,7 @@ PATH="$PATH:$rc/sh"
 
 umask 027
 
-for f in .bashrc .zshrc shrc.zsh mingw.sh .conkyrc .inputrc .screenrc .xinitrc; do
+for f in .bashrc .zshrc shrc.zsh mingw.sh .vimrc .conkyrc .inputrc .screenrc .xinitrc; do
     r="$rc/$(dotless "$f")"
     hardlink "$f" "$r"
 done

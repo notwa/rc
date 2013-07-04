@@ -8,6 +8,13 @@ ADDPATH() {
 
 ADDPATH "$HOME/opt/local/bin"
 
+ify() {
+	[ $# -ge 2 ] || return
+	local ex=$1
+	shift
+	$@ | $ex
+}
+
 # cleanup in case of inherited exports
 for x in AR CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS RANLIB RC WINDRES; do
     export $x=
@@ -48,12 +55,12 @@ alias crawla='screen -dR crawl ssh crawl@crawl.akrasiac.org -l joshua -i ~/.ssh/
 
 # providing extra functionality
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
-alias ll="ls -ACX --group-directories-first --color=force | less"
+alias ll="ify less ls -ACX --group-directories-first --color=force"
 alias counts='find . | wc -l'
 alias exts='print -l *(:e:l) | sort | uniq -c | sort -n'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 alias nocom='grep -oP --line-buffered --color=never "^[^#]+"'
-alias unwrap='awk '"'"'BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'"'"
+alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\'
 alias picky='{ pacman -Qgq base base-devel | tee -; pacman -Qtnq; } | sort | uniq -u'
 alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
 

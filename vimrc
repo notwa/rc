@@ -81,9 +81,9 @@ set nolinebreak
 
 set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
 
-function! TabFour()
+fu! TabFour()
     setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
-endfunction
+endf
 
 if has('autocmd')
     augroup tabs                      " 4 spaces as tabs for various languages
@@ -92,12 +92,17 @@ if has('autocmd')
         au BufRead,BufNewFile *.json call TabFour()
     augroup END
 
-    " attempt to preserve cursor position
-    " FIXME: waits for input after running
-    autocmd BufReadPost *
-    \   if line("'\"") > 1 && line("'\"") <= line("$") |
-    \     exe "normal! g`\"" |
-    \   endif
+    " FIXME: this requires input upon starting vim, annoying
+    fu! ResCur()                      " attempt to preserve cursor position
+        if line("'\"") > 1 && line("'\"") <= line("$")
+            normal! g`"
+            return 1
+        endif
+    endf
+    augroup resCur
+        au!
+        "au BufWinEnter * call ResCur()
+    augroup END
 endif
 
 set backspace=eol,start,indent        " make backspace useful

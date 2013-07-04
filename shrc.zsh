@@ -41,7 +41,7 @@ alias logsf="logs -f"
 alias diff="git --no-pager diff --color=auto --no-ext-diff --no-index"
 
 # being specific
-alias erc="e ~/.zshrc ~/shrc.zsh ~/.bashrc"
+alias erc="e ~/.zshrc ~/shrc.zsh ~/.bashrc ~/.vimrc"
 alias irc="screen -dR irc irssi"
 alias crawl='screen -dR crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
 alias crawla='screen -dR crawl ssh crawl@crawl.akrasiac.org -l joshua -i ~/.ssh/crawl'

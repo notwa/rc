@@ -54,7 +54,7 @@ alias exts='print -l *(:e:l) | sort | uniq -c | sort -n'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 alias nocom='grep -oP --line-buffered --color=never "^[^#]+"'
 alias unwrap='awk '"'"'BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'"'"
-alias picky='{ pacman -Qgq base base-devel | tee -; pacman -Qtq; } | sort | uniq -u'
+alias picky='{ pacman -Qgq base base-devel | tee -; pacman -Qtnq; } | sort | uniq -u'
 alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
 
 . ~/mingw.sh

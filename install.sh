@@ -41,7 +41,7 @@ PATH="$PATH:$rc/sh"
 umask 027
 
 for f in .bashrc .zshrc shrc.zsh mingw.sh .vimrc .conkyrc .inputrc .screenrc .xinitrc; do
-    r="$rc/$(dotless "$f")"
+    r="$rc/home/$(dotless "$f")"
     hardlink "$f" "$r"
 done
 

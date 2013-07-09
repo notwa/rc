@@ -9,7 +9,7 @@ die() {
 }
 
 dotless() {
-    [[ "${1:0:1}" == "." ]] && echo -E "${1:1}" || echo -E "$1"
+    [[ "${1:0:1}" == "." ]] && REPLY="${1:1}" || REPLY="$1"
 }
 
 hardlink() {
@@ -36,25 +36,28 @@ softlink() {
 
 rc="$(readlink -f "$(dirname "$0")" )"
 cd $HOME
-PATH="$PATH:$rc/sh"
+PATH="${PATH:?No existing PATH}:$rc/sh"
 
 umask 027
 
 for f in .bashrc .zshrc shrc.zsh mingw.sh .vimrc .conkyrc .inputrc .screenrc .xinitrc; do
-    r="$rc/home/$(dotless "$f")"
+    dotless "$f"
+    r="$rc/home/$REPLY"
     hardlink "$f" "$r"
 done
 
 for d in sh .vim .mpv; do
-    r="$rc/$(dotless "$d")"
+    dotless "$d"
+    r="$rc/$REPLY"
     softlink "$d" "$r"
 done
 
-# FIXME: this loop is pretty inefficient
-for r in $rc/ssh/* $rc/config/menus/*; do
-    f=".${r#"$rc/"}"
-    mkdir -p "$(dirname "$f")"
-    hardlink "$f" "$r"
+for d in ssh config/menus; do
+    mkdir -p ".$d"
+    for r in $rc/$d/*; do
+        f=".${r#"$rc/"}"
+        hardlink "$f" "$r"
+    done
 done
 
 grep .bashrc .bash_profile >/dev/null 2>&1 \

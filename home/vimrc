@@ -92,7 +92,6 @@ if has('autocmd')
         au BufRead,BufNewFile *.json call TabFour()
     augroup END
 
-    " FIXME: this requires input upon starting vim, annoying
     fu! ResCur()                      " attempt to preserve cursor position
         if line("'\"") > 1 && line("'\"") <= line("$")
             normal! g`"
@@ -101,7 +100,7 @@ if has('autocmd')
     endf
     augroup resCur
         au!
-        "au BufWinEnter * call ResCur()
+        au BufWinEnter * call ResCur()
     augroup END
 endif
 

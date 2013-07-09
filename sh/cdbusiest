@@ -1,4 +1,5 @@
 #!/bin/zsh
 dbusiest | read -r c d
+[ -z $c ] && return 1
 <<<"$c $d"
 cd $d

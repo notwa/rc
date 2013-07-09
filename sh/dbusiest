@@ -1,7 +1,8 @@
 #!/bin/zsh
 local c d
-for d in *(FD); do
+for d in *(FDN); do
     print $(find $d 2>/dev/null | wc -l) $d
 done | sort -nr | while read c d; do
     echo -E $c $d
 done
+[ -z $d ] && return 1

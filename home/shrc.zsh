@@ -45,7 +45,7 @@ alias lsfm="lsf -ugpms"
 alias lsa="ls -A --group-directories-first"
 alias logs="logs -o cat -b -e"
 alias logsf="logs -f"
-alias diff="git --no-pager diff --color=auto --no-ext-diff --no-index"
+alias diff="git diff --color=auto --no-ext-diff --no-index"
 
 # being specific
 alias erc="e ~/.zshrc ~/shrc.zsh ~/.bashrc ~/.vimrc"

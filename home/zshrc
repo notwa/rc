@@ -48,7 +48,7 @@ function {
         hist_expire_dups_first # sharing/appending will result in dups
         hist_ignore_dups # don't push lines identical to the previous
         auto_cd # exec a dir to cd
-        auto_pushd pushd_ignore_dups # try `dirs -v` to find N and `is ~N`
+        auto_pushd # cd acts as pushd
         no_match # error on bad tab-complete
         check_jobs notify # automatic job reporting
         chase_links # cd into link resolves link
@@ -61,13 +61,43 @@ function {
     unsetopt rm_star_silent rm_star_wait # yolo
 }
 
+DIRSTACKSIZE=24
+dirprev() {
+    pushd -q +1
+    zle reset-prompt
+    precmd
+}
+dirnext() {
+    pushd -q -0
+    zle reset-prompt
+    precmd
+}
+dirup() {
+    cd ..
+    zle reset-prompt
+    precmd
+}
+dirview() {
+    # TODO: print under prompt if possible,
+    # truncate and columnize
+    print
+    dirs -v
+    zle reset-prompt
+}
+
+for x (dirprev dirnext dirup dirview) zle -N $x
+
 bindkey -e # emacs-style keybinds
 bindkey '^[[A' history-search-backward # up
 bindkey '^[[B' history-search-forward # down
 bindkey ';5D' emacs-backward-word # ctrl+left
 bindkey ';5C' emacs-forward-word # ctrl+right
+bindkey ';3D' dirprev # alt+left
+bindkey ';3C' dirnext # alt+right
+bindkey ';3A' dirup # alt+up
+bindkey ';3B' dirview # alt+down
 # we type a space (and delete it afterwards) to force ^Y to yank from ^U
-bindkey -s ';3A' ' ^Ucd ..^M^Y^H' # alt+up
+#bindkey -s ';3A' ' ^Ucd ..^M^Y^H' # alt+up
 bindkey -s '^[s' '^Asudo ^E' # alt+s
 
 autoload edit-command-line

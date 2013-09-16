@@ -65,7 +65,7 @@ grep .bashrc .bash_profile >/dev/null 2>&1 \
 
 for d in Desktop Documents Downloads Music Pictures Public Templates Video; do
     [ -d "$d" ] || continue
-    is_empty "$d" && echo rm -r "$d" || note "skipping unempty $d"
+    is_empty "$d" && rm -r "$d" || note "skipping unempty $d"
 done
 
 mkdir -p opt/local/bin src work play

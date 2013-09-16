@@ -15,13 +15,15 @@ ify() {
 	$@ | $ex
 }
 
+has() { which "$1" >/dev/null && which "$1"; }
+
 # cleanup in case of inherited exports
 for x in AR CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS RANLIB RC WINDRES; do
     export $x=
 done
 
 export PREFIX="$HOME/opt/local"
-export CC=clang
+export CC="$(has clang || has gcc)"
 export CFLAGS='-march=native -O2'
 export LDFLAGS='-Wl,-O1,--sort-common,-z,relro'
 export CFLAGS="$CFLAGS -I'$HOME/opt/local/include'"
@@ -35,7 +37,7 @@ export GOPATH="$HOME/go"
 for x in ls dir vdir grep fgrep egrep; do
     alias $x="$x --color=auto"
 done
-alias make="colormake"
+alias make="$(has colormake || has make)"
 
 # just flags
 export LESS='-SR'

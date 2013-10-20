@@ -19,7 +19,8 @@ mingw-disable() {
     _mw_enabled=0
 
     local e=
-    for e in PATH PREFIX AR CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS RANLIB RC WINDRES; do
+    for e in PATH PREFIX CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS \
+      AR RANLIB RC WINDRES SDL_CFLAGS SDL_LDLIBS; do
         export "$e=${_mw_[$e]}"
     done
 }
@@ -39,21 +40,28 @@ mingw-enable() {
     _mw_export LDFLAGS "-s -L $_mw_misc/lib -L $_mw_prefix/lib"
     _mw_export CPPFLAGS ''
     _mw_export CXXFLAGS "$CFLAGS"
+
+    # TODO: hackish
+    local sdl2c=$_mw_host-sdl2-config
+    which $sdl2c >/dev/null && {
+        _mw_export SDL_CFLAGS "$($_mw_host-sdl2-config --cflags)"
+        _mw_export SDL_LDLIBS "$($_mw_host-sdl2-config --libs)"
+    }
 }
 
 mw() {
-    [ "$#" -eq 1 ] && {
+    if [ "$#" -eq 1 ]; then
         if [ "$1" -eq 1 ]
         then; mingw-enable
         else; mingw-disable
         fi
-    } || {
-        [ $_mw_enabled -eq 0 ] && {
+    else
+        if [ $_mw_enabled -eq 0 ]; then
             echo "mingw enabled"
             mingw-enable
-        } || {
+        else
             echo "mingw disabled"
             mingw-disable
-        }
-    }
+        fi
+    fi
 }

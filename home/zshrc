@@ -114,11 +114,11 @@ for x in arith fc find ftp history let locate rsync scp sftp wget
     alias $x="noglob $x"
 
 if [[ "$TERM" = xterm* ]]; then
-  precmd() { print -Pn "\e]2;%M: %~\a" }
+    precmd() { print -Pn "\e]2;%M: %~\a" }
 fi
 
 # note: zsh adds a % symbol to newline-less output, so bash prompt is overkill
-PROMPT='%b%(?.%2K.%1K)%15F%#%f%k '
+PROMPT='%{'$'\e''[10m%}%b%(?.%2K.%1K)%15F%#%f%k '
 RPROMPT='%8F%h%b'
 
 reload() {

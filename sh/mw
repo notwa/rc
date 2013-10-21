@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 mkdir -p ~/opt/mingw
 
 _mw_enabled=0
@@ -6,11 +7,11 @@ _mw_bin=~/src/mxe/usr/bin
 _mw_misc=~/src/mxe/usr/$_mw_host
 _mw_prefix=~/opt/mingw
 
-declare -A _mw_
+typeset -Ag _mw_ # cryptic math expression errors if not global!
 
 _mw_export() {
     [ -z "$1" ] && return 1
-    [ -n "${ZSH_VERSION:-}" ] && _mw_[$1]=${(P)1} || _mw_[$1]="${!1}"
+    [ -n "${ZSH_VERSION:-}" ] && _mw_[$1]="${(P)1}" || _mw_[$1]="${!1}"
     export "$1=$2"
 }
 
@@ -19,8 +20,7 @@ mingw-disable() {
     _mw_enabled=0
 
     local e=
-    for e in PATH PREFIX CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS \
-      AR RANLIB RC WINDRES SDL_CFLAGS SDL_LDLIBS; do
+    for e in PATH PREFIX CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS AR RANLIB RC WINDRES SDL_CFLAGS SDL_LDLIBS; do
         export "$e=${_mw_[$e]}"
     done
 }
@@ -51,9 +51,10 @@ mingw-enable() {
 
 mw() {
     if [ "$#" -eq 1 ]; then
-        if [ "$1" -eq 1 ]
-        then; mingw-enable
-        else; mingw-disable
+        if [ "$1" -eq 1 ]; then
+            mingw-enable
+        else
+            mingw-disable
         fi
     else
         if [ $_mw_enabled -eq 0 ]; then
@@ -65,3 +66,4 @@ mw() {
         fi
     fi
 }
+mw $1

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+scramble() {
+    local eggs='s/@\(\w\)\(\w\)\(\w\)/@\3\1@\2/g'
+    sed \
+    -e 's/\b\w/&@/g' \
+    -e "$eggs" -e "$eggs" -e "$eggs" -e "$eggs" \
+    -e 's/@//g'
+}

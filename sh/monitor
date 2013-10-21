@@ -1,17 +1,17 @@
 #!/bin/zsh
 monitor() {
     local time=$1
+    local cmd=$2
     local lines=0
     local elines=0
     local stop=0
-    shift
     trap stop=1 INT
     while [ $stop -eq 0 ]; do
         [  $lines -gt 1 ] && echo -en "\e[${lines}A"
         [ $elines -gt 0 ] && echo -en "\e[${elines}A"
         lines=0
         elines=0
-        ($@ | fold -w $COLUMNS | while read -r; do
+        ($cmd | fold -w $COLUMNS | while read -r; do
             echo -E "$REPLY"
             let lines++
         done) 2>&1 | fold -w $COLUMNS | while read -r; do
@@ -21,3 +21,4 @@ monitor() {
         sleep $time || break
     done
 }
+monitor $1 $2

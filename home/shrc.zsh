@@ -66,6 +66,5 @@ alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i
 alias picky='{ pacman -Qgq base base-devel | tee -; pacman -Qtnq; } | sort | uniq -u'
 alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
 
-#. ~/mingw.sh
 . ~/sh/lsf.sh/lsf.sh
 . ~/sh/z/z.sh

@@ -1,14 +1,34 @@
 #!/bin/zsh
-monitor() {
-    local time=$1
-    local cmd=$2
-    local stop=0
-    trap stop=1 INT
-    echo -en "\e[H\e[2J"
-    while [ $stop -eq 0 ]; do
-        echo -en "\e[1J\e[H"
-        $cmd 2>&1 | fold -w $COLUMNS | tail -$((LINES-1))
-        sleep $time || break
-    done
+local bottom=0 strip=0 opt=
+while getopts 'fsh' opt; do
+    case $opt in
+    f) bottom=1;; # align with bottom of terminal
+    s) strip=1;; # strip last character assuming it's a newline
+    ?) echo -E "usage: $0 [-fs] {period} {program}"
+       [ $opt = h ] && return 0 || return 1;;
+    esac
+done
+shift $((OPTIND-1))
+
+local time=$1
+local cmd=$2
+
+function _monclear() {
+    [ $bottom -eq 1 ] && printf ${(l:$((LINES*2))::\n:)}
 }
-monitor $1 $2
+function _monfit() {
+    if [ $strip -eq 1 ]; then
+        tail -$((LINES)) | head -c-1
+    else
+        tail -$((LINES-1))
+    fi
+}
+
+local stop=0
+trap stop=1 INT
+echo -en "\e[H\e[2J"
+while [ $stop -eq 0 ]; do
+    echo -en "\e[1J\e[H"
+    { _monclear; $cmd 2>&1 } | fold -w $COLUMNS | _monfit
+    sleep $time || break
+done

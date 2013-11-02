@@ -15,8 +15,8 @@ dotless() {
 hardlink() {
     [ -e "$1" ] && {
         [ "$1" -ef "$2" ] && return
-        [ -h "$1" ] && note "removing symbolic link $1" && echo rm "$1"
-        [ -s "$1" ] && die "$1 already exists" || echo rm "$1"
+        [ -h "$1" ] && note "removing symbolic link $1" && rm "$1"
+        [ -s "$1" ] && die "$1 already exists" || rm "$1"
     }
 
     ln "$2" "$1" || die "couldn't hardlink $1"
@@ -27,7 +27,7 @@ softlink() {
         [ -h "$1" ] && {
             [ "$(readlink "$1")" == "$2" ] && return
             note "removing symbolic link $1"
-            echo rm "$1"
+            rm "$1"
         } || die "$1 already exists and is not a symbolic link"
     }
 
@@ -35,7 +35,7 @@ softlink() {
 }
 
 rc="$(readlink -f "$(dirname "$0")" )"
-cd $HOME
+cd "$HOME"
 PATH="${PATH:?No existing PATH}:$rc/sh"
 
 umask 027

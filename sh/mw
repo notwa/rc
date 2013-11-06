@@ -2,10 +2,9 @@
 mkdir -p ~/opt/mingw
 
 _mw_enabled=0
-_mw_host=x86_64-w64-mingw32
-_mw_bin=~/src/mxe/usr/bin
-_mw_misc=~/src/mxe/usr/$_mw_host
-_mw_prefix=~/opt/mingw
+_mw_host32=i686-w64-mingw32
+_mw_host64=x86_64-w64-mingw32
+_mw_host=$_mw_host64
 
 typeset -Ag _mw_ # cryptic math expression errors if not global!
 
@@ -23,11 +22,17 @@ mingw-disable() {
     for e in PATH PREFIX CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS AR RANLIB RC WINDRES SDL_CFLAGS SDL_LDLIBS; do
         export "$e=${_mw_[$e]}"
     done
+    echo "mingw disabled"
 }
 
 mingw-enable() {
-    [ $_mw_enabled -eq 1 ] && return 1
+    [ $_mw_enabled -eq 1 ] && mingw-disable || true
     _mw_enabled=1
+
+    _mw_host=${1:-$_mw_host}
+    local _mw_misc=~/src/mxe/usr/$_mw_host
+    local _mw_bin=~/src/mxe/usr/bin
+    local _mw_prefix=~/opt/mingw
 
     set -- CC gcc CXX g++ CPP cpp AR ar RANLIB ranlib RC windres WINDRES windres
     while _mw_export "$1" "$_mw_bin/$_mw_host-$2"; do
@@ -47,21 +52,27 @@ mingw-enable() {
         _mw_export SDL_CFLAGS "$($_mw_host-sdl2-config --cflags)"
         _mw_export SDL_LDLIBS "$($_mw_host-sdl2-config --libs)"
     }
+
+    echo "mingw enabled ($_mw_host)"
+    return 0
 }
 
 mw() {
     if [ "$#" -eq 1 ]; then
-        if [ "$1" -eq 1 ]; then
-            mingw-enable
-        else
+        if [ "$1" -eq 32 ]; then
+            mingw-enable $_mw_host32
+        elif [ "$1" -eq 64 ]; then
+            mingw-enable $_mw_host64
+        elif [ "$1" -eq 0 ]; then
             mingw-disable
+        else
+            echo "usage: mw [0/32/64]"
+            return 1
         fi
     else
         if [ $_mw_enabled -eq 0 ]; then
-            echo "mingw enabled"
             mingw-enable
         else
-            echo "mingw disabled"
             mingw-disable
         fi
     fi

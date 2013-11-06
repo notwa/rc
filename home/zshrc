@@ -61,6 +61,43 @@ function {
     unsetopt rm_star_silent rm_star_wait # yolo
 }
 
+zmodload zsh/mathfunc
+autoload -Uz zcalc
+
+# consts are 2^-22 and 2^-21 which are simply representable in IEEE 754 floats
+zsh_math_func_slope() {
+    (( (f($1 + 0.000000238418579) - f($1 - 0.000000238418579))/0.000000476837158 ))
+}
+
+zsh_math_func_newton() {
+    local i y=${1:-0}
+    for ((i=0; i<${2:-8}; i++)); do
+        (( y -= f(y)/slope(y) )) || return 1
+    done
+    (( y ))
+}
+
+zsh_math_func_newton2() {
+    local i x y=${1:-0} d=999999999 p=$(( 2**-${2:-32} ))
+    for ((i=0; i<32; i++)); do
+        (( x = y ))
+        (( y -= f(y)/slope(y) ))
+        (( $d < (d = abs(x - y)) )) && {
+            echo 'error: diverging, no solution' >&2
+            return
+        }
+        (( d < p )) && break
+    done
+    [ $i -eq 32 ] \
+    && echo "warning: didn't hit precision limit" >&2 \
+    || echo "iterations: $i" >&2
+    (( y ))
+}
+
+functions -M slope 1 1 zsh_math_func_slope
+functions -M newton 0 2 zsh_math_func_newton
+functions -M newton2 0 2 zsh_math_func_newton2
+
 DIRSTACKSIZE=24
 dirprev() {
     pushd -q +1

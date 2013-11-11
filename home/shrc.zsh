@@ -19,7 +19,7 @@ has() { which "$1" >/dev/null && which "$1"; }
 
 # cleanup in case of inherited exports
 for x in AR CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS RANLIB RC WINDRES; do
-    export $x=
+    unset $x
 done
 
 export PREFIX="$HOME/opt/local"
@@ -37,7 +37,7 @@ export GOPATH="$HOME/go"
 for x in ls dir vdir grep fgrep egrep; do
     alias $x="$x --color=auto"
 done
-alias make="$(has colormake || has make)"
+#alias make="$(has colormake || has make)"
 
 # just flags
 export LESS='-SR'
@@ -66,5 +66,6 @@ alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i
 alias picky='{ pacman -Qgq base base-devel | tee -; pacman -Qtnq; } | sort | uniq -u'
 alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
 
+#. ~/mingw.sh
 . ~/sh/lsf.sh/lsf.sh
 . ~/sh/z/z.sh

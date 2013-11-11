@@ -20,7 +20,8 @@ mingw-disable() {
 
     local e=
     for e in PATH PREFIX CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS AR RANLIB RC WINDRES SDL_CFLAGS SDL_LDLIBS; do
-        export "$e=${_mw_[$e]}"
+        local v="${_mw_[$e]}"
+        [ -n "$v" ] && export "$e=$v" || unset "$e"
     done
     echo "mingw disabled"
 }

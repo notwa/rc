@@ -46,13 +46,13 @@ for f in .bashrc .zshrc shrc.zsh .vimrc .conkyrc .inputrc .screenrc .xinitrc; do
     hardlink "$f" "$r"
 done
 
-for d in sh .vim .mpv; do
+for d in sh .vim; do
     dotless "$d"
     r="$rc/$REPLY"
     softlink "$d" "$r"
 done
 
-for d in ssh config/menus; do
+for d in ssh; do
     mkdir -p ".$d"
     for r in $rc/$d/*; do
         f=".${r#"$rc/"}"

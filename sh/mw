@@ -33,7 +33,8 @@ mingw-enable() {
     _mw_host=${1:-$_mw_host}
     local _mw_misc=~/src/mxe/usr/$_mw_host
     local _mw_bin=~/src/mxe/usr/bin
-    local _mw_prefix=~/opt/mingw
+    local _mw_prefix=~/opt/$_mw_host
+    mkdir -p "$_mw_prefix"
 
     set -- CC gcc CXX g++ CPP cpp AR ar RANLIB ranlib RC windres WINDRES windres
     while _mw_export "$1" "$_mw_bin/$_mw_host-$2"; do

@@ -24,10 +24,12 @@ done
 
 export PREFIX="$HOME/opt/local"
 export CC="$(has clang || has gcc)"
+export CXX="$(has clang || has g++)"
 export CFLAGS='-march=native -O2'
 export LDFLAGS='-Wl,-O1,--sort-common,-z,relro'
 export CFLAGS="$CFLAGS -I'$HOME/opt/local/include'"
 export LDFLAGS="$LDFLAGS -L'$HOME/opt/local/lib'"
+export CXXFLAGS="$CFLAGS"
 export LD_LIBRARY_PATH= # -n isn't an option in zsh's export
 
 export EDITOR='vim -p'

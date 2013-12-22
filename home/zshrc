@@ -27,8 +27,6 @@ function {
     # caching, for huge lists eg. package managers
     zsc '*' use-cache on
     zsc '*' cache-path ~/.zsh/cache
-    zsc '*:pacman:*' force-list always
-    zsc '*:*:pacman:*' menu yes select
     # when listing completions, show type names and group by them
     zsc '*:descriptions' format "$fg_bold[black]» %d$reset_color"
     zsc '*' group-name ''

@@ -153,7 +153,7 @@ if [[ "$TERM" = xterm* ]]; then
 fi
 
 # note: zsh adds a % symbol to newline-less output, so bash prompt is overkill
-PROMPT='%{'$'\e''[10m%}%b%(?.%2K.%1K)%15F%#%f%k '
+PROMPT='%{'$'\e''[10m%}%b%(?.%K{green}.%K{red})%15F%#%f%k '
 RPROMPT='%8F%h%b'
 
 reload() {

@@ -31,6 +31,7 @@ export CFLAGS="$CFLAGS -I'$HOME/opt/local/include'"
 export LDFLAGS="$LDFLAGS -L'$HOME/opt/local/lib'"
 export CXXFLAGS="$CFLAGS"
 export LD_LIBRARY_PATH= # -n isn't an option in zsh's export
+export MAKEFLAGS="-j2"
 
 export EDITOR='vim -p'
 export GOPATH="$HOME/go"

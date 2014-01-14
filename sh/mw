@@ -4,7 +4,8 @@ mkdir -p ~/opt/mingw
 _mw_enabled=0
 _mw_host32=i686-w64-mingw32
 _mw_host64=x86_64-w64-mingw32
-_mw_hostarm=arm-linux-gnueabi
+#_mw_hostarm=arm-linux-gnueabi
+_mw_hostarm=armv7l-unknown-linux-gnueabihf # try saying that ten times fast
 _mw_host=$_mw_host64
 
 typeset -Ag _mw_ # cryptic math expression errors if not global!

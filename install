@@ -34,6 +34,8 @@ softlink() {
     ln -s "$2" "$1" || die "couldn't symlink $1"
 }
 
+which readlink >/dev/null || exit 1
+
 rc="$(readlink -f "$(dirname "$0")" )"
 cd "$HOME"
 PATH="${PATH:?No existing PATH}:$rc/sh"

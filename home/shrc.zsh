@@ -15,7 +15,7 @@ ify() {
 	$@ | $ex
 }
 
-has() { which "$1" >/dev/null && which "$1"; }
+has() { which "$1" >/dev/null 2>&1 && which "$1"; }
 
 # cleanup in case of inherited exports
 for x in AR CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS RANLIB RC WINDRES; do

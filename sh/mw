@@ -2,10 +2,15 @@
 mkdir -p ~/opt/mingw
 
 _mw_enabled=0
-_mw_host32=i686-w64-mingw32
-_mw_host64=x86_64-w64-mingw32
-#_mw_hostarm=arm-linux-gnueabi
-_mw_hostarm=armv7l-unknown-linux-gnueabihf # try saying that ten times fast
+_mw_host32=i686-w64-mingw32.static
+_mw_host64=x86_64-w64-mingw32.static
+
+if [[ "$(uname -m)" == armv7l ]]; then
+    _mw_hostarm=./
+else
+    _mw_hostarm=armv7l-unknown-linux-gnueabihf
+fi
+
 _mw_host=$_mw_host64
 
 typeset -Ag _mw_ # cryptic math expression errors if not global!
@@ -21,7 +26,8 @@ mw-disable() {
     _mw_enabled=0
 
     local e=
-    for e in PATH PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS AR RANLIB RC WINDRES SDL_CFLAGS SDL_LDLIBS; do
+    for e in PATH PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS \
+      AR RANLIB RC WINDRES OBJCOPY SDL_CFLAGS SDL_LDLIBS; do
         local v="${_mw_[$e]}"
         [ -n "$v" ] && export "$e=$v" || unset "$e"
     done
@@ -41,8 +47,12 @@ mw-enable() {
     local _mw_prefix=~/opt/$_mw_host
     mkdir -p "$_mw_prefix"
 
-    set -- CC gcc CXX g++ CPP cpp LD ld AR ar RANLIB ranlib RC windres WINDRES windres
-    while _mw_export "$1" "$_mw_bin/$_mw_host-$2"; do
+    local tmp="$_mw_bin/$_mw_host"
+    [ -d "$tmp" ] || tmp+='-'
+
+    set -- CC gcc CXX g++ CPP cpp LD ld AR ar \
+      RANLIB ranlib RC windres WINDRES windres OBJCOPY objcopy
+    while _mw_export "$1" "$tmp$2"; do
         shift 2
     done
 
@@ -67,11 +77,11 @@ mw-enable() {
 mw() {
     if [ "$#" -eq 1 ]; then
         if [[ "$1" == 32 ]]; then
-            mw-enable $_mw_host32 ~/src/mxe/usr
+            mw-enable $_mw_host32 /media/2tb/you/dump/mxe/usr
             export CFLAGS="-mwin32 $CFLAGS"
             export CXXFLAGS="$CFLAGS"
         elif [[ "$1" == 64 ]]; then
-            mw-enable $_mw_host64 ~/src/mxe/usr
+            mw-enable $_mw_host64 /media/2tb/you/dump/mxe/usr
             export CFLAGS="-mwin32 $CFLAGS"
             export CXXFLAGS="$CFLAGS"
         elif [[ "$1" == arm ]]; then

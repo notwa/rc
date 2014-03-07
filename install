@@ -48,7 +48,7 @@ for f in .bashrc .zshrc shrc.zsh .vimrc .conkyrc .inputrc .screenrc .xinitrc; do
     hardlink "$f" "$r"
 done
 
-for d in sh .vim; do
+for d in sh .vim .mpv; do
     dotless "$d"
     r="$rc/$REPLY"
     softlink "$d" "$r"

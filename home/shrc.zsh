@@ -54,6 +54,7 @@ alias lsa="ls -A --group-directories-first"
 alias logs="logs -o cat -b -e"
 alias logsf="logs -f"
 alias diff="git diff --color=auto --no-ext-diff --no-index"
+alias db="dropbox_uploader"
 
 # being specific
 alias erc="e ~/.zshrc ~/shrc.zsh ~/.bashrc ~/.vimrc"
@@ -74,3 +75,26 @@ alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
 
 . ~/sh/lsf.sh/lsf.sh
 . ~/sh/z/z.sh
+
+#export MPV_HOME=/c/path/mpv
+mf="--no-sub" # waste of time, twitch/hitbox doesn't have subs
+mf+=" --cache 4096" # default of 320 is way too small in practice
+mf+=" --cache-pause=1" # avoid pausing as much as possible
+mf+=" --cache-min=20" # should be higher but who has time for that
+mf+=" --framedrop=yes" # necessary for video to catch up to audio
+mf+=" --mc=60" # very aggressive video sync
+mf+=" --no-initial-audio-sync" # not sure if helps tbh
+mf+=" --autosync=0" # testing
+export MPV_STREAM_FLAGS="$mv"
+unset mv
+
+twitch(){
+    livestreamer "twitch.tv/$1" best -p mpv -a \
+      "$MPV_STREAM_FLAGS ${2:+--autofit=}${2:-} {filename}"
+}
+
+# hitbox uses rtmp but mpv doesnt support rtmp dump parameters
+hitbox(){
+    livestreamer "hitbox.tv/$1" best -p mpv -a \
+      "$MPV_STREAM_FLAGS ${2:+--autofit=}${2:-} {filename}"
+}

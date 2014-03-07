@@ -1,0 +1,9 @@
+[default]
+volume=15
+#af-add=bs2b # doesnt exist
+#af=drc=2:0.12 # annoying, try defaults?
+af=drc
+af-add=equalizer=4:4:1.5:0:0:0:-3:1:2.5:-3
+msglevel=all=info
+quvi-fetch-subtitles=no
+border=no

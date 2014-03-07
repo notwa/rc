@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+mkgist() {
+    local token="$(< ~/.gisttoken)"
+    if [ $? -ne 0 ]; then
+        echo failed to read ~/.gisttoken -- do you have one? >&2
+        echo https://github.com/settings/applications >&2
+        return 1
+    fi
+
+    local public=true anon=0 desc=
+    while [ $# -gt 0 ]; do
+        case "$1" in
+        -p) public=false;;
+        -a) anon=1;;
+        -d) [ $# -lt 2 ] && desc= || desc="$2"
+            shift;;
+         *) echo "usage: $0 [-p] [-a] [-d {description}]" >&2
+            return 1
+        esac
+        shift
+    done
+
+    local head=
+    [ $anon -eq 0 ] && head="Authorization: token $token"
+
+    local rf="$(mktemp)"
+    if [ ! -O "$rf" ]; then
+        echo failed to create temporary output file >&2
+        return 1
+    fi
+
+    # TODO: sanitize $desc
+    curl 'https://api.github.com/gists' -sid@- -H "$head" -o "$rf" << EOF
+{
+    "description": "$desc",
+    "public": $public,
+    "files": { ".dummy": { "content": "." } }
+}
+EOF
+
+    if [ $? -ne 0 ]; then
+        rm "$rf"
+        return 1
+    fi
+
+    sed -n '/Location/{s@.*/@@;p;q}' "$rf" | tr -d '\r ' | while read; do
+        echo "https://gist.github.com/$REPLY"
+        git clone "https://gist.github.com/$REPLY.git"
+        [ $? -eq 0 ] && (
+            cd "$REPLY"
+            git rm .dummy
+            git remote set-url origin "git@gist.github.com:$REPLY.git"
+        )
+    done
+
+    rm "$rf"
+}
+mkgist "$@"

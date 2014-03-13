@@ -145,7 +145,7 @@ alias -g STFU="2>/dev/null"
 
 for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
     alias $x="nocorrect $x"
-for x in arith fc find ftp history let locate rsync scp sftp wget
+for x in arith curl fc find ftp history let locate rsync scp sftp wget
     alias $x="noglob $x"
 
 if [[ "$TERM" = xterm* ]]; then

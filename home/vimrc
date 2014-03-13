@@ -85,11 +85,21 @@ fu! TabFour()
     setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
 endf
 
+fu! TabTwo()
+    setlocal tabstop=2 shiftwidth=2 expandtab
+endf
+
 if has('autocmd')
     augroup tabs                      " 4 spaces as tabs for various languages
         au!
         au FileType bash,sh,zsh,awk,python,lua,vim call TabFour()
         au BufRead,BufNewFile *.json call TabFour()
+        au BufRead,BufNewFile PKGBUILD call TabTwo()
+    augroup END
+
+    augroup reload                    " http://superuser.com/a/417997
+        au!
+        au BufWritePost .vimrc,_vimrc,vimrc so $MYVIMRC
     augroup END
 
     fu! ResCur()                      " attempt to preserve cursor position

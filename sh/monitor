@@ -1,17 +1,18 @@
 #!/bin/zsh
-local bottom=0 strip=0 opt=
-while getopts 'fsh' opt; do
+local bottom=0 strip=0 interval=2 opt=
+while getopts 'fsn:h' opt; do
     case $opt in
     f) bottom=1;; # align with bottom of terminal
     s) strip=1;; # strip last character assuming it's a newline
-    ?) echo -E "usage: $0 [-fs] {period} {program}"
+    n) interval="$OPTARG";;
+    ?) echo -E "usage: $0 [-fs] [-n {period}] {command} [{args...}]"
        [ $opt = h ] && return 0 || return 1;;
     esac
 done
 shift $((OPTIND-1))
 
-local time=$1
-local cmd=$2
+local cmd=${1:?no command specified}
+shift
 
 function _monclear() {
     [ $bottom -eq 1 ] && printf ${(l:$((LINES*2))::\n:)}
@@ -29,6 +30,6 @@ trap stop=1 INT
 echo -en "\e[H\e[2J"
 while [ $stop -eq 0 ]; do
     echo -en "\e[1J\e[H"
-    { _monclear; $cmd 2>&1 } | fold -w $COLUMNS | _monfit
-    sleep $time || break
+    { _monclear; "$cmd" "$@" 2>&1 } | fold -w $COLUMNS | _monfit
+    sleep "$interval" || break
 done

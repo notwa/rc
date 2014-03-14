@@ -72,8 +72,8 @@ alias nocom='grep -oP --line-buffered --color=never "^[^#]+"'
 alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\'
 alias picky='{ pacman -Qgq base base-devel | tee -; pacman -Qtnq; } | sort | uniq -u'
 alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
+alias makepkgf='sudo -u $USER MAKEFLAGS=-j2 makepkg -Af --skipchecksums'
 
-. ~/sh/lsf.sh/lsf.sh
 . ~/sh/z/z.sh
 
 #export MPV_HOME=/c/path/mpv

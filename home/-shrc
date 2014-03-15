@@ -1,3 +1,4 @@
+#!/bin/zsh
 # for both zsh and bash
 
 umask 027 # screw others

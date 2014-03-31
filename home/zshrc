@@ -59,6 +59,8 @@ function {
     unsetopt rm_star_silent rm_star_wait # yolo
 }
 
+autoload -U zmv
+
 zmodload zsh/mathfunc
 autoload -Uz zcalc
 

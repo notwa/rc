@@ -23,6 +23,8 @@ for x in AR CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS RANLIB RC WINDRES; do
     unset $x
 done
 
+[ "$LANG" != "en_US.UTF-8" ] && echo "Warning: LANG is $LANG"
+
 # PuTTY over serial
 [[ "$TERM" == vt102 ]] && export TERM="xterm"
 

@@ -79,17 +79,7 @@ alias makepkgf='sudo -u $USER MAKEFLAGS=-j2 makepkg -Af --skipchecksums'
 
 . ~/sh/z/z.sh
 
-#export MPV_HOME=/c/path/mpv
-mf="--no-sub" # waste of time, twitch/hitbox doesn't have subs
-mf+=" --cache 4096" # default of 320 is way too small in practice
-mf+=" --cache-pause=1" # avoid pausing as much as possible
-mf+=" --cache-min=20" # should be higher but who has time for that
-mf+=" --framedrop=yes" # necessary for video to catch up to audio
-mf+=" --mc=60" # very aggressive video sync
-mf+=" --no-initial-audio-sync" # not sure if helps tbh
-mf+=" --autosync=0" # testing
-export MPV_STREAM_FLAGS="$mv"
-unset mv
+export MPV_STREAM_FLAGS="--quiet --no-sub --vo=opengl:swapinterval=0"
 
 twitch(){
     livestreamer "twitch.tv/$1" best -p mpv -a \

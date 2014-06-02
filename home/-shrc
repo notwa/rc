@@ -9,11 +9,15 @@ ADDPATH() {
 
 ADDPATH "$HOME/opt/local/bin"
 
+r="$HOME/.gem/ruby/2.1.0/bin"
+[ -d "$r" ] && ADDPATH "$r"
+unset r
+
 ify() {
-	[ $# -ge 2 ] || return
-	local ex=$1
-	shift
-	$@ | $ex
+    [ $# -ge 2 ] || return
+    local ex=$1
+    shift
+    $@ | $ex
 }
 
 has() { which "$1" >/dev/null 2>&1 && which "$1"; }
@@ -76,6 +80,13 @@ alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i
 alias picky='{ pacman -Qgq base base-devel | tee -; pacman -Qtnq; } | sort | uniq -u'
 alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
 alias makepkgf='sudo -u $USER MAKEFLAGS=-j2 makepkg -Af --skipchecksums'
+alias rakef='rake && gem build *.gemspec && gem install *.gem'
+alias rot13='tr "A-Za-z0-9" "N-ZA-Mn-za-m5-90-4"'
+alias cleanse='tr -cd "\11\12\15\40-\176"'
+
+function trash() {
+    dd status=none if=/dev/random bs=1 count="$1"
+}
 
 . ~/sh/z/z.sh
 

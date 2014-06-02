@@ -95,6 +95,7 @@ if has('autocmd')
         au FileType bash,sh,zsh,awk,python,lua,vim call TabFour()
         au BufRead,BufNewFile *.json call TabFour()
         au BufRead,BufNewFile PKGBUILD call TabTwo()
+        au FileType ruby call TabTwo()
     augroup END
 
     augroup reload                    " http://superuser.com/a/417997

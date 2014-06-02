@@ -63,7 +63,7 @@ set smartcase                         " except when uppercase is used
 
 set infercase                         " use existing case when ins-completing
 
-set foldmethod=syntax
+set foldmethod=marker
 set foldlevelstart=99                 " start with everything unfolded
 
 if 0

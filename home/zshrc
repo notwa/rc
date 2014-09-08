@@ -36,8 +36,8 @@ autoload -Uz compinit
 compinit
 
 HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=16384
+SAVEHIST=16384
 
 function {
     local -a opts
@@ -65,8 +65,9 @@ zmodload zsh/mathfunc
 autoload -Uz zcalc
 
 isup() {
-    curl -sLI -w '%{http_code}' -o /dev/null "$1" | read -r
-    [ "${REPLY:0:1}" -eq 2 ]
+    local c
+    curl -sLI -w '%{http_code}' -o /dev/null "$1" | read -r c
+    [ "${c:0:1}" -eq 2 ]
 }
 
 DIRSTACKSIZE=24

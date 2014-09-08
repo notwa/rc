@@ -4,5 +4,6 @@ scramble() {
     sed \
     -e 's/\b\w/&@/g' \
     -e "$eggs" -e "$eggs" -e "$eggs" -e "$eggs" \
+    -e "$eggs" -e "$eggs" -e "$eggs" -e "$eggs" \
     -e 's/@//g'
 }

@@ -1,5 +1,5 @@
 #!/bin/zsh
 unconv() {
-	printf "%08x\n" $(((0x$1^3)&0x00FFFFFF+0x4F920000))
+	printf "%08x\n" $(((0x$1^0)&0x00FFFFFF+0x664C05A0))
 }
 unconv $1

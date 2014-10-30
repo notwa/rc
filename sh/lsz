@@ -34,6 +34,7 @@ m*10 m YEL
 m    s pur
 0    s PUR
 '
+
 local s_fs='
 T*8 T red
 T   G red
@@ -50,10 +51,13 @@ K   B CYA
 local permcolors="$BLA $WHI $yel $YEL $blu $BLU $gre $GRE"
 permcolors=($=permcolors)
 
-# TODO: functionize for better locals
+#                            chr       dir       blk      file       sym
+local typecolors="$RED $BLA $BLA $BLA $BLU $BLA $BLA $BLA $clr $BLA $CYA"
+typecolors=($=typecolors)
+
 local min unit color
 for min unit color in $=s_ft; do
-    # TODO: consider dereferencing color, [no]and coloring unit itself[/no]
+    # TODO: consider dereferencing color
     ft+=($(($min)) $unit $color)
 done
 for min unit color in $=s_fs; do
@@ -84,15 +88,31 @@ min() {
     echo $min
 }
 
+max() {
+    local max=-99999999999 x
+    for x; do [ $x -gt $max ] && max=$x; done
+    echo $max
+}
+
 permprint() {
     echo -n ${permcolors[$(($1+1))]}$1
 }
 
-local now=$(date +%s)
-local f="$din/*(D)"
-stat -t -- ${~f} | while read -rA A; do
-    prettify ${A[-15]} fs
+typeprint() {
+    echo -n ${typecolors[$(($1+1))]} #${(l:3:)1}
+}
 
+local now=$(date +%s)
+dateprint() {
+    [ $1 -lt 32 ] \
+    && echo -n "$BLA  N/A$clr " \
+    || prettify $((now-$1)) ft
+}
+
+local dinf=$(readlink -f $din/)
+local f="$dinf/*(D)"
+
+stat -t -- ${~f} | while read -rA A; do
     local uid=${A[-12]} gid=${A[-11]} is_me=0 is_us=0
     local uname=${unames[$uid]} gname=${gnames[$gid]}
     [ $uid -eq $UID ] && is_me=1
@@ -104,6 +124,14 @@ stat -t -- ${~f} | while read -rA A; do
     let 'gperm=(bits & 8#70) >> 3'
     let 'operm=bits & 8#7'
     let 'our_perm=(is_me?uperm:0) | (is_us?gperm:0) | operm'
+
+    case $type in
+        2)  echo -n '    c ' ;;
+        6)  echo -n '    b ' ;;
+        4)  echo -n '    / ' ;;
+        10) echo -n '    > ' ;;
+        *)  prettify ${A[-15]} fs ;;
+    esac
 
     permprint $our_perm
 
@@ -117,11 +145,16 @@ stat -t -- ${~f} | while read -rA A; do
     echo -n "$clr"
 
     local da=${A[-5]} dc=${A[-4]} dm=${A[-3]}
-    let da=now-da dc=now-dc dm=now-dm
-    prettify $(min $da $dc $dm) ft
-    #prettify $da ft
-    #prettify $dm ft
-    #prettify $dc ft
+    true && {
+        dateprint $da
+        dateprint $dm
+        dateprint $dc
+    } || {
+        dateprint $(max $da $dc $dm)
+    }
 
-    echo ${A[1,-16]}
+    local n=${A[1,-16]}
+    n=${n##$dinf/}
+    typeprint $type
+    echo $n$clr
 done

@@ -62,7 +62,7 @@ for min unit color in $=s_fs; do
     fs+=($(($min)) $unit $color)
 done
 
-prettify() {
+_lsz_pretty() {
     local min unit color
     for min unit color in ${(P)2}; do
         [ $1 -lt $min ] && continue
@@ -72,43 +72,42 @@ prettify() {
     done
 }
 
-min() {
+_lsz_min() {
     local min=99999999999 x
     for x; do [ $x -lt $min ] && min=$x; done
     echo $min
 }
 
-max() {
-    local max=-99999999999 x
-    for x; do [ $x -gt $max ] && max=$x; done
-    echo $max
+_lsz_max() {
+    local _lsz_max=-99999999999 x
+    for x; do [ $x -gt $_lsz_max ] && _lsz_max=$x; done
+    echo $_lsz_max
 }
 
-permprint() {
+_lsz_perm() {
     echo -n ${permcolors[$(($1+1))]}$1
 }
 
-typeprint() {
+_lsz_type() {
     echo -n ${typecolors[$(($1+1))]}
 }
 
 local now=$(date +%s)
-dateprint() {
+_lsz_date() {
     [ $1 -lt 32 ] \
     && echo -n "$BLA  N/A$clr" \
-    || prettify $((now-$1)) ft
+    || _lsz_pretty $((now-$1)) ft
     echo -n ' '
 }
 
 _lsz() {
-    local din=${1:-$(pwd)}
-    din=${din%/}
+    local din=${1%/}
 
     local dinf=$(readlink -f ${din:-/})
     local glob=$dinf
     [ -d "$dinf" ] && glob=$dinf/*(DN)
 
-    local count=$2
+    local count=${2:-0}
     [ $count -gt 1 ] && echo "$WHI$dinf"
 
     local -a matches
@@ -142,37 +141,38 @@ __lsz() {
         6)  echo -n '    b' ;;
         4)  echo -n '    /' ;;
         10) echo -n '    >' ;;
-        *)  prettify ${A[-15]} fs ;;
+        *)  _lsz_pretty ${A[-15]} fs ;;
     esac
 
     true && {
         echo -n ' '
-        permprint $our_perm
+        _lsz_perm $our_perm
     }
 
     true && {
         echo -n ' '
-        permprint $uperm
-        permprint $gperm
-        permprint $operm
+        _lsz_perm $uperm
+        _lsz_perm $gperm
+        _lsz_perm $operm
     }
 
     echo -n "$clr"
 
     local da=${A[-5]} dc=${A[-4]} dm=${A[-3]}
     true && {
-        dateprint $da
-        dateprint $dm
-        dateprint $dc
+        _lsz_date $da
+        _lsz_date $dm
+        _lsz_date $dc
     } || {
-        dateprint $(max $da $dc $dm)
+        _lsz_date $(_lsz_max $da $dc $dm)
     }
 
     local n=${A[1,-16]}
     n=${n##$dinf/}
-    typeprint $type
+    _lsz_type $type
     echo $n$clr
 }
 
 local f
+[ ${#@} -eq 0 ] && set -- $PWD
 for f; _lsz $f ${#@}

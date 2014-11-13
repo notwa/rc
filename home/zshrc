@@ -45,6 +45,7 @@ function {
         append_history share_history # across sessions
         hist_expire_dups_first # sharing/appending will result in dups
         hist_ignore_dups # don't push lines identical to the previous
+        hist_ignore_space # don't push lines beginning with spaces
         auto_cd # exec a dir to cd
         auto_pushd # cd acts as pushd
         no_match # error on bad tab-complete
@@ -54,6 +55,7 @@ function {
         complete_in_word # enable tab completion when cursor between words
         rc_quotes # 'you''re dumb' like "you're dumb"
         brace_ccl # for character ranges like {a-z}
+        ksh_typeset # treat `local x=$(cmd)` and `x=$(cmd)` the same
     )
     setopt "${opts[@]}"
     unsetopt rm_star_silent rm_star_wait # yolo
@@ -63,12 +65,6 @@ autoload -U zmv
 
 zmodload zsh/mathfunc
 autoload -Uz zcalc
-
-isup() {
-    local c
-    curl -sLI -w '%{http_code}' -o /dev/null "$1" | read -r c
-    [ "${c:0:1}" -eq 2 ]
-}
 
 DIRSTACKSIZE=24
 dirprev() {

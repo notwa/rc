@@ -2,6 +2,7 @@
 # for both zsh and bash
 
 #umask 027 # screw others
+umask 022 # don't inherit last umask. pip will break itself.
 
 ADDPATH() {
     grep ":$1:" <<<":$PATH:" >/dev/null || export PATH="$PATH:$1"

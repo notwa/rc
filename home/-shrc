@@ -10,8 +10,8 @@ ADDPATH() {
 
 ADDPATH "$HOME/opt/local/bin"
 
-r="$HOME/.gem/ruby/2.1.0/bin"
-[ -d "$r" ] && ADDPATH "$r"
+r="$HOME/.gem/ruby/2.2.0/bin"
+mkdir -p "$r" && ADDPATH "$r"
 unset r
 
 ify() {
@@ -69,6 +69,7 @@ alias erc="e ~/.zshrc ~/shrc.zsh ~/.bashrc ~/.vimrc"
 alias irc="screen -dR irc irssi"
 alias crawl='screen -dR crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
 alias crawla='screen -dR crawl ssh crawl@crawl.akrasiac.org -l joshua -i ~/.ssh/crawl'
+alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 
 # providing extra functionality
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag

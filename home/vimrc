@@ -169,6 +169,7 @@ nn Q gq
 ino Q gq
 " split lines (opposite of J)
 nn K i<cr><esc>k$
+vn K <nop>
 " hide search highlighting
 nn <c-]> :nohls<enter>
 ino <c-]> :nohls<enter>

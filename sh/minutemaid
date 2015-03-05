@@ -20,7 +20,7 @@ shift
 local sec="$(date +%s)"
 let min=sec/60+offset
 let mod=min%interval
-if [ $# -gt 1 ]; then
+if [ $# -gt 0 ]; then
     local cmd="${1}"
     shift
 

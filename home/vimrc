@@ -92,7 +92,7 @@ endf
 if has('autocmd')
     augroup tabs                      " 4 spaces as tabs for various languages
         au!
-        au FileType bash,sh,zsh,mk,awk,python,lua,vim call TabFour()
+        au FileType bash,sh,zsh,mk,awk,python,pyrex,lua,vim call TabFour()
         au BufRead,BufNewFile *.json call TabFour()
         au BufRead,BufNewFile PKGBUILD call TabTwo()
         au FileType ruby call TabTwo()

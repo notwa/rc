@@ -156,12 +156,12 @@ ino <right> <nop>
 " good habits
 nn <c-up> <c-y>
 nn <c-down> <c-e>
-nn <c-s-up> :m-2<cr>
-nn <c-s-down> :m+1<cr>
-ino <c-up> <c-y>
-ino <c-down> <c-e>
-ino <c-s-up> :m-2<cr>
-ino <c-s-down> :m+1<cr>
+ino <c-up> <c-o><c-y>
+ino <c-down> <c-o><c-e>
+nn <silent> <c-s-up> :m-2<cr>
+nn <silent> <c-s-down> :m+1<cr>
+ino <silent> <c-s-up> <c-o>:m-2<cr>
+ino <silent> <c-s-down> <c-o>:m+1<cr>
 
 " rebind annoying things
 " reflow text
@@ -170,9 +170,10 @@ nn Q gq
 nn K i<cr><esc>k$
 vn K <nop>
 " hide search highlighting
-nn <c-]> :nohls<enter>
-ino <c-]> :nohls<enter>
-" TODO: bind something to original <c-]> function
+nn <silent> <c-]> :nohls<enter>
+ino <silent> <c-]> <c-o>:nohls<enter>
+" follow tag
+nn <bar> <c-]>
 
 if v:version < 703                    " even debian stable has 7.3, so...
     set nomodeline

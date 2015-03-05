@@ -117,6 +117,10 @@ endif
 
 set backspace=eol,start,indent        " make backspace useful
 
+if has('wildmenu')
+    set wildmenu                      " tab completion in command-line
+endif
+
 " easy indent/unindent
 nn <tab> >>
 nn <s-tab> <<
@@ -148,14 +152,27 @@ ino <up> <nop>
 ino <down> <nop>
 ino <left> <nop>
 ino <right> <nop>
+
+" good habits
 nn <c-up> <c-y>
 nn <c-down> <c-e>
 nn <c-s-up> :m-2<cr>
 nn <c-s-down> :m+1<cr>
+ino <c-up> <c-y>
+ino <c-down> <c-e>
+ino <c-s-up> :m-2<cr>
+ino <c-s-down> :m+1<cr>
 
 " rebind annoying things
+" reflow text
 nn Q gq
-nn K <nop>
+ino Q gq
+" split lines (opposite of J)
+nn K i<cr><esc>k$
+" hide search highlighting
+nn <c-]> :nohls<enter>
+ino <c-]> :nohls<enter>
+" TODO: bind something to original <c-]> function
 
 if v:version < 703                    " even debian stable has 7.3, so...
     set nomodeline
@@ -166,3 +183,6 @@ else
         set list listchars=tab:>-,trail:.,extends:>,nbsp:_
     endif
 endif
+
+" TODO: check if pathogen is installed
+execute pathogen#infect()

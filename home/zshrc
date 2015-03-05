@@ -93,8 +93,14 @@ dirview() {
 for x (dirprev dirnext dirup dirview) zle -N $x
 
 bindkey -e # emacs-style keybinds
-bindkey '^[[A' history-search-backward # up
-bindkey '^[[B' history-search-forward # down
+
+# oh thank god: http://blog.samsonis.me/2013/12/bash-like-history-search-functionality-for-zsh/
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey '^[[A' history-beginning-search-backward-end # up
+bindkey '^[[B' history-beginning-search-forward-end # down
+
 bindkey ';5D' emacs-backward-word # ctrl+left
 bindkey ';5C' emacs-forward-word # ctrl+right
 bindkey ';3D' dirprev # alt+left

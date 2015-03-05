@@ -1,0 +1,23 @@
+#!/bin/zsh
+# crontab usage:
+# * * * * * ~/sh/minutemaid 9 do something # runs every nine minutes
+local bottom=0 strip=0 interval=2 opt=
+while getopts ':h' opt; do
+    case $opt in
+    ?)  local fd=0
+        [ $opt = h ] && fd=0 || fd=2
+        echo -E "usage: $0 {period} {command} [{args...}]" >&$fd
+        [ $opt = h ] && return 0 || return 1;;
+    esac
+done
+shift $((OPTIND-1))
+
+local period=${1:?no period specified}
+shift
+local cmd=${1:?no command specified}
+shift
+
+sec="$(date +%s)"
+let min=sec/60
+let mod=min%period
+[ $mod -eq 0 ] && "$cmd" "$@"

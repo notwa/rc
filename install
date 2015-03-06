@@ -42,7 +42,8 @@ PATH="${PATH:?No existing PATH}:$rc/sh"
 
 umask 027
 
-for f in .bashrc .zshrc .-shrc .vimrc .conkyrc .inputrc .screenrc .xinitrc; do
+for f in .bashrc .zshrc .-shrc .vimrc .conkyrc \
+  .inputrc .screenrc .xinitrc .indent.pro .uncrustify.cfg; do
     dotless "$f"
     r="$rc/home/$REPLY"
     hardlink "$f" "$r"

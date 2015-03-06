@@ -8,7 +8,7 @@ if [ $# -eq 0 ]; then
   return
 fi
 
-local needroot=0
+local f needroot=0
 for f in $@; do
   [ -e "$f" ] && { [ -w "$f" ] || needroot=1; }
 # TODO: check directory permissions too

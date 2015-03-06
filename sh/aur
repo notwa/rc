@@ -1,0 +1,112 @@
+#!/bin/bash
+# http://aur.sh with massive feature creep
+aur() {
+    trap 'exit 1' SIGINT SIGTERM
+
+    local bd="${BUILDDIR:-$PWD}"
+    local fail=0 has_sudo=0
+    which sudo >&/dev/null && has_sudo=1
+    if [ $has_sudo -eq 0 ]; then
+        echo get sudo pls >&2
+        return 1
+    fi
+
+    local o_download=1 o_edit=1 o_make=1 o_install=1
+    local o_any_arch=1 o_sudo=1 o_force=0 o_yes=0 o_jobs=0 o_all_at_once=0
+    local opt=
+    while getopts 'demiasfyoj:h' opt; do
+        case $opt in
+        d)  o_download=0;;
+        e)  o_edit=0;;
+        m)  o_make=0;;
+        i)  o_install=0;;
+        a)  o_any_arch=0;;
+        s)  o_sudo=0;;
+        f)  o_force=1;;
+        y)  o_yes=1;;
+        o)  o_all_at_once=1;;
+        j)  let o_jobs++;;
+        ?)  local fd=0
+            [ $opt = h ] && fd=0 || fd=2
+            echo -E "usage: $0 TODO" >&$fd
+            [ $opt = h ] && return 0 || return 1;;
+        esac
+    done
+    shift $((OPTIND-1))
+
+    # TODO: option to auto install dependencies
+
+    local built=
+    for p in "$@"; do
+        cd "$bd"
+        local download_fail=0
+        if [ $o_download -eq 1 ]; then
+            curl -sS "https://aur.archlinux.org/packages/${p:0:2}/$p/$p.tar.gz" | tar xz || download_fail=1
+        fi
+        if [ $download_fail -eq 1 ]; then
+            fail=1
+            continue
+        fi
+
+        cd $p
+        if [ $o_edit -eq 1 ]; then
+            if [ $o_yes -eq 1 ]; then
+                e PKGBUILD
+            else
+                echo "Edit $p"
+                confirm && e PKGBUILD
+            fi
+        fi
+
+        local success=0
+        if [ $o_make -eq 1 ]; then
+            local cmd=makepkg
+            if [ $o_any_arch -eq 1 ]; then
+                cmd="$cmd -A"
+            fi
+            if [ $o_force -eq 1 ]; then
+                cmd="$cmd -f"
+            fi
+            if [ $o_sudo -eq 1 ]; then
+                cmd="sudo -u $USER $cmd"
+            fi
+            if [ $o_jobs -gt 0 ]; then
+                cmd="$cmd MAKEFLAGS=-j$o_jobs"
+            fi
+
+            if [ $o_yes -eq 1 ]; then
+                $cmd && success=1
+            else
+                echo "Make $p"
+                if confirm; then
+                    $cmd && success=1
+                else
+                    success=1
+                fi
+            fi
+        fi
+        if [ $success -eq 0 ]; then
+            fail=1
+            continue
+        fi
+
+        if [ $o_install -eq 1 ]; then
+            recent="$(ls -c *.xz | head -1)"
+            built="$built $p/$recent"
+        fi
+    done
+
+    cd "$bd"
+    if [ $o_install -eq 1 ]; then
+        if [ $o_all_at_once -eq 1 ]; then
+            sudo pacman -U $built
+        else
+            for recent in $built; do
+                sudo pacman -U "$recent"
+            done
+        fi
+    fi
+
+    [ "$fail" -eq 0 ] && return 0 || return 1
+}
+aur "$@"

@@ -4,10 +4,11 @@
 #umask 027 # screw others
 umask 022 # don't inherit last umask. pip will break itself.
 
+hash -d e=/media/2tb/you
+
 ADDPATH() {
     grep ":$1:" <<<":$PATH:" >/dev/null || export PATH="$PATH:$1"
 }
-
 ADDPATH "$HOME/opt/local/bin"
 
 r="$HOME/.gem/ruby/2.2.0/bin"

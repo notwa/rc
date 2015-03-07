@@ -185,6 +185,8 @@ nn <s-Del> X
 nn <Leader>p "0p
 nn <Leader>P "0P
 nn <Leader>e :tabe 
+nn <Leader>. @:
+"nn <Leader>x :!chmod +x % | e " how to end shell command?
 
 if v:version < 703                    " even debian stable has 7.3, so...
     set nomodeline

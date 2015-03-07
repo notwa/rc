@@ -12,9 +12,10 @@ aur() {
     fi
 
     local o_download=1 o_edit=1 o_make=1 o_install=1
-    local o_any_arch=1 o_sudo=1 o_force=0 o_yes=0 o_jobs=0 o_all_at_once=0
+    local o_any_arch=1 o_sudo=1 o_force=0 o_yes=0 o_jobs=0
+    local o_all_at_once=0 o_install_anyway=0
     local opt=
-    while getopts 'demiasfyoj:h' opt; do
+    while getopts 'demiasfyoIj:h' opt; do
         case $opt in
         d)  o_download=0;;
         e)  o_edit=0;;
@@ -25,6 +26,7 @@ aur() {
         f)  o_force=1;;
         y)  o_yes=1;;
         o)  o_all_at_once=1;;
+        I)  o_install_anyway=1;;
         j)  let o_jobs++;;
         ?)  local fd=0
             [ $opt = h ] && fd=0 || fd=2
@@ -85,7 +87,7 @@ aur() {
                 fi
             fi
         fi
-        if [ $success -eq 0 ]; then
+        if [ $success -eq 0 ] && [ $o_install_anyway -eq 0 ]; then
             fail=1
             continue
         fi

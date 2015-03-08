@@ -7,6 +7,37 @@ if has('multi_byte')
     set encoding=utf-8                " and the default file is in it
 endif
 
+" awful things
+if has("win32")
+    let msys='/MinGW/msys/1.0/bin'
+    let &shell=msys.'/bash.exe'
+    set shellcmdflag=-c
+    set shellxquote=\"
+    set shellslash
+
+    " assume directory structure:
+    " something/anything/.vimrc       " this was passed to vim by the -u switch
+    " something/vim/
+    " something/vim/after
+    let $MYVIMRC=expand('<sfile>')
+    let rcvim=expand('<sfile>:p:h:h').'/vim'
+    let &backupdir=rcvim.'/backup'
+
+    if !exists('win32_once')
+        let win32_once=1
+        let $PATH.=';'.msys
+        let &runtimepath=rcvim.','.&runtimepath.','.rcvim.'/after'
+    endif
+else
+    set backupdir=~/.vim/backup       " put tilde files elsewhere
+endif
+
+try
+    call mkdir(&backupdir, "p")
+catch E739
+    " it probably succeeded anyway
+endtry
+
 if (&term =~ "^xterm")                " enable colors on any xterm
     let &t_Co=256
     let &t_AF="\e[38;5;%dm"
@@ -19,19 +50,22 @@ if has('syntax')
 endif
 
 if has('gui_running')
-    set guioptions-=m                 " hide menu
+    set guioptions-=M                 " skip loading $VIMRUNTIME/menu.vim
+    set guioptions-=m                 " hide menu which isn't loaded anyway
     set guioptions-=T                 " hide toolbar
+    set guioptions-=r                 " hide scrollbar
     set guifont=Consolas:h9
     set columns=84
     set lines=36
     cd $HOME                          " might not be ideal...
-
-    colorscheme candycode
-else
-    colorscheme Tomorrow-Night
-
-    set colorcolumn=79
 endif
+
+try
+    colorscheme Tomorrow-Night
+catch E185
+endtry
+
+set colorcolumn=79
 
 set history=512                       " command lines to remember
 
@@ -47,9 +81,6 @@ set shortmess=atI
 set suffixes=.bak,~,.swp,.o,.log,.out
 
 set noerrorbells visualbell t_vb=     " disable bells
-
-" TODO: check if dir exists
-set backupdir=~/.vim/backup           " put tilde files elsewhere
 
 set scrolloff=3                       " row context during scrolling
 set sidescrolloff=2                   " col context during scrolling
@@ -79,6 +110,8 @@ set diffopt+=iwhite                   " ignore whitespace in diff command
 set nowrap
 set nolinebreak
 
+set ffs=unix,dos                      " ffs indeed
+
 set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
 
 fu! TabFour()
@@ -96,6 +129,10 @@ if has('autocmd')
         au BufRead,BufNewFile *.json call TabFour()
         au BufRead,BufNewFile PKGBUILD call TabTwo()
         au FileType ruby call TabTwo()
+    augroup END
+
+    augroup fuckbells                 " good lord vim you are archaic
+        au GUIEnter * set vb t_vb=
     augroup END
 
     augroup reload                    " http://superuser.com/a/417997
@@ -198,5 +235,7 @@ else
     endif
 endif
 
-" TODO: check if pathogen is installed
-execute pathogen#infect()
+try
+    execute pathogen#infect()
+catch E117
+endtry

@@ -3,6 +3,7 @@
 
 set nocompatible                      " screw vi
 
+" hacks {{{1
 if has('multi_byte')
     scriptencoding utf-8              " allow it in this script
     set termencoding=utf-8            " and this terminal supports it
@@ -35,7 +36,7 @@ endif
 
 let &backupdir=rcvim.'/backup'        " stash tilde files elsewhere
 " the double slash at the end dumps the path of the file for uniqueness
-let &directory=rcvim.'/swp//'         " screw swap files too
+let &directory=rcvim.'/swp//'         " stash swap files too
 try | call mkdir(&backupdir, "p")     | catch /E739/ | endtry
 try | call mkdir(&directory, "p")     | catch /E739/ | endtry
 
@@ -44,6 +45,8 @@ if (&term =~ "^xterm")                " enable colors on any xterm
     let &t_AF="\e[38;5;%dm"
     let &t_AB="\e[48;5;%dm"
 endif
+
+" main config {{{1
 
 if has('syntax')
     syntax enable                     " required for folding as well
@@ -63,37 +66,28 @@ endif
 
 try | colorscheme Tomorrow-Night      | catch /E185/ | endtry
 
-set colorcolumn=79
-
+if has('title') | set title | endif   " terminal title
 set history=512                       " command lines to remember
-
+set colorcolumn=79
+set number                            " lines
 set ruler                             " write out the cursor position
 set lazyredraw                        " when executing macros, untyped things
-
-if has('title')|set title|endif       " terminal title
-
-" be less verbose with some terms and tell vim to shut up
-set shortmess=atI
-
-" lower the priority of tab-completing files with these extensions
-set suffixes=.bak,~,.swp,.o,.log,.out
-
+set shortmess=atI                     " be less verbose and shut up vim
+set suffixes=.bak,~,.swp,.o,.log,.out " lower tab-completion priority
 set noerrorbells visualbell t_vb=     " disable bells
-
 set scrolloff=3                       " row context during scrolling
 set sidescrolloff=2                   " col context during scrolling
-
-set number                            " lines
-let c_syntax_for_h=1                  " use C highlighting for .h files
-
 set incsearch                         " show first search result as we type
 set ignorecase                        " insensitive searching
 set smartcase                         " except when uppercase is used
-
 set infercase                         " use existing case when ins-completing
-
 set foldmethod=marker
-set foldclose=                        " start with everything unfolded
+set foldlevelstart=99                 " start with everything unfolded
+let c_syntax_for_h=1                  " use C highlighting for .h files
+set nowrap                            " word wrapping is pretty weak in vim
+set ffs=unix,dos                      " ffs indeed
+set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
+set diffopt+=iwhite                   " ignore whitespace in diff command
 
 if 0
     set autoindent                    " when creating newline, use same indent
@@ -102,15 +96,7 @@ if 0
     endif
 endif " it's really just annoying though
 
-set diffopt+=iwhite                   " ignore whitespace in diff command
-
-" word wrapping
-set nowrap
-set nolinebreak
-
-set ffs=unix,dos                      " ffs indeed
-
-set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
+" autocmd {{{1
 
 fu! TabFour()
     setlocal tabstop=8 shiftwidth=4 expandtab softtabstop=4
@@ -129,11 +115,12 @@ if has('autocmd')
         au FileType ruby call TabTwo()
     augroup END
 
-    augroup fuckbells                 " good lord vim you are archaic
+    augroup nobells                   " good lord vim you are archaic
+        au!
         au GUIEnter * set vb t_vb=
     augroup END
 
-    augroup reload                    " http://superuser.com/a/417997
+    augroup reload                    " this is a bit annoying on windows
         au!
         au BufWritePost .vimrc,_vimrc,vimrc so $MYVIMRC
     augroup END
@@ -149,6 +136,8 @@ if has('autocmd')
         au BufWinEnter * call ResCur()
     augroup END
 endif
+
+" keys/binds {{{1
 
 set backspace=eol,start,indent        " make backspace useful
 
@@ -167,7 +156,8 @@ vn <silent> <s-tab> <gv
 "nn <c-cr> dd
 " oh wait, terminals don't do that...
 
-fu! Inn(q)
+fu! Inn(q) 
+    " bind both normal and insert modes
     let args=split(a:q, '^\s*\(<[^>]\+>\s\+\)\+\zs')
     exec 'nn  '.args[0].'      '.args[1]
     exec 'ino '.args[0].' <c-o>'.args[1]
@@ -183,8 +173,9 @@ Inn <c-F10> :bd!<cr>
 Inn <s-F5>  :wall<cr>
 Inn <s-F8>  :tab ball<cr>
 Inn <s-F10> :qall<cr>
+Inn <c-s-F10> :qall!<cr>
 
-" good habits
+" np++ habits
 Inn <c-up> <c-y>
 Inn <c-down> <c-e>
 Inn <silent> <c-s-up> :m-2<cr>
@@ -206,15 +197,17 @@ nn D dd
 
 " this frees up x and X for use if you like
 set <s-Del>=[3;2~
-nn <s-Del> X
+Inn <s-Del> X
 
 " unfollow your leaders
-"ino <c-\> <C-o><Leader>
+"ino <c-\> <C-o><Leader>              " this doesn't workkkkkkkkk
 nn <Leader>p "0p
 nn <Leader>P "0P
 nn <Leader>e :tabe 
 nn <Leader>. @:
-"nn <Leader>x :!chmod +x % | e " how to end shell command?
+"nn <Leader>x :system('chmod +x %') | e
+
+" misc {{{1
 
 if v:version < 703                    " even debian stable has 7.3, so...
     set nomodeline

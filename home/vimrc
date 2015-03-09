@@ -1,4 +1,6 @@
 " vim:cc=79,39
+" make vim unusable for anyone else
+
 set nocompatible                      " screw vi
 
 if has('multi_byte')
@@ -21,7 +23,6 @@ if has("win32")
     " something/vim/after
     let $MYVIMRC=expand('<sfile>')
     let rcvim=expand('<sfile>:p:h:h').'/vim'
-    let &backupdir=rcvim.'/backup'
 
     if !exists('win32_once')
         let win32_once=1
@@ -29,14 +30,14 @@ if has("win32")
         let &runtimepath=rcvim.','.&runtimepath.','.rcvim.'/after'
     endif
 else
-    set backupdir=~/.vim/backup       " put tilde files elsewhere
+    let rcvim='~/.vim'
 endif
 
-try
-    call mkdir(&backupdir, "p")
-catch E739
-    " it probably succeeded anyway
-endtry
+let &backupdir=rcvim.'/backup'        " stash tilde files elsewhere
+" the double slash at the end dumps the path of the file for uniqueness
+let &directory=rcvim.'/swp//'         " screw swap files too
+try | call mkdir(&backupdir, "p")     | catch /E739/ | endtry
+try | call mkdir(&directory, "p")     | catch /E739/ | endtry
 
 if (&term =~ "^xterm")                " enable colors on any xterm
     let &t_Co=256
@@ -60,10 +61,7 @@ if has('gui_running')
     cd $HOME                          " might not be ideal...
 endif
 
-try
-    colorscheme Tomorrow-Night
-catch E185
-endtry
+try | colorscheme Tomorrow-Night      | catch /E185/ | endtry
 
 set colorcolumn=79
 
@@ -95,7 +93,7 @@ set smartcase                         " except when uppercase is used
 set infercase                         " use existing case when ins-completing
 
 set foldmethod=marker
-set foldlevelstart=99                 " start with everything unfolded
+set foldclose=                        " start with everything unfolded
 
 if 0
     set autoindent                    " when creating newline, use same indent
@@ -115,7 +113,7 @@ set ffs=unix,dos                      " ffs indeed
 set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
 
 fu! TabFour()
-    setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
+    setlocal tabstop=8 shiftwidth=4 expandtab softtabstop=4
 endf
 
 fu! TabTwo()
@@ -154,9 +152,8 @@ endif
 
 set backspace=eol,start,indent        " make backspace useful
 
-if has('wildmenu')
-    set wildmenu                      " tab completion in command-line
-endif
+" tab completion in command-line
+if has('wildmenu') | set wildmenu | endif
 
 " easy indent/unindent
 nn <tab> >>
@@ -170,35 +167,31 @@ vn <silent> <s-tab> <gv
 "nn <c-cr> dd
 " oh wait, terminals don't do that...
 
-nn <F5>    :w<cr>
-nn <F8>    :e<cr>
-nn <F10>   :q<cr>
-nn <c-F5>  :w!<cr>
-nn <c-F8>  :e!<cr>
-nn <c-F10> :q!<cr>
-nn <s-F5>  :wall<cr>
-"nn <s-F8>  :eall<cr>
-nn <s-F10> :qall<cr>
+fu! Inn(q)
+    let args=split(a:q, '^\s*\(<[^>]\+>\s\+\)\+\zs')
+    exec 'nn  '.args[0].'      '.args[1]
+    exec 'ino '.args[0].' <c-o>'.args[1]
+endf
+com! -nargs=+ Inn call Inn(<q-args>)
 
-" bad habits
-no <up> <nop>
-no <down> <nop>
-no <left> <nop>
-no <right> <nop>
-ino <up> <nop>
-ino <down> <nop>
-ino <left> <nop>
-ino <right> <nop>
+Inn <F5>    :w<cr>
+Inn <F8>    :e<cr>
+Inn <F10>   :bd<cr>
+Inn <c-F5>  :w!<cr>
+Inn <c-F8>  :e!<cr>
+Inn <c-F10> :bd!<cr>
+Inn <s-F5>  :wall<cr>
+Inn <s-F8>  :tab ball<cr>
+Inn <s-F10> :qall<cr>
 
 " good habits
-nn <c-up> <c-y>
-nn <c-down> <c-e>
-ino <c-up> <c-o><c-y>
-ino <c-down> <c-o><c-e>
-nn <silent> <c-s-up> :m-2<cr>
-nn <silent> <c-s-down> :m+1<cr>
-ino <silent> <c-s-up> <c-o>:m-2<cr>
-ino <silent> <c-s-down> <c-o>:m+1<cr>
+Inn <c-up> <c-y>
+Inn <c-down> <c-e>
+Inn <silent> <c-s-up> :m-2<cr>
+Inn <silent> <c-s-down> :m+1<cr>
+
+" hide search highlighting
+Inn <silent> <c-]> :nohls<enter>
 
 " rebind annoying things
 " reflow text
@@ -206,19 +199,17 @@ nn Q gq
 " split lines (opposite of J)
 nn K i<cr><esc>k$
 vn K <nop>
-" hide search highlighting
-nn <silent> <c-]> :nohls<enter>
-ino <silent> <c-]> <c-o>:nohls<enter>
 " follow tag
 nn <bar> <c-]>
 " delete line
 nn D dd
 
-" this frees up x and X for use
+" this frees up x and X for use if you like
 set <s-Del>=[3;2~
 nn <s-Del> X
 
 " unfollow your leaders
+"ino <c-\> <C-o><Leader>
 nn <Leader>p "0p
 nn <Leader>P "0P
 nn <Leader>e :tabe 
@@ -235,7 +226,4 @@ else
     endif
 endif
 
-try
-    execute pathogen#infect()
-catch E117
-endtry
+try | execute pathogen#infect()       | catch /E117/ | endtry

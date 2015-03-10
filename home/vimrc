@@ -24,22 +24,24 @@ if has("win32")
     " something/vim/
     " something/vim/after
     let $MYVIMRC=expand('<sfile>')
-    let rcvim=expand('<sfile>:p:h:h').'/vim'
+    let g:rcvim=expand('<sfile>:p:h:h').'/vim'
 
     if !exists('win32_once')
         let win32_once=1
         let $PATH.=';'.msys
-        let &runtimepath=rcvim.','.&runtimepath.','.rcvim.'/after'
+        let &runtimepath=g:rcvim.','.&runtimepath.','.g:rcvim.'/after'
     endif
 else
-    let rcvim='~/.vim'
+    let g:rcvim='~/.vim'
 endif
 
-let &backupdir=rcvim.'/backup'        " stash tilde files elsewhere
+let &backupdir=g:rcvim.'/backup'      " stash tilde files elsewhere
 " the double slash at the end dumps the path of the file for uniqueness
-let &directory=rcvim.'/swp//'         " stash swap files too
+let &directory=g:rcvim.'/swp//'       " stash swap files too
+let &undodir=g:rcvim.'/undo/'         " undo files are cool
 try | call mkdir(&backupdir, "p")     | catch /E739/ | endtry
 try | call mkdir(&directory, "p")     | catch /E739/ | endtry
+try | call mkdir(&undodir,   "p")     | catch /E739/ | endtry
 
 if (&term =~ "^xterm")                " enable colors on any xterm
     let &t_Co=256
@@ -82,13 +84,18 @@ set incsearch                         " show first search result as we type
 set ignorecase                        " insensitive searching
 set smartcase                         " except when uppercase is used
 set infercase                         " use existing case when ins-completing
+set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
 set foldmethod=marker
 set foldlevelstart=99                 " start with everything unfolded
 let c_syntax_for_h=1                  " use C highlighting for .h files
 set nowrap                            " word wrapping is pretty weak in vim
 set ffs=unix,dos                      " ffs indeed
-set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
+set nobomb                            " bombs are bad ok
+set undofile                          " remember undos across files/sessions
 set diffopt+=iwhite                   " ignore whitespace in diff command
+if has('mksession')
+    set sessionoptions=blank,buffers,curdir,options,folds,tabpages,winsize,resize,winpos
+end
 
 if 0
     set autoindent                    " when creating newline, use same indent
@@ -98,6 +105,18 @@ if 0
 endif " it's really just annoying though
 
 " autocmd {{{1
+
+fu! SaveSession()
+    let sf=g:rcvim.'/.session.vim'
+    execute 'mksession! '.sf
+endf
+
+fu! LoadSession()
+    let sf=g:rcvim.'/.session.vim'
+    if filereadable(sf)
+        execute 'so '.sf
+    endif
+endf
 
 fu! TabFour()
     setlocal tabstop=8 shiftwidth=4 expandtab softtabstop=4
@@ -114,6 +133,11 @@ if has('autocmd')
         au BufRead,BufNewFile *.json call TabFour()
         au BufRead,BufNewFile PKGBUILD call TabTwo()
         au FileType ruby call TabTwo()
+    augroup END
+
+    augroup sessions
+        au!
+        au VimEnter * call LoadSession()
     augroup END
 
     augroup nobells                   " good lord vim you are archaic
@@ -207,6 +231,7 @@ Inn <s-Del> X
 nn <Leader>p "0p
 nn <Leader>P "0P
 nn <Leader>e :tabe 
+nn <Leader><F10> :call SaveSession()<cr>:xall<cr>
 nn <silent> <Leader>d :cd %:p:h<cr>:pwd<cr>
 nn <Leader>. @:
 "nn <Leader>? :exec getline(".")

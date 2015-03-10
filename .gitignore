@@ -4,6 +4,7 @@ ssh/*
 !ssh/crawl
 vim/backup/*
 vim/swp/*
+vim/undo/*
 vim/.*
 vim/bundle/*
 *.swp

@@ -3,6 +3,8 @@ ssh/*
 !ssh/known_hosts
 !ssh/crawl
 vim/backup/*
+vim/swp/*
 vim/.*
+vim/bundle/*
 *.swp
 *.swo

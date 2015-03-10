@@ -1,5 +1,6 @@
 " vim:cc=79,39
 " make vim unusable for anyone else
+" from the get-go, we assume version >= 703
 
 set nocompatible                      " screw vi
 
@@ -180,6 +181,8 @@ Inn <c-up> <c-y>
 Inn <c-down> <c-e>
 Inn <silent> <c-s-up> :m-2<cr>
 Inn <silent> <c-s-down> :m+1<cr>
+Inn <silent> <c-s-PageUp> :tabm -1<cr>
+Inn <silent> <c-s-PageDown> :tabm +1<cr>
 
 " hide search highlighting
 Inn <silent> <c-]> :nohls<enter>
@@ -204,19 +207,22 @@ Inn <s-Del> X
 nn <Leader>p "0p
 nn <Leader>P "0P
 nn <Leader>e :tabe 
+nn <silent> <Leader>d :cd %:p:h<cr>:pwd<cr>
 nn <Leader>. @:
+"nn <Leader>? :exec getline(".")
+nn <Leader>, :Tab /,\zs<cr>
 "nn <Leader>x :system('chmod +x %') | e
+"
+nn <Leader>, :Tab /,\zs<cr>
+nn <Leader>s :call SyntaxAttr()<cr>
+nn <Leader>1 :colo property<cr>
+nn <Leader>2 :colo clearance<cr>
+nn <Leader>3 :colo Tomorrow-Night<cr>
 
 " misc {{{1
 
-if v:version < 703                    " even debian stable has 7.3, so...
-    set nomodeline
-else
-    if &termencoding == "utf-8"
-        set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
-    else
-        set list listchars=tab:>-,trail:.,extends:>,nbsp:_
-    endif
-endif
+set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
+" including this in case i'm on a _really_ bad terminal:
+"set list listchars=tab:>-,trail:.,extends:>,nbsp:_
 
 try | execute pathogen#infect()       | catch /E117/ | endtry

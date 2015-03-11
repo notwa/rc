@@ -118,6 +118,11 @@ fu! LoadSession()
     endif
 endf
 
+fu! KillSession()
+    let sf=g:rcvim.'/.session.vim'
+    call delete(sf)
+endf
+
 fu! TabFour()
     setlocal tabstop=8 shiftwidth=4 expandtab softtabstop=4
 endf
@@ -197,8 +202,8 @@ Inn <c-F8>  :e!<cr>
 Inn <c-F10> :bd!<cr>
 Inn <s-F5>  :wall<cr>
 Inn <s-F8>  :tab ball<cr>
-Inn <s-F10> :qall<cr>
-Inn <c-s-F10> :qall!<cr>
+Inn <s-F10> :call KillSession()<cr>:qall<cr>
+Inn <c-s-F10> :call KillSession()<cr>:qall!<cr>
 
 " np++ habits
 Inn <c-up> <c-y>
@@ -243,6 +248,7 @@ nn <Leader>s :call SyntaxAttr()<cr>
 nn <Leader>1 :colo property<cr>
 nn <Leader>2 :colo clearance<cr>
 nn <Leader>3 :colo Tomorrow-Night<cr>
+nn <Leader>4 :colo jellybeans<cr>
 
 " misc {{{1
 

@@ -12,24 +12,35 @@ dotless() {
     [[ "${1:0:1}" == "." ]] && REPLY="${1:1}" || REPLY="$1"
 }
 
+backup() {
+    note "backing up $1"
+    mkdir -p "${backup_dir:?backup_dir unset}/$(dirname "$1")"
+    [ -e "$backup_dir/$1" ] && die "backup already exists"
+    mv "$1" "$backup_dir/$1"
+}
+
 hardlink() {
-    [ -e "$1" ] && {
+    if [ -e "$1" ]; then
         [ "$1" -ef "$2" ] && return
         [ -h "$1" ] && note "removing symbolic link $1" && rm "$1"
-        [ -s "$1" ] && die "$1 already exists" || rm "$1"
-    }
+        if [ -s "$1" ]; then
+            backup "$1" || die "$1 already exists"
+        fi
+    fi
 
     ln "$2" "$1" || die "couldn't hardlink $1"
 }
 
 softlink() {
-    [ -e "$1" ] && {
-        [ -h "$1" ] && {
+    if [ -e "$1" ]; then
+        if [ -h "$1" ]; then
             [ "$(readlink "$1")" == "$2" ] && return
             note "removing symbolic link $1"
             rm "$1"
-        } || die "$1 already exists and is not a symbolic link"
-    }
+        else
+            die "$1 already exists and is not a symbolic link"
+        fi
+    fi
 
     ln -s "$2" "$1" || die "couldn't symlink $1"
 }
@@ -40,7 +51,7 @@ rc="$(readlink -f "$(dirname "$0")" )"
 cd "$HOME"
 PATH="${PATH:?No existing PATH}:$rc/sh"
 
-umask 027
+backup_dir="$rc/backup-$(date '+%s')"
 
 for f in .bashrc .zshrc .-shrc .vimrc .conkyrc \
   .inputrc .screenrc .xinitrc .indent.pro .uncrustify.cfg; do

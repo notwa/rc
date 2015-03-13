@@ -32,7 +32,7 @@ if has("win32")
         let &runtimepath=g:rcvim.','.&runtimepath.','.g:rcvim.'/after'
     endif
 else
-    let g:rcvim='~/.vim'
+    let g:rcvim=$HOME.'/.vim'
 endif
 
 let &backupdir=g:rcvim.'/backup'      " stash tilde files elsewhere
@@ -67,7 +67,11 @@ if has('gui_running')
     cd $HOME                          " might not be ideal...
 endif
 
-try | colorscheme Tomorrow-Night      | catch /E185/ | endtry
+try
+    colorscheme Tomorrow-Night
+catch /E185/
+    colorscheme desert
+endtry
 
 if has('title') | set title | endif   " terminal title
 set history=512                       " command lines to remember
@@ -86,7 +90,7 @@ set smartcase                         " except when uppercase is used
 set infercase                         " use existing case when ins-completing
 set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
 set foldmethod=marker
-set foldlevelstart=99                 " start with everything unfolded
+set foldlevelstart=99                 " start with everything unfolded...?
 let c_syntax_for_h=1                  " use C highlighting for .h files
 set nowrap                            " word wrapping is pretty weak in vim
 set ffs=unix,dos                      " ffs indeed
@@ -150,9 +154,9 @@ if has('autocmd')
         au GUIEnter * set vb t_vb=
     augroup END
 
-    augroup reload                    " this is a bit annoying on windows
+    augroup reload
         au!
-        au BufWritePost .vimrc,_vimrc,vimrc so $MYVIMRC
+        "au BufWritePost .vimrc,_vimrc,vimrc so $MYVIMRC
     augroup END
 
     fu! ResCur()                      " attempt to preserve cursor position
@@ -232,6 +236,7 @@ set <s-Del>=[3;2~
 Inn <s-Del> X
 
 " unfollow your leaders
+let leader="\\"
 "ino <c-\> <C-o><Leader>              " this doesn't workkkkkkkkk
 nn <Leader>p "0p
 nn <Leader>P "0P

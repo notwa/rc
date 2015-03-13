@@ -243,7 +243,6 @@ nn <Leader>. @:
 nn <Leader>, :Tab /,\zs<cr>
 "nn <Leader>x :system('chmod +x %') | e
 "
-nn <Leader>, :Tab /,\zs<cr>
 nn <Leader>s :call SyntaxAttr()<cr>
 nn <Leader>1 :colo property<cr>
 nn <Leader>2 :colo clearance<cr>

@@ -55,6 +55,7 @@ if has('syntax')
     syntax enable                     " required for folding as well
     set hlsearch                      " highlight search results
 endif
+let g:python_highlight_builtin_funcs=1
 
 if has('gui_running')
     set guioptions-=M                 " skip loading $VIMRUNTIME/menu.vim
@@ -138,7 +139,7 @@ endf
 if has('autocmd')
     augroup tabs                      " 4 spaces as tabs for various languages
         au!
-        au FileType bash,sh,zsh,mk,awk,python,pyrex,lua,vim call TabFour()
+        au FileType bash,sh,zsh,mk,awk,python,pyrex,lua,vim,autohotkey call TabFour()
         au BufRead,BufNewFile *.json call TabFour()
         au BufRead,BufNewFile PKGBUILD call TabTwo()
         au FileType ruby call TabTwo()
@@ -223,13 +224,14 @@ Inn <silent> <c-]> :nohls<enter>
 " rebind annoying things
 " reflow text
 nn Q gq
+vn Q gq
 " split lines (opposite of J)
 nn K i<cr><esc>k$
 vn K <nop>
 " follow tag
 nn <bar> <c-]>
 " delete line
-nn D dd
+"nn D dd
 
 " this frees up x and X for use if you like
 set <s-Del>=[3;2~
@@ -237,6 +239,8 @@ Inn <s-Del> X
 
 " unfollow your leaders
 let leader="\\"
+" no-op
+nn <Leader><Leader> :<cr>
 "ino <c-\> <C-o><Leader>              " this doesn't workkkkkkkkk
 nn <Leader>p "0p
 nn <Leader>P "0P
@@ -247,12 +251,23 @@ nn <Leader>. @:
 "nn <Leader>? :exec getline(".")
 nn <Leader>, :Tab /,\zs<cr>
 "nn <Leader>x :system('chmod +x %') | e
-"
+
+" messing around with colors
+" a la https://github.com/xolox/vim-colorscheme-switcher/blob/master/autoload/xolox/colorscheme_switcher.vim
+fu! HiDump()
+    redir => out
+    silent hi
+    redir END
+    let @a = out
+    put a
+endf
+
 nn <Leader>s :call SyntaxAttr()<cr>
 nn <Leader>1 :colo property<cr>
 nn <Leader>2 :colo clearance<cr>
 nn <Leader>3 :colo Tomorrow-Night<cr>
 nn <Leader>4 :colo jellybeans<cr>
+nn <Leader>h :tabe<cr>:call HiDump()<cr>
 
 " misc {{{1
 

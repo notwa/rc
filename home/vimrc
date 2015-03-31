@@ -68,12 +68,6 @@ if has('gui_running')
     cd $HOME                          " might not be ideal...
 endif
 
-try
-    colorscheme Tomorrow-Night
-catch /E185/
-    colorscheme desert
-endtry
-
 if has('title') | set title | endif   " terminal title
 set history=512                       " command lines to remember
 set colorcolumn=79
@@ -319,3 +313,10 @@ set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
 "set list listchars=tab:>-,trail:.,extends:>,nbsp:_
 
 try | execute pathogen#infect()       | catch /E117/ | endtry
+
+set background=dark
+try
+    colorscheme Tomorrow-Night
+catch /E185/
+    colorscheme desert
+endtry

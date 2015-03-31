@@ -11,6 +11,9 @@ ADDPATH() {
 }
 ADDPATH "$HOME/opt/local/bin"
 
+# https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/1380084
+export SSH_AUTH_SOCK=0
+
 r="$HOME/.gem/ruby/2.2.0/bin"
 mkdir -p "$r" && ADDPATH "$r"
 unset r
@@ -97,7 +100,10 @@ function trash() {
 
 . ~/sh/z/z.sh
 
-export MPV_STREAM_FLAGS="--quiet --no-sub --vo=opengl:swapinterval=0"
+export MPV_STREAM_FLAGS="--quiet --no-sub"
+if [[ "$(uname -n)" != "banshee" ]]; then
+    export MPV_STREAM_FLAGS="$MPV_STREAM_FLAGS --vo=opengl:swapinterval=0"
+fi
 
 twitch(){
     livestreamer "twitch.tv/$1" best -p mpv -a \

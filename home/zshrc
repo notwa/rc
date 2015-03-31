@@ -100,6 +100,8 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey '^[[A' history-beginning-search-backward-end # up
 bindkey '^[[B' history-beginning-search-forward-end # down
+bindkey '^[OA' history-beginning-search-backward-end # up
+bindkey '^[OB' history-beginning-search-forward-end # down
 
 bindkey ';5D' emacs-backward-word # ctrl+left
 bindkey ';5C' emacs-forward-word # ctrl+right

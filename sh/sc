@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+: ${SC_DBD:="/home/$USER/Dropbox"}
+: ${SC_DBS:="$SC_DBD/Public/screenshots"}
+: ${SC_DBT:="$SC_DBD/Public/temp"}
+: ${SC_DOM:="http://eaguru.guru"}
+
+sc_shorten() {
+    REPLY="${1:2:2}${1:5:2}${1:8:2}${1:11:12}"
+}
+
+# http://stackoverflow.com/a/10797966
+uri_encode() {
+    REPLY="$(echo -En "$@" | curl -Gso /dev/null -w %{url_effective} --data-urlencode @- "")"
+    REPLY="${REPLY:2}"
+}
+
+copy_scr() {
+    local fn="$1"
+    local short="$(basename $fn)"
+    local r='20\d\d-\d\d-\d\d_\d\d\d\d\d\d\d\d.(png|jpg)'
+    grep -Pq "$r" <<<"$short" || return 1
+
+    cp "$fn" "$SC_DBS/"
+    sc_shorten "$short"
+    uri_encode "$REPLY"
+    REPLY="$SC_DOM/s/$REPLY"
+    return 0
+}
+
+copy_tmp() {
+    local fn="$1"
+    local dlen=${#SC_DBT}
+    if [ "${fn:0:dlen}" != "${SC_DBT}" ]; then
+        cp "$fn" "$SC_DBT/"
+    fi
+    local short="$(basename "$fn")"
+
+    uri_encode "$short"
+    REPLY="$SC_DOM/t/$REPLY"
+    return 0
+}
+
+sc() {
+    if [ -n "${ZSH_VERSION:-}" ]; then
+        # syntax is too different to bother tbh
+        echo "please run with bash"
+        return 1
+    fi
+    which xsel &>/dev/null || {
+        echo "please install xsel"
+        return 1
+    }
+
+    local clipboard=""
+    for f; do
+        f="$(readlink -f "$f")"
+        if [ ! -e "$f" ]; then
+            continue
+        fi
+        copy_scr "$f" || copy_tmp "$f"
+        clipboard="$clipboard"$'\n'"$REPLY"
+    done
+    xsel -b <<<"${clipboard:1}"
+    return 0
+}
+
+sc "$@"

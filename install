@@ -77,7 +77,7 @@ done
 grep .bashrc .bash_profile >/dev/null 2>&1 \
  || echo -e '\n[[ -f ~/.bashrc ]] && . ~/.bashrc' >> .bash_profile
 
-for d in Desktop Documents Downloads Music Pictures Public Templates Video; do
+for d in Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
     [ -d "$d" ] || continue
     is_empty "$d" && rm -r "$d" || note "skipping unempty $d"
 done

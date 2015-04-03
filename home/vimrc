@@ -145,6 +145,11 @@ if has('autocmd')
         au FileType ruby call TabTwo()
     augroup END
 
+    augroup whatever
+        au!
+        au BufRead,BufNewFile *.lib setlocal ft=spice
+    augroup END
+
     augroup sessions
         au!
         au VimEnter * call LoadSession()

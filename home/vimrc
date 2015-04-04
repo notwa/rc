@@ -247,6 +247,8 @@ let leader="\\"
 " no-op
 nn <Leader><Leader> :<cr>
 "ino <c-\> <C-o><Leader>              " this doesn't workkkkkkkkk
+nm <Leader>i i?<Esc>r
+nm <Leader>a a?<Esc>r
 nn <Leader>p "0p
 nn <Leader>P "0P
 nn <Leader>e :tabe 

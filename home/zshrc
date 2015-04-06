@@ -119,6 +119,7 @@ bindkey '^Xe' edit-command-line # ctrl+x -> e
 
 . ~/.-shrc
 
+alias -g OMFG="1>/dev/null"
 alias -g STFU="2>/dev/null"
 
 for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm

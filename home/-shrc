@@ -105,13 +105,16 @@ function trash() {
 . ~/sh/z/z.sh
 
 MPV_STREAM_FLAGS="--quiet --no-sub"
-LIVESTREAMER_FLAGS=""
+[ -e "$HOME/sh/compandy" ] && _MPV_COMPAND="$(~/sh/compandy -30 10 1 140 6 18 1)"
+_MPV_LAPTOP='--af=lavfi=[aformat=channel_layouts=stereo,'"$_MPV_COMPAND"',lowpass=f=1000:p=1,lowpass=f=4000:p=2]'
+
 if [[ "$(uname -n)" != "banshee" ]]; then
     MPV_STREAM_FLAGS="$MPV_STREAM_FLAGS --vo=opengl:swapinterval=0"
 else
-    _COMPAND="$(~/sh/compandy 1 140 -30 10 6 18 1)"
-    MPV_STREAM_FLAGS="$MPV_STREAM_FLAGS "'--af=lavfi=\"aformat=channel_layouts=stereo,'"$_COMPAND"',lowpass=f=1000:p=1,lowpass=f=4000:p=2\"'
+    MPV_STREAM_FLAGS="$MPV_STREAM_FLAGS $_MPV_LAPTOP"
 fi
+
+LIVESTREAMER_FLAGS=""
 
 twitch(){
     livestreamer "twitch.tv/$1" best -p mpv $LIVESTREAMER_FLAGS -a \

@@ -2,20 +2,19 @@
 # script to make sense of compand's parameters
 compandy() {
     if [ $# -eq 0 ]; then
-        echo -E "usage: $0 {attack} {release} {threshold} {ratio} [knee] [gain] [delay]"
+        echo -E "usage: $0 {threshold} {ratio} [attack] [release] [knee] [gain] [delay]"
         return 1
     fi
-    local atk="${1}" rel="${2}"
-    local thresh="${3}" ratio="${4}"
+    local thresh="${1:-10}" ratio="${2:-2}"
+    local atk="${3:-1}" rel="${4:-100}"
     local knee="${5:-1}" gain="${6:-0}" delay="${7:-0}"
     let 'atk/=1000.'
     let 'rel/=1000.'
     let 'delay/=1000.'
     local end= start=
     let 'end=thresh - thresh/(ratio + 0.0)'
-    local start=$thresh
-    printf "compand=%.5f|%.5f:%.5f|%.5f:%.1f/%.1f|0/%.2f:%.2f:%.2f:%.1f" \
-      $atk $atk $rel $rel $thresh $thresh $end $knee $gain $start
-    #echo "compand=$atk|$atk:$rel|$rel:$thresh/$thresh|0/$end:$knee:$gain:$start:$delay"
+    let 'start=thresh'
+    printf "compand=%.5f|%.5f:%.5f|%.5f:%.1f/%.1f|0/%.2f:%.2f:%.2f:%.1f:%.5f" \
+      $atk $atk $rel $rel $thresh $thresh $end $knee $gain $start $delay
 }
 compandy "$@"

@@ -1,5 +1,5 @@
 [default]
-volume=50
+volume=70
 #af=drc
 msg-level=all=info
 osd-level=1

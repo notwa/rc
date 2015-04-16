@@ -104,14 +104,21 @@ function trash() {
 
 . ~/sh/z/z.sh
 
-MPV_STREAM_FLAGS="--quiet --no-sub"
-[ -e "$HOME/sh/compandy" ] && _MPV_COMPAND="$(~/sh/compandy -30 10 1 140 6 18 1)"
-_MPV_LAPTOP='--af=lavfi=[aformat=channel_layouts=stereo,'"$_MPV_COMPAND"',lowpass=f=1000:p=1,lowpass=f=4000:p=2]'
+# awful things
+# i should really write a ladspa plugin that does this all at once and
+# with attack/release smoothing so aliasing doesn't go through the roof!
+_M_STEREO='aformat=channel_layouts=stereo'
+_M_PRE_EMPH='equalizer=f=50.0:g=-10:width_type=o:w=4,equalizer=f=5000:g=+05:width_type=o:w=4'
+_M_POST_EMPH='equalizer=f=50.0:g=+10:width_type=o:w=4,equalizer=f=5000:g=-05:width_type=o:w=4'
+_M_COMPRESS='compand=0.001|0.001:0.15|0.15:-42/-42|0/-21:6:18:-30:0.001'
+_M_LIMIT='compand=0.000|0.000:0.06|0.06:-12/-12|0/-9.:6:3.:-12'
+_M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH,$_M_LIMIT"
+_M_SPEAKERS='lowpass=f=1000:p=1,lowpass=f=4000:p=2'
 
 if [[ "$(uname -n)" != "banshee" ]]; then
-    MPV_STREAM_FLAGS="$MPV_STREAM_FLAGS --vo=opengl:swapinterval=0"
+    MPV_STREAM_FLAGS="--quiet --no-sub --vo=opengl:swapinterval=0"
 else
-    MPV_STREAM_FLAGS="$MPV_STREAM_FLAGS $_MPV_LAPTOP"
+    MPV_STREAM_FLAGS="--quiet --no-sub --af=lavfi=[$_M_KILL]"
 fi
 
 LIVESTREAMER_FLAGS=""

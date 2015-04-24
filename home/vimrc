@@ -84,6 +84,7 @@ set ignorecase                        " insensitive searching
 set smartcase                         " except when uppercase is used
 set infercase                         " use existing case when ins-completing
 set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
+set virtualedit=block                 " allow cursor anywhere in visual block
 set foldmethod=marker
 set foldlevelstart=99                 " start with everything unfolded...?
 let c_syntax_for_h=1                  " use C highlighting for .h files

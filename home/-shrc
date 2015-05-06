@@ -18,6 +18,9 @@ r="$HOME/.gem/ruby/2.2.0/bin"
 mkdir -p "$r" && ADDPATH "$r"
 unset r
 
+export GOPATH="$HOME/go"
+ADDPATH "$GOPATH/bin"
+
 ify() {
     [ $# -ge 2 ] || return
     local ex=$1
@@ -50,7 +53,6 @@ export MAKEFLAGS="-j2"
 export VST_SDK_DIR="$HOME/src/vstsdk2.4"
 
 export EDITOR='vim -p'
-export GOPATH="$HOME/go"
 
 # colors
 for x in ls dir vdir grep fgrep egrep; do
@@ -89,6 +91,8 @@ alias counts='find . | wc -l'
 alias exts='print -l *(:e:l) | sort | uniq -c | sort -n'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 alias nocom='grep -oP --line-buffered --color=never "^[^#]+"'
+alias jrep='grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+"'
+alias bomb='uconv -f utf-8 -t utf-8 --add-signature'
 alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\'
 alias picky='{ pacman -Qgq base base-devel | tee -; pacman -Qtnq; } | sort | uniq -u'
 alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'

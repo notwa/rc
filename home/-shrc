@@ -80,6 +80,7 @@ alias gl='git log --oneline'
 
 # being specific
 alias erc="e ~/.zshrc ~/shrc.zsh ~/.bashrc ~/.vimrc"
+alias pip="sudo -H pip3"
 alias irc="screen -dR irc irssi"
 alias crawl='screen -dR crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
 alias crawla='screen -dR crawl ssh crawl@crawl.akrasiac.org -l joshua -i ~/.ssh/crawl'
@@ -120,7 +121,7 @@ _M_PRE_EMPH='equalizer=f=50.0:g=-10:width_type=o:w=4,equalizer=f=5000:g=+05:widt
 _M_POST_EMPH='equalizer=f=50.0:g=+10:width_type=o:w=4,equalizer=f=5000:g=-05:width_type=o:w=4'
 _M_COMPRESS='compand=0.001|0.001:0.25|0.25:-42/-42|0/-21:6:18:-30:0.001'
 _M_LIMIT='compand=0.000|0.000:0.10|0.10:-9/-9|0/-6.:3:4.5:-9'
-_M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH,$_M_LIMIT"
+_M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
 
 crap_speakers='crap_eq_const_T420'
 [ -e "/usr/lib/ladspa/${crap_speakers}-ladspa.so" ] \
@@ -129,7 +130,7 @@ crap_speakers='crap_eq_const_T420'
 if [[ "$(uname -n)" != "banshee" ]]; then
     MPV_STREAM_FLAGS="--quiet --no-sub --vo=opengl:swapinterval=0"
 else
-    MPV_STREAM_FLAGS="--quiet --no-sub --af=lavfi=[$_M_KILL],$_M_SPEAKERS"
+    MPV_STREAM_FLAGS="--quiet --no-sub --af=lavfi=[$_M_KILL],$_M_SPEAKERS,lavfi=[$_M_LIMIT]"
 fi
 
 LIVESTREAMER_FLAGS=""

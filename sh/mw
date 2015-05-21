@@ -77,11 +77,11 @@ mw-enable() {
 mw() {
     if [ "$#" -eq 1 ]; then
         if [[ "$1" == 32 ]]; then
-            mw-enable $_mw_host32 /media/2tb/you/dump/mxe/usr
+            mw-enable $_mw_host32 ~/src/mxe/usr
             export CFLAGS="-mwin32 $CFLAGS"
             export CXXFLAGS="$CFLAGS"
         elif [[ "$1" == 64 ]]; then
-            mw-enable $_mw_host64 /media/2tb/you/dump/mxe/usr
+            mw-enable $_mw_host64 ~/src/mxe/usr
             export CFLAGS="-mwin32 $CFLAGS"
             export CXXFLAGS="$CFLAGS"
         elif [[ "$1" == arm ]]; then

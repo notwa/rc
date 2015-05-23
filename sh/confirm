@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 if [ -n "${ZSH_VERSION:-}" ]; then
     confirm() {
-        read -q '?Continue? [Y/n] '
+        read -q '?Continue? [y/N] '
         ret=$?
         echo
         return $ret
@@ -9,7 +9,7 @@ if [ -n "${ZSH_VERSION:-}" ]; then
 else
     confirm() {
         # specify stdin (1) to avoid taking input from pipes
-        read -n1 -u 1 -p "Continue? [Y/n] " c
+        read -n1 -u 1 -p "Continue? [y/N] " c
         echo
         [ "$c" != 'y' ] && [ "$c" != 'Y' ] && return 1
         return 0

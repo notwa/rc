@@ -83,6 +83,7 @@ alias gds='git --no-pager diff --stat'
 alias gl='git log --oneline'
 alias gs='git status' # rip ghostscript
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
+alias clone='sudo rsync -aHA --info=progress2'
 
 # providing extra functionality
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag

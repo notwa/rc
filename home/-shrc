@@ -44,8 +44,8 @@ done
 [[ "$DESKTOP_SESSION" == xfce ]] && export QT_QPA_PLATFORMTHEME=""
 
 export PREFIX="$HOME/opt/local"
-export CC="$(has clang || has gcc)"
-export CXX="$(has clang || has g++)"
+export CC="$(has clang || has clang-3.6 || has gcc)"
+export CXX="$(has clang++ || has clang++-3.6 || has g++)"
 export CFLAGS='-march=native -O2'
 export LDFLAGS='-Wl,-O1,--sort-common,-z,relro'
 export CFLAGS="$CFLAGS -I'$HOME/opt/local/include'"
@@ -124,8 +124,8 @@ _M_LIMIT='compand=0.000|0.000:0.10|0.10:-9/-9|0/-6.:3:4.5:-9'
 _M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
 
 crap_speakers='crap_eq_const_T420'
-[ -e "/usr/lib/ladspa/${crap_speakers}-ladspa.so" ] \
- && _M_SPEAKERS="ladspa=file=${crap_speakers}-ladspa.so:label=$crap_speakers"
+[ -e "/usr/lib/ladspa/${crap_speakers}.so" ] \
+ && _M_SPEAKERS="ladspa=file=${crap_speakers}.so:label=$crap_speakers"
 
 if [[ "$(uname -n)" != "banshee" ]]; then
     MPV_STREAM_FLAGS="--quiet --no-sub --vo=opengl:swapinterval=0"

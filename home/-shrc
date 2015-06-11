@@ -108,7 +108,7 @@ function trash() {
     dd status=none if=/dev/random bs=1 count="$1"
 }
 
-. ~/sh/z/z.sh
+[ -e ~/sh/z/z.sh ] && . ~/sh/z/z.sh
 
 # awful things
 # i should really write a ladspa plugin that does this all at once and

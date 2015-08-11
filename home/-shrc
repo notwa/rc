@@ -87,6 +87,7 @@ alias crawla='screen -dR crawl ssh crawl@crawl.akrasiac.org -l joshua -i ~/.ssh/
 alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias fucksystemd='dmesg | grep -v audit'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
+alias clone='sudo rsync -aHA --info=progress2'
 
 # providing extra functionality
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
@@ -111,7 +112,7 @@ function trash() {
     dd status=none if=/dev/random bs=1 count="$1"
 }
 
-. ~/sh/z/z.sh
+[ -e ~/sh/z/z.sh ] && . ~/sh/z/z.sh
 
 # awful things
 # i should really write a ladspa plugin that does this all at once and

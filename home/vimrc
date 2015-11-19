@@ -18,7 +18,6 @@ if has("win32")
     set shellcmdflag=-c
     set shellxquote=\"
     set shellslash
-
     " assume directory structure:
     " something/anything/.vimrc       " this was passed to vim by the -u switch
     " something/vim/
@@ -28,7 +27,9 @@ if has("win32")
 
     if !exists('win32_once')
         let win32_once=1
-        let $PATH.=';'.msys
+        if exists('msys')
+            let $PATH.=';'.msys
+        endif
         let &runtimepath=g:rcvim.','.&runtimepath.','.g:rcvim.'/after'
     endif
 else
@@ -76,6 +77,7 @@ set ruler                             " write out the cursor position
 set lazyredraw                        " when executing macros, untyped things
 set shortmess=atI                     " be less verbose and shut up vim
 set suffixes=.bak,~,.swp,.o,.log,.out " lower tab-completion priority
+set showtabline=2                     " always show tab bar
 set noerrorbells visualbell t_vb=     " disable bells
 set scrolloff=3                       " row context during scrolling
 set sidescrolloff=2                   " col context during scrolling
@@ -123,6 +125,10 @@ fu! KillSession()
     call delete(sf)
 endf
 
+fu! TabEight()
+    setlocal tabstop=8 shiftwidth=8 noexpandtab softtabstop=0
+endf
+
 fu! TabFour()
     setlocal tabstop=8 shiftwidth=4 expandtab softtabstop=4
 endf
@@ -131,18 +137,23 @@ fu! TabTwo()
     setlocal tabstop=2 shiftwidth=2 expandtab
 endf
 
+" set TabFour as default
+set tabstop=8 shiftwidth=4 expandtab softtabstop=4
+
 if has('autocmd')
-    augroup tabs                      " 4 spaces as tabs for various languages
+    augroup tabs
         au!
-        au FileType bash,sh,zsh,mk,awk,python,pyrex,lua,vim,autohotkey call TabFour()
-        au BufRead,BufNewFile *.json call TabFour()
+        au BufRead,BufNewFile *.c,*.h,*.cpp,*.hpp,*.cc,*.hh call TabEight()
         au BufRead,BufNewFile PKGBUILD call TabTwo()
         au FileType ruby call TabTwo()
+        au BufRead,BufNewFile *.bt,*.1sc call TabFour()
     augroup END
 
     augroup whatever
         au!
         au BufRead,BufNewFile *.lib setlocal ft=spice
+        au BufRead,BufNewFile *.bt setlocal ft=c
+        au BufRead,BufNewFile *.1sc setlocal ft=c
     augroup END
 
     augroup sessions
@@ -313,6 +324,8 @@ fu! ToggleHex()
 endf
 
 nn <F2> :call ToggleHex()<cr>
+
+"%s# \(\*\|\*\*\|/\|//\) #\1#g
 
 " misc {{{1
 

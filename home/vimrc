@@ -63,7 +63,11 @@ if has('gui_running')
     set guioptions-=m                 " hide menu which isn't loaded anyway
     set guioptions-=T                 " hide toolbar
     set guioptions-=r                 " hide scrollbar
-    set guifont=Consolas:h9
+    if has("gui_gtk2")
+        set guifont=Consolas\ 11
+    else
+        set guifont=Consolas:h9
+    end
     set columns=84
     set lines=36
     cd $HOME                          " might not be ideal...

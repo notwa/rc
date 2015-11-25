@@ -88,6 +88,7 @@ alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias fucksystemd='dmesg | grep -v audit'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='sudo rsync -aHA --info=progress2'
+alias wraith="ssh -i ~/.ssh/id_rsa_email root@159.203.4.16"
 
 # providing extra functionality
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
@@ -137,12 +138,17 @@ fi
 LIVESTREAMER_FLAGS=""
 
 twitch(){
-    livestreamer "twitch.tv/$1" best -p mpv $LIVESTREAMER_FLAGS -a \
+    local stream="$1"
+    shift
+    # TODO: fix all the shit
+    livestreamer "twitch.tv/$stream" best "$@" -p mpv $LIVESTREAMER_FLAGS -a \
       "$MPV_STREAM_FLAGS ${2:+--autofit=}${2:-} {filename}"
 }
 
 # hitbox uses rtmp but mpv doesnt support rtmp dump parameters
 hitbox(){
-    livestreamer "hitbox.tv/$1" best -p mpv $LIVESTREAMER_FLAGS -a \
+    local stream="$1"
+    shift
+    livestreamer "hitbox.tv/$stream" best "$@" -p mpv $LIVESTREAMER_FLAGS -a \
       "$MPV_STREAM_FLAGS ${2:+--autofit=}${2:-} {filename}"
 }

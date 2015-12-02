@@ -88,7 +88,6 @@ alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias fucksystemd='dmesg | grep -v audit'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='sudo rsync -aHA --info=progress2'
-alias wraith="ssh -i ~/.ssh/id_rsa_email root@159.203.4.16"
 
 # providing extra functionality
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag

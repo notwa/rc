@@ -126,12 +126,12 @@ _M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
 
 crap_speakers='crap_eq_const_T420'
 [ -e "/usr/lib/ladspa/${crap_speakers}.so" ] \
- && _M_SPEAKERS="ladspa=file=${crap_speakers}.so:label=$crap_speakers"
+ && _M_SPEAKERS="ladspa=f=${crap_speakers}:p=$crap_speakers"
 
 if [[ "$(uname -n)" != "banshee" ]]; then
     MPV_STREAM_FLAGS="--quiet --no-sub --vo=opengl:swapinterval=0"
 else
-    MPV_STREAM_FLAGS="--quiet --no-sub --af=lavfi=[$_M_KILL],$_M_SPEAKERS,lavfi=[$_M_LIMIT]"
+    MPV_STREAM_FLAGS="--quiet --no-sub --af=lavfi=[$_M_KILL,$_M_SPEAKERS,$_M_LIMIT]"
 fi
 
 LIVESTREAMER_FLAGS=""

@@ -1,7 +1,6 @@
 #!/bin/zsh
 # for both zsh and bash
 
-#umask 027 # screw others
 umask 022 # don't inherit last umask. pip will break itself.
 
 hash -d e=/media/2tb/you
@@ -79,13 +78,11 @@ alias gds='git --no-pager diff --stat'
 alias gl='git log --oneline'
 
 # being specific
-alias erc="e ~/.zshrc ~/shrc.zsh ~/.bashrc ~/.vimrc"
 alias pip="sudo -H pip3"
 alias irc="screen -dR irc irssi"
 alias crawl='screen -dR crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
 alias crawla='screen -dR crawl ssh crawl@crawl.akrasiac.org -l joshua -i ~/.ssh/crawl'
 alias revend='objcopy -I binary -O binary --reverse-bytes=4'
-alias fucksystemd='dmesg | grep -v audit'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='sudo rsync -aHA --info=progress2'
 

@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+screeny() {
+    local user="${1:?needs arg for user name}"
+    shift
+    home="/home/$user"
+    pushd "$home" >/dev/null
+    local name="${1:?needs arg for screen name}"
+    shift
+    ~/sh/unscreen "$name"
+    screen -S "$name" -dm sudo -Hu "$user" "$@"
+    popd "$home" >/dev/null
+}
+
+screeny "$@"

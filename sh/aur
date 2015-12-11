@@ -42,10 +42,15 @@ aur() {
     for p in "$@"; do
         cd "$bd"
         local download_fail=0
+        local targz="$p-aur.tar.gz"
         if [ $o_download -eq 1 ]; then
-            curl -sS "https://aur.archlinux.org/packages/${p:0:2}/$p/$p.tar.gz" | tar xz || download_fail=1
+            curl -fsS \
+              "https://aur.archlinux.org/cgit/aur.git/snapshot/$p.tar.gz" \
+              > "$targz"
+            [ $? -eq 0 ] && tar xzf "$targz" || download_fail=1
         fi
         if [ $download_fail -eq 1 ]; then
+            [ -e "$targz" ] && rm "$targz"
             fail=1
             continue
         fi
@@ -99,7 +104,7 @@ aur() {
     done
 
     cd "$bd"
-    if [ $o_install -eq 1 ]; then
+    if [ -n "$built" ] && [ $o_install -eq 1 ]; then
         if [ $o_all_at_once -eq 1 ]; then
             sudo pacman -U $built
         else

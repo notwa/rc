@@ -66,14 +66,6 @@ for d in sh .vim .mpv; do
     softlink "$d" "$r"
 done
 
-for d in ssh; do
-    mkdir -p ".$d"
-    for r in $rc/$d/*; do
-        f=".${r#"$rc/"}"
-        hardlink "$f" "$r"
-    done
-done
-
 grep .bashrc .bash_profile >/dev/null 2>&1 \
  || echo -e '\n[[ -f ~/.bashrc ]] && . ~/.bashrc' >> .bash_profile
 

@@ -16,7 +16,7 @@ _M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
 getladspa() {
     REPLY=""
     if [ -e "/usr/lib/ladspa/${1}.so" ]; then
-        REPLY="ladspa=file=${1}.so:label=${1}"
+        REPLY="ladspa=f=${1}:p=${1}"
     fi
 }
 

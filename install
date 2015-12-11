@@ -53,7 +53,7 @@ PATH="${PATH:?No existing PATH}:$rc/sh"
 
 backup_dir="$rc/backup-$(date '+%s')"
 
-for f in .bashrc .zshrc .-shrc .vimrc \
+for f in .bashrc .zshrc .-shrc .streamcrap .vimrc \
   .inputrc .screenrc .indent.pro .uncrustify.cfg; do
     dotless "$f"
     r="$rc/home/$REPLY"

@@ -1,0 +1,51 @@
+#!/bin/zsh
+# awful things
+
+MPV_STREAM_FLAGS="--quiet --no-sub --no-ytdl --loop=force --cache-initial=1024"
+LIVESTREAMER_FLAGS=""
+
+_M_STEREO='aformat=channel_layouts=stereo'
+_M_PRE_EMPH='equalizer=f=50.0:g=-10:width_type=o:w=4,equalizer=f=5000:g=+05:width_type=o:w=4'
+_M_POST_EMPH='equalizer=f=50.0:g=+10:width_type=o:w=4,equalizer=f=5000:g=-05:width_type=o:w=4'
+_M_COMPRESS='compand=0.001|0.001:0.25|0.25:-42/-42|0/-21:6:18:-30:0.001'
+_M_LIMIT='compand=0.000|0.000:0.10|0.10:-9/-9|0/-6.:3:4.5:-9'
+_M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
+
+getladspa() {
+    REPLY=""
+    if [ -e "/usr/lib/ladspa/${1}.so" ]; then
+        REPLY="ladspa=file=${1}.so:label=${1}"
+    fi
+}
+
+getladspa crap_eq_const_T420
+_M_SPEAKERS="$REPLY"
+getladspa level
+_M_LEVEL="$REPLY"
+
+if [[ "$(uname -n)" == "spectre" ]]; then
+    #MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_LEVEL,$_M_LIMIT]"
+    MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_KILL,$_M_LIMIT]"
+fi
+if [[ "$(uname -n)" == "banshee" ]]; then
+    MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_KILL,$_M_SPEAKERS,$_M_LIMIT]"
+fi
+
+watchstream() {
+    local url="$1"
+    shift
+    livestreamer "$url" best "$@" -p mpv $LIVESTREAMER_FLAGS -a \
+      "$MPV_STREAM_FLAGS ${2:+--autofit=}${2:-} {filename}"
+}
+
+twitch() {
+    local user="$1"
+    shift
+    watchstream "twitch.tv/$user" "$@"
+}
+
+hitbox() {
+    local user="$1"
+    shift
+    watchstream "hitbox.tv/$user" "$@"
+}

@@ -5,6 +5,9 @@
 umask 022 # don't inherit last umask. pip will break itself.
 
 hash -d e=/media/2tb/you
+hash -d c=/cygdrive/c
+hash -d win=/cygdrive/c/Users/$USER
+hash -d mm='/cygdrive/c/Program Files (x86)/mupen64plus/mm'
 
 ADDPATH() {
     grep ":$1:" <<<":$PATH:" >/dev/null || export PATH="$PATH:$1"
@@ -46,10 +49,10 @@ done
 export PREFIX="$HOME/opt/local"
 export CC="$(has clang || has clang-3.6 || has gcc)"
 export CXX="$(has clang++ || has clang++-3.6 || has g++)"
-export CFLAGS='-march=native -O2'
-export LDFLAGS='-Wl,-O1,--sort-common,-z,relro'
-export CFLAGS="$CFLAGS -I'$HOME/opt/local/include'"
-export LDFLAGS="$LDFLAGS -L'$HOME/opt/local/lib'"
+#export CFLAGS='-march=native -O2'
+#export LDFLAGS='-Wl,-O1,--sort-common,-z,relro'
+#export CFLAGS="$CFLAGS -I'$HOME/opt/local/include'"
+#export LDFLAGS="$LDFLAGS -L'$HOME/opt/local/lib'"
 export CXXFLAGS="$CFLAGS"
 export LD_LIBRARY_PATH= # -n isn't an option in zsh's export
 export MAKEFLAGS="-j2"
@@ -114,41 +117,4 @@ function trash() {
 }
 
 [ -e ~/sh/z/z.sh ] && . ~/sh/z/z.sh
-
-# awful things
-# i should really write a ladspa plugin that does this all at once and
-# with attack/release smoothing so aliasing doesn't go through the roof!
-_M_STEREO='aformat=channel_layouts=stereo'
-_M_PRE_EMPH='equalizer=f=50.0:g=-10:width_type=o:w=4,equalizer=f=5000:g=+05:width_type=o:w=4'
-_M_POST_EMPH='equalizer=f=50.0:g=+10:width_type=o:w=4,equalizer=f=5000:g=-05:width_type=o:w=4'
-_M_COMPRESS='compand=0.001|0.001:0.25|0.25:-42/-42|0/-21:6:18:-30:0.001'
-_M_LIMIT='compand=0.000|0.000:0.10|0.10:-9/-9|0/-6.:3:4.5:-9'
-_M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
-
-crap_speakers='crap_eq_const_T420'
-[ -e "/usr/lib/ladspa/${crap_speakers}.so" ] \
- && _M_SPEAKERS="ladspa=file=${crap_speakers}.so:label=$crap_speakers"
-
-if [[ "$(uname -n)" != "banshee" ]]; then
-    MPV_STREAM_FLAGS="--quiet --no-sub --vo=opengl:swapinterval=0"
-else
-    MPV_STREAM_FLAGS="--quiet --no-sub --af=lavfi=[$_M_KILL],$_M_SPEAKERS,lavfi=[$_M_LIMIT]"
-fi
-
-LIVESTREAMER_FLAGS=""
-
-twitch(){
-    local stream="$1"
-    shift
-    # TODO: fix all the shit
-    livestreamer "twitch.tv/$stream" best "$@" -p mpv $LIVESTREAMER_FLAGS -a \
-      "$MPV_STREAM_FLAGS ${2:+--autofit=}${2:-} {filename}"
-}
-
-# hitbox uses rtmp but mpv doesnt support rtmp dump parameters
-hitbox(){
-    local stream="$1"
-    shift
-    livestreamer "hitbox.tv/$stream" best "$@" -p mpv $LIVESTREAMER_FLAGS -a \
-      "$MPV_STREAM_FLAGS ${2:+--autofit=}${2:-} {filename}"
-}
+. ~/.streamcrap

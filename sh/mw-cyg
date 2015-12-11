@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+name='i686-w64-mingw32-'
+set -- CC gcc CXX g++ CPP cpp LD ld AR ar \
+  RANLIB ranlib RC windres WINDRES windres OBJCOPY objcopy
+while [ -n "$1" ]; do
+    export "$1=$name$2"
+    shift 2
+done

@@ -31,7 +31,7 @@ mkgist() {
     fi
 
     # TODO: sanitize $desc
-    curl 'https://api.github.com/gists' -sid@- -H "$head" -o "$rf" << EOF
+    curl 'https://api.github.com/gists' -sSid@- -H "$head" -o "$rf" << EOF
 {
     "description": "$desc",
     "public": $public,
@@ -41,6 +41,7 @@ EOF
 
     if [ $? -ne 0 ]; then
         rm "$rf"
+        echo failed to POST to github >&2
         return 1
     fi
 

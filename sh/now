@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+now() {
+    local dt=
+    local fmt='+%F_%T_%N'
+    if [ -z "$1" ]; then
+        dt="$(date "$fmt")"
+    elif [ -e "$1" ]; then
+        dt="$(date -r "$1" "$fmt")"
+    else
+        dt="$(date -d "$1" "$fmt")"
+    fi
+
+    local F= T= N=
+    F=${dt%%_*}
+    T=${dt#*_}
+    T=${T%_*}
+    N=${dt##*_}
+    local H= M= S=
+    H=${T%%:*}
+    M=${T#*:}
+    M=${M%:*}
+    S=${T##*:}
+
+    # don't interpret numbers as octal
+    F=${F#0*}
+    T=${T#0*}
+    N=${N#0*}
+    H=${H#0*}
+    M=${M#0*}
+    S=${S#0*}
+
+    local ms=
+    let 'ms=(H*60*60+M*60+S)*1000+N/1000000'
+    ms=$(printf '%08i' $ms)
+    echo "${F}_${ms}"
+}
+
+now "$@"

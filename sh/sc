@@ -2,7 +2,7 @@
 : ${SC_DBD:="/home/$USER/Dropbox"}
 : ${SC_DBS:="$SC_DBD/Public/screenshots"}
 : ${SC_DBT:="$SC_DBD/Public/temp"}
-: ${SC_DOM:="http://eaguru.guru"}
+: ${SC_DOM:="https://eaguru.guru"}
 
 sc_shorten() {
     REPLY="${1:2:2}${1:5:2}${1:8:2}${1:11:12}"

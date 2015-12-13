@@ -9,7 +9,8 @@ hash -d win=/cygdrive/c/Users/$USER
 hash -d mm='/cygdrive/c/Program Files (x86)/mupen64plus/mm'
 
 ADDPATH() {
-    grep ":$1:" <<<":$PATH:" >/dev/null || export PATH="$PATH:$1"
+    new="$(readlink -f "$1")"
+    grep ":$new:" <<<":$PATH:" >/dev/null || export PATH="$PATH:$new"
 }
 ADDPATH "$HOME/opt/local/bin"
 

@@ -27,7 +27,7 @@ mw-disable() {
 
     local e=
     for e in PATH PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS \
-      AR RANLIB RC WINDRES OBJCOPY SDL_CFLAGS SDL_LDLIBS; do
+      AR RANLIB RC WINDRES OBJCOPY COMPILER_PATH SDL_CFLAGS SDL_LDLIBS; do
         local v="${_mw_[$e]}"
         [ -n "$v" ] && export "$e=$v" || unset "$e"
     done
@@ -84,6 +84,16 @@ mw() {
             mw-enable $_mw_host64 ~/src/mxe/usr
             export CFLAGS="-mwin32 $CFLAGS"
             export CXXFLAGS="$CFLAGS"
+        elif [[ "$1" == 32c ]]; then
+            mw-enable $_mw_host32 ~/src/mxe/usr
+            export CC="$_mw_host32-clang"
+            export CXX="$_mw_host32-clang++"
+            export COMPILER_PATH="$HOME/src/mxe/usr/bin"
+        elif [[ "$1" == 64c ]]; then
+            mw-enable $_mw_host64 ~/src/mxe/usr
+            export CC="$_mw_host64-clang"
+            export CXX="$_mw_host64-clang++"
+            export COMPILER_PATH="$HOME/src/mxe/usr/bin"
         elif [[ "$1" == arm ]]; then
             mw-enable $_mw_hostarm /usr
             export CFLAGS="-mfloat-abi=hard -mcpu=cortex-a9 $CFLAGS"

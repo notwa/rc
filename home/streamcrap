@@ -22,7 +22,7 @@ getladspa() {
 
 getladspa crap_eq_const_T420
 _M_SPEAKERS="$REPLY"
-getladspa level
+getladspa crap_level
 _M_LEVEL="$REPLY"
 
 if [[ "$(uname -n)" == "spectre" ]]; then
@@ -30,7 +30,7 @@ if [[ "$(uname -n)" == "spectre" ]]; then
     MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_KILL,$_M_LIMIT]"
 fi
 if [[ "$(uname -n)" == "banshee" ]]; then
-    MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_KILL,$_M_SPEAKERS,$_M_LIMIT]"
+    MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_STEREO,$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5]"
 fi
 
 watchstream() {

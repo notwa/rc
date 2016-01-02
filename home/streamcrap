@@ -2,7 +2,7 @@
 # awful things
 
 MPV_STREAM_FLAGS="--quiet --no-sub --no-ytdl --loop=force --cache-initial=1024"
-LIVESTREAMER_FLAGS="--player-http --player-continuous-http --default-stream=best"
+LIVESTREAMER_FLAGS="--player-http --player-continuous-http --default-stream=source,best"
 #LIVESTREAMER_FLAGS+=" --stream-sorting-excludes=>=source"
 LIVESTREAMER_FLAGS+=" --player-passthrough=http --player-no-close"
 
@@ -25,13 +25,14 @@ _M_SPEAKERS="$REPLY"
 getladspa crap_level
 _M_LEVEL="$REPLY"
 
-if [[ "$(uname -n)" == "spectre" ]]; then
-    #MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_LEVEL,$_M_LIMIT]"
-    MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_KILL,$_M_LIMIT]"
+_nn="$(uname -n | tr A-Z a-z)"
+if [[ "$_nn" == "spectre" ]]; then
+    MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_STEREO,$_M_KILL,alimiter=level_in=0.7071]"
 fi
-if [[ "$(uname -n)" == "banshee" ]]; then
+if [[ "$_nn" == "banshee" ]]; then
     MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_STEREO,$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5]"
 fi
+_nn=
 
 watchstream() {
     local url="$1"

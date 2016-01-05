@@ -4,8 +4,9 @@ unscreen() {
     local pids="$(screen -ls | fgrep "$1" | cut -d. -f1)"
     for pid in $=pids; do
         local ppid="$(ps h --ppid "$pid" -o pid)"
-        kill "$ppid"
+        kill "$ppid" || return 1
     done
+    return 0
 }
 
 unscreen "$@"

@@ -7,9 +7,11 @@ screeny() {
     pushd "$home" >/dev/null
     local name="${1:?needs arg for screen name}"
     shift
-    ~/sh/unscreen "$name"
+    ~/sh/unscreen "$name" || return 1
+    echo screen -S "$name" -dm sudo -Hu "$user" "$@"
     screen -S "$name" -dm sudo -Hu "$user" "$@"
     popd "$home" >/dev/null
+    return 0
 }
 
 screeny "$@"

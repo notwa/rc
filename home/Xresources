@@ -1,0 +1,41 @@
+UXTerm*faceName: Ubuntu Mono:size=11
+UXTerm*VT100.geometry: 84x36
+UXTerm*internalBorder: 0
+UXTerm*borderWidth: 0
+UXTerm*toolBar: false
+
+UXTerm*locale: true
+UXTerm*metaSendsEscape: true
+
+!UXTerm*cjkWidth: true
+
+UXTerm*saveLines: 4096
+UXTerm*allowScrollLock: true
+
+UXTerm*background: #1A1917
+UXTerm*foreground: #C9C7C8
+
+! Black + DarkGrey
+UXTerm*color0:  #1A1917
+UXTerm*color8:  #3C3F3A
+! DarkRed + Red
+UXTerm*color1:  #AD4B49
+UXTerm*color9:  #EA463A
+! DarkGreen + Green
+UXTerm*color2:  #6AA059
+UXTerm*color10: #7ED759
+! DarkYellow + Yellow
+UXTerm*color3:  #D89E4E
+UXTerm*color11: #F9E65A
+! DarkBlue + Blue
+UXTerm*color4:  #4050C4
+UXTerm*color12: #557AFF
+! DarkMagenta + Magenta
+UXTerm*color5:  #AB5AB7
+UXTerm*color13: #EB87ED
+! DarkCyan + Cyan
+UXTerm*color6:  #3FA3AA
+UXTerm*color14: #6CD6FC
+! LightGrey + White
+UXTerm*color7:  #C9C7C8
+UXTerm*color15: #FEFCFD

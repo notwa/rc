@@ -27,7 +27,7 @@ _M_LEVEL="$REPLY"
 
 _nn="$(uname -n | tr A-Z a-z)"
 if [[ "$_nn" == "spectre" ]]; then
-    MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_STEREO,$_M_KILL,alimiter=level_in=0.7071]"
+    MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_STEREO,$_M_KILL,alimiter=level_out=0.7071]"
 fi
 if [[ "$_nn" == "banshee" ]]; then
     MPV_STREAM_FLAGS+=" --af=lavfi=[$_M_STEREO,$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5]"

@@ -99,6 +99,7 @@ set ffs=unix,dos                      " ffs indeed
 set nobomb                            " bombs are bad ok
 set undofile                          " remember undos across files/sessions
 set diffopt+=iwhite                   " ignore whitespace in diff command
+set ttimeoutlen=50                    " make changing modes a bit snappier
 if has('mksession')
     set sessionoptions=blank,buffers,curdir,options,folds,tabpages,winsize,resize,winpos
 end
@@ -207,7 +208,7 @@ vn <silent> <s-tab> <gv
 "nn <c-cr> dd
 " oh wait, terminals don't do that...
 
-fu! Inn(q) 
+fu! Inn(q)
     " bind both normal and insert modes
     let args=split(a:q, '^\s*\(<[^>]\+>\s\+\)\+\zs')
     exec 'nn  '.args[0].'      '.args[1]
@@ -348,3 +349,65 @@ try
 catch /E185/
     colorscheme desert
 endtry
+
+" airline {{{1
+
+"if exists('g:airline_symbols')
+    set laststatus=2
+"endif
+
+let g:airline_mode_map = {
+\  'c': 'COM',
+\  'i': 'INS',
+\  'n': '·ω·',
+\  'R': 'REP',
+\  'S': 'S-L',
+\  's': 'SEL',
+\  't': 'CON',
+\  'V': 'V-L',
+\  'v': 'VIS',
+\ '^S': 'S-B',
+\ '^V': 'V-B',
+\ '__': '———',
+\ }
+
+let g:airline_symbols = {
+\ 'branch': '→',
+\ 'crypt': '🔒',
+\ 'linenr': '¶',
+\ 'modified': '+',
+\ 'paste': 'ρ',
+\ 'readonly': 'R',
+\ 'space': ' ',
+\ 'whitespace': '·',
+\ }
+
+let g:airline_left_sep = '»'
+let g:airline_right_sep = '«'
+
+let g:airline#extensions#default#section_truncate_width = {
+\ 'b': 79,
+\ 'x': 60,
+\ 'y': 84,
+\ 'z': 45,
+\ }
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_tab_nr = 0
+let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline#extensions#tabline#fnametruncate = 20
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#buffer_nr_show = 0
+let g:airline#extensions#tabline#buffer_nr_format = '%s ┊'
+let g:airline#extensions#tabline#left_sep = '┊'
+let g:airline#extensions#tabline#left_alt_sep = '┊'
+let g:airline#extensions#tabline#right_sep = '┊'
+let g:airline#extensions#tabline#right_alt_sep = '┊'
+
+"let g:airline#extensions#whitespace#mixed_indent_algo = 2
+let g:airline#extensions#whitespace#symbol = '‗'
+let g:airline#extensions#whitespace#trailing_format = '· %s'
+let g:airline#extensions#whitespace#long_format = '… %s'
+let g:airline#extensions#whitespace#mixed_indent_format = '‼ %s'

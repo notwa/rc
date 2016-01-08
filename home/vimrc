@@ -158,6 +158,7 @@ if has('autocmd')
         au BufRead,BufNewFile *.lib setlocal ft=spice
         au BufRead,BufNewFile *.bt setlocal ft=c
         au BufRead,BufNewFile *.1sc setlocal ft=c
+        au BufRead,BufNewFile *.asm setlocal ft=lips
     augroup END
 
     augroup sessions
@@ -280,10 +281,12 @@ fu! HiDump()
 endf
 
 nn <Leader>s :call SyntaxAttr()<cr>
-nn <Leader>1 :colo property<cr>
-nn <Leader>2 :colo clearance<cr>
+nn <Leader>1 :colo property2<cr>
+nn <Leader>2 :colo clearance-dyn<cr>
 nn <Leader>3 :colo Tomorrow-Night<cr>
 nn <Leader>4 :colo jellybeans<cr>
+nn <Leader>5 :colo colorsbox-stnight<cr>
+nn <Leader>6 :colo redblack<cr>
 nn <Leader>h :tabe<cr>:call HiDump()<cr>
 
 " helper function to toggle hex mode

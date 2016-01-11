@@ -85,29 +85,33 @@ alias gl='git log --oneline'
 alias pip="sudo -H pip3"
 alias irc="screen -dR irc irssi"
 alias crawl='screen -dR crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
-alias crawla='screen -dR crawl ssh crawl@crawl.akrasiac.org -l joshua -i ~/.ssh/crawl'
+alias crawla='screen -dR crawl ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl'
 alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='sudo rsync -aHA --info=progress2'
-
-# providing extra functionality
+alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
 alias ll="ify less ls -ACX --group-directories-first --color=force"
+
+# providing extra functionality
 alias counts='find . | wc -l'
 alias exts='print -l *(:e:l) | sort | uniq -c | sort -n'
-alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
+alias freq="cut -d' ' -f1 < ~/.histfile | sort | uniq -c | sort -rn | head"
+#
 alias nocom='grep -oP --line-buffered --color=never "^[^#]+"'
 alias jrep='grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+"'
 alias bomb='uconv -f utf-8 -t utf-8 --add-signature'
+alias cleanse='tr -cd "\11\12\15\40-\176"'
+alias rot13='tr "A-Za-z0-9" "N-ZA-Mn-za-m5-90-4"'
 alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\'
+#
 alias picky='{ pacman -Qgq base base-devel | tee -; pacman -Qtnq; } | sort | uniq -u'
 alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
+#
 alias makepkgf='sudo -u $USER MAKEFLAGS=-j2 makepkg -Af --skipchecksums'
 alias rakef='rake && gem build *.gemspec && gem install *.gem'
-alias rot13='tr "A-Za-z0-9" "N-ZA-Mn-za-m5-90-4"'
-alias cleanse='tr -cd "\11\12\15\40-\176"'
+#
 alias profile="CPUPROFILE=./a.pprof LD_PRELOAD=/usr/lib/libprofiler.so"
-alias freq="cut -d' ' -f1 < ~/.histfile | sort | uniq -c | sort -rn | head"
 
 function trash() {
     dd status=none if=/dev/random bs=1 count="$1"

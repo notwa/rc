@@ -1,16 +1,11 @@
 " Property
-" a vim color scheme by @notwa
+" a vim color scheme by github.com/notwa
 " loosely based on Clearance by Chris Seelus (@ceelus)
 " built upon the Tomorrow scheme's functionality <http://chriskempson.com>
 
 " other sources of inspiration:
 " colorful
 " redblack
-
-" basically i split styling into:
-" built-in things you'd pass arguments to
-" built-in things you wouldn't that moreso construct the language (if, else)
-" built-in things you shouldn't use as variable names
 
 " hi \([A-Za-z]\+\) \+guifg=\([^ ]\+\) \+guibg=\([^ ]\+\) \+gui=\(\w\+\)
 

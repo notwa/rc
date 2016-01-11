@@ -13,11 +13,6 @@ endif
 
 " awful things
 if has("win32")
-    let msys='/MinGW/msys/1.0/bin'
-    let &shell=msys.'/bash.exe'
-    set shellcmdflag=-c
-    set shellxquote=\"
-    set shellslash
     " assume directory structure:
     " something/anything/.vimrc       " this was passed to vim by the -u switch
     " something/vim/
@@ -25,10 +20,20 @@ if has("win32")
     let $MYVIMRC=expand('<sfile>')
     let g:rcvim=expand('<sfile>:p:h:h').'/vim'
 
+    let msys='/MinGW/msys/1.0/bin'
+    set shellcmdflag=-c
+    set shellxquote=\"
+    set shellslash
     if !exists('win32_once')
         let win32_once=1
-        if exists('msys')
-            let $PATH.=';'.msys
+        if exists('msys')             " note: true for gvim as well
+            if isdirectory(msys)
+                let $PATH.=';'.msys
+                let &shell=msys.'/bash.exe'
+            else
+                let $PATH='/usr/local/bin;/usr/bin;/bin;'.$PATH
+                let &shell='/cygwin/bin/zsh.exe'
+            endif
         endif
         let &runtimepath=g:rcvim.','.&runtimepath.','.g:rcvim.'/after'
     endif
@@ -352,9 +357,13 @@ endtry
 
 " airline {{{1
 
+if has('gui_running')
+    " airline is broken in gvim (for me) for now
+else
 "if exists('g:airline_symbols')
     set laststatus=2
-"endif
+    let g:airline#extensions#tabline#enabled = 1
+endif
 
 let g:airline_mode_map = {
 \  'c': 'COM',
@@ -392,7 +401,6 @@ let g:airline#extensions#default#section_truncate_width = {
 \ 'z': 45,
 \ }
 
-let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_tab_nr = 0
 let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#tabline#fnametruncate = 20

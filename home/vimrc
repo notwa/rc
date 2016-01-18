@@ -83,6 +83,7 @@ set history=512                       " command lines to remember
 set colorcolumn=79
 set number                            " lines
 set ruler                             " write out the cursor position
+set showcmd                           " show number of lines/etc. selected
 set lazyredraw                        " when executing macros, untyped things
 set shortmess=atI                     " be less verbose and shut up vim
 set suffixes=.bak,~,.swp,.o,.log,.out " lower tab-completion priority

@@ -17,12 +17,12 @@ ADDPATH "$HOME/opt/local/bin"
 # https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/1380084
 export SSH_AUTH_SOCK=0
 
-r="$HOME/.gem/ruby/2.2.0/bin"
-mkdir -p "$r" && ADDPATH "$r"
-unset r
+#r="$HOME/.gem/ruby/2.2.0/bin"
+#mkdir -p "$r" && ADDPATH "$r"
+#unset r
 
-export GOPATH="$HOME/go"
-ADDPATH "$GOPATH/bin"
+#export GOPATH="$HOME/go"
+#ADDPATH "$GOPATH/bin"
 
 ify() {
     [ $# -ge 2 ] || return

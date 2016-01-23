@@ -59,7 +59,7 @@ export MAKEFLAGS="-j2"
 export VST_SDK_DIR="$HOME/src/vstsdk2.4"
 export LADSPA_PATH="/usr/lib/ladspa"
 
-export EDITOR='vim -p'
+export EDITOR='vim'
 
 # colors
 for x in ls dir vdir grep fgrep egrep; do

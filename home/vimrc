@@ -87,7 +87,6 @@ set showcmd                           " show number of lines/etc. selected
 set lazyredraw                        " when executing macros, untyped things
 set shortmess=atI                     " be less verbose and shut up vim
 set suffixes=.bak,~,.swp,.o,.log,.out " lower tab-completion priority
-set showtabline=2                     " always show tab bar
 set noerrorbells visualbell t_vb=     " disable bells
 set scrolloff=3                       " row context during scrolling
 set sidescrolloff=2                   " col context during scrolling
@@ -363,7 +362,7 @@ if has('gui_running')
 else
 "if exists('g:airline_symbols')
     set laststatus=2
-    let g:airline#extensions#tabline#enabled = 1
+    let g:airline#extensions#tabline#enabled = 0
 endif
 
 let g:airline_mode_map = {

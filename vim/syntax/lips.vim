@@ -12,7 +12,7 @@ endif
 syn case ignore
 
 syn region lipsString start=/"/ skip=/\\"/ end=/"/
-syn region asmComment start="/\*" end="\*/"
+syn region lipsComment start="/\*" end="\*/"
 syn match lipsComment /\(\/\/\|;\).*/
 
 syn match lipsNumber /\<[+-]\?\d\+\>/ " Decimal numbers

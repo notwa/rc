@@ -1,4 +1,3 @@
-" vim:cc=79,39
 " make vim unusable for anyone else
 " from the get-go, we assume version >= 703
 
@@ -80,7 +79,6 @@ endif
 
 if has('title') | set title | endif   " terminal title
 set history=512                       " command lines to remember
-set colorcolumn=79
 set number                            " lines
 set ruler                             " write out the cursor position
 set showcmd                           " show number of lines/etc. selected
@@ -96,7 +94,7 @@ set smartcase                         " except when uppercase is used
 set infercase                         " use existing case when ins-completing
 set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
 set virtualedit=block                 " allow cursor anywhere in visual block
-set foldmethod=marker
+set foldmethod=marker                 " (performance issues with other methods)
 set foldlevelstart=99                 " start with everything unfolded...?
 let c_syntax_for_h=1                  " use C highlighting for .h files
 set nowrap                            " word wrapping is pretty weak in vim
@@ -115,6 +113,20 @@ if 0
         set smartindent               " automatic indents with a lot of stuff
     endif
 endif " it's really just annoying though
+
+if has('wildignore')
+    " a bunch of stuff that may or may not do any good
+    set wildignore=""
+    set wildignore+=.git,.svn,.hg,pkg,tmp,crap
+    set wildignore+=*.bak,*.tmp,*.log,*.cache,
+    set wildignore+=Desktop.ini,Thumbs.db,*.lnk,.DS_Store
+    set wildignore+=*.zip,*.tar,*.tar.*,
+    set wildignore+=*.suo,*.sln,*.pch,*.pdb,*.pgc,*.pgd
+    set wildignore+=*.o,*.obj,*.elf,*.lib,*.a,*.dll,*.so,*.so.*,*.exe,*.out
+    set wildignore+=__pycache__,*.pyc,*.pyo,*.pyd
+    set wildignore+=*.gem,.bundle
+    set wildignore+=CMake*,cmake_install.cmake,install_manifest.txt
+endif
 
 " autocmd {{{1
 
@@ -228,7 +240,7 @@ Inn <c-F5>  :w!<cr>
 Inn <c-F8>  :e!<cr>
 Inn <c-F10> :bd!<cr>
 Inn <s-F5>  :wall<cr>
-Inn <s-F8>  :tab ball<cr>
+"Inn <s-F8>  :tab ball<cr>
 Inn <s-F10> :call KillSession()<cr>:qall<cr>
 Inn <c-s-F10> :call KillSession()<cr>:qall!<cr>
 
@@ -268,13 +280,22 @@ nm <Leader>i i?<Esc>r
 nm <Leader>a a?<Esc>r
 nn <Leader>p "0p
 nn <Leader>P "0P
-nn <Leader>e :tabe 
+nn <Leader>e :e **/*
+nn <Leader>b :ls<cr>:b<space>
 nn <Leader><F10> :call SaveSession()<cr>:xall<cr>
 nn <silent> <Leader>d :cd %:p:h<cr>:pwd<cr>
 nn <Leader>. @:
 "nn <Leader>? :exec getline(".")
 nn <Leader>, :Tab /,\zs<cr>
 "nn <Leader>x :system('chmod +x %') | e
+
+" trying some copypasta from http://stackoverflow.com/a/16084326
+set path=.,**
+nn <Leader>f :find *
+nn <Leader>F :find <c-r>=expand('%:h').'/*'<cr>
+
+" extension binds {{{1
+map <silent> <c-n> :CtrlPBuffer<cr>
 
 " messing around with colors
 " a la https://github.com/xolox/vim-colorscheme-switcher/blob/master/autoload/xolox/colorscheme_switcher.vim
@@ -312,7 +333,7 @@ fu! ToggleHex()
         let b:oldbin=&bin
         " set new options
         setlocal binary " make sure it overrides any textwidth, etc.
-        silent :e " this will reload the file without trickeries 
+        silent :e " this will reload the file without trickeries
                   "(DOS line endings will be shown entirely )
         let &ft="xxd"
         " set status
@@ -355,6 +376,25 @@ catch /E185/
     colorscheme desert
 endtry
 
+" set up default windows on a big terminal
+fu! DefaultWin()
+    if &columns >= 84*2 && &lines >= 36*2
+        "/vim\
+        "| |_|
+        "|.| |
+        "\---/
+        vsplit
+        wincmd l
+        split
+        wincmd h
+    endif
+endf
+
+augroup DefaultWin
+    au!
+    au VimEnter * call DefaultWin()
+augroup END
+
 " airline {{{1
 
 if has('gui_running')
@@ -381,9 +421,9 @@ let g:airline_mode_map = {
 \ }
 
 let g:airline_symbols = {
-\ 'branch': '→',
-\ 'crypt': '🔒',
-\ 'linenr': '¶',
+\ 'branch': '',
+\ 'crypt': '',
+\ 'linenr': '',
 \ 'modified': '+',
 \ 'paste': 'ρ',
 \ 'readonly': 'R',
@@ -391,8 +431,8 @@ let g:airline_symbols = {
 \ 'whitespace': '·',
 \ }
 
-let g:airline_left_sep = '»'
-let g:airline_right_sep = '«'
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
 
 let g:airline#extensions#default#section_truncate_width = {
 \ 'b': 79,
@@ -409,6 +449,7 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#show_close_button = 0
 let g:airline#extensions#tabline#buffer_nr_show = 0
 let g:airline#extensions#tabline#buffer_nr_format = '%s ┊'
+"  
 let g:airline#extensions#tabline#left_sep = '┊'
 let g:airline#extensions#tabline#left_alt_sep = '┊'
 let g:airline#extensions#tabline#right_sep = '┊'

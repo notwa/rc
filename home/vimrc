@@ -314,6 +314,7 @@ nn <Leader>3 :colo Tomorrow-Night<cr>
 nn <Leader>4 :colo jellybeans<cr>
 nn <Leader>5 :colo colorsbox-stnight<cr>
 nn <Leader>6 :colo redblack<cr>
+nn <Leader>7 :colo property16<cr>
 nn <Leader>h :tabe<cr>:call HiDump()<cr>
 
 " helper function to toggle hex mode
@@ -371,7 +372,7 @@ try | execute pathogen#infect()       | catch /E117/ | endtry
 
 set background=dark
 try
-    colorscheme Tomorrow-Night
+    colorscheme property16
 catch /E185/
     colorscheme desert
 endtry

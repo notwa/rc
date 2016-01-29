@@ -7,35 +7,39 @@ UXTerm*toolBar: false
 UXTerm*locale: true
 UXTerm*metaSendsEscape: true
 
+! this doesn't work
+XTerm*vt100.translations: #override \n\
+    Ctrl <KeyPress> Insert:copy-selection(SELECT, CUT_BUFFER0)\n
+
 !UXTerm*cjkWidth: true
 
 UXTerm*saveLines: 4096
 UXTerm*allowScrollLock: true
 
-UXTerm*background: #1A1917
-UXTerm*foreground: #C9C7C8
+UXTerm*background: #151616
+UXTerm*foreground: #CBCECA
 
 ! Black + DarkGrey
-UXTerm*color0:  #1A1917
-UXTerm*color8:  #3C3F3A
+UXTerm*color0:  #151616
+UXTerm*color8:  #383B3F
 ! DarkRed + Red
-UXTerm*color1:  #AD4B49
-UXTerm*color9:  #EA463A
+UXTerm*color1:  #D85D63
+UXTerm*color9:  #E8353B
 ! DarkGreen + Green
-UXTerm*color2:  #6AA059
-UXTerm*color10: #7ED759
+UXTerm*color2:  #7EB27E
+UXTerm*color10: #C0E070
 ! DarkYellow + Yellow
-UXTerm*color3:  #D89E4E
-UXTerm*color11: #F9E65A
+UXTerm*color3:  #DE935F
+UXTerm*color11: #E5C477
 ! DarkBlue + Blue
-UXTerm*color4:  #4050C4
-UXTerm*color12: #557AFF
+UXTerm*color4:  #7C9BC1
+UXTerm*color12: #95C9E5
 ! DarkMagenta + Magenta
-UXTerm*color5:  #AB5AB7
-UXTerm*color13: #EB87ED
+UXTerm*color5:  #AE89BA
+UXTerm*color13: #EFA0DF
 ! DarkCyan + Cyan
-UXTerm*color6:  #3FA3AA
-UXTerm*color14: #6CD6FC
+UXTerm*color6:  #7A8985
+UXTerm*color14: #8ABEB7
 ! LightGrey + White
-UXTerm*color7:  #C9C7C8
-UXTerm*color15: #FEFCFD
+UXTerm*color7:  #CBCECA
+UXTerm*color15: #FEFDFC

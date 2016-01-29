@@ -46,6 +46,20 @@ watchstream() {
     fi
 }
 
+watchstream2() {
+    local url="$1"
+    shift
+    if [ -n "$ZSH_VERSION" ]; then
+        # zsh syntax
+        livestreamer "$url" "$@" -p mpv $=LIVESTREAMER_FLAGS -a \
+          "$MPV_STREAM_FLAGS {filename}"
+    else
+        # bash syntax
+        livestreamer "$url" "$@" -p mpv $LIVESTREAMER_FLAGS -a \
+          "$MPV_STREAM_FLAGS {filename}"
+    fi
+}
+
 twitch() {
     local user="$1"
     shift

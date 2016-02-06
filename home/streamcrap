@@ -25,40 +25,51 @@ getladspa crap_level
 _M_LEVEL="$REPLY"
 
 _nn="$(uname -n | tr A-Z a-z)"
+
 if [[ "$_nn" == "spectre" ]]; then
-    _M_PROCESS="--af=lavfi=[$_M_STEREO,$_M_KILL,alimiter=level_out=0.7071]"
+    _M_PROCESS="$_M_KILL,alimiter=level_out=0.7071"
 fi
 if [[ "$_nn" == "banshee" ]]; then
-    _M_PROCESS="--af=lavfi=[$_M_STEREO,$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5]"
+    _M_PROCESS="$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5"
 fi
-MPV_STREAM_FLAGS+=" $_M_PROCESS"
-_nn=
 
-watchstream() {
+_mpv_flags() {
+    REPLY="$MPV_STREAM_FLAGS --af=lavfi=[$_M_PROCESS]"
+}
+
+watchstream1() {
     local url="$1"
     shift
+    _mpv_flags
     if [ -n "$ZSH_VERSION" ]; then
         # zsh syntax
-        mpv $=MPV_STREAM_FLAGS "$url"
+        mpv $=REPLY "$url"
     else
         # bash syntax
-        mpv $MPV_STREAM_FLAGS "$url"
+        mpv $=REPLY "$url"
     fi
 }
 
 watchstream2() {
     local url="$1"
     shift
+    _mpv_flags
     if [ -n "$ZSH_VERSION" ]; then
         # zsh syntax
         livestreamer "$url" "$@" -p mpv $=LIVESTREAMER_FLAGS -a \
-          "$MPV_STREAM_FLAGS {filename}"
+          "$REPLY {filename}"
     else
         # bash syntax
         livestreamer "$url" "$@" -p mpv $LIVESTREAMER_FLAGS -a \
-          "$MPV_STREAM_FLAGS {filename}"
+          "$REPLY {filename}"
     fi
 }
+
+if [[ "$_nn" == "banshee" ]]; then
+    alias watchstream=watchstream2
+else
+    alias watchstream=watchstream1
+fi
 
 twitch() {
     local user="$1"
@@ -71,3 +82,5 @@ hitbox() {
     shift
     watchstream "http://hitbox.tv/$user" "$@"
 }
+
+_nn=

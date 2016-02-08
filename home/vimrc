@@ -179,6 +179,11 @@ if has('autocmd')
         au BufRead,BufNewFile *.asm setlocal ft=lips
     augroup END
 
+    augroup nocomment
+        au!
+        au FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+    augroup END
+
     augroup sessions
         au!
         au VimEnter * call LoadSession()

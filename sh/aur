@@ -58,7 +58,7 @@ aur() {
         cd $p
         if [ $o_edit -eq 1 ]; then
             if [ $o_yes -eq 1 ]; then
-                e PKGBUILD
+                $EDITOR PKGBUILD
             else
                 echo "Edit $p"
                 confirm && e PKGBUILD

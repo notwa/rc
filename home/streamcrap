@@ -13,7 +13,7 @@ _M_LIMIT='compand=0.000|0.000:0.10|0.10:-9/-9|0/-6.:3:4.5:-9'
 _M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
 
 getladspa() {
-    REPLY=""
+    REPLY="volume"
     if [ -e "/usr/lib/ladspa/${1}.so" ]; then
         REPLY="ladspa=f=${1}:p=${1}"
     fi

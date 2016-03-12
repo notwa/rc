@@ -3,8 +3,8 @@
 scropt() {
     local now=
     which ~/sh/now 2>/dev/null >/dev/null && now=$(~/sh/now) || now=$(date +%F_%T)
-    echo $now
-    scrot ~/$now.png -e "optipng -quiet \$f" "$@" \
-    && mv ~/$now.png ~/Dropbox/Public/screenshots/
+    local fn="$HOME/play/$now.png"
+    scrot "$fn" -e "optipng -quiet \$f" "$@"
+    echo "$fn"
 }
 scropt "$@"

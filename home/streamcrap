@@ -46,7 +46,7 @@ watchstream1() {
         mpv $=REPLY "$url"
     else
         # bash syntax
-        mpv $=REPLY "$url"
+        mpv $REPLY "$url"
     fi
 }
 
@@ -77,6 +77,17 @@ hitbox() {
     local user="$1"
     shift
     watchstream "http://hitbox.tv/$user" "$@"
+}
+
+yt() {
+    local vid="$1"
+    # can't be bothered to use substrings since they differ across bash/zsh
+    if [[ "$(head -c4 <<< "$vid")" != "http" ]]; then
+        vid="https://www.youtube.com/watch?v=$vid"
+    fi
+    mpv --af=lavfi="[$_M_PROCESS]" \
+      --audio-samplerate=44100 --audio-format=s16 \
+      --ytdl-format=22,best "$vid"
 }
 
 _nn=

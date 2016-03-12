@@ -65,11 +65,7 @@ watchstream2() {
     fi
 }
 
-if [[ "$_nn" == "banshee" ]]; then
-    alias watchstream=watchstream2
-else
-    alias watchstream=watchstream1
-fi
+alias watchstream=watchstream1
 
 twitch() {
     local user="$1"

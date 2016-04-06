@@ -51,6 +51,7 @@ watchstream1() {
 }
 
 watchstream2() {
+    pushd ~/play
     local url="$1"
     shift
     _mpv_flags
@@ -63,6 +64,7 @@ watchstream2() {
         livestreamer "$url" "$@" -p mpv $LIVESTREAMER_FLAGS -a \
           "$REPLY {filename}"
     fi
+    popd
 }
 
 alias watchstream=watchstream1
@@ -80,6 +82,7 @@ hitbox() {
 }
 
 yt() {
+    pushd ~/play
     local vid="$1"
     # can't be bothered to use substrings since they differ across bash/zsh
     if [[ "$(head -c4 <<< "$vid")" != "http" ]]; then
@@ -87,7 +90,8 @@ yt() {
     fi
     mpv --af=lavfi="[$_M_PROCESS]" \
       --audio-samplerate=44100 --audio-format=s16 \
-      --ytdl-format=22,best "$vid"
+      --ytdl-format=22,best "$@" "$vid"
+    popd
 }
 
 _nn=

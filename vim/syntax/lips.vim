@@ -198,7 +198,7 @@ syn match lipsInstruction /\<C\.UN\.[DS]\>/
 " Pseudo-instructions
 
 syn keyword lipsInstruction B BAL
-syn keyword lipsInstruction BEQZ BNEZ
+syn keyword lipsInstruction BEQZ BNEZ BEQZL BNEZL
 syn keyword lipsInstruction CL
 syn keyword lipsInstruction NOP
 syn keyword lipsInstruction NOT
@@ -219,12 +219,12 @@ syn keyword lipsInstruction SGT SGTI SGTIU SGTU
 syn keyword lipsInstruction SLE SLEI SLEIU SLEU
 syn keyword lipsInstruction SNE SNEI SNEIU SNEU
 
-syn keyword lipsInstruction BEQI
-syn keyword lipsInstruction BNEI
-syn keyword lipsInstruction BGE BGEI
-syn keyword lipsInstruction BLE BLEI
-syn keyword lipsInstruction BLT BLTI
-syn keyword lipsInstruction BGT BGTI
+syn keyword lipsInstruction BEQI BEQIL
+syn keyword lipsInstruction BNEI BNEIL
+syn keyword lipsInstruction BGE BGEI BGEIL
+syn keyword lipsInstruction BLE BLEI BLEIL
+syn keyword lipsInstruction BLT BLTI BLTIL
+syn keyword lipsInstruction BGT BGTI BGTIL
 
 hi def link lipsComment     Comment
 hi def link lipsNumber      Number

@@ -1,7 +1,7 @@
 " Vim syn file
 " Language: lips assembly
 " Maintainer:   notwa
-" Last Change:  2016-01-05
+" Last Change:  2016-04-07
 
 if version < 600
   syntax clear
@@ -15,6 +15,8 @@ syn region lipsString start=/"/ skip=/\\"/ end=/"/
 syn region lipsComment start="/\*" end="\*/"
 syn match lipsComment /\(\/\/\|;\).*/
 
+syn sync ccomment lipsComment
+
 syn match lipsNumber /\<[+-]\?\d\+\>/ " Decimal numbers
 syn match lipsNumber /\<[+-]\?0x[0-9a-f]\+\>/ " Hex numbers
 syn match lipsNumber /\<[+-]\?0[0-7]\+\>/ " Octal numbers
@@ -26,18 +28,26 @@ syn match lipsDefine /\[[a-z0-9_]\+\]:/ contains=lipsColon
 syn match lipsDefine /@[a-z0-9_]\+/
 
 " Registers
-syn keyword lipsRegister r0
+syn keyword lipsRegister zero
 syn keyword lipsRegister v0 v1
 syn keyword lipsRegister a0 a1 a2 a3
 syn keyword lipsRegister t0 t1 t2 t3 t4 t5 t6 t7 t8 t9
 syn keyword lipsRegister s0 s1 s2 s3 s4 s5 s6 s7
+syn keyword lipsRegister at
 syn keyword lipsRegister k0 k1
 syn keyword lipsRegister gp sp fp
 syn keyword lipsRegister ra
 
 " Register aliases
-syn keyword lipsRegister zero
 syn keyword lipsRegister s8
+
+" Register numeric aliases and FPU registers
+let i = 0
+while i < 32
+    execute 'syn keyword lipsRegister r'.i
+    execute 'syn keyword lipsRegister f'.i
+    let i = i + 1
+endwhile
 
 " Coprocessor 0 registers
 syn keyword lipsRegister index     random    entrylo0  entrylo1
@@ -49,31 +59,33 @@ syn keyword lipsRegister xcontext  reserved1 reserved2 reserved3
 syn keyword lipsRegister reserved4 reserved5 perr      cacheerr
 syn keyword lipsRegister taglo     taghi     errorepc  reserved6
 
-" Register numeric aliases and FPU registers
-let i = 0
-while i < 32
-    execute 'syn keyword lipsRegister r'.i
-    execute 'syn keyword lipsRegister f'.i
-    let i = i + 1
-endwhile
-
 " Directives
 syn match lipsDirective "\.align\>"
 syn match lipsDirective "\.skip\>"
 syn match lipsDirective "\.ascii\>"
 syn match lipsDirective "\.asciiz\>"
 syn match lipsDirective "\.byte\>"
-syn match lipsDirective "\.halfword\>"
+syn match lipsDirective "\.half\(word\)\?\>"
 syn match lipsDirective "\.word\>"
 syn match lipsDirective "\.float\>"
-syn match lipsDirective "\.hex\>"
 syn match lipsDirective "\.inc\>"
 syn match lipsDirective "\.incasm\>"
 syn match lipsDirective "\.include\>"
 syn match lipsDirective "\.incbin\>"
 syn match lipsDirective "\.org\>"
 
+syn match lipsDirective "\<HEX\>"
+
 " Instructions
+
+" Handle a bunch of stuff at once so vim doesn't get confused
+syn match lipsInstruction /\<ADD\(IU\|[IU]\|\.[SD]\)\?\>/
+syn match lipsInstruction /\<SUB\(IU\|[IU]\|\.[SD]\)\?\>/
+syn match lipsInstruction /\<ABS\(\.[SD]\)\?\>/
+syn match lipsInstruction /\<MOV\(\.[SD]\)\?\>/
+syn match lipsInstruction /\<MUL\(\.[SD]\)\?\>/
+syn match lipsInstruction /\<NEG\(\.[SD]\)\?\>/
+syn match lipsInstruction /\<DIV\(\.[DS]\)\?\>/
 
 syn keyword lipsInstruction LB LBU
 syn keyword lipsInstruction LD
@@ -92,7 +104,6 @@ syn keyword lipsInstruction SH
 syn keyword lipsInstruction SW
 syn keyword lipsInstruction SWL SWR
 
-syn keyword lipsInstruction ADD ADDI ADDIU ADDU
 syn keyword lipsInstruction AND ANDI
 syn keyword lipsInstruction MULT MULTU
 syn keyword lipsInstruction NOR
@@ -100,12 +111,11 @@ syn keyword lipsInstruction OR ORI
 syn keyword lipsInstruction SLL SLLV
 syn keyword lipsInstruction SRA SRAV
 syn keyword lipsInstruction SRL SRLV
-syn keyword lipsInstruction SUB SUBU
 syn keyword lipsInstruction XOR XORI
 
 syn keyword lipsInstruction DADD DADDI DADDIU DADDU
 syn keyword lipsInstruction DDIV DDIVU
-syn keyword lipsInstruction DIV DIVU
+syn keyword lipsInstruction DIVU
 syn keyword lipsInstruction DMULT DMULTU
 syn keyword lipsInstruction DSLL DSLL32 DSLLV
 syn keyword lipsInstruction DSRA DSRA32 DSRAV
@@ -151,14 +161,7 @@ syn keyword lipsInstruction TLBWI TLBWR
 syn keyword lipsInstruction TLT TLTI TLTIU TLTU
 syn keyword lipsInstruction TNE TNEI
 
-syn match lipsInstruction /\<ABS\.[DS]\>/
-syn match lipsInstruction /\<ADD\.[DS]\>/
-syn match lipsInstruction /\<DIV\.[DS]\>/
-syn match lipsInstruction /\<MOV\.[DS]\>/
-syn match lipsInstruction /\<MUL\.[DS]\>/
-syn match lipsInstruction /\<NEG\.[DS]\>/
 syn match lipsInstruction /\<SQRT\.[DS]\>/
-syn match lipsInstruction /\<SUB\.[DS]\>/
 
 syn match lipsInstruction /\<CVT\.D\.[LSW]\>/
 syn match lipsInstruction /\<CVT\.L\.[DS]\>/
@@ -196,19 +199,14 @@ syn match lipsInstruction /\<C\.UN\.[DS]\>/
 syn keyword lipsInstruction B BAL
 syn keyword lipsInstruction BEQZ BNEZ
 syn keyword lipsInstruction CL
-syn keyword lipsInstruction MOV
-syn keyword lipsInstruction NEG
 syn keyword lipsInstruction NOP
 syn keyword lipsInstruction NOT
-syn keyword lipsInstruction SUBI SUBIU
 
 syn keyword lipsInstruction LI LA
 
 syn keyword lipsInstruction PUSH
 syn keyword lipsInstruction POP JPOP
 
-syn keyword lipsInstruction ABS
-syn keyword lipsInstruction MUL
 syn keyword lipsInstruction REM
 syn keyword lipsInstruction NAND NANDI
 syn keyword lipsInstruction NORI

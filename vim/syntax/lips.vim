@@ -62,6 +62,7 @@ syn keyword lipsRegister taglo     taghi     errorepc  reserved6
 " Directives
 syn match lipsDirective "\.align\>"
 syn match lipsDirective "\.skip\>"
+syn match lipsDirective "\.space\>"
 syn match lipsDirective "\.ascii\>"
 syn match lipsDirective "\.asciiz\>"
 syn match lipsDirective "\.byte\>"

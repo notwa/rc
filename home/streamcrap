@@ -44,10 +44,10 @@ watchstream1() {
     _mpv_flags
     if [ -n "$ZSH_VERSION" ]; then
         # zsh syntax
-        mpv $=REPLY "$url"
+        mpv $=REPLY "$@" "$url"
     else
         # bash syntax
-        mpv $REPLY "$url"
+        mpv $REPLY "$@" "$url"
     fi
 }
 

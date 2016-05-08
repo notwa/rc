@@ -10,7 +10,7 @@ _M_PRE_EMPH='equalizer=f=50.0:g=-10:width_type=o:w=4,equalizer=f=5000:g=+05:widt
 _M_POST_EMPH='equalizer=f=50.0:g=+10:width_type=o:w=4,equalizer=f=5000:g=-05:width_type=o:w=4'
 _M_COMPRESS='compand=0.001|0.001:0.25|0.25:-42/-42|0/-21:6:18:-30:0.001'
 _M_LIMIT='compand=0.000|0.000:0.10|0.10:-9/-9|0/-6.:3:4.5:-9'
-_M_COMPRESS_SOFT='acompressor=threshold=0.01:ratio=1.667:attack=50:release=4000:makeup=6.7:knee=8:mix=0.67'
+_M_COMPRESS_SOFT='acompressor=threshold=0.01:ratio=1.667:attack=50:release=3200:makeup=6.7:knee=8:mix=0.67'
 _M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
 
 getladspa() {
@@ -52,7 +52,7 @@ watchstream1() {
 }
 
 watchstream2() {
-    pushd ~/play
+    pushd ~/play >/dev/null
     local url="$1"
     shift
     _mpv_flags
@@ -65,7 +65,7 @@ watchstream2() {
         livestreamer "$url" "$@" -p mpv $LIVESTREAMER_FLAGS -a \
           "$REPLY {filename}"
     fi
-    popd
+    popd >/dev/null
 }
 
 alias watchstream=watchstream1
@@ -83,7 +83,7 @@ hitbox() {
 }
 
 yt() {
-    pushd ~/play
+    pushd ~/play >/dev/null
     local vid="$1"
     # can't be bothered to use substrings since they differ across bash/zsh
     if [[ "$(head -c4 <<< "$vid")" != "http" ]]; then
@@ -92,7 +92,7 @@ yt() {
     mpv --af=lavfi="[$_M_PROCESS]" \
       --audio-samplerate=44100 --audio-format=s16 \
       --ytdl-format=22,best "$@" "$vid"
-    popd
+    popd >/dev/null
 }
 
 _nn=

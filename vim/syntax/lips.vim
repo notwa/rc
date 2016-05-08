@@ -1,7 +1,7 @@
 " Vim syn file
 " Language: lips assembly
 " Maintainer:   notwa
-" Last Change:  2016-04-07
+" Last Change:  2016-05-08
 
 if version < 600
   syntax clear
@@ -17,9 +17,14 @@ syn match lipsComment /\(\/\/\|;\).*/
 
 syn sync ccomment lipsComment
 
-syn match lipsNumber /\<[+-]\?\d\+\>/ " Decimal numbers
-syn match lipsNumber /\<[+-]\?0x[0-9a-f]\+\>/ " Hex numbers
-syn match lipsNumber /\<[+-]\?0[0-7]\+\>/ " Octal numbers
+" Decimal numbers
+syn match lipsNumber /\<[+-]\?#\?\d\+\>/
+" Hex numbers
+syn match lipsNumber /\<[+-]\?\(0x\|$\)[0-9a-f]\+\>/
+" Octal numbers
+syn match lipsNumber /\<[+-]\?0o\?[0-7]\+\>/
+" Binary numbers
+syn match lipsNumber /\<[+-]\?\(0b\|%\)[0-9a-f]\+\>/
 
 syn match lipsColon  /:/ contained
 syn match lipsLabel  /[a-z_][a-z0-9_]*:/ contains=lipsColon
@@ -66,14 +71,19 @@ syn match lipsDirective "\.space\>"
 syn match lipsDirective "\.ascii\>"
 syn match lipsDirective "\.asciiz\>"
 syn match lipsDirective "\.byte\>"
-syn match lipsDirective "\.half\(word\)\?\>"
+syn match lipsDirective "\.half\>"
+syn match lipsDirective "\.halfword\>"
 syn match lipsDirective "\.word\>"
 syn match lipsDirective "\.float\>"
+syn match lipsDirective "\.double\>"
 syn match lipsDirective "\.inc\>"
 syn match lipsDirective "\.incasm\>"
 syn match lipsDirective "\.include\>"
 syn match lipsDirective "\.incbin\>"
 syn match lipsDirective "\.org\>"
+syn match lipsDirective "\.base\>"
+syn match lipsDirective "\.push\>"
+syn match lipsDirective "\.pop\>"
 
 syn match lipsDirective "\<HEX\>"
 
@@ -200,15 +210,20 @@ syn match lipsInstruction /\<C\.UN\.[DS]\>/
 syn keyword lipsInstruction B BAL
 syn keyword lipsInstruction BEQZ BNEZ BEQZL BNEZL
 syn keyword lipsInstruction CL
+syn keyword lipsInstruction MOV DMOV
+syn keyword lipsInstruction NEG NEGU
 syn keyword lipsInstruction NOP
 syn keyword lipsInstruction NOT
+syn keyword lipsInstruction SUBI SUBIU
+
+syn match lipsInstruction /\<[LS]\.[DS]\>/
 
 syn keyword lipsInstruction LI LA
 
 syn keyword lipsInstruction PUSH
 syn keyword lipsInstruction POP JPOP
 
-syn keyword lipsInstruction REM
+syn keyword lipsInstruction ABS MUL REM
 syn keyword lipsInstruction NAND NANDI
 syn keyword lipsInstruction NORI
 syn keyword lipsInstruction ROL ROR
@@ -219,12 +234,14 @@ syn keyword lipsInstruction SGT SGTI SGTIU SGTU
 syn keyword lipsInstruction SLE SLEI SLEIU SLEU
 syn keyword lipsInstruction SNE SNEI SNEIU SNEU
 
-syn keyword lipsInstruction BEQI BEQIL
-syn keyword lipsInstruction BNEI BNEIL
-syn keyword lipsInstruction BGE BGEI BGEIL
-syn keyword lipsInstruction BLE BLEI BLEIL
-syn keyword lipsInstruction BLT BLTI BLTIL
-syn keyword lipsInstruction BGT BGTI BGTIL
+syn keyword lipsInstruction BGE BLE BLT BGT
+
+syn keyword lipsInstruction BEQI BEQIU BEQIL BEQIUL
+syn keyword lipsInstruction BNEI BNEIU BNEIL BNEIUL
+syn keyword lipsInstruction BGEI BGEIU BGEIL BGEIUL
+syn keyword lipsInstruction BLEI BLEIU BLEIL BLEIUL
+syn keyword lipsInstruction BLTI BLTIU BLTIL BLTIUL
+syn keyword lipsInstruction BGTI BGTIU BGTIL BGTIUL
 
 hi def link lipsComment     Comment
 hi def link lipsNumber      Number

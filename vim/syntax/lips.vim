@@ -176,7 +176,7 @@ syn match lipsInstruction /\<SQRT\.[DS]\>/
 
 syn match lipsInstruction /\<CVT\.D\.[LSW]\>/
 syn match lipsInstruction /\<CVT\.L\.[DS]\>/
-syn match lipsInstruction /\<CVT\.S\.[DSW]\>/
+syn match lipsInstruction /\<CVT\.S\.[DLW]\>/
 syn match lipsInstruction /\<CVT\.W\.[DS]\>/
 
 syn match lipsInstruction /\<CEIL\.L\.[DS]\>/
@@ -210,8 +210,8 @@ syn match lipsInstruction /\<C\.UN\.[DS]\>/
 syn keyword lipsInstruction B BAL
 syn keyword lipsInstruction BEQZ BNEZ BEQZL BNEZL
 syn keyword lipsInstruction CL
-syn keyword lipsInstruction MOV DMOV
-syn keyword lipsInstruction NEG NEGU
+syn keyword lipsInstruction DMOV
+syn keyword lipsInstruction NEGU
 syn keyword lipsInstruction NOP
 syn keyword lipsInstruction NOT
 syn keyword lipsInstruction SUBI SUBIU
@@ -221,9 +221,10 @@ syn match lipsInstruction /\<[LS]\.[DS]\>/
 syn keyword lipsInstruction LI LA
 
 syn keyword lipsInstruction PUSH
-syn keyword lipsInstruction POP JPOP
+syn keyword lipsInstruction POP JPOP RET
+syn keyword lipsInstruction CALL
 
-syn keyword lipsInstruction ABS MUL REM
+syn keyword lipsInstruction REM
 syn keyword lipsInstruction NAND NANDI
 syn keyword lipsInstruction NORI
 syn keyword lipsInstruction ROL ROR

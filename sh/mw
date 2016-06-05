@@ -4,6 +4,8 @@ mkdir -p ~/opt/mingw
 _mw_enabled=0
 _mw_host32=i686-w64-mingw32.static
 _mw_host64=x86_64-w64-mingw32.static
+#_mw_hostmips=mips-linux-gnu
+_mw_hostmips=mips-unknown-elf
 
 if [[ "$(uname -m)" == armv7l ]]; then
     _mw_hostarm=./
@@ -27,7 +29,7 @@ mw-disable() {
 
     local e=
     for e in PATH PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS \
-      AR RANLIB RC WINDRES OBJCOPY COMPILER_PATH SDL_CFLAGS SDL_LDLIBS; do
+      AR RANLIB RC WINDRES OBJDUMP OBJCOPY COMPILER_PATH SDL_CFLAGS SDL_LDLIBS; do
         local v="${_mw_[$e]}"
         [ -n "$v" ] && export "$e=$v" || unset "$e"
     done
@@ -39,10 +41,13 @@ mw-enable() {
     _mw_enabled=1
 
     _mw_host=${1:-$_mw_host}
-    _mw_usr=${2:-/usr}
-
-    local _mw_misc=$_mw_usr/$_mw_host
-    local _mw_bin=$_mw_usr/bin
+    if [ -n "$2" ]; then
+        local _mw_misc=$2/$_mw_host
+        local _mw_bin=$2/bin
+    else
+        local _mw_misc=/usr
+        local _mw_bin=/usr/bin
+    fi
 
     local _mw_prefix=~/opt/$_mw_host
     mkdir -p "$_mw_prefix"
@@ -51,7 +56,8 @@ mw-enable() {
     [ -d "$tmp" ] || tmp+='-'
 
     set -- CC gcc CXX g++ CPP cpp LD ld AR ar \
-      RANLIB ranlib RC windres WINDRES windres OBJCOPY objcopy
+      RANLIB ranlib RC windres WINDRES windres \
+      OBJDUMP objdump OBJCOPY objcopy
     while _mw_export "$1" "$tmp$2"; do
         shift 2
     done
@@ -84,6 +90,12 @@ mw() {
             mw-enable $_mw_host64 ~/src/mxe/usr
             export CFLAGS="-mwin32 $CFLAGS"
             export CXXFLAGS="$CFLAGS"
+        elif [[ "$1" == mips ]]; then
+            mw-enable $_mw_hostmips ~/opt/$_mw_hostmips
+            export CC="$_mw_hostmips-gcc"
+            export CXX="$_mw_hostmips-g++"
+            export CFLAGS="-Os -I $HOME/opt/mips-linux-gnu/include"
+            export LDFLAGS="-L $HOME/opt/mips-unknown-elf/mips-unknown-elf/lib -L $HOME/opt/mips-unknown-elf/mips-unknown-elf/lib"
         elif [[ "$1" == 32c ]]; then
             mw-enable $_mw_host32 ~/src/mxe/usr
             export CC="$_mw_host32-clang"

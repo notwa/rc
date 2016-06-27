@@ -165,7 +165,7 @@ set tabstop=8 shiftwidth=4 expandtab softtabstop=4
 if has('autocmd')
     augroup tabs
         au!
-        au BufRead,BufNewFile *.c,*.h,*.cpp,*.hpp,*.cc,*.hh call TabEight()
+"       au BufRead,BufNewFile *.c,*.h,*.cpp,*.hpp,*.cc,*.hh call TabEight()
         au BufRead,BufNewFile PKGBUILD call TabTwo()
         au FileType ruby call TabTwo()
         au BufRead,BufNewFile *.bt,*.1sc call TabFour()

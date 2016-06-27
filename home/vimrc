@@ -471,6 +471,6 @@ let g:airline#extensions#whitespace#mixed_indent_format = '‼ %s'
 " machine-specific configs {{{1
 
 let s:hostname = hostname()
-if s:hostname == "phantom-pi"
+if s:hostname == "phantom-pi" || s:hostname == "wraith"
     colo Tomorrow-Night
 endif

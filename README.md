@@ -5,7 +5,7 @@ _(plus some little shell scripts)_
 there's probably a lot of subtle things gone uncredited,
 but oh well.
 
-## commands defined RC files
+## stuff defined in RC files
 
 such as [.bashrc](/home/bashrc) and [.zshrc](/home/zshrc)
 but mostly [-shrc](/home/-shrc) and [.streamcrap](/home/streamcrap)
@@ -241,7 +241,7 @@ nay
 
 ### [logs](/sh/logs)
 
-(bash/zsh) just wraps around journalctl. i don't remember how it works exactly.
+(bash/zsh) just wraps around `journalctl`. i don't remember how it works exactly.
 
 ### [lol-twitter](/sh/lol-twitter)
 

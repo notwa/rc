@@ -1,6 +1,6 @@
 #!/bin/zsh
 # crontab usage:
-#* * * * * minutemaid 9 cd repo; git pull # runs every nine minutes
+#* * * * * minutemaid 9 cd repo && git pull # runs every nine minutes
 
 local offset=0 opt=
 while getopts 'o:h' opt; do

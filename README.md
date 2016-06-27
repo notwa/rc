@@ -32,7 +32,7 @@ $ hex 0x221EA8-0x212020
 
 (bash) downloads, edits, makes, and installs packages from the [AUR.](//aur.archlinux.org)
 
-a little broken.
+it's a little broken.
 
 ```
 $ aur -eyoI cmdpack-uips applyppf
@@ -65,6 +65,15 @@ a 76-character script!
 ### [confirm](/sh/confirm)
 
 (bash/zsh) displays a simple yes/no prompt and returns 0 or 1 respectively.
+
+```
+$ confirm && echo yay || echo nay
+Continue? [y/N] y
+yay
+$ confirm && echo yay || echo nay
+Continue? [y/N] n
+nay
+```
 
 ### [days](/sh/days)
 
@@ -134,12 +143,14 @@ includes autocomplete files.
 ### [lsz](/sh/lsz)
 
 (zsh) a needlessly fancy alternative to `ls`.
+
 based on lsf or something, which might be [a gist somewhere.](//gist.github.com/notwa)
-you can find similar, more mature projects on github.
+you can find [similar, more mature projects on github.](//github.com/trapd00r/ls--)
 
 ### [minutemaid](/sh/minutemaid)
 
 (zsh) returns 0 if the current minute is divisible by a number.
+
 note that a minute is relative to the seconds since the epoch,
 not the minute of the hour.
 
@@ -194,7 +205,7 @@ written by Benjamin Boudreau and Sorin Ionescu.
 
 ### [pause](/sh/pause)
 
-(bash/zsh) pause; the companion script of confirm.
+(bash/zsh) pause; the companion script of `confirm`.
 
 ```
 $ pause
@@ -204,7 +215,7 @@ $
 
 ### [pre](/sh/pre)
 
-(bash/zsh) dumps all the #defines that your current C compiler, $CFLAGS and $LDFLAGS will result in.
+(bash/zsh) dumps all the #defines that `$CC $CFLAGS $LDFLAGS` would result in.
 
 ```
 $ pre | shuf | head -10
@@ -225,7 +236,7 @@ $ pre | shuf | head -10
 (sh) lists processes by their memory usage, and the sum, ascending.
 
 ```
-$ psbm | head -n -1 | tail -2                                                  5336
+$ psbm | head -n -1 | tail -2
   155.91M     795 chromium
   171.04M     832 chromium
 ```
@@ -263,7 +274,7 @@ e.g. run znc as user znc in a screen called znc: `screeny znc znc znc -f`. znc!
 
 ### [scropt](/sh/scropt)
 
-(bash) run scrot through optipng and save to `~/play/$(now).png`.
+(bash) runs `scrot` through `optipng` and save to `~/play/$(now).png`.
 
 ```
 $ ~/sh/sc $(~/sh/scropt -s -d0.5)
@@ -271,15 +282,15 @@ $ ~/sh/sc $(~/sh/scropt -s -d0.5)
 
 ### [similar](/sh/similar)
 
-(sh) sort stdin and color similarities between adjacent lines. kinda broken.
+(sh) sorts stdin and colors similarities between adjacent lines. kinda broken.
 
 ### [slit](/sh/slit)
 
-(zsh) view specific columns of text.
+(zsh) views specific columns of text.
 via [pretzo.](https://github.com/sorin-ionescu/prezto/)
 
 ```
-$ df | slit 1 5                                                                5353
+$ df | slit 1 5
 Filesystem Use%
 dev 0%
 run 1%
@@ -321,7 +332,7 @@ $ unwrap /usr/share/licenses/common/GPL3/license.txt | trunc | head
 
 probably horribly outdated
 
-### [meow.sh](//github.com/notwa/meow.sh/)
+### [meow.sh](//github.com/notwa/meow.sh)
 
 scrapes and downloads nyaa torrents.
 

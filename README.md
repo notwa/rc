@@ -7,9 +7,123 @@ but oh well.
 
 ## commands defined RC files
 
-such as [.bashrc](/home/bashrc) [.zshrc](/home/zshrc) and [-shrc](/home/-shrc)
+such as [.bashrc](/home/bashrc) and [.zshrc](/home/zshrc)
+but mostly [-shrc](/home/-shrc) and [.streamcrap](/home/streamcrap)
 
-### TODO
+### reload
+
+exec's the current shell.
+if it's `zsh`, it'll recompile `.zshrc` so everything actually reloads.
+
+### ADDPATH
+
+adds a directory to `$PATH` if it isn't already there.
+
+### ify
+
+pipes a command through another command, so you can pass arguments at the end as usual.
+
+this is mainly useful for aliases. 99% of the time you'll use this with `less`.
+
+```
+$ alias ll="ify less ls -ACX --group-directories-first --color=force"
+$ ll /etc
+```
+
+### has
+
+prints the result of `which` if the program is found, or shuts up and returns 1.
+
+```
+export CC="$(has clang || has clang-3.6 || has gcc)"
+```
+
+### revend
+
+reverses the 4-byte endianness of a file. this is an in-place operation!
+
+### exts
+
+prints and sorts the most used file extensions in the CWD.
+
+### freq
+
+prints the most frequently used commands found in `~/.histfile`.
+arguments are passed to `head`.
+
+```
+$ freq
+    507 ls
+    349 sudo
+    308 git
+    268 less
+    259 e
+    208 luajit
+    188 :
+    185 twitch
+    138 th
+    131 z
+```
+
+that `:` is probably something i should fix.
+
+### nocom
+
+strips lines that begin with a `#` character.
+
+### jrep
+
+extracts ascii and japanese unicode characters.
+
+### bomb
+
+adds a Byte Order Mark to a file.
+
+### cleanse
+
+extracts readable ascii characters.
+
+### rot13
+
+rot13 with rotated numbers as well.
+
+### unwrap
+
+unwraps text that was wrapped using double-newlines as spacing,
+e.g. this readme file.
+
+### picky + unused
+
+attempts to print non-standard packages that were installed on an arch linux box,
+so you can reinstall them later on a fresh installation.
+
+`unused` will print unused packages instead.
+
+seems to be broken since the functionality of `tee -` changed.
+
+### makepkgf + rakef
+
+make the freakin' package!
+
+### trash
+
+given a number of bytes, outputs binary garbage from `/dev/random`.
+
+### yt
+
+watches a youtube video through mpv with a bunch of audio filtering crap.
+
+can be given a full URL or just a video ID.
+remaining arguments are passed to mpv.
+
+### twitch + hitbox
+
+watches twitch/hitbox streams through mpv with a bunch of audio filtering crap.
+
+give it a username.
+remaining arguments are passed to mpv.
+
+run `alias watchstream=watchstream2` to use `livestreamer` if `youtube-dl` is acting up.
 
 ## shell scripts
 
@@ -22,7 +136,7 @@ but probably depends on GNU awk.
 (zsh) does arithmetic using the shell.
 
 ```
-$ arith 10**(6/20.)
+$ noglob arith 10**(6/20.)
 1.9952623149688795
 $ hex 0x221EA8-0x212020
 0000FE88
@@ -274,7 +388,7 @@ e.g. run znc as user znc in a screen called znc: `screeny znc znc znc -f`. znc!
 
 ### [scropt](/sh/scropt)
 
-(bash) runs `scrot` through `optipng` and save to `~/play/$(now).png`.
+(bash) runs `scrot` through `optipng` and saves to `~/play/$(now).png`.
 
 ```
 $ ~/sh/sc $(~/sh/scropt -s -d0.5)

@@ -17,13 +17,15 @@ most (but not all) stuff that's written for bash will work in zsh too.
 if it just says `(sh)` then it'll probably work on anything,
 but probably depends on GNU awk.
 
-### [arith](/sh/arith)
+### [arith](/sh/arith) + [hex](/sh/hex)
 
-(zsh) does arithmetic using shell expansion.
+(zsh) does arithmetic using the shell.
 
 ```
 $ arith 10**(6/20.)
 1.9952623149688795
+$ hex 0x221EA8-0x212020
+0000FE88
 ```
 
 ### [aur](/sh/aur)
@@ -98,15 +100,6 @@ $ e /etc/sudoers
 ### [gitall](/sh/gitall)
 
 (zsh) asks you to update most of the git repos it finds. i don't really use this.
-
-### [hex](/sh/hex)
-
-(zsh) same as `arith` but outputs as `%08X`.
-
-```
-$ hex 0x221EA8-0x212020
-0000FE88
-```
 
 ### [is\_empty](/sh/is_empty)
 

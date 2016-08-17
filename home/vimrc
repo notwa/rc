@@ -103,6 +103,7 @@ set nobomb                            " bombs are bad ok
 set undofile                          " remember undos across files/sessions
 set diffopt+=iwhite                   " ignore whitespace in diff command
 set ttimeoutlen=50                    " make changing modes a bit snappier
+set hidden                            " allow swapping out of unsaved buffers
 if has('mksession')
     set sessionoptions=blank,buffers,curdir,options,folds,tabpages,winsize,resize,winpos
 end
@@ -165,7 +166,7 @@ set tabstop=8 shiftwidth=4 expandtab softtabstop=4
 if has('autocmd')
     augroup tabs
         au!
-        au BufRead,BufNewFile *.c,*.h,*.cpp,*.hpp,*.cc,*.hh call TabEight()
+"       au BufRead,BufNewFile *.c,*.h,*.cpp,*.hpp,*.cc,*.hh call TabEight()
         au BufRead,BufNewFile PKGBUILD call TabTwo()
         au FileType ruby call TabTwo()
         au BufRead,BufNewFile *.bt,*.1sc call TabFour()
@@ -471,6 +472,6 @@ let g:airline#extensions#whitespace#mixed_indent_format = '‼ %s'
 " machine-specific configs {{{1
 
 let s:hostname = hostname()
-if s:hostname == "phantom-pi"
+if s:hostname == "phantom-pi" || s:hostname == "wraith"
     colo Tomorrow-Night
 endif

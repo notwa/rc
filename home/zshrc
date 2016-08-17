@@ -156,3 +156,6 @@ reload() {
 }
 
 unset x
+
+[ -e "/home/$USER/opt/local/bin/torch-activate" ] && \
+   . "/home/$USER/opt/local/bin/torch-activate"

@@ -1,7 +1,7 @@
 #!/bin/zsh
 # awful things
 
-MPV_STREAM_FLAGS="--quiet --no-sub --loop=force --cache-secs=10 --cache-initial=1024 --cache-pause --cache-backbuffer=0 --cache-seek-min=2048"
+MPV_STREAM_FLAGS="--quiet --no-resume-playback --no-sub --no-initial-audio-sync --mc=0.02 --autosync=30 --cache-secs=10 --cache-initial=1024 --cache-pause --cache-backbuffer=0 --cache-seek-min=2048"
 LIVESTREAMER_FLAGS="--player-http --player-continuous-http --default-stream=source,best"
 LIVESTREAMER_FLAGS+=" --player-passthrough=http --player-no-close"
 

@@ -123,6 +123,7 @@ bindkey '^Xe' edit-command-line # ctrl+x -> e
 
 alias -g OMFG="1>/dev/null"
 alias -g STFU="2>/dev/null"
+alias -g WHOA='${whoa[@]}'
 
 for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
     alias $x="nocorrect $x"

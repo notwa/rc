@@ -83,6 +83,23 @@ alias gd='git diff -U2'
 alias gds='git --no-pager diff --stat'
 alias gl='git log --oneline'
 
+whoa=(
+    -fdiagnostics-color=always
+    -Wall
+    -Wextra
+    -Werror=implicit-function-declaration
+    -Winline
+    -Wshadow
+
+    -Wno-unused
+    -Wno-padded
+    -Wno-missing-field-initializers
+    -Wno-misleading-indentation # gcc 6
+    -Wno-disabled-macro-expansion # clang
+    -Wno-language-extension-token # clang
+    -Wno-unknown-warning-option # clang
+)
+
 # being specific
 alias pip="sudo -H pip3"
 alias irc="screen -dR irc irssi"

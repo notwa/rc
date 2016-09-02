@@ -88,6 +88,7 @@ whoa=(
     -Wall
     -Wextra
     -Werror=implicit-function-declaration
+    -Werror=uninitialized
     -Winline
     -Wshadow
 

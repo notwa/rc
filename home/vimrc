@@ -273,6 +273,9 @@ nn <bar> <c-]>
 " delete line
 "nn D dd
 
+" execute vim code in visual selection
+vmap <space> "xy:@x<CR>
+
 " this frees up x and X for use if you like
 set <s-Del>=[3;2~
 Inn <s-Del> X

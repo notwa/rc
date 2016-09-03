@@ -95,6 +95,7 @@ whoa=(
     -Wno-unused
     -Wno-padded
     -Wno-missing-field-initializers
+    -Wno-type-limits # should disable with pragma but this will do for now
     -Wno-misleading-indentation # gcc 6
     -Wno-disabled-macro-expansion # clang
     -Wno-language-extension-token # clang

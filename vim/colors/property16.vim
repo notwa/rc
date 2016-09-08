@@ -44,7 +44,7 @@ call <SID>X("Search",        s:k,  s:Y) " good
 call <SID>X("VertSplit",     s:K,  s:K) " good
 call <SID>X("Folded",        s:K,  s:k) " good
 ",
-call <SID>X("Error",         s:R,  "")
+call <SID>X("Error",         s:k,  s:R)
 call <SID>X("Exception",     s:R,  "") " ???
 call <SID>X("ErrorMsg",      s:k,  s:R)
 call <SID>X("TabLineSel",    s:k,  s:Y) " okay

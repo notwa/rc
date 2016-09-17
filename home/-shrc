@@ -89,8 +89,8 @@ whoa=(
     -Wextra
     -Werror=implicit-function-declaration
     -Werror=uninitialized
-    -Winline
-    -Wshadow
+#   -Winline # only for C
+#   -Wshadow # only for C
 
     -Wno-unused
     -Wno-padded
@@ -113,6 +113,9 @@ alias clone='sudo rsync -aHA --info=progress2'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
 alias ll="ify less ls -ACX --group-directories-first --color=force"
+alias ml='PATH=${PATH/*\/usr\/bin:/} /cygdrive/c/Miniconda3/envs/*/python -u'
+alias chell='PATH=${PATH/*\/usr\/bin:/} gcc WHOA -std=gnu11 -static-libgcc -static -I/cygwin/home/notwa/opt/local/include -s -Ofast'
+alias hell='PATH=${PATH/*\/usr\/bin:/} g++ WHOA -std=gnu++17 -static-libgcc -static-libstdc++ -static -I/cygwin/home/notwa/opt/local/include -s -Ofast'
 
 # providing extra functionality
 alias counts='find . | wc -l'

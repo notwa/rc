@@ -45,7 +45,7 @@ call <SID>X("VertSplit",     s:K,  s:K) " good
 call <SID>X("Folded",        s:K,  s:k) " good
 ",
 call <SID>X("Error",         s:k,  s:R)
-call <SID>X("Exception",     s:R,  "") " ???
+call <SID>X("Exception",     s:y,  "") " C++ exceptions, i think
 call <SID>X("ErrorMsg",      s:k,  s:R)
 call <SID>X("TabLineSel",    s:k,  s:Y) " okay
 call <SID>X("Visual",        s:k,  s:C) " okay
@@ -93,6 +93,8 @@ call <SID>X("Keyword",       s:b,  "")
 call <SID>X("Define",        s:b,  "")
 call <SID>X("Include",       s:b,  "")
 call <SID>X("Typedef",       s:b,  "")
+"
+call <SID>X("Something",     s:g,  "")
 
 " TODO: Vim editor colors
 "Conceal"
@@ -158,6 +160,8 @@ delf <SID>X
 "cStorageClass"
 "cType"
 "cUserLabel"
+" (polyglot)
+hi link cCustomFunc Something
 
 " C++ highlighting
 "cppExceptions"

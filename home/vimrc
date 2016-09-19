@@ -405,6 +405,10 @@ augroup DefaultWin
     au VimEnter * call DefaultWin()
 augroup END
 
+" polyglot {{{1
+
+let c_gnu=1
+
 " airline {{{1
 
 if has('gui_running')

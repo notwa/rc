@@ -137,7 +137,7 @@ alias rakef='rake && gem build *.gemspec && gem install *.gem'
 #
 alias profile="CPUPROFILE=./a.pprof LD_PRELOAD=/usr/lib/libprofiler.so"
 
-function trash() {
+trash() {
     dd status=none if=/dev/random bs=1 count="$1"
 }
 

@@ -125,7 +125,13 @@ alias -g OMFG="1>/dev/null"
 alias -g STFU="2>/dev/null"
 alias -g WHOA='${whoa[@]}'
 
-alias sc="$HOME/sh/sc"
+wipe() {
+    clear
+    clear # twice because mintty is weird
+    echo "\e[30m\e[107m"
+    printf "*%.0s" {1..$COLUMNS}
+    echo "\e[0m\n"
+}
 
 for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
     alias $x="nocorrect $x"

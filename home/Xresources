@@ -1,5 +1,5 @@
 UXTerm*faceName: Ubuntu Mono:size=11
-UXTerm*VT100.geometry: 84x36
+UXTerm*VT100.geometry: 84x56
 UXTerm*internalBorder: 0
 UXTerm*borderWidth: 0
 UXTerm*toolBar: false
@@ -7,7 +7,7 @@ UXTerm*toolBar: false
 UXTerm*locale: true
 UXTerm*metaSendsEscape: true
 
-! this doesn't work
+! this doesnt work
 XTerm*vt100.translations: #override \n\
     Ctrl <KeyPress> Insert:copy-selection(SELECT, CUT_BUFFER0)\n
 

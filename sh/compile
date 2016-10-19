@@ -9,7 +9,14 @@ compile() {
     local sepples=0
     local CC=gcc
     local CXX=g++
-    local our_flags=(-I. "-I$HOME/src/ustl")
+    local our_flags=(-I.)
+
+    maybe_include() {
+        [ -d "$1" ] && our_flags+=("-I$1")
+    }
+    maybe_include "-I$HOME/opt/local/include"
+    maybe_include "-I$HOME/src/ustl"
+
     local debug_flags=(-O1 -g);
     local release_flags=(-Ofast -march=native -g0 -fomit-frame-pointer -s -DNDEBUG)
     local dr_flags=(-Ofast -march=native -g -fomit-frame-pointer -DNDEBUG)
@@ -29,7 +36,8 @@ compile() {
 
     { [ $1 = debug ] && our_flags+=($debug_flags) && shift } || \
     { [ $1 = release ] && our_flags+=($release_flags) && shift } || \
-    { [ $1 = derelease ] && our_flags+=($dr_flags) && shift }
+    { [ $1 = derelease ] && our_flags+=($dr_flags) && shift } || \
+    { echo "please specify either debug or (de)release" >&2; return 1 }
 
     # TODO add static option
 

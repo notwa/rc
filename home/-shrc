@@ -3,10 +3,13 @@
 
 umask 022 # don't inherit last umask. pip will break itself.
 
-hash -d e=/media/2tb/you
-hash -d c=/cygdrive/c
-hash -d win=/cygdrive/c/Users/$USER
-hash -d mm='/cygdrive/c/Program Files (x86)/mupen64plus/mm'
+[ -z "$MSYSTEM" ] && cdrive="/cygdrive/c" || cdrive="/c"
+hash -d cyg="$cdrive/cygwin/home/$USER"
+hash -d msys="$cdrive/msys64/home/$USER"
+hash -d e="/media/2tb/you"
+hash -d c="$cdrive"
+hash -d win="$cdrive/Users/$USER"
+hash -d mm="$cdrive/Program Files (x86)/mupen64plus/mm"
 
 ADDPATH() {
     new="$(readlink -f "$1")"
@@ -118,7 +121,7 @@ alias clone='sudo rsync -aHA --info=progress2'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
 alias ll="ify less ls -ACX --group-directories-first --color=force"
-alias ml='PATH=${PATH/*\/usr\/bin:/} /cygdrive/c/Miniconda3/envs/*/python -u'
+alias ml='PATH=${PATH/*\/usr\/bin:/} '"$cdrive"'/Miniconda3/envs/*/python -u'
 alias chell='PATH=${PATH/*\/usr\/bin:/} gcc WHOA -std=gnu11 -static-libgcc -static -I/cygwin/home/notwa/opt/local/include -s -Ofast'
 alias hell='PATH=${PATH/*\/usr\/bin:/} g++ WHOA -std=gnu++17 -static-libgcc -static-libstdc++ -static -I/cygwin/home/notwa/opt/local/include -s -Ofast'
 
@@ -139,12 +142,12 @@ alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
 #
 alias makepkgf='sudo -u $USER MAKEFLAGS=-j2 makepkg -Af --skipchecksums'
 alias rakef='rake && gem build *.gemspec && gem install *.gem'
-#
-alias profile="CPUPROFILE=./a.pprof LD_PRELOAD=/usr/lib/libprofiler.so"
 
 trash() {
     dd status=none if=/dev/random bs=1 count="$1"
 }
+
+unset cdrive
 
 [ -e ~/sh/z/z.sh ] && . ~/sh/z/z.sh
 . ~/.streamcrap

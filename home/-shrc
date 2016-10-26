@@ -16,6 +16,7 @@ ADDPATH() {
     grep ":$new:" <<<":$PATH:" >/dev/null || export PATH="$PATH:$new"
 }
 ADDPATH "$HOME/opt/local/bin"
+[ -n "$MSYSTEM" ] && ADDPATH "/c/path"
 
 # https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/1380084
 export SSH_AUTH_SOCK=0

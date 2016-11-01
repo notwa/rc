@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
+
 note() {
     echo -E "$@"
 }
 
-die() {
+warn() {
     echo -E "$@">&2
+}
+
+die() {
+    warn "$@"
     exit 1
 }
 
@@ -31,7 +36,7 @@ hardlink() {
     ln "$2" "$1" || die "couldn't hardlink $1"
 }
 
-softlink() {
+softlink_nix() {
     if [ -e "$1" ]; then
         if [ -h "$1" ]; then
             [ "$(readlink "$1")" == "$2" ] && return
@@ -43,6 +48,49 @@ softlink() {
     fi
 
     ln -s "$2" "$1" || die "couldn't symlink $1"
+}
+
+softlink_pseudo() {
+    [ -d "$2" ] || die "$1 is not a directory to softlink"
+
+    if [ ! -d "$1" ]; then
+        mkdir "$1" || die "couldn't mkdir $1"
+    fi
+
+    ls -A "$2" | while read -r; do
+        local d1="$1/$REPLY"
+        local d2="$2/$REPLY"
+        if [ -d "$d2" ]; then
+            softlink_pseudo "$d1" "$d2"
+        elif [ -f "$d2" ]; then
+            hardlink "$d1" "$d2"
+        else
+            die "i don't know how to pseudo-symlink $d2"
+        fi
+    done
+
+    ls -A "$1" | while read -r; do
+        local d1="$1/$REPLY"
+        local d2="$2/$REPLY"
+        if [ -d "$d2" ]; then
+            :
+        elif [ ! "$d1" -ef "$d2" ]; then
+            [ "$d1" == ".vim/swp" ] && continue
+            [ "$d1" == ".vim/undo" ] && continue
+            [ "$d1" == ".vim/.netrwhist" ] && continue
+            warn "new destination file. consider manually moving it:"
+            warn "$d1"
+        fi
+    done
+}
+
+softlink() {
+    if [ -n "$MSYSTEM" ]; then
+        # MSYS2 does not have nor emulate symbolic links.
+        softlink_pseudo "$@"
+    else
+        softlink_nix "$@"
+    fi
 }
 
 which readlink >/dev/null || exit 1

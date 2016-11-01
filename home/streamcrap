@@ -39,6 +39,7 @@ _mpv_flags() {
 }
 
 watchstream1() {
+    pushd ~/play >/dev/null
     local url="$1"
     shift
     _mpv_flags
@@ -49,6 +50,7 @@ watchstream1() {
         # bash syntax
         mpv $REPLY "$@" "$url"
     fi
+    popd >/dev/null
 }
 
 watchstream2() {

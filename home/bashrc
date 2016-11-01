@@ -28,10 +28,9 @@ ret_fail="$_title${Cfail}$_line1\n${Cfail}$_line2"
 PROMPT_COMMAND='[ $? = 0 ] && PS1=${ret_succ} || PS1=${ret_fail}'
 
 . ~/.-shrc
+unset x
 
 # this doesn't work for all scripts at the moment, but
 ADDPATH "$HOME/sh"
 
 alias reload='cd; exec bash'
-
-unset x

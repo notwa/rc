@@ -137,6 +137,7 @@ for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
     alias $x="nocorrect $x"
 for x in arith hex curl fc find ftp history let locate rsync scp sftp wget twitch hitbox yt
     alias $x="noglob $x"
+unset x
 
 if [[ "$TERM" = xterm* ]]; then
     precmd() { print -Pn "\e]2;%M: %~\a" }
@@ -163,8 +164,6 @@ reload() {
     [ -f .zcompdump.zwc.old ] && rm -f .zcompdump.zwc.old
     exec zsh # reload shell, inheriting environment
 }
-
-unset x
 
 [ -e "/home/$USER/opt/local/bin/torch-activate" ] && \
    . "/home/$USER/opt/local/bin/torch-activate"

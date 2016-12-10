@@ -37,12 +37,11 @@ ify() {
     $@ | $ex
 }
 
-has() { which "$1" >&/dev/null && which "$1"; }
+has() { which "$1" >/dev/null && which "$1"; }
 
 # cleanup in case of inherited exports
-for x in AR CC CPP CXX CFLAGS CPPFLAGS CXXFLAGS LDFLAGS RANLIB RC WINDRES; do
-    unset $x
-done
+unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
+unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY COMPILER_PATH
 
 [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ] && echo "Warning: LANG is $LANG"
 
@@ -53,8 +52,8 @@ done
 [[ "$DESKTOP_SESSION" == xfce ]] && export QT_QPA_PLATFORMTHEME=""
 
 export PREFIX="$HOME/opt/local"
-export CC="$(has clang || has clang-3.6 || has gcc)"
-export CXX="$(has clang++ || has clang++-3.6 || has g++)"
+export CC="$(has clang || has clang-3.8 || has gcc)"
+export CXX="$(has clang++ || has clang++-3.8 || has g++)"
 #export CFLAGS='-march=native -O2'
 #export LDFLAGS='-Wl,-O1,--sort-common,-z,relro'
 #export CFLAGS="$CFLAGS -I'$HOME/opt/local/include'"
@@ -71,6 +70,7 @@ export EDITOR='vim'
 for x in ls dir vdir grep fgrep egrep; do
     alias $x="$x --color=auto"
 done
+unset x
 #alias make="$(has colormake || has make)"
 
 # just flags

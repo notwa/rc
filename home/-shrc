@@ -23,13 +23,6 @@ export SSH_AUTH_SOCK=0
 
 export OMP_NUM_THREADS=4
 
-#r="$HOME/.gem/ruby/2.2.0/bin"
-#mkdir -p "$r" && ADDPATH "$r"
-#unset r
-
-#export GOPATH="$HOME/go"
-#ADDPATH "$GOPATH/bin"
-
 ify() {
     [ $# -ge 2 ] || return
     local ex=$1
@@ -37,7 +30,7 @@ ify() {
     $@ | $ex
 }
 
-has() { which "$1" >/dev/null && which "$1"; }
+has() { which "$1" >&/dev/null && which "$1"; }
 
 # cleanup in case of inherited exports
 unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
@@ -99,7 +92,7 @@ whoa=(
     -Werror=uninitialized
     -Werror=missing-prototypes
     -Werror=format-security
-    -Werror=undef
+    #-Werror=undef
 
     -Wno-unused
     -Wno-padded

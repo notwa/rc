@@ -56,6 +56,7 @@ export LD_LIBRARY_PATH= # -n isn't an option in zsh's export
 export MAKEFLAGS="-j2"
 export VST_SDK_DIR="$HOME/src/vstsdk2.4"
 export LADSPA_PATH="/usr/lib/ladspa"
+export NQDIR="$HOME/play"
 
 export EDITOR='vim'
 

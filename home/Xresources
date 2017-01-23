@@ -7,9 +7,12 @@ UXTerm*toolBar: false
 UXTerm*locale: true
 UXTerm*metaSendsEscape: true
 
-! this doesnt work
 XTerm*vt100.translations: #override \n\
-    Ctrl <KeyPress> Insert:copy-selection(SELECT, CUT_BUFFER0)\n
+    Shift <Key>Home: scroll-back(1000)\n\
+    Shift <Key>End:  scroll-forw(1000)
+
+! shift+home: \e[1;2H
+! shift+end:  \e[1;2F
 
 !UXTerm*cjkWidth: true
 

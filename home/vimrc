@@ -406,9 +406,9 @@ augroup DefaultWin
     au VimEnter * call DefaultWin()
 augroup END
 
-" polyglot {{{1
+" ctrlp {{{1
 
-let c_gnu=1
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:24,results:0'
 
 " airline {{{1
 

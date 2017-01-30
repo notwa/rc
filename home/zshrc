@@ -139,6 +139,8 @@ for x in arith hex curl fc find ftp history let locate rsync scp sftp wget twitc
     alias $x="noglob $x"
 unset x
 
+alias sc="~/sh/sc"
+
 if [[ "$TERM" = xterm* ]]; then
     precmd() { print -Pn "\e]2;%M: %~\a" }
 fi

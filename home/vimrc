@@ -407,7 +407,7 @@ augroup END
 
 " ctrlp {{{1
 
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:24,results:0'
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:24,results:24'
 
 " airline {{{1
 

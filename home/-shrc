@@ -21,8 +21,6 @@ ADDPATH "$HOME/opt/local/bin"
 # https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/1380084
 export SSH_AUTH_SOCK=0
 
-export OMP_NUM_THREADS=4
-
 ify() {
     [ $# -ge 2 ] || return
     local ex=$1
@@ -35,6 +33,7 @@ has() { which "$1" >&/dev/null && which "$1"; }
 # cleanup in case of inherited exports
 unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY COMPILER_PATH
+unset LD_LIBRARY_PATH
 
 [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ] && echo "Warning: LANG is $LANG"
 
@@ -45,6 +44,7 @@ unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY COMPILER_PATH
 [[ "$DESKTOP_SESSION" == xfce ]] && export QT_QPA_PLATFORMTHEME=""
 
 export PREFIX="$HOME/opt/local"
+export EDITOR='vim'
 export CC="$(has clang || has clang-3.8 || has gcc)"
 export CXX="$(has clang++ || has clang++-3.8 || has g++)"
 #export CFLAGS='-march=native -O2'
@@ -52,13 +52,11 @@ export CXX="$(has clang++ || has clang++-3.8 || has g++)"
 #export CFLAGS="$CFLAGS -I'$HOME/opt/local/include'"
 #export LDFLAGS="$LDFLAGS -L'$HOME/opt/local/lib'"
 export CXXFLAGS="$CFLAGS"
-export LD_LIBRARY_PATH= # -n isn't an option in zsh's export
 export MAKEFLAGS="-j2"
+export OMP_NUM_THREADS=4
 export VST_SDK_DIR="$HOME/src/vstsdk2.4"
 export LADSPA_PATH="/usr/lib/ladspa"
 export NQDIR="$HOME/play"
-
-export EDITOR='vim'
 
 # colors
 for x in ls dir vdir grep fgrep egrep; do
@@ -70,7 +68,6 @@ unset x
 # just flags
 export LESS='-SR'
 alias db="dropbox_uploader"
-alias makedbg='CFLAGS="-O0" LDFLAGS="-g" make'
 alias fils="du -bad1"
 alias lsa="ls -A --group-directories-first"
 alias logs="logs -o cat -b -e"
@@ -107,18 +104,15 @@ whoa=(
 
 # being specific
 alias pip="sudo -H pip3"
-alias irc="screen -dR irc irssi"
-alias crawl='screen -dR crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
-alias crawla='screen -dR crawl ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl'
+alias irc='screeny "$USER" irc irssi'
+alias crawl='screeny "$USER" crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
+alias crawla='screeny "$USER" crawl ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl'
 alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='sudo rsync -aHA --info=progress2'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
 alias ll="ify less ls -ACX --group-directories-first --color=force"
-alias ml="PATH='$cdrive/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v7.5/bin:$cdrive/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v7.5/libnvvp:$cdrive/path/bin:$cdrive/WINDOWS/system32:$cdrive/WINDOWS:$cdrive/Miniconda3:$cdrive/Miniconda3/Scripts:$cdrive/Miniconda3/Library/bin' $cdrive/Miniconda3/envs/*/python -u"
-alias chell='PATH=${PATH/*\/usr\/bin:/} gcc WHOA -std=gnu11 -static-libgcc -static -I/cygwin/home/notwa/opt/local/include -s -Ofast'
-alias hell='PATH=${PATH/*\/usr\/bin:/} g++ WHOA -std=gnu++17 -static-libgcc -static-libstdc++ -static -I/cygwin/home/notwa/opt/local/include -s -Ofast'
 
 # providing extra functionality
 alias counts='find . | wc -l'
@@ -135,7 +129,7 @@ alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i
 alias picky='{ pacman -Qgq base base-devel | tee -; pacman -Qtnq; } | sort | uniq -u'
 alias unused='{ pacman -Qt; pacman -Qe | tee -; } | sort | uniq -u'
 #
-alias makepkgf='sudo -u $USER MAKEFLAGS=-j2 makepkg -Af --skipchecksums'
+alias makepkgf='sudo -u $USER makepkg -Af --skipchecksums --skippgpcheck'
 alias rakef='rake && gem build *.gemspec && gem install *.gem'
 
 trash() {

@@ -421,7 +421,14 @@ tmpfs 1%
 
 ### [sv](/sh/sv)
 
-(zsh) i have no idea?
+(bash) collects the lastmost value of every key.
+takes the field separator as an argument.
+
+```
+echo "this=that\nthem=those\nthis=cat" | sv =
+this=cat
+them=those
+```
 
 ### [trunc](/sh/trunc)
 

@@ -139,7 +139,8 @@ for x in arith hex curl fc find ftp history let locate rsync scp sftp wget twitc
     alias $x="noglob $x"
 unset x
 
-alias sc="~/sh/sc"
+alias sc="~/sh/sc" # only runs in bash (for now), so be explicit with path
+alias pl="print -l" # not in -shrc because this only makes sense with zsh
 
 if [[ "$TERM" = xterm* ]]; then
     precmd() { print -Pn "\e]2;%M: %~\a" }

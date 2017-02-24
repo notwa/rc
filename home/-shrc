@@ -21,6 +21,10 @@ ADDPATH "$HOME/opt/local/bin"
 # https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/1380084
 export SSH_AUTH_SOCK=0
 
+# https://blog.packagecloud.io/eng/2017/02/21/set-environment-variable-save-thousands-of-system-calls/
+# i haven't checked if this makes any difference personally, but may as well, eh?
+export TZ=':/etc/localtime'
+
 ify() {
     [ $# -ge 2 ] || return
     local ex=$1

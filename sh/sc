@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-: ${SC_DBD:="/home/$USER/Dropbox"}
-: ${SC_DBS:="$SC_DBD/Public/screenshots"}
-: ${SC_DBT:="$SC_DBD/Public/temp"}
-: ${SC_DOM:="https://eaguru.guru"}
+. ~/.ea
 
 sc_shorten() {
     REPLY="${1:2:2}${1:5:2}${1:8:2}${1:11:12}"
@@ -20,23 +17,20 @@ copy_scr() {
     local r='20\d\d-\d\d-\d\d_\d\d\d\d\d\d\d\d.(png|jpg)'
     grep -Pq "$r" <<<"$short" || return 1
 
-    cp "$fn" "$SC_DBS/"
+    eaput "$fn" "$short"
     sc_shorten "$short"
     uri_encode "$REPLY"
-    REPLY="$SC_DOM/s/$REPLY"
+    REPLY="$_REMOTE_DOMAIN/s/$REPLY"
     return 0
 }
 
 copy_tmp() {
     local fn="$1"
-    local dlen=${#SC_DBT}
-    if [ "${fn:0:dlen}" != "${SC_DBT}" ]; then
-        cp "$fn" "$SC_DBT/"
-    fi
     local short="$(basename "$fn")"
 
+    eaput "$fn" "$short"
     uri_encode "$short"
-    REPLY="$SC_DOM/t/$REPLY"
+    REPLY="$_REMOTE_DOMAIN/t/$REPLY"
     return 0
 }
 

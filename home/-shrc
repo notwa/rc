@@ -51,10 +51,6 @@ export PREFIX="$HOME/opt/local"
 export EDITOR='vim'
 export CC="$(has clang || has clang-3.8 || has gcc)"
 export CXX="$(has clang++ || has clang++-3.8 || has g++)"
-#export CFLAGS='-march=native -O2'
-#export LDFLAGS='-Wl,-O1,--sort-common,-z,relro'
-#export CFLAGS="$CFLAGS -I'$HOME/opt/local/include'"
-#export LDFLAGS="$LDFLAGS -L'$HOME/opt/local/lib'"
 export CXXFLAGS="$CFLAGS"
 export MAKEFLAGS="-j2"
 export OMP_NUM_THREADS=4
@@ -113,10 +109,10 @@ alias crawl='screeny "$USER" crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
 alias crawla='screeny "$USER" crawl ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl'
 alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
-alias clone='sudo rsync -aHA --info=progress2'
+alias clone='sudo rsync -aHA --info=progress2 --no-i-r'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
-alias ll="ify less ls -ACX --group-directories-first --color=force"
+alias ll="ify less ls -lAX --group-directories-first --color=force"
 
 # providing extra functionality
 alias counts='find . | wc -l'

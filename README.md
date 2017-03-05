@@ -35,7 +35,7 @@ $ ll /etc
 prints the result of `which` if the program is found, or shuts up and returns 1.
 
 ```
-export CC="$(has clang || has clang-3.6 || has gcc)"
+export CC="$(has clang || has clang-3.8 || has gcc)"
 ```
 
 ### revend
@@ -99,7 +99,7 @@ so you can reinstall them later on a fresh installation.
 
 `unused` will print unused packages instead.
 
-seems to be broken since the functionality of `tee -` changed.
+this seems to be broken since the functionality of `tee -` changed.
 
 ### makepkgf + rakef
 
@@ -123,13 +123,11 @@ watches twitch/hitbox streams through mpv with a bunch of audio filtering crap.
 give it a username.
 remaining arguments are passed to mpv.
 
-run `alias watchstream=watchstream2` to use `livestreamer` if `youtube-dl` is acting up.
-
 ## shell scripts
 
 most (but not all) stuff that's written for bash will work in zsh too.
-if it just says `(sh)` then it'll probably work on anything,
-but probably depends on GNU awk.
+if it just says `(sh)` then it'll probably work on any shell,
+but might depend on GNU awk.
 
 ### [arith](/sh/arith) + [hex](/sh/hex)
 
@@ -195,7 +193,7 @@ nay
 
 ```
 $ days 'January 1 1970'
-16979
+17229
 ```
 
 ### [dfu](/sh/dfu)
@@ -213,16 +211,13 @@ Filesystem              Used     Max    Misc
 
 ### [e](/sh/e)
 
-(zsh) wraps around $EDITOR to run as root if necessary. needs some work.
+(zsh) wraps around $EDITOR to run as root if necessary.
+still needs some work to detect root-owned directories.
 
 ```
 $ e /etc/sudoers
 [sudo] password for notwa: 
 ```
-
-### [gitall](/sh/gitall)
-
-(zsh) asks you to update most of the git repos it finds. i don't really use this.
 
 ### [is\_empty](/sh/is_empty)
 
@@ -308,8 +303,8 @@ requires `expac`.
 
 ```
 $ pacbm | head -n -1 | tail -2
-  155.67M clang
-  192.34M chromium
+  191.30M ocaml
+  193.40M clang
 ```
 
 ### [pacman-list-disowned](/sh/pacman-list-disowned)
@@ -351,14 +346,13 @@ $ pre | shuf | head -10
 
 ```
 $ psbm | head -n -1 | tail -2
-  155.91M     795 chromium
-  171.04M     832 chromium
+  185.08M    1163 chromium
+  199.95M    1060 chromium
 ```
 
 ### [randir](/sh/randir)
 
 (sh) outputs a random directory in the working directory.
-seems to return `./` sometimes, whoops.
 
 ```
 $ randir
@@ -367,7 +361,7 @@ $ randir
 
 ### [sc](/sh/sc)
 
-(bash) uploads given files to dropbox and returns a direct link for sharing.
+(bash) uploads given files to a webserver and returns a direct link for sharing.
 you'll want to tweak this if you use it yourself.
 
 has some extra logic for screenshots created by `scropt`.
@@ -396,7 +390,8 @@ $ ~/sh/sc $(~/sh/scropt -s -d0.5)
 
 ### [similar](/sh/similar)
 
-(sh) sorts stdin and colors similarities between adjacent lines. kinda broken.
+(sh) sorts stdin and highlights similarities between adjacent lines.
+kinda broken.
 
 ### [slit](/sh/slit)
 

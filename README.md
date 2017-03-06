@@ -92,14 +92,17 @@ rot13 with rotated numbers as well.
 unwraps text that was wrapped using double-newlines as spacing,
 e.g. this readme file.
 
+### double
+
+prints every line twice.
+prints every line twice.
+
 ### picky + unused
 
 attempts to print non-standard packages that were installed on an arch linux box,
 so you can reinstall them later on a fresh installation.
 
 `unused` will print unused packages instead.
-
-this seems to be broken since the functionality of `tee -` changed.
 
 ### makepkgf + rakef
 

@@ -170,6 +170,7 @@ if has('autocmd')
 "       au BufRead,BufNewFile *.c,*.h,*.cpp,*.hpp,*.cc,*.hh call TabEight()
         au BufRead,BufNewFile PKGBUILD call TabTwo()
         au FileType ruby call TabTwo()
+        au FileType nim call TabTwo()
         au BufRead,BufNewFile *.bt,*.1sc call TabFour()
     augroup END
 
@@ -179,6 +180,7 @@ if has('autocmd')
         au BufRead,BufNewFile *.bt setlocal ft=c
         au BufRead,BufNewFile *.1sc setlocal ft=c
         au BufRead,BufNewFile *.asm setlocal ft=lips
+        au BufRead,BufNewFile *.nim setlocal ft=nim
     augroup END
 
     augroup nocomment

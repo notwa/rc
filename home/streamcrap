@@ -28,11 +28,19 @@ _M_LEVEL="$REPLY"
 
 _nn="$(uname -n | tr A-Z a-z)"
 
+earphones() {
+    _M_PROCESS="lowpass=8000:p=1,$_M_KILL,$_M_SPEAKERS,alimiter"
+}
+
+speakers() {
+    _M_PROCESS="$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5"
+}
+
 if [[ "$_nn" == "spectre" ]]; then
     _M_PROCESS="$_M_PRE_EMPH,$_M_COMPRESS_SOFT,$_M_POST_EMPH,alimiter=level_out=0.7071"
 fi
 if [[ "$_nn" == "banshee" ]]; then
-    _M_PROCESS="$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5"
+    speakers
 fi
 
 _mpv_flags() {

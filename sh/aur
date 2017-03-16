@@ -6,7 +6,7 @@ aur() {
     local bd="${BUILDDIR:-$PWD}"
     local fail=0 has_sudo=0
     which sudo >&/dev/null && has_sudo=1
-    if [ $has_sudo -eq 0 ]; then
+    if [ $has_sudo -eq 0 ] && [ -z "$MSYSTEM" ]; then
         echo get sudo pls >&2
         return 1
     fi
@@ -74,7 +74,7 @@ aur() {
             if [ $o_force -eq 1 ]; then
                 cmd="$cmd -f"
             fi
-            if [ $o_sudo -eq 1 ]; then
+            if [ $o_sudo -eq 1 ] && [ $has_sudo -eq 1 ]; then
                 cmd="sudo -u $USER $cmd"
             fi
             if [ $o_jobs -gt 0 ]; then
@@ -106,10 +106,18 @@ aur() {
     cd "$bd"
     if [ -n "$built" ] && [ $o_install -eq 1 ]; then
         if [ $o_all_at_once -eq 1 ]; then
-            sudo pacman -U $built
+            if [ $has_sudo -eq 1 ]; then
+                sudo pacman -U $built
+            else
+                pacman -U $built
+            fi
         else
             for recent in $built; do
-                sudo pacman -U "$recent"
+                if [ $has_sudo -eq 1 ]; then
+                    sudo pacman -U "$recent"
+                else
+                    pacman -U "$recent"
+                fi
             done
         fi
     fi

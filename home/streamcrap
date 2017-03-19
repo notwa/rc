@@ -32,14 +32,19 @@ earphones() {
     _M_PROCESS="lowpass=8000:p=1,$_M_KILL,$_M_SPEAKERS,alimiter"
 }
 
-speakers() {
-    _M_PROCESS="$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5"
-}
-
 if [[ "$_nn" == "spectre" ]]; then
-    _M_PROCESS="$_M_PRE_EMPH,$_M_COMPRESS_SOFT,$_M_POST_EMPH,alimiter=level_out=0.7071"
+    _M_PROCESS="$_M_KILL,alimiter=level_out=0.7071"
+fi
+if [[ "$_nn" == "neobanshee" ]]; then
+    speakers() {
+        _M_PROCESS="highpass=311,$_M_KILL,equalizer=1090:o:0.5:-5,equalizer=970:o:1.2:-10,equalizer=4100:o:0.3:-6,alimiter=level_in=2"
+    }
+    speakers
 fi
 if [[ "$_nn" == "banshee" ]]; then
+    speakers() {
+        _M_PROCESS="$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5"
+    }
     speakers
 fi
 

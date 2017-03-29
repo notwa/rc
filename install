@@ -18,6 +18,14 @@ dotless() {
 }
 
 backup() {
+    if [ -n "$2" ] && [ $hassum -eq 1 ]; then
+        old="$(sha256sum "$1")"
+        new="$(sha256sum "$2")"
+        if [ "${new%% *}" == "${old%% *}" ]; then
+            note "overwriting $1"
+            return 0
+        fi
+    fi
     note "backing up $1"
     mkdir -p "${backup_dir:?backup_dir unset}/$(dirname "$1")"
     [ -e "$backup_dir/$1" ] && die "backup already exists"
@@ -29,7 +37,7 @@ hardlink() {
         [ "$1" -ef "$2" ] && return
         [ -h "$1" ] && note "removing symbolic link $1" && rm "$1"
         if [ -s "$1" ]; then
-            backup "$1" || die "$1 already exists"
+            backup "$1" "$2" || die "$1 already exists"
         fi
     fi
 
@@ -75,9 +83,11 @@ softlink_pseudo() {
         if [ -d "$d2" ]; then
             :
         elif [ ! "$d1" -ef "$d2" ]; then
+            [ "$d1" == ".vim/.netrwhist" ] && continue
+            [ "$d1" == ".vim/backup" ] && continue
+            [ "$d1" == ".vim/bundle" ] && continue
             [ "$d1" == ".vim/swp" ] && continue
             [ "$d1" == ".vim/undo" ] && continue
-            [ "$d1" == ".vim/.netrwhist" ] && continue
             warn "new destination file. consider manually moving it:"
             warn "$d1"
         fi
@@ -94,6 +104,7 @@ softlink() {
 }
 
 which readlink >/dev/null || exit 1
+which sha256sum >/dev/null && hassum=1 || hassum=0
 
 rc="$(readlink -f "$(dirname "$0")" )"
 cd "$HOME"

@@ -29,7 +29,7 @@ _M_LEVEL="$REPLY"
 _nn="$(uname -n | tr A-Z a-z)"
 
 earphones() {
-    _M_PROCESS="lowpass=8000:p=1,$_M_KILL,$_M_SPEAKERS,alimiter"
+    _M_PROCESS="lowpass=8000:p=1,$_M_KILL,$_M_SPEAKERS,alimiter=level_out=0.707"
 }
 
 if [[ "$_nn" == "spectre" ]]; then

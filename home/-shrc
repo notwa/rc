@@ -68,7 +68,7 @@ unset x
 # just flags
 export LESS='-SR'
 alias db="dropbox_uploader"
-alias fils="du -bad1"
+alias fils="du -bahd1"
 alias lsa="ls -A --group-directories-first"
 alias logs="logs -o cat -b -e"
 alias logsf="logs -f -e"
@@ -102,6 +102,17 @@ whoa=(
     -Wno-unknown-warning-option # clang
 )
 
+welp=(
+    -fno-exceptions
+    -fno-non-call-exceptions
+    -fno-rtti
+    #-fno-use-cxa-atexit
+    #-ffreestanding
+    -fno-common
+    -ffunction-sections -fdata-sections -Wl,--gc-sections
+    -finline-small-functions -findirect-inlining
+)
+
 # being specific
 alias pip="sudo -H pip3"
 alias irc='screeny "$USER" irc irssi'
@@ -113,6 +124,7 @@ alias clone='sudo rsync -aHA --info=progress2 --no-i-r'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
 alias ll="ify less ls -lAX --group-directories-first --color=force"
+alias get="git clone --single-branch --depth 1"
 
 # providing extra functionality
 alias counts='find . | wc -l'

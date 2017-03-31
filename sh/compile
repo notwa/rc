@@ -29,10 +29,20 @@ compile() {
     fi
 
     local file=${@[-1]}
-    [ "${file##*.}" = "c" ] || sepples=1
+    [ "${file##*.}" = "c" ] || [ "${file##*.}" = "h" ] || sepples=1
 
     { [ $1 = clang ] && CC="clang" && CXX="clang++" && shift } || \
     { [ $1 = gcc ] && CC="gcc" && CXX="g++" && shift }
+
+    if [ CC=clang ]; then
+        debug_flags+=(-ftrapv)
+        if [ -z $MSYSTEM ]; then # only available on linux
+            debug_flags+=(-fsanitize=undefined) # this SHOULD work with mingw,
+                                                # but it fails to link.
+            debug_flags+=(-fsanitize=address)
+            debug_flags+=(-flto -fsanitize=cfi)
+        fi
+    fi
 
     { [ $1 = debug ] && our_flags+=($debug_flags) && shift } || \
     { [ $1 = release ] && our_flags+=($release_flags) && shift } || \

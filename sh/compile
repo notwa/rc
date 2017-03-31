@@ -4,7 +4,8 @@
 __setup_clang_ubuntu() {
     local site="http://apt.llvm.org"
     local name="$(lsb_release -c | cut -f2)"
-    local version="4.0"
+    local version=4.0
+    local priority=$(( int(version * 100 + 0.5) ))
     # TODO: use https? this is sketchy
     echo wget -O - "$site/llvm-snapshot.gpg.key" \| apt-key add -
     echo echo -n \""\
@@ -17,11 +18,9 @@ deb $site/$name/ llvm-toolchain-$name-$version main\n\
     echo apt-get update
     echo apt-get install clang-$version
     echo apt-get install lld-$version
-    echo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-$version 400
-    echo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-$version 400
-    echo update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-$version 400
-    # this might not be necessary after setting the alternative?
-    #echo export ASAN_SYMBOLIZER_PATH=`which llvm-symbolizer`
+    echo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-$version $priority
+    echo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-$version $priority
+    echo update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-$version $priority
 }
 
 compile() {

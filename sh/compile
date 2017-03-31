@@ -43,6 +43,14 @@ compile() {
     local debug_flags=(-O1 -g);
     local release_flags=(-Ofast -march=native -g0 -fomit-frame-pointer -s -DNDEBUG)
     local dr_flags=(-Ofast -march=native -g -fomit-frame-pointer -DNDEBUG)
+    local hardened_flags=(-O3 -march=native -g0 -s
+                          -DNDEBUG -D_FORTIFY_SOURCE=2
+                          -Wformat -Wformat-security -Werror=format-security)
+
+    if [ -z $MSYSTEM ]; then
+        hardened_flags+=(-fPIE -pie)
+        hardened_flags+=(-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now)
+    fi
 
     if [ -e /usr/bin/pprof ]; then
         local malloc=(-ltcmalloc -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free)
@@ -63,14 +71,19 @@ compile() {
             debug_flags+=(-fsanitize=undefined) # this SHOULD work with mingw,
                                                 # but it fails to link.
             debug_flags+=(-fsanitize=address)
-            debug_flags+=(-fvisibility=hidden -flto -fsanitize=cfi)
+            debug_flags+=(-fvisibility=hidden -fuse-ld=gold -flto -fsanitize=cfi)
+
+            hardened_flags+=(-fsanitize=safe-stack)
+            hardened_flags+=(-fstack-protector-strong)
+            hardened_flags+=(-fvisibility=hidden -fuse-ld=gold -flto -fsanitize=cfi)
         fi
     fi
 
     { [ $1 = debug ] && our_flags+=($debug_flags) && shift } || \
     { [ $1 = release ] && our_flags+=($release_flags) && shift } || \
     { [ $1 = derelease ] && our_flags+=($dr_flags) && shift } || \
-    { echo "please specify either debug or (de)release" >&2; return 1 }
+    { [ $1 = hardened ] && our_flags+=($hardened_flags) && shift } || \
+    { echo "please specify either debug or (de)release or hardened" >&2; return 1 }
 
     # TODO add static option
 

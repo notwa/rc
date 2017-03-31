@@ -1,5 +1,29 @@
 #!/usr/bin/env zsh
 
+# I'll just leave this here
+__setup_clang_ubuntu() {
+    local site="http://apt.llvm.org"
+    local name="$(lsb_release -c | cut -f2)"
+    local version="4.0"
+    # TODO: use https? this is sketchy
+    echo wget -O - "$site/llvm-snapshot.gpg.key" \| apt-key add -
+    echo echo -n \""\
+deb $site/$name/ llvm-toolchain-$name main\n\
+# deb-src $site/$name/ llvm-toolchain-$name main\n\
+# $version\n\
+deb $site/$name/ llvm-toolchain-$name-$version main\n\
+# deb-src $site/$name/ llvm-toolchain-$name-$version main\n\
+"\" \> "/etc/apt/sources.list.d/llvm-toolchain-$name.list"
+    echo apt-get update
+    echo apt-get install clang-$version
+    echo apt-get install lld-$version
+    echo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-$version 400
+    echo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-$version 400
+    echo update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-$version 400
+    # this might not be necessary after setting the alternative?
+    #echo export ASAN_SYMBOLIZER_PATH=`which llvm-symbolizer`
+}
+
 compile() {
     if [ $# -lt 2 ]; then
         echo "usage: compile [clang|gcc] {debug|release} [flags...] {source file}" >&2
@@ -40,7 +64,7 @@ compile() {
             debug_flags+=(-fsanitize=undefined) # this SHOULD work with mingw,
                                                 # but it fails to link.
             debug_flags+=(-fsanitize=address)
-            debug_flags+=(-flto -fsanitize=cfi)
+            debug_flags+=(-fvisibility=hidden -flto -fsanitize=cfi)
         fi
     fi
 
@@ -64,6 +88,11 @@ compile() {
 
     local out=/tmp/${${file%%.*}##*/}
 
+    # TODO: naive idea:
+    # allow multiple source files (using the firstmost to determine the program name)
+    # by generating a file that #includes each given file.
+
+    echo $compiler $std ${our_flags[@]} ${flags[@]} $file -o $out >&2
     $compiler $std ${our_flags[@]} ${flags[@]} $file -o $out && echo "$out"
 }
 

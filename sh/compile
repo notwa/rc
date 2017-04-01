@@ -65,7 +65,7 @@ compile() {
     { [ $1 = clang ] && CC="clang" && CXX="clang++" && shift } || \
     { [ $1 = gcc ] && CC="gcc" && CXX="g++" && shift }
 
-    if [ CC=clang ]; then
+    if [ $CC = clang ]; then
         debug_flags+=(-ftrapv)
         if [ -z $MSYSTEM ]; then # only available on linux
             debug_flags+=(-fsanitize=undefined) # this SHOULD work with mingw,
@@ -76,6 +76,8 @@ compile() {
             hardened_flags+=(-fsanitize=safe-stack)
             hardened_flags+=(-fstack-protector-strong)
             hardened_flags+=(-fvisibility=hidden -fuse-ld=gold -flto -fsanitize=cfi)
+        else
+            our_flags+=(-fansi-escape-codes)
         fi
     fi
 

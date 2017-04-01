@@ -90,7 +90,7 @@ whoa=(
     -Werror=uninitialized
     -Werror=missing-prototypes
     -Werror=format-security
-    #-Werror=undef
+#   -Werror=undef
 
     -Wno-unused
     -Wno-padded

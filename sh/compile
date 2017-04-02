@@ -52,13 +52,13 @@ compile() {
         hardened_flags+=(-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now)
     fi
 
-    local tcmalloc=(-ltcmalloc -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free)
+    local nomalloc=(-fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free)
     if [ -e /usr/bin/pprof ]; then
-        debug_flags+=($tcmalloc)
-        dr_flags+=($tcmalloc -lprofiler)
+        debug_flags+=(-ltcmalloc $nomalloc)
+        dr_flags+=(-lprofiler $nomalloc)
     elif [ -e /usr/bin/google-pprof ]; then
-        debug_flags+=(-l:libtcmalloc.so.4 ${tcmalloc[2,-1]})
-        dr_flags+=(-l:libtcmalloc_and_profiler.so.4 ${tcmalloc[2,-1]})
+        debug_flags+=(-l:libtcmalloc.so.4 $nomalloc)
+        dr_flags+=(-l:libtcmalloc_and_profiler.so.4 $nomalloc)
     fi
 
     local file=${@[-1]}

@@ -40,7 +40,7 @@ compile() {
     maybe_include "-I$HOME/opt/local/include"
     maybe_include "-I$HOME/src/ustl"
 
-    local debug_flags=(-O1 -g);
+    local debug_flags=(-O1 -g -D_DEBUG);
     local release_flags=(-Ofast -march=native -g0 -fomit-frame-pointer -s -DNDEBUG)
     local dr_flags=(-Ofast -march=native -g -fomit-frame-pointer -DNDEBUG)
     local hardened_flags=(-O3 -march=native -g0 -s
@@ -101,6 +101,10 @@ compile() {
     local flags=(${@[1,-2]})
 
     local out=/tmp/${${file%%.*}##*/}
+    if [ -n $MSYSTEM ]; then
+        # explicitly output to .exe to avoid weirdness
+        out="$out.exe"
+    fi
 
     # TODO: naive idea:
     # allow multiple source files (using the firstmost to determine the program name)

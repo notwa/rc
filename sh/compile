@@ -47,16 +47,18 @@ compile() {
                           -DNDEBUG -D_FORTIFY_SOURCE=2
                           -Wformat -Wformat-security -Werror=format-security)
 
-    if [ -z $MSYSTEM ]; then
+    if [ -z "$MSYSTEM" ]; then
         hardened_flags+=(-fPIE -pie)
         hardened_flags+=(-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now)
     fi
 
+    local tcmalloc=(-ltcmalloc -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free)
     if [ -e /usr/bin/pprof ]; then
-        local malloc=(-ltcmalloc -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free)
-        debug_flags+=($malloc[@])
-        derelease_flags+=($malloc[@])
-        derelease_flags+=(-lprofiler)
+        debug_flags+=($tcmalloc)
+        dr_flags+=($tcmalloc -lprofiler)
+    elif [ -e /usr/bin/google-pprof ]; then
+        debug_flags+=(-l:libtcmalloc.so.4 ${tcmalloc[2,-1]})
+        dr_flags+=(-l:libtcmalloc_and_profiler.so.4 ${tcmalloc[2,-1]})
     fi
 
     local file=${@[-1]}
@@ -67,7 +69,7 @@ compile() {
 
     if [ $CC = clang ]; then
         debug_flags+=(-ftrapv)
-        if [ -z $MSYSTEM ]; then # only available on linux
+        if [ -z "$MSYSTEM" ]; then # only available on linux
             debug_flags+=(-fsanitize=undefined) # this SHOULD work with mingw,
                                                 # but it fails to link.
             debug_flags+=(-fsanitize=address)
@@ -101,7 +103,7 @@ compile() {
     local flags=(${@[1,-2]})
 
     local out=/tmp/${${file%%.*}##*/}
-    if [ -n $MSYSTEM ]; then
+    if [ -n "$MSYSTEM" ]; then
         # explicitly output to .exe to avoid weirdness
         out="$out.exe"
     fi
@@ -110,8 +112,19 @@ compile() {
     # allow multiple source files (using the firstmost to determine the program name)
     # by generating a file that #includes each given file.
 
-    echo $compiler $std ${our_flags[@]} ${flags[@]} $file -o $out >&2
-    $compiler $std ${our_flags[@]} ${flags[@]} $file -o $out && echo "$out"
+    # move -l flags to the end because gcc won't respect them otherwise
+    local final_flags=()
+    local libraries=()
+    for flag in $our_flags $flags; do
+        if [[ $flag == -l* ]]; then
+            libraries+=($flag)
+        else
+            final_flags+=($flag)
+        fi
+    done
+
+    echo $compiler $std ${final_flags[@]} $file ${libraries[@]} -o $out >&2
+    $compiler $std ${final_flags[@]} $file ${libraries[@]} -o $out >&2
 }
 
 compile "$@"

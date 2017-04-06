@@ -25,6 +25,9 @@ export SSH_AUTH_SOCK=0
 # i haven't checked if this makes any difference personally, but may as well, eh?
 export TZ=':/etc/localtime'
 
+# damnit python.
+export PYTHONIOENCODING=utf-8
+
 ify() {
     [ $# -ge 2 ] || return
     local ex=$1

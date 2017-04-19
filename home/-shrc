@@ -88,17 +88,19 @@ whoa=(
 #   -Winline # only for C
 #   -Wshadow # only for C
     -Wwrite-strings
+#   -Wmissing-prototypes
 
     -Werror=implicit-function-declaration
     -Werror=uninitialized
-    -Werror=missing-prototypes
     -Werror=format-security
+    -Werror=pointer-to-int-cast
+    -Werror=int-to-pointer-cast
 #   -Werror=undef
 
     -Wno-unused
     -Wno-padded
     -Wno-missing-field-initializers
-    -Wno-type-limits # should disable with pragma but this will do for now
+#   -Wno-type-limits
     -Wno-misleading-indentation # gcc 6
     -Wno-disabled-macro-expansion # clang
     -Wno-language-extension-token # clang

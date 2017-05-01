@@ -123,7 +123,7 @@ compile() {
         fi
     done
 
-    echo $compiler $std ${final_flags[@]} $file ${libraries[@]} -o $out >&2
+    echo $compiler $std ${final_flags[@]} $file ${libraries[@]} -o $out
     $compiler $std ${final_flags[@]} $file ${libraries[@]} -o $out >&2
 }
 

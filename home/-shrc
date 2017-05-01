@@ -130,6 +130,7 @@ alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 # TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
 alias ll="ify less ls -lAX --group-directories-first --color=force"
 alias get="git clone --single-branch --depth 1"
+alias aligntabs="column -t -s$'\t'"
 
 # providing extra functionality
 alias counts='find . | wc -l'

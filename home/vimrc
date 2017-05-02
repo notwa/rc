@@ -18,24 +18,6 @@ if has("win32")
     " something/vim/after
     let $MYVIMRC=expand('<sfile>')
     let g:rcvim=expand('<sfile>:p:h:h').'/vim'
-
-    let msys='/MinGW/msys/1.0/bin'
-    set shellcmdflag=-c
-    set shellxquote=\"
-    set shellslash
-    if !exists('win32_once')
-        let win32_once=1
-        if exists('msys')             " note: true for gvim as well
-            if isdirectory(msys)
-                let $PATH.=';'.msys
-                let &shell=msys.'/bash.exe'
-            else
-                let $PATH='/usr/local/bin;/usr/bin;/bin;'.$PATH
-                let &shell='/cygwin/bin/zsh.exe'
-            endif
-        endif
-        let &runtimepath=g:rcvim.','.&runtimepath.','.g:rcvim.'/after'
-    endif
 else
     let g:rcvim=$HOME.'/.vim'
 endif
@@ -200,7 +182,7 @@ if has('autocmd')
 
     augroup reload
         au!
-        "au BufWritePost .vimrc,_vimrc,vimrc so $MYVIMRC
+"       au BufWritePost .vimrc,_vimrc,vimrc so $MYVIMRC
     augroup END
 
     fu! ResCur()                      " attempt to preserve cursor position
@@ -320,13 +302,8 @@ fu! HiDump()
 endf
 
 nn <Leader>s :call SyntaxAttr()<cr>
-nn <Leader>1 :colo property2<cr>
-nn <Leader>2 :colo clearance-dyn<cr>
-nn <Leader>3 :colo Tomorrow-Night<cr>
-nn <Leader>4 :colo jellybeans<cr>
-nn <Leader>5 :colo colorsbox-stnight<cr>
-nn <Leader>6 :colo redblack<cr>
-nn <Leader>7 :colo property16<cr>
+nn <Leader>1 :colo property16<cr>
+nn <Leader>2 :colo Tomorrow-Night<cr>
 nn <Leader>h :tabe<cr>:call HiDump()<cr>
 
 " helper function to toggle hex mode
@@ -411,73 +388,6 @@ augroup END
 " ctrlp {{{1
 
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:24,results:24'
-
-" airline {{{1
-
-if has('gui_running')
-    " airline is broken in gvim (for me) for now
-else
-"if exists('g:airline_symbols')
-    set laststatus=2
-    let g:airline#extensions#tabline#enabled = 0
-endif
-
-let g:airline_mode_map = {
-\  'c': 'COM',
-\  'i': 'INS',
-\  'n': '·ω·',
-\  'R': 'REP',
-\  'S': 'S-L',
-\  's': 'SEL',
-\  't': 'CON',
-\  'V': 'V-L',
-\  'v': 'VIS',
-\ '': 'S-B',
-\ '': 'V-B',
-\ '__': '———',
-\ }
-
-let g:airline_symbols = {
-\ 'branch': '',
-\ 'crypt': '',
-\ 'linenr': '',
-\ 'modified': '+',
-\ 'paste': 'ρ',
-\ 'readonly': 'R',
-\ 'space': ' ',
-\ 'whitespace': '·',
-\ }
-
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-
-let g:airline#extensions#default#section_truncate_width = {
-\ 'b': 79,
-\ 'x': 60,
-\ 'y': 84,
-\ 'z': 45,
-\ }
-
-let g:airline#extensions#tabline#show_tab_nr = 0
-let g:airline#extensions#tabline#show_tab_type = 0
-let g:airline#extensions#tabline#fnametruncate = 20
-let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-let g:airline#extensions#tabline#show_close_button = 0
-let g:airline#extensions#tabline#buffer_nr_show = 0
-let g:airline#extensions#tabline#buffer_nr_format = '%s ┊'
-"  
-let g:airline#extensions#tabline#left_sep = '┊'
-let g:airline#extensions#tabline#left_alt_sep = '┊'
-let g:airline#extensions#tabline#right_sep = '┊'
-let g:airline#extensions#tabline#right_alt_sep = '┊'
-
-"let g:airline#extensions#whitespace#mixed_indent_algo = 2
-let g:airline#extensions#whitespace#symbol = '‗'
-let g:airline#extensions#whitespace#trailing_format = '· %s'
-let g:airline#extensions#whitespace#long_format = '… %s'
-let g:airline#extensions#whitespace#mixed_indent_format = '‼ %s'
-
 
 " machine-specific configs {{{1
 

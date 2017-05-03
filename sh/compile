@@ -54,10 +54,10 @@ compile() {
 
     local nomalloc=(-fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free)
     if [ -e /usr/bin/pprof ]; then
-        debug_flags+=(-ltcmalloc $nomalloc)
+        #debug_flags+=(-ltcmalloc $nomalloc)
         dr_flags+=(-lprofiler $nomalloc)
     elif [ -e /usr/bin/google-pprof ]; then
-        debug_flags+=(-l:libtcmalloc.so.4 $nomalloc)
+        #debug_flags+=(-l:libtcmalloc.so.4 $nomalloc)
         dr_flags+=(-l:libtcmalloc_and_profiler.so.4 $nomalloc)
     fi
 

@@ -113,18 +113,22 @@ compile() {
     # by generating a file that #includes each given file.
 
     # move -l flags to the end because gcc won't respect them otherwise
+    # split warning flags so they don't spam the console
     local final_flags=()
     local libraries=()
+    local warnings=()
     for flag in $our_flags $flags; do
         if [[ $flag == -l* ]]; then
             libraries+=($flag)
+        elif [[ $flag == -W* ]]; then
+            warnings+=($flag)
         else
             final_flags+=($flag)
         fi
     done
 
-    echo $compiler $std ${final_flags[@]} $file ${libraries[@]} -o $out
-    $compiler $std ${final_flags[@]} $file ${libraries[@]} -o $out >&2
+    echo $compiler $std ${final_flags[@]} $file ${libraries[@]} -o $out >&2
+    $compiler $std ${final_flags[@]} $file ${libraries[@]} ${warnings[@]} -o $out >&2
 }
 
 compile "$@"

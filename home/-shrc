@@ -95,6 +95,7 @@ whoa=(
     -Werror=format-security
     -Werror=pointer-to-int-cast
     -Werror=int-to-pointer-cast
+    -Werror=return-type
 #   -Werror=undef
 
     -Wno-unused

@@ -24,15 +24,73 @@ deb $site/$name/ llvm-toolchain-$name-$version main\n\
 }
 
 compile() {
+    local gcc="$(whence -p gcc 2>/dev/null)"
+    local gxx="$(whence -p g++ 2>/dev/null)"
+    local clang="$(whence -p clang 2>/dev/null)"
+    local clangxx="$(whence -p clang++ 2>/dev/null)"
+
+    local cl
+    local vc
+    if [ -n "$MSYSTEM" ]; then
+        local clarch
+        [ "$MSYSTEM" = MINGW64 ] && clarch="/amd64" || clarch=""
+        local arch
+        [ "$MSYSTEM" = MINGW64 ] && arch="x64" || arch="x86"
+        printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio "*(On[1]) | read vc
+        vc="$vc/VC"
+        if [ -d "$vc/bin$clarch" ] && [ -e "${vc}/bin$clarch/$cl" ]; then
+            cl="${vc}/bin$clarch/cl"
+            vc="$vc"
+
+            local winkit
+            printf "%s\n" "/c/Program Files (x86)/Windows Kits/"*(on/[1]) | read winkit
+            [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
+            printf "%s\n" "$winkit/Lib/"*(On/[1]) | read winkit
+            [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
+
+            export PATH="$PATH:$vc/bin$clarch"
+            export INCLUDE="$vc/INCLUDE;$vc/ATLMFC/INCLUDE"
+            export LIB="$vc/LIB$clarch;$vc/ATLMFC/LIB$clarch;$winkit/um/$arch;$winkit/ucrt/$arch"
+            export LIBPATH="$vc/LIB$clarch;$vc/ATLMFC/LIB$clarch"
+
+            # convert msys2 paths to windows paths
+            export INCLUDE="${${INCLUDE//\/c\//C:\\}//\//\\}"
+            export LIB="${${LIB//\/c\//C:\\}//\//\\}"
+            export LIBPATH="${${LIBPATH//\/c\//C:\\}//\//\\}"
+        fi
+    fi
+
     if [ $# -lt 2 ]; then
-        echo "usage: compile [clang|gcc] {debug|release} [flags...] {source file}" >&2
+        echo -n "usage: compile [" >&2
+        local once=0
+        if [ -n "$clang" ]; then
+            if [ $once -eq 1 ]; then echo -n "|" >&2; fi; once=1
+            echo -n "clang" >&2
+        fi
+        if [ -n "$gcc" ]; then
+            if [ $once -eq 1 ]; then echo -n "|" >&2; fi; once=1
+            echo -n "gcc" >&2
+        fi
+        if [ -n "$cl" ]; then
+            if [ $once -eq 1 ]; then echo -n "|" >&2; fi; once=1
+            echo -n "msvc" >&2
+        fi
+        echo "] {debug|release} [flags...] {source file}" >&2
         return 1
     fi
 
     local sepples=0
+    # TODO: autodetect here
     local CC=gcc
     local CXX=g++
     local our_flags=(-I.)
+
+    local file=${@[-1]}
+    [ "${file##*.}" = "c" ] || [ "${file##*.}" = "h" ] || sepples=1
+
+    { [ $1 = clang ] && CC="clang" && CXX="clang++" && shift } || \
+    { [ $1 = gcc ] && CC="gcc" && CXX="g++" && shift } || \
+    { [ $1 = msvc ] && CC="cl" && CXX="cl" && shift }
 
     maybe_include() {
         [ -d "$1" ] && our_flags+=("-I$1")
@@ -40,32 +98,34 @@ compile() {
     maybe_include "-I$HOME/opt/local/include"
     maybe_include "-I$HOME/src/ustl"
 
-    local debug_flags=(-O1 -g -D_DEBUG);
-    local release_flags=(-Ofast -march=native -g0 -fomit-frame-pointer -s -DNDEBUG)
-    local dr_flags=(-Ofast -march=native -g -fomit-frame-pointer -DNDEBUG)
-    local hardened_flags=(-O3 -march=native -g0 -s
-                          -DNDEBUG -D_FORTIFY_SOURCE=2
-                          -Wformat -Wformat-security -Werror=format-security)
+    if [ $CC = cl ]; then
+        our_flags+=(-nologo -utf-8)
+        local debug_flags=(-Od -Zi -ZI -sdl);
+        local release_flags=(-Ox)
+        local dr_flags=(-Ox -Zi)
+        local hardened_flags=(-Ox -sdl)
+    else
+        local debug_flags=(-O1 -g -D_DEBUG);
+        local release_flags=(-Ofast -march=native -g0 -fomit-frame-pointer -s -DNDEBUG)
+        local dr_flags=(-Ofast -march=native -g -fomit-frame-pointer -DNDEBUG)
+        local hardened_flags=(-O3 -march=native -g0 -s
+                              -DNDEBUG -D_FORTIFY_SOURCE=2
+                              -Wformat -Wformat-security -Werror=format-security)
 
-    if [ -z "$MSYSTEM" ]; then
-        hardened_flags+=(-fPIE -pie)
-        hardened_flags+=(-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now)
+        if [ -z "$MSYSTEM" ]; then
+            hardened_flags+=(-fPIE -pie)
+            hardened_flags+=(-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now)
+        fi
+
+        local nomalloc=(-fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free)
+        if [ -e /usr/bin/pprof ]; then
+            #debug_flags+=(-ltcmalloc $nomalloc)
+            dr_flags+=(-lprofiler $nomalloc)
+        elif [ -e /usr/bin/google-pprof ]; then
+            #debug_flags+=(-l:libtcmalloc.so.4 $nomalloc)
+            dr_flags+=(-l:libtcmalloc_and_profiler.so.4 $nomalloc)
+        fi
     fi
-
-    local nomalloc=(-fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free)
-    if [ -e /usr/bin/pprof ]; then
-        #debug_flags+=(-ltcmalloc $nomalloc)
-        dr_flags+=(-lprofiler $nomalloc)
-    elif [ -e /usr/bin/google-pprof ]; then
-        #debug_flags+=(-l:libtcmalloc.so.4 $nomalloc)
-        dr_flags+=(-l:libtcmalloc_and_profiler.so.4 $nomalloc)
-    fi
-
-    local file=${@[-1]}
-    [ "${file##*.}" = "c" ] || [ "${file##*.}" = "h" ] || sepples=1
-
-    { [ $1 = clang ] && CC="clang" && CXX="clang++" && shift } || \
-    { [ $1 = gcc ] && CC="gcc" && CXX="g++" && shift }
 
     if [ $CC = clang ]; then
         debug_flags+=(-ftrapv)
@@ -94,10 +154,17 @@ compile() {
     local compiler=
     if [ $sepples -eq 1 ]; then
         compiler=$CXX
-        std="-std=gnu++1z"
+        [ $CC = cl ] && std="-TP" || std="-std=gnu++1z"
     else
         compiler=$CC
-        std="-std=gnu11"
+        [ $CC = cl ] && std="-TC" || std="-std=gnu11"
+    fi
+
+    local clang_msvc=0
+    if [ $CC = clang ]; then
+        if $compiler --version | grep -q windows-msvc; then
+            clang_msvc=1
+        fi
     fi
 
     local flags=(${@[1,-2]})
@@ -120,15 +187,32 @@ compile() {
     for flag in $our_flags $flags; do
         if [[ $flag == -l* ]]; then
             libraries+=($flag)
-        elif [[ $flag == -W* ]]; then
+        elif [[ $flag == -W* ]] && [[ $flag != -Wl* ]]; then
             warnings+=($flag)
+            if [ $CC = cl ] && [ $flag = -Wall ]; then
+                warnings+=(-wd4711 -wd4505 -wd4514 -wd4625 -wd4626)
+            fi
         else
+            if [ $clang_msvc -eq 1 ]; then
+                if [ $flag = "-findirect-inlining" ] \
+                || [ $flag = "-finline-small-functions" ] \
+                || [ $flag = "-finline-small-functions" ] \
+                || [ $flag = "-Wl,--gc-sections" ] \
+                || [ $flag = "-s" ]; then
+                    continue
+                fi
+            fi
             final_flags+=($flag)
         fi
     done
 
-    echo $compiler $std ${final_flags[@]} $file ${libraries[@]} -o $out >&2
-    $compiler $std ${final_flags[@]} $file ${libraries[@]} ${warnings[@]} -o $out >&2
+    if [ $CC = cl ]; then
+        echo $compiler $std ${final_flags[@]} $file ${libraries[@]} -Fe: $out >&2
+        $compiler $std ${final_flags[@]} $file ${libraries[@]} ${warnings[@]} -Fe: $out >&2
+    else
+        echo $compiler $std ${final_flags[@]} $file ${libraries[@]} -o $out >&2
+        $compiler $std ${final_flags[@]} $file ${libraries[@]} ${warnings[@]} -o $out >&2
+    fi
 }
 
 compile "$@"

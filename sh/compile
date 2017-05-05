@@ -200,11 +200,14 @@ compile() {
                 warnings+=(-wd4711 -wd4505 -wd4514 -wd4625 -wd4626)
             fi
         else
-            if [ $clang_msvc -eq 1 ]; then
+            if [ $CC = clang ]; then
                 if [ $flag = "-findirect-inlining" ] \
-                || [ $flag = "-finline-small-functions" ] \
-                || [ $flag = "-finline-small-functions" ] \
-                || [ $flag = "-Wl,--gc-sections" ] \
+                || [ $flag = "-finline-small-functions" ]; then
+                    continue
+                fi
+            fi
+            if [ $clang_msvc -eq 1 ]; then
+                if [ $flag = "-Wl,--gc-sections" ] \
                 || [ $flag = "-s" ]; then
                     continue
                 fi

@@ -33,7 +33,7 @@ compile() {
         if [ -z "$clang" ]; then
             # maybe we have clang-msvc installed
             local dir
-            printf "%s\n" "/c/Program Files/LLVM"*(On/[1]) | read -r dir
+            printf "%s\n" "/c/Program Files/LLVM"*(On/N[1]) | read -r dir
             if [ -d "$dir" ] && [ -e "$dir/bin/clang" ]; then
                 clang="$dir/bin/clang"
                 export PATH="$PATH:$dir/bin/"
@@ -44,16 +44,16 @@ compile() {
         [ "$MSYSTEM" = MINGW64 ] && clarch="/amd64" || clarch=""
         local arch
         [ "$MSYSTEM" = MINGW64 ] && arch="x64" || arch="x86"
-        printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio "*(On/[1]) | read vc
+        printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio "*(On/N[1]) | read vc
         vc="$vc/VC"
         if [ -d "$vc/bin$clarch" ] && [ -e "${vc}/bin$clarch/$cl" ]; then
             cl="${vc}/bin$clarch/cl"
             vc="$vc"
 
             local winkit
-            printf "%s\n" "/c/Program Files (x86)/Windows Kits/"*(on/[1]) | read -r winkit
+            printf "%s\n" "/c/Program Files (x86)/Windows Kits/"*(on/N[1]) | read -r winkit
             [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
-            printf "%s\n" "$winkit/Lib/"*(On/[1]) | read -r winkit
+            printf "%s\n" "$winkit/Lib/"*(On/N[1]) | read -r winkit
             [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
 
             export PATH="$PATH:$vc/bin$clarch"

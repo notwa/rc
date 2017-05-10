@@ -134,30 +134,6 @@ compile() {
         fi
     fi
 
-    if [ $CC = clang ]; then
-        debug_flags+=(-ftrapv)
-        if [ -z "$MSYSTEM" ]; then # only available on linux
-            debug_flags+=(-fsanitize=undefined) # this SHOULD work with mingw,
-                                                # but it fails to link.
-            debug_flags+=(-fsanitize=address)
-            debug_flags+=(-fvisibility=hidden -fuse-ld=gold -flto -fsanitize=cfi)
-
-            hardened_flags+=(-fsanitize=safe-stack)
-            hardened_flags+=(-fstack-protector-strong)
-            hardened_flags+=(-fvisibility=hidden -fuse-ld=gold -flto -fsanitize=cfi)
-        else
-            our_flags+=(-fansi-escape-codes)
-        fi
-    fi
-
-    { [ $1 = debug ] && our_flags+=($debug_flags) && shift } || \
-    { [ $1 = release ] && our_flags+=($release_flags) && shift } || \
-    { [ $1 = derelease ] && our_flags+=($dr_flags) && shift } || \
-    { [ $1 = hardened ] && our_flags+=($hardened_flags) && shift } || \
-    { echo "please specify either debug or (de)release or hardened" >&2; return 1 }
-
-    # TODO add static option
-
     local compiler=
     if [ $sepples -eq 1 ]; then
         compiler=$CXX
@@ -173,6 +149,31 @@ compile() {
             clang_msvc=1
         fi
     fi
+
+    if [ $CC = clang ]; then
+        debug_flags+=(-ftrapv)
+        [ -z "$MSYSTEM" ] && local gold=gold || local gold=lld
+        [ -n "$MSYSTEM" ] && our_flags+=(-fansi-escape-codes) || true
+        if [ $clang_msvc -eq 1 ] || [ -z "$MSYSTEM" ]; then
+            debug_flags+=(-fsanitize=undefined) # this SHOULD work with mingw,
+                                                # but it fails to link.
+            debug_flags+=(-fsanitize=address)
+            debug_flags+=(-fvisibility=hidden -fuse-ld=$gold -flto -fsanitize=cfi)
+
+            hardened_flags+=(-fsanitize=safe-stack)
+            hardened_flags+=(-fstack-protector-strong)
+            hardened_flags+=(-fvisibility=hidden -fuse-ld=$gold -flto -fsanitize=cfi)
+        else
+        fi
+    fi
+
+    { [ $1 = debug ] && our_flags+=($debug_flags) && shift } || \
+    { [ $1 = release ] && our_flags+=($release_flags) && shift } || \
+    { [ $1 = derelease ] && our_flags+=($dr_flags) && shift } || \
+    { [ $1 = hardened ] && our_flags+=($hardened_flags) && shift } || \
+    { echo "please specify either debug or (de)release or hardened" >&2; return 1 }
+
+    # TODO add static option
 
     local flags=(${@[1,-2]})
 

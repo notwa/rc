@@ -88,7 +88,7 @@ compile() {
         echo -n "usage: compile [" >&2
         [ -n "$clang" ] && print_separated "clang"
         [ -n "$gcc" ] && print_separated "gcc"
-        [ -n "$cl" ] && print_separated "cl"
+        [ -n "$cl" ] && print_separated "msvc"
         echo "] [debug|derelease|release|hardened] [flags...] {source file}" >&2
         return 1
     fi
@@ -115,7 +115,7 @@ compile() {
 
     if [ $CC = cl ]; then
         our_flags+=(-nologo -utf-8)
-        local debug_flags=(-Od -Zi -ZI -sdl);
+        local debug_flags=(-Od -ZI -sdl);
         local release_flags=(-Ox)
         local dr_flags=(-Ox -Zi)
         local hardened_flags=(-Ox -sdl)

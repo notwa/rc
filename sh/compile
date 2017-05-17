@@ -68,19 +68,23 @@ compile() {
         fi
     fi
 
+    local once=0
+    printsep() {
+        [ $once -eq 1 ] && echo -n "|" >&2 || once=1
+    }
+
     if [ $# -lt 2 ]; then
         echo -n "usage: compile [" >&2
-        local once=0
         if [ -n "$clang" ]; then
-            if [ $once -eq 1 ]; then echo -n "|" >&2; fi; once=1
+            printsep
             echo -n "clang" >&2
         fi
         if [ -n "$gcc" ]; then
-            if [ $once -eq 1 ]; then echo -n "|" >&2; fi; once=1
+            printsep
             echo -n "gcc" >&2
         fi
         if [ -n "$cl" ]; then
-            if [ $once -eq 1 ]; then echo -n "|" >&2; fi; once=1
+            printsep
             echo -n "msvc" >&2
         fi
         echo "] {debug|derelease|release|hardened} [flags...] {source file}" >&2

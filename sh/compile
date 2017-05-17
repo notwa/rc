@@ -26,6 +26,7 @@ deb $site/$name/ llvm-toolchain-$name-$version main\n\
 compile() {
     local gcc="$(whence -p gcc 2>/dev/null)"
     local clang="$(whence -p clang 2>/dev/null)"
+    local clang_flags=() # currently just for clang-msvc
 
     local cl
     local vc
@@ -36,6 +37,11 @@ compile() {
             printf "%s\n" "/c/Program Files/LLVM"*(On/N[1]) | read -r dir
             if [ -d "$dir" ] && [ -e "$dir/bin/clang" ]; then
                 clang="$dir/bin/clang"
+                # not sure if i'll need this
+                #local clang_include
+                #printf "%s\n" "$dir/lib/clang/"*(On/N[1]) | read -r clang_include
+                #[ -n "$clang_include" ] || { echo "failed glob; missing clang include" >&2; return 1 }
+                #clang_flags+=(-I "$clang_include/include")
                 export PATH="$PATH:$dir/bin/"
             fi
         fi
@@ -57,9 +63,13 @@ compile() {
             [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
 
             export PATH="$PATH:$vc/bin$clarch"
-            export INCLUDE="$vc/INCLUDE;$vc/ATLMFC/INCLUDE"
+            export INCLUDE="$vc/INCLUDE;$vc/ATLMFC/INCLUDE;${winkit/Lib/Include}/ucrt"
             export LIB="$vc/LIB$clarch;$vc/ATLMFC/LIB$clarch;$winkit/um/$arch;$winkit/ucrt/$arch"
             export LIBPATH="$vc/LIB$clarch;$vc/ATLMFC/LIB$clarch"
+
+            for d in "${(@s/;/)INCLUDE}"; do
+                clang_flags+=(-I "$d")
+            done
 
             # convert msys2 paths to windows paths
             export INCLUDE="${${INCLUDE//\/c\//C:\\}//\//\\}"
@@ -94,6 +104,8 @@ compile() {
     { [ "$1" = clang ] && CC="clang" && CXX="clang++" && shift } || \
     { [ "$1" = gcc ] && CC="gcc" && CXX="g++" && shift } || \
     { [ "$1" = msvc ] && CC="cl" && CXX="cl" && shift }
+
+    [ $CC = clang ] && [ -n "$clang_flags" ] && our_flags+="${clang_flags[@]}"
 
     maybe_include() {
         [ -d "$1" ] && our_flags+=("-I$1")

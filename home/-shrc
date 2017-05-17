@@ -93,6 +93,7 @@ whoa=(
     -Werror=implicit-function-declaration
     -Werror=uninitialized
     -Werror=format-security
+    -Werror=format-extra-args
     -Werror=pointer-to-int-cast
     -Werror=int-to-pointer-cast
     -Werror=return-type

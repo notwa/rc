@@ -74,12 +74,12 @@ compile() {
         sep_once=1
     }
 
-    if [ $# -lt 2 ]; then
+    if [ $# -eq 0 ]; then
         echo -n "usage: compile [" >&2
         [ -n "$clang" ] && print_separated "clang"
         [ -n "$gcc" ] && print_separated "gcc"
         [ -n "$cl" ] && print_separated "cl"
-        echo "] {debug|derelease|release|hardened} [flags...] {source file}" >&2
+        echo "] [debug|derelease|release|hardened] [flags...] {source file}" >&2
         return 1
     fi
 
@@ -91,9 +91,9 @@ compile() {
     local file=${@[-1]}
     [ "${file##*.}" = "c" ] || [ "${file##*.}" = "h" ] || sepples=1
 
-    { [ $1 = clang ] && CC="clang" && CXX="clang++" && shift } || \
-    { [ $1 = gcc ] && CC="gcc" && CXX="g++" && shift } || \
-    { [ $1 = msvc ] && CC="cl" && CXX="cl" && shift }
+    { [ "$1" = clang ] && CC="clang" && CXX="clang++" && shift } || \
+    { [ "$1" = gcc ] && CC="gcc" && CXX="g++" && shift } || \
+    { [ "$1" = msvc ] && CC="cl" && CXX="cl" && shift }
 
     maybe_include() {
         [ -d "$1" ] && our_flags+=("-I$1")
@@ -163,11 +163,11 @@ compile() {
         fi
     fi
 
-    { [ $1 = debug ] && our_flags+=($debug_flags) && shift } || \
-    { [ $1 = release ] && our_flags+=($release_flags) && shift } || \
-    { [ $1 = derelease ] && our_flags+=($dr_flags) && shift } || \
-    { [ $1 = hardened ] && our_flags+=($hardened_flags) && shift } || \
-    { echo "please specify either debug or (de)release or hardened" >&2; return 1 }
+    { [ "$1" = debug ] && our_flags+=($debug_flags) && shift } || \
+    { [ "$1" = release ] && our_flags+=($release_flags) && shift } || \
+    { [ "$1" = derelease ] && our_flags+=($dr_flags) && shift } || \
+    { [ "$1" = hardened ] && our_flags+=($hardened_flags) && shift } || \
+    { our_flags+=($debug_flags) } # our default
 
     # TODO add static option
 

@@ -6,7 +6,7 @@ umask 022 # don't inherit last umask. pip will break itself.
 [ -z "$MSYSTEM" ] && cdrive="/cygdrive/c" || cdrive="/c"
 hash -d cyg="$cdrive/cygwin/home/$USER"
 hash -d msys="$cdrive/msys64/home/$USER"
-hash -d e="/media/2tb/you"
+hash -d e="/media/chibi"
 hash -d c="$cdrive"
 hash -d win="$cdrive/Users/$USER"
 hash -d mm="$cdrive/Program Files (x86)/mupen64plus/mm"

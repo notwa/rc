@@ -150,9 +150,10 @@ fi
 # note: zsh adds a % symbol to newline-less output, so bash prompt is overkill
 function {
     local good='green'
-    [[ "${(L)HOST}" == "banshee" ]] && good='cyan'
-    [[ "${(L)HOST}" == "spectre" ]] && good='white'
-    [[ "${(L)HOST}" == "wraith" ]] && good='yellow'
+    local host="${(L)HOST}"
+    [[ "$host" == "neobanshee" ]] && good='cyan'
+    [[ "$host" == "spectre" ]] && good='white'
+    [[ "$host" == "wraith" ]] && good='yellow'
     PROMPT='%{'$'\e''[10m%}%b%(?.%K{'"$good"'}.%K{red})%15F%#%f%k '
     RPROMPT='%8F%h%b'
 }

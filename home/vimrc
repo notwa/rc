@@ -154,6 +154,7 @@ if has('autocmd')
         au FileType ruby call TabTwo()
         au FileType nim call TabTwo()
         au BufRead,BufNewFile *.bt,*.1sc call TabFour()
+        au FileType javascript,processing call TabTwo()
     augroup END
 
     augroup whatever
@@ -163,6 +164,7 @@ if has('autocmd')
         au BufRead,BufNewFile *.1sc setlocal ft=c
         au BufRead,BufNewFile *.asm setlocal ft=lips
         au BufRead,BufNewFile *.nim setlocal ft=nim
+        au BufRead,BufNewFile *.pde setlocal ft=processing
     augroup END
 
     augroup nocomment

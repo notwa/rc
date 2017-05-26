@@ -97,6 +97,7 @@ whoa=(
     -Werror=pointer-to-int-cast
     -Werror=int-to-pointer-cast
     -Werror=return-type
+#   -Werror=tautological-constant-out-of-range-compare # gcc doesn't like this
 #   -Werror=undef
 
     -Wno-unused

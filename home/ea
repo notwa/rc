@@ -9,6 +9,10 @@ eahead() {
     curl -I "$_REMOTE_DOMAIN/$_REMOTE_DIR/$1"
 }
 
+eaget() {
+    curl "$_REMOTE_DOMAIN/$_REMOTE_DIR/$1" -o "${2:-$1}"
+}
+
 eaput() {
     curl -n -T "$1" "$_REMOTE_DOMAIN/$_REMOTE_AUTH/"
 }

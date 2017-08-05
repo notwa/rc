@@ -36,8 +36,8 @@ autoload -Uz compinit
 compinit
 
 HISTFILE=~/.histfile
-HISTSIZE=16384
-SAVEHIST=16384
+HISTSIZE=99999
+SAVEHIST=99999
 
 function {
     local -a opts

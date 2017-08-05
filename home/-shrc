@@ -160,6 +160,6 @@ trash() {
 
 unset cdrive
 
-[ -e ~/sh/z/z.sh ] && . ~/sh/z/z.sh
+#[ -e ~/sh/z/z.sh ] && . ~/sh/z/z.sh
 . ~/.streamcrap
 . ~/.ea

@@ -60,7 +60,7 @@ if has('gui_running')
 endif
 
 if has('title') | set title | endif   " terminal title
-set history=512                       " command lines to remember
+set history=8192                      " command lines to remember
 set number                            " lines
 set ruler                             " write out the cursor position
 set showcmd                           " show number of lines/etc. selected

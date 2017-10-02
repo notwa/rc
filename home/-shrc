@@ -10,6 +10,7 @@ hash -d e="/media/chibi"
 hash -d c="$cdrive"
 hash -d win="$cdrive/Users/$USER"
 hash -d mm="$cdrive/Program Files (x86)/mupen64plus/mm"
+hash -d py=~win"/Dropbox/py"
 
 ADDPATH() {
     new="$(readlink -f "$1")"
@@ -156,6 +157,16 @@ alias rakef='rake && gem build *.gemspec && gem install *.gem'
 
 trash() {
     dd status=none if=/dev/random bs=1 count="$1"
+}
+
+# buncha crap i need to clean up:
+alias py="~/python3 -u"
+alias mpq=~win/Desktop/starcraft/MPQEditor.exe
+
+mpqize() {
+    [ -s "$1" ] && rm "$1"
+    mpq new "$1"
+    mpq add "$1" "$2" staredit\\scenario.chk
 }
 
 unset cdrive

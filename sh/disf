@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# disassembles a function given its symbolic name.
+function disf() {
+    local exe="${1:?first argument should be an unstripped executable}"
+    local symbol="${2:?second argument should be a function name}"
+    # note: relies on GNU sed: https://unix.stackexchange.com/a/78485
+    objdump -d -C --no-show-raw-insn "$exe" | sed '/<'"$symbol"'>:/,/^$/!d;//d'
+}
+disf "$@"

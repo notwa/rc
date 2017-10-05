@@ -217,6 +217,11 @@ compile() {
         elif [[ $flag == -W* ]] && [[ $flag != -Wl* ]]; then
             warnings+=($flag)
 
+            if [ $sepples -eq 0 ] && [[ $flag == -Wextra ]] then
+                # enable some warnings just for C. too annoying in C++.
+                warnings+=(-Wshadow -Winline)
+            fi
+
             if [ $CC = cl ] && [ $flag = -Wall ]; then
                 # disable some obnoxious msvc warnings.
                 warnings+=(

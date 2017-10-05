@@ -98,17 +98,28 @@ whoa=(
     -Werror=pointer-to-int-cast
     -Werror=int-to-pointer-cast
     -Werror=return-type
+    -Werror=memset-transposed-args
 #   -Werror=tautological-constant-out-of-range-compare # gcc doesn't like this
 #   -Werror=undef
 
     -Wno-unused
     -Wno-padded
     -Wno-missing-field-initializers
-#   -Wno-type-limits
+#   -Wno-type-limits # bad for generated code (macros, templates)
     -Wno-misleading-indentation # gcc 6
     -Wno-disabled-macro-expansion # clang
     -Wno-language-extension-token # clang
     -Wno-unknown-warning-option # clang
+
+    # trying some stuff:
+    -Wduplicated-cond # gcc 6
+    -Wduplicated-branches # gcc 7
+    -Wlogical-op
+    -Wrestrict # gcc 7
+    -Wnull-dereference # gcc 6
+    -Wjump-misses-init
+    -Wdouble-promotion
+    -Wformat=2
 )
 
 welp=(

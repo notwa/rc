@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# I'll just leave this here
+# I'll just leave this here...
 __setup_clang_ubuntu() {
     local site="http://apt.llvm.org"
     local name="$(lsb_release -c | cut -f2)"
@@ -30,9 +30,9 @@ compile() {
 
     local cl
     local vc
-    if [ -n "$MSYSTEM" ]; then
-        if [ -z "$clang" ]; then
-            # maybe we have clang-msvc installed
+    if [ -n "$MSYSTEM" ]; then # using msys2?
+        if [ -z "$clang" ]; then # don't have native clang?
+            # then maybe we have clang-msvc installed.
             local dir
             printf "%s\n" "/c/Program Files/LLVM"*(On/N[1]) | read -r dir
             if [ -d "$dir" ] && [ -e "$dir/bin/clang" ]; then
@@ -46,6 +46,7 @@ compile() {
             fi
         fi
 
+        # detect and setup MSVC.
         local clarch
         [ "$MSYSTEM" = MINGW64 ] && clarch="/amd64" || clarch=""
         local arch
@@ -71,7 +72,7 @@ compile() {
                 clang_flags+=(-I "$d")
             done
 
-            # convert msys2 paths to windows paths
+            # convert msys2 paths to windows paths.
             export INCLUDE="${${INCLUDE//\/c\//C:\\}//\//\\}"
             export LIB="${${LIB//\/c\//C:\\}//\//\\}"
             export LIBPATH="${${LIBPATH//\/c\//C:\\}//\//\\}"
@@ -93,26 +94,32 @@ compile() {
         return 1
     fi
 
+    # set some defaults.
     local sepples=0
     [ -n "$clang" ] && local CC=clang || local CC=gcc
     [ -n "$clang" ] && local CXX=clang++ || local CXX=g++
     local our_flags=(-I.)
 
+    # guess if we're compiling C++ by the file extension.
     local file=${@[-1]}
     [ "${file##*.}" = "c" ] || [ "${file##*.}" = "h" ] || sepples=1
 
+    # select the appropriate executable if a compiler name is given.
     { [ "$1" = clang ] && CC="clang" && CXX="clang++" && shift } || \
     { [ "$1" = gcc ] && CC="gcc" && CXX="g++" && shift } || \
     { [ "$1" = msvc ] && CC="cl" && CXX="cl" && shift }
 
+    # add our clang-specific flags. (currently just for clang-msvc)
     [ $CC = clang ] && [ -n "$clang_flags" ] && our_flags+="${clang_flags[@]}"
 
+    # if they exist, include some directories that contain useful headers.
     maybe_include() {
         [ -d "$1" ] && our_flags+=("-I$1")
     }
     maybe_include "-I$HOME/opt/local/include"
     maybe_include "-I$HOME/src/ustl"
 
+    # set our build flags for each mode.
     if [ $CC = cl ]; then
         our_flags+=(-nologo -utf-8)
         local debug_flags=(-Od -ZI -sdl);
@@ -142,6 +149,7 @@ compile() {
         fi
     fi
 
+    # select appropriate version and executable for the language.
     local compiler=
     if [ $sepples -eq 1 ]; then
         compiler=$CXX
@@ -158,6 +166,7 @@ compile() {
         fi
     fi
 
+    # utilize clang's vast debugging and hardening features where available.
     if [ $CC = clang ]; then
         debug_flags+=(-ftrapv)
         [ -z "$MSYSTEM" ] && local gold=gold || local gold=lld
@@ -175,19 +184,20 @@ compile() {
         fi
     fi
 
+    # select and merge the flags for our build mode.
+    # TODO: add static option.
     { [ "$1" = debug ] && our_flags+=($debug_flags) && shift } || \
     { [ "$1" = release ] && our_flags+=($release_flags) && shift } || \
     { [ "$1" = derelease ] && our_flags+=($dr_flags) && shift } || \
     { [ "$1" = hardened ] && our_flags+=($hardened_flags) && shift } || \
     { our_flags+=($debug_flags) } # our default
 
-    # TODO add static option
-
     local flags=(${@[1,-2]})
 
+    # drop everything past the first dot and use that as our output filename.
     local out=/tmp/${${file%%.*}##*/}
     if [ -n "$MSYSTEM" ]; then
-        # explicitly output to .exe to avoid weirdness
+        # explicitly output as .exe to avoid weirdness.
         out="$out.exe"
     fi
 
@@ -195,17 +205,20 @@ compile() {
     # allow multiple source files (using the firstmost to determine the program name)
     # by generating a file that #includes each given file.
 
-    # move -l flags to the end because gcc won't respect them otherwise
-    # split warning flags so they don't spam the console
     local final_flags=()
     local libraries=()
     local warnings=()
     for flag in $our_flags $flags; do
+        # move -l flags to the end because gcc won't respect them otherwise.
         if [[ $flag == -l* ]]; then
             libraries+=($flag)
+
+        # split warning flags so they don't spam the console.
         elif [[ $flag == -W* ]] && [[ $flag != -Wl* ]]; then
             warnings+=($flag)
+
             if [ $CC = cl ] && [ $flag = -Wall ]; then
+                # disable some obnoxious msvc warnings.
                 warnings+=(
                     -wd4505 # unreferenced local function has been removed
                     -wd4514 # unreferenced inline function has been removed
@@ -215,23 +228,29 @@ compile() {
                     -wd4711 # function selected for automatic inline expansion
                 )
             fi
+
         else
             if [ $CC = clang ]; then
+                # these are specific to gcc. (for now)
                 if [ $flag = "-findirect-inlining" ] \
                 || [ $flag = "-finline-small-functions" ]; then
                     continue
                 fi
             fi
+
             if [ $clang_msvc -eq 1 ]; then
+                # remove linker-related flags from our compiler-only clang.
                 if [ $flag = "-Wl,--gc-sections" ] \
                 || [ $flag = "-s" ]; then
                     continue
                 fi
             fi
+
             final_flags+=($flag)
         fi
     done
 
+    # do the thing!
     [ $CC = cl ] && local outflag=-Fe: || local outflag=-o
     echo $compiler $std ${final_flags[@]} $file ${libraries[@]} $outflag $out >&2
     $compiler $std ${final_flags[@]} $file ${libraries[@]} ${warnings[@]} $outflag $out >&2

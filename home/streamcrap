@@ -111,4 +111,9 @@ yt() {
     popd >/dev/null
 }
 
+ai() {
+    yt "$@" --slang=en --sub-font='Tekton Pro' --sub-bold=yes \
+      --sub-font-size=60 --sub-border-color='#DD6180' --sub-margin-y=52
+}
+
 _nn=

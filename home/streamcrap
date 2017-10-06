@@ -103,12 +103,16 @@ yt() {
     local vid="$1"
     # can't be bothered to use substrings since they differ across bash/zsh
     if [[ "$(head -c4 <<< "$vid")" != "http" ]]; then
-        vid="https://www.youtube.com/watch?v=$vid"
+        vid="ytdl://$vid"
     fi
     mpv --af=lavfi="[$_M_PROCESS]" \
       --audio-samplerate=44100 --audio-format=s16 \
       --ytdl-format=22,best "$@" "$vid"
     popd >/dev/null
+}
+
+ytg() {
+    yt "$@" --ytdl-format=95,best
 }
 
 ai() {

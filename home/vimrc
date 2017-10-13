@@ -100,12 +100,13 @@ endif " it's really just annoying though
 if has('wildignore')
     " a bunch of stuff that may or may not do any good
     set wildignore=""
-    set wildignore+=.git,.svn,.hg,pkg,tmp,crap
+    set wildignore+=.git,.svn,.hg,pkg,tmp
     set wildignore+=*.bak,*.tmp,*.log,*.cache,
     set wildignore+=Desktop.ini,Thumbs.db,*.lnk,.DS_Store
     set wildignore+=*.zip,*.tar,*.tar.*,
     set wildignore+=*.suo,*.sln,*.pch,*.pdb,*.pgc,*.pgd
     set wildignore+=*.o,*.obj,*.elf,*.lib,*.a,*.dll,*.so,*.so.*,*.exe,*.out
+    set wildignore+=*.png,*.jpg,*.jpeg,*.gif,*.pdf
     set wildignore+=__pycache__,*.pyc,*.pyo,*.pyd
     set wildignore+=*.gem,.bundle
     set wildignore+=CMake*,cmake_install.cmake,install_manifest.txt

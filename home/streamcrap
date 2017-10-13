@@ -37,7 +37,13 @@ if [[ "$_nn" == "spectre" ]]; then
 fi
 if [[ "$_nn" == "neobanshee" ]]; then
     speakers() {
-        _M_PROCESS="highpass=311,$_M_KILL,equalizer=1090:o:0.5:-5,equalizer=970:o:1.2:-10,equalizer=4100:o:0.3:-6,alimiter=level_in=2"
+        _M_PROCESS="highpass=311,$_M_KILL,\
+equalizer=700:o:1.3:-5,\
+equalizer=1200:o:1.3:-3,\
+equalizer=1090:o:0.5:-5,\
+equalizer=970:o:1.2:-10,\
+equalizer=4100:o:0.3:-6,\
+alimiter=level_in=2"
     }
     speakers
 fi

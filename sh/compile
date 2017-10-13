@@ -116,8 +116,8 @@ compile() {
     maybe_include() {
         [ -d "$1" ] && our_flags+=("-I$1")
     }
-    maybe_include "-I$HOME/opt/local/include"
-    maybe_include "-I$HOME/src/ustl"
+    maybe_include "$HOME/opt/local/include"
+    maybe_include "$HOME/src/ustl"
 
     # set our build flags for each mode.
     if [ $CC = cl ]; then

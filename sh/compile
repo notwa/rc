@@ -127,10 +127,10 @@ compile() {
         local dr_flags=(-Ox -Zi)
         local hardened_flags=(-Ox -sdl)
     else
-        local debug_flags=(-O1 -g -D_DEBUG);
-        local release_flags=(-Ofast -march=native -g0 -fomit-frame-pointer -s -DNDEBUG)
-        local dr_flags=(-Ofast -march=native -g -fomit-frame-pointer -DNDEBUG)
-        local hardened_flags=(-O3 -march=native -g0 -s
+        local debug_flags=(-O1 -march=native -g -D_DEBUG);
+        local release_flags=(-Ofast -march=native -mtune=native -g0 -fomit-frame-pointer -s -DNDEBUG)
+        local dr_flags=(-Ofast -march=native -mtune=native -g -fomit-frame-pointer -DNDEBUG)
+        local hardened_flags=(-O3 -march=native -mtune=native -g0 -s
                               -DNDEBUG -D_FORTIFY_SOURCE=2
                               -Wformat -Wformat-security -Werror=format-security)
 
@@ -220,6 +220,8 @@ compile() {
             if [ $sepples -eq 0 ] && [[ $flag == -Wextra ]] then
                 # enable some warnings just for C. too annoying in C++.
                 warnings+=(-Wshadow -Winline)
+                # these ones only work with C.
+                warnings+=(-Wjump-misses-init)
             fi
 
             if [ $CC = cl ] && [ $flag = -Wall ]; then

@@ -117,7 +117,7 @@ whoa=(
     -Wlogical-op
     -Wrestrict # gcc 7
     -Wnull-dereference # gcc 6
-    -Wjump-misses-init
+    #-Wjump-misses-init # only for C
     -Wdouble-promotion
     -Wformat=2
 )

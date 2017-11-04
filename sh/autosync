@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+autosync() {
+    target="$1"
+    shift
+    # as a reminder not to get the argument order mixed up:
+    echo -E "rsyncing to $target" >&2
+    while inotifywait -q -e create,modify "$@"; do
+        \rsync -rtl "$@" "$target"
+    done
+}

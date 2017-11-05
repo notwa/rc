@@ -104,7 +104,7 @@ PATH="${PATH:?No existing PATH}:$rc/sh"
 backup_dir="$rc/backup-$(date '+%s')"
 
 for f in .bashrc .zshrc .-shrc .streamcrap .ea .vimrc \
-  .inputrc .Xresources .screenrc .indent.pro .uncrustify.cfg; do
+  .inputrc .Xresources .screenrc; do
     dotless "$f"
     r="$rc/home/$REPLY"
     hardlink "$f" "$r"

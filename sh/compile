@@ -127,10 +127,10 @@ compile() {
         local dr_flags=(-Ox -Zi)
         local hardened_flags=(-Ox -sdl)
     else
-        local debug_flags=(-O1 -march=native -g -D_DEBUG);
-        local release_flags=(-Ofast -march=native -mtune=native -g0 -fomit-frame-pointer -s -DNDEBUG)
-        local dr_flags=(-Ofast -march=native -mtune=native -g -fomit-frame-pointer -DNDEBUG)
-        local hardened_flags=(-O3 -march=native -mtune=native -g0 -s
+        local debug_flags=(-O1 -mcpu=native -g -D_DEBUG);
+        local release_flags=(-Ofast -mcpu=native -g0 -fomit-frame-pointer -s -DNDEBUG)
+        local dr_flags=(-Ofast -mcpu=native --g -fomit-frame-pointer -DNDEBUG)
+        local hardened_flags=(-O3 -mcpu=native -g0 -s
                               -DNDEBUG -D_FORTIFY_SOURCE=2
                               -Wformat -Wformat-security -Werror=format-security)
 

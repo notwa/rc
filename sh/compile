@@ -127,10 +127,16 @@ compile() {
         local dr_flags=(-Ox -Zi)
         local hardened_flags=(-Ox -sdl)
     else
-        local debug_flags=(-O1 -mcpu=native -g -D_DEBUG);
-        local release_flags=(-Ofast -mcpu=native -g0 -fomit-frame-pointer -s -DNDEBUG)
-        local dr_flags=(-Ofast -mcpu=native --g -fomit-frame-pointer -DNDEBUG)
-        local hardened_flags=(-O3 -mcpu=native -g0 -s
+        if [ $CC = clang ]; then
+            # clang doesn't like -march=native on ARM for some reason.
+            our_flags+=(-mcpu=native)
+        else
+            our_flags+=(-march=native)
+        fi
+        local debug_flags=(-O1 -g -D_DEBUG);
+        local release_flags=(-Ofast -mtune=native -g0 -fomit-frame-pointer -s -DNDEBUG)
+        local dr_flags=(-Ofast -g -fomit-frame-pointer -DNDEBUG)
+        local hardened_flags=(-O3 -g0 -s
                               -DNDEBUG -D_FORTIFY_SOURCE=2
                               -Wformat -Wformat-security -Werror=format-security)
 

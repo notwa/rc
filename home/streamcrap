@@ -77,12 +77,6 @@ twitch() {
     watchstream "http://twitch.tv/$user" "$@"
 }
 
-hitbox() {
-    local user="$1"
-    shift
-    watchstream "http://hitbox.tv/$user" "$@"
-}
-
 yt() {
     pushd ~/play >/dev/null
     local vid="$1"

@@ -4,7 +4,7 @@
 __setup_clang_ubuntu() {
     local site="http://apt.llvm.org"
     local name="$(lsb_release -c | cut -f2)"
-    local version=5.0
+    local version=6.0
     local priority=$(( int(version * 100 + 0.5) ))
     # TODO: use https? this is sketchy
     echo wget -O - "$site/llvm-snapshot.gpg.key" \| apt-key add -

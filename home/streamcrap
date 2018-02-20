@@ -1,16 +1,14 @@
 #!/bin/zsh
 # awful things
 
-MPV_STREAM_FLAGS="--quiet --autofit=1280x720 --loop-playlist=no --no-resume-playback --no-sub --no-initial-audio-sync --mc=0.02 --autosync=30 \
+MPV_STREAM_FLAGS="--quiet --autofit=1280x720 --loop-playlist=no --no-resume-playback --no-sub \
+--no-initial-audio-sync --mc=0.02 --autosync=30 \
 --cache-secs=10 --cache-initial=1024 --cache-pause --cache-backbuffer=0 --cache-seek-min=2048"
-LIVESTREAMER_FLAGS="--player-http --player-continuous-http --default-stream=source,best"
-LIVESTREAMER_FLAGS+=" --player-passthrough=http --player-no-close"
 
 _M_STEREO='aformat=channel_layouts=stereo'
 _M_PRE_EMPH='equalizer=f=50.0:g=-10:width_type=o:w=4,equalizer=f=5000:g=+05:width_type=o:w=4'
 _M_POST_EMPH='equalizer=f=50.0:g=+10:width_type=o:w=4,equalizer=f=5000:g=-05:width_type=o:w=4'
 _M_COMPRESS='compand=0.001|0.001:0.25|0.25:-42/-42|0/-21:6:18:-30:0.001'
-_M_LIMIT='compand=0.000|0.000:0.10|0.10:-9/-9|0/-6.:3:4.5:-9'
 _M_COMPRESS_SOFT='acompressor=threshold=0.01:ratio=1.667:attack=50:release=3200:makeup=6.7:knee=8:mix=0.67'
 _M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
 
@@ -21,15 +19,13 @@ getladspa() {
     fi
 }
 
-getladspa crap_eq_const_T420
-_M_SPEAKERS="$REPLY"
 getladspa crap_level
 _M_LEVEL="$REPLY"
 
 _nn="$(uname -n | tr A-Z a-z)"
 
 earphones() {
-    _M_PROCESS="lowpass=8000:p=1,$_M_KILL,$_M_SPEAKERS,alimiter=level_out=0.707"
+    _M_PROCESS="lowpass=8000:p=1,$_M_KILL,alimiter=level_out=0.707"
 }
 
 if [[ "$_nn" == "spectre" ]]; then
@@ -48,6 +44,8 @@ alimiter=level_in=2"
     speakers
 fi
 if [[ "$_nn" == "banshee" ]]; then
+    getladspa crap_eq_const_T420
+    _M_SPEAKERS="$REPLY"
     speakers() {
         _M_PROCESS="$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5"
     }
@@ -58,7 +56,7 @@ _mpv_flags() {
     REPLY="$MPV_STREAM_FLAGS --af=lavfi=[$_M_PROCESS]"
 }
 
-watchstream1() {
+watchstream() {
     pushd ~/play >/dev/null
     local url="$1"
     shift
@@ -72,25 +70,6 @@ watchstream1() {
     fi
     popd >/dev/null
 }
-
-watchstream2() {
-    pushd ~/play >/dev/null
-    local url="$1"
-    shift
-    _mpv_flags
-    if [ -n "$ZSH_VERSION" ]; then
-        # zsh syntax
-        livestreamer "$url" "$@" -p mpv $=LIVESTREAMER_FLAGS -a \
-          "$REPLY {filename}"
-    else
-        # bash syntax
-        livestreamer "$url" "$@" -p mpv $LIVESTREAMER_FLAGS -a \
-          "$REPLY {filename}"
-    fi
-    popd >/dev/null
-}
-
-alias watchstream=watchstream1
 
 twitch() {
     local user="$1"
@@ -122,6 +101,7 @@ ytg() {
 }
 
 ai() {
+    # hai domo
     yt "$@" --slang=en --sub-font='Tekton Pro' --sub-bold=yes \
       --sub-font-size=60 --sub-border-color='#DD6180' --sub-margin-y=52
 }

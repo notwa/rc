@@ -176,3 +176,11 @@ reload() {
 
 [ -e "/home/$USER/opt/local/bin/torch-activate" ] && \
    . "/home/$USER/opt/local/bin/torch-activate"
+
+function {
+    local gm
+    printf "%s\n" "/c/Program Files/GraphicsMagick"*(On/N[1]) | read gm
+    if [ -d "$gm" ]; then
+        ADDPATH $gm
+    fi
+}

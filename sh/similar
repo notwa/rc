@@ -7,6 +7,7 @@ awk '
     for (c in a)
         if (a[c]==b[c]) i++
         else break
-    print substr($0,1,i) "\033[7m" substr($0,i+1) "\033[0m"
+    #print substr($0,1,i) "\033[7m" substr($0,i+1) "\033[0m"
+    print "\033[31m" substr($0,1,i) "\033[0m" substr($0,i+1)
     L=$0
 }'

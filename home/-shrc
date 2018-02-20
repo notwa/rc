@@ -173,6 +173,7 @@ trash() {
 # buncha crap i need to clean up:
 alias py="~/python3 -u"
 alias mpq=~win/Desktop/starcraft/MPQEditor.exe
+alias pippy="py -m pip install --upgrade --upgrade-strategy only-if-needed"
 
 mpqize() {
     [ -s "$1" ] && rm "$1"

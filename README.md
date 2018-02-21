@@ -208,7 +208,7 @@ kinda pointless now that acompressor is wildly supported.
 
 supports gcc and clang on \*nix,
 and mingw64 gcc, msvc clang, and regular msvc on Windows.
-tested x86\_64 and on ARMv7 as well.
+tested on x86\_64 and on ARMv7 as well.
 does not support MacOS ;\_;
 
 defaults to gnu11 and gnu++1z as C and C++ standards respectively.
@@ -425,7 +425,7 @@ $ randir
 
 ### [rs](/sh/rs)
 
-record screen. does not record audio.
+(zsh) record screen. does not record audio.
 
 currently only works on winderp (gdigrab).
 there's probably some equivalent thing on leenucks.
@@ -499,7 +499,8 @@ them=those
 
 ### [tpad](/sh/tpad)
 
-adds a 1px transparent border around an image so that twitter doesn't mangle it into a jpg.
+(bash) adds a 1px transparent border around an image
+so that twitter doesn't mangle it into a jpg.
 
 ### [trunc](/sh/trunc)
 
@@ -518,7 +519,7 @@ $ unwrap /usr/share/licenses/common/GPL3/license.txt | trunc | head
   The GNU General Public License is a free, copyleft license fo…
 
   The licenses for most software and other practical works are …
-$ echo this is just an example; these scripts are (mostly) unlicensed.
+$ echo 'this is just an example; these scripts are (mostly) unlicensed.'
 ```
 
 ## submodules

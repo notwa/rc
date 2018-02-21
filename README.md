@@ -212,6 +212,7 @@ tested on x86\_64 and on ARMv7 as well.
 does not support MacOS ;\_;
 
 defaults to gnu11 and gnu++1z as C and C++ standards respectively.
+defaults to clang, gcc, and msvc in that order.
 
 `compile` attempts to guess the most sane switches for any program,
 so that compilation may reduce to:
@@ -219,6 +220,7 @@ so that compilation may reduce to:
 ```sh
 # debug build
 compile rd.c
+compile debug rd.c
 # debug build with warning/error flags defined in .-shrc
 # (requires .zshrc for global alias expansion)
 compile WHOA rd.c

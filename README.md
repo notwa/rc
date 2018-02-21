@@ -3,7 +3,7 @@
 _(plus some little shell scripts)_
 
 there's probably a lot of subtle things gone uncredited,
-but oh well.
+but what can you do.
 
 ## stuff defined in RC files
 
@@ -13,7 +13,7 @@ but mostly [-shrc](/home/-shrc) and [.streamcrap](/home/streamcrap)
 ### reload
 
 exec's the current shell.
-if it's `zsh`, it'll recompile `.zshrc` so everything actually reloads.
+if it's `zsh`, it'll also recompile `.zshrc` so everything actually reloads.
 
 ### ADDPATH
 
@@ -53,19 +53,19 @@ arguments are passed to `head`.
 
 ```
 $ freq
-    507 ls
-    349 sudo
-    308 git
-    268 less
-    259 e
-    208 luajit
-    188 :
-    185 twitch
-    138 th
-    131 z
+   2533 git
+   1600 tw
+   1572 twitch
+   1019 yt
+    994 wipe;
+    621 compile
+    616 ls
+    567 gd
+    522 ssh
+    521 less
 ```
 
-that `:` is probably something i should fix.
+**TODO:** fix `:` and extraneous semicolons showing up in results.
 
 ### nocom
 
@@ -112,16 +112,33 @@ make the freakin' package!
 
 given a number of bytes, outputs binary garbage from `/dev/random`.
 
-### yt
+### wipe
+
+(zsh) clears the screen and scrollback and prints an ugly horizontal line
+so you know with absolute certainty that you're looking
+at the top of your history and your terminal's scrollback
+didn't cap out and eat text.
+
+```
+$ wipe; ./configure && make
+[insert a bajillion lines you'd never be able to find the top of unless
+ you piped it to a file or less or wiped scrollback beforehand]
+```
+
+### yt / ytg / ai
 
 watches a youtube video through mpv with a bunch of audio filtering crap.
 
 can be given a full URL or just a video ID.
 remaining arguments are passed to mpv.
 
-### twitch + hitbox
+the `ytg` variant specifies a format specific to youtube-gaming streams.
 
-watches twitch/hitbox streams through mpv with a bunch of audio filtering crap.
+the `ai` variant retrieves english subtitles and renders them in a kizuna way.
+
+### twitch
+
+watches twitch streams through mpv with a bunch of audio filtering crap.
 
 give it a username.
 remaining arguments are passed to mpv.
@@ -153,6 +170,12 @@ it's a little broken.
 $ aur -eyoI cmdpack-uips applyppf
 ```
 
+### [autosync](/sh/autosync)
+
+(zsh) combines inotifywait and rsync.
+
+sometimes nicer than ssh-ing into a server and running vim remotely.
+
 ### [cdbusiest](/sh/cdbusiest) + [dbusiest](/sh/dbusiest)
 
 (zsh) cd to the directory with the most files in it (recursive).
@@ -176,6 +199,48 @@ a 76-character script!
 ### [compandy](/sh/compandy)
 
 (zsh) a dumb thing to generate compand arguments for ffmpeg audio filters.
+
+kinda pointless now that acompressor is wildly supported.
+
+### [compile](/sh/compile)
+
+(zsh) a huge mess for compiling single-file C and C++ programs.
+
+supports gcc and clang on \*nix,
+and mingw64 gcc, msvc clang, and regular msvc on Windows.
+tested x86\_64 and on ARMv7 as well.
+does not support MacOS ;\_;
+
+defaults to gnu11 and gnu++1z as C and C++ standards respectively.
+
+`compile` attempts to guess the most sane switches for any program,
+so that compilation may reduce to:
+
+```sh
+# debug build
+compile rd.c
+# debug build with warning/error flags defined in .-shrc
+# (requires .zshrc for global alias expansion)
+compile WHOA rd.c
+# likewise for C++
+compile WHOA WELP rd.cc
+compile WHOA WELP rd.cpp
+# "derelease" build (release build with debug information)
+compile derelease WHOA rd.c
+# release build (with symbols stripped)
+compile release WHOA rd.c
+# hardened build (only useful on *nix)
+compile hardened WHOA rd.c
+# specifying compiler
+compile gcc WHOA rd.c
+compile msvc WHOA rd.c
+compile release clang WHOA rd.c
+# compile and execute (FIXME: writing to /tmp is a security concern)
+compile derelease rd.c && /tmp/rd
+```
+
+also contains a helper function that dumps the commands required to
+install a recent version of clang on an ubuntu machine.
 
 ### [confirm](/sh/confirm)
 
@@ -205,11 +270,11 @@ $ days 'January 1 1970'
 
 ```
 $ dfu
-Filesystem              Used     Max    Misc
-/                       6.90   13.75    0.75
-/dev                    0.00    0.45    0.00
-/boot                   0.02    0.10    0.00
-/media/2tb           1528.48 1740.49   93.17
+Filesystem              Used     Max    Left    Misc
+/dev                    0.00    0.45    0.45    0.00
+/                      12.13   13.75    1.62    0.75
+/boot                   0.02    0.10    0.07    0.00
+/media/chibi         1275.73 1304.45   28.72   69.88
 ```
 
 ### [e](/sh/e)
@@ -278,7 +343,7 @@ i think this is broken.
 
 ### [monitor](/sh/monitor)
 
-(zsh) literally just `watch` as a shell script. kinda nice though.
+(zsh) literally just `watch` reimplemented as a shell script. kinda nice though.
 
 ### [mw](/sh/mw) + [mw-cyg](/sh/mw-cyg)
 
@@ -306,8 +371,8 @@ requires `expac`.
 
 ```
 $ pacbm | head -n -1 | tail -2
-  191.30M ocaml
-  193.40M clang
+  204.78M clang
+  235.44M linux-firmware
 ```
 
 ### [pacman-list-disowned](/sh/pacman-list-disowned)
@@ -362,6 +427,13 @@ $ randir
 ./sh
 ```
 
+### [rs](/sh/rs)
+
+record screen. does not record audio.
+
+currently only works on winderp (gdigrab).
+there's probably some equivalent thing on leenucks.
+
 ### [sc](/sh/sc)
 
 (bash) uploads given files to a webserver and returns a direct link for sharing.
@@ -383,6 +455,8 @@ will close any existing screens of the same name using its companion script, uns
 
 e.g. run znc as user znc in a screen called znc: `screeny znc znc znc -f`. znc!
 
+<!--(you should really just use tmux though)-->
+
 ### [scropt](/sh/scropt)
 
 (bash) runs `scrot` through `optipng` and saves to `~/play/$(now).png`.
@@ -394,7 +468,6 @@ $ ~/sh/sc $(~/sh/scropt -s -d0.5)
 ### [similar](/sh/similar)
 
 (sh) sorts stdin and highlights similarities between adjacent lines.
-kinda broken.
 
 ### [slit](/sh/slit)
 
@@ -428,6 +501,10 @@ this=cat
 them=those
 ```
 
+### [tpad](/sh/tpad)
+
+adds a 1px transparent border around an image so that twitter doesn't mangle it into a jpg.
+
 ### [trunc](/sh/trunc)
 
 (bash) truncates text to fit within your terminal using the unicode character `…`.
@@ -445,16 +522,15 @@ $ unwrap /usr/share/licenses/common/GPL3/license.txt | trunc | head
   The GNU General Public License is a free, copyleft license fo…
 
   The licenses for most software and other practical works are …
+$ echo this is just an example; these scripts are (mostly) unlicensed.
 ```
 
 ## submodules
 
-probably horribly outdated
-
 ### [meow.sh](//github.com/notwa/meow.sh)
 
-scrapes and downloads nyaa torrents.
+<!--rip nyaa?-->
 
 ### [z](//github.com/rupa/z)
 
-cd to the most "frecently" used directory matching a regex.
+<!--spits out errors every other command you run. sorry rupa.-->

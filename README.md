@@ -302,10 +302,6 @@ $ isup fdhafdslkjgfjs.com && echo yay || echo nay
 nay
 ```
 
-### [logs](/sh/logs)
-
-(bash/zsh) just wraps around `journalctl`. i don't remember how it works exactly.
-
 ### [lol-twitter](/sh/lol-twitter)
 
 (zsh) checks if usernames (from stdin) are available on twitter.

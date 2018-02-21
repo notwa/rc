@@ -302,12 +302,6 @@ $ isup fdhafdslkjgfjs.com && echo yay || echo nay
 nay
 ```
 
-### [lol-twitter](/sh/lol-twitter)
-
-(zsh) checks if usernames (from stdin) are available on twitter.
-
-seems to return a 403 code these days, but you could probably fix that.
-
 ### [lsarchive](/sh/lsarchive) + [unarchive](/sh/unarchive)
 
 (zsh) guess what these do. written by Sorin Ionescu.

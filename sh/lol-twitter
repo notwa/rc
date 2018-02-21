@@ -1,7 +1,0 @@
-#!/bin/zsh
-#< /dev/urandom | tr -dc 'a-z0-9_' | fold -w 5 \
-#< /usr/share/dict/cracklib-small | grep -E '^\w{4}$' \
-while read -r; do
-    curl -s 'https://twitter.com/users/username_available' -d username=$REPLY \
-    | grep -lq ',"valid":true' && echo $REPLY || echo \#$REPLY
-done

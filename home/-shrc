@@ -81,6 +81,7 @@ alias gs='git status' # rip ghostscript
 alias gd='git diff -U2'
 alias gds='git --no-pager diff --stat'
 alias gl='git log --oneline'
+alias perlu='perl -Mopen=locale -Mutf8'
 
 whoa=(
     -fdiagnostics-color=always
@@ -159,6 +160,8 @@ alias cleanse='tr -cd "\11\12\15\40-\176"'
 alias rot13='tr "A-Za-z0-9" "N-ZA-Mn-za-m5-90-4"'
 alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\'
 alias double='awk "{print;print}"'
+alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r'"'"
+
 #
 alias picky='{ pacman -Qgq base base-devel xorg xorg-drivers xfce4 | double; pacman -Qeq; } | sort | uniq -u'
 alias unused='{ pacman -Qtq; pacman -Qeq | double; } | sort | uniq -u'

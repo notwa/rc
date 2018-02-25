@@ -2,8 +2,8 @@
 # awful things
 
 MPV_STREAM_FLAGS="--quiet --autofit=1280x720 --loop-playlist=no --no-resume-playback --no-sub \
---no-initial-audio-sync --mc=0.02 --autosync=30 \
---cache-secs=10 --cache-initial=1024 --cache-pause --cache-backbuffer=0 --cache-seek-min=2048"
+--no-initial-audio-sync --mc=0.02 --autosync=30"
+#--cache-secs=10 --cache-initial=1024 --cache-pause --cache-backbuffer=0 --cache-seek-min=2048"
 
 _M_STEREO='aformat=channel_layouts=stereo'
 _M_PRE_EMPH='equalizer=f=50.0:g=-10:width_type=o:w=4,equalizer=f=5000:g=+05:width_type=o:w=4'

@@ -80,6 +80,7 @@ twitch() {
 yt() {
     pushd ~/play >/dev/null
     local vid="$1"
+    shift
     # can't be bothered to use substrings since they differ across bash/zsh
     if [[ "$(head -c4 <<< "$vid")" != "http" ]]; then
         vid="ytdl://$vid"

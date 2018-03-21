@@ -101,4 +101,9 @@ ai() {
       --sub-font-size=60 --sub-border-color='#DD6180' --sub-margin-y=52
 }
 
+asmr() {
+    _M_PROCESS="acompressor=threshold=0.0032:ratio=1.414:attack=17:release=640:makeup=5.5:knee=8:mix=0.8,alimiter" \
+      mpv --volume=85 --ytdl-format=251,best "$@"
+}
+
 _nn=

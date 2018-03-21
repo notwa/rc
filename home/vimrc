@@ -286,14 +286,10 @@ nn <Leader>. @:
 nn <Leader>, :Tab /,\zs<cr>
 "nn <Leader>x :system('chmod +x %') | e
 
-" trying some copypasta from http://stackoverflow.com/a/16084326
-"set path=.,**
-"nn <Leader>f :find *
-"nn <Leader>F :find <c-r>=expand('%:h').'/*'<cr>
-
 " via bit101
 nn - :E<cr>
 nn <Leader>f :E .<cr>
+nn <Leader>F :E <c-r>=expand('%:h')<cr><cr>
 
 " extension binds {{{1
 map <silent> <c-n> :CtrlPBuffer<cr>

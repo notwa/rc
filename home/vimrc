@@ -262,7 +262,7 @@ nn <bar> <c-]>
 "nn D dd
 
 " execute vim code in visual selection
-vmap <space> "xy:@x<CR>
+vmap <space> "xy:@x<cr>
 
 " this frees up x and X for use if you like
 set <s-Del>=[3;2~
@@ -287,9 +287,13 @@ nn <Leader>, :Tab /,\zs<cr>
 "nn <Leader>x :system('chmod +x %') | e
 
 " trying some copypasta from http://stackoverflow.com/a/16084326
-set path=.,**
-nn <Leader>f :find *
-nn <Leader>F :find <c-r>=expand('%:h').'/*'<cr>
+"set path=.,**
+"nn <Leader>f :find *
+"nn <Leader>F :find <c-r>=expand('%:h').'/*'<cr>
+
+" via bit101
+nn - :E<cr>
+nn <Leader>f :E .<cr>
 
 " extension binds {{{1
 map <silent> <c-n> :CtrlPBuffer<cr>
@@ -361,6 +365,8 @@ set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
 "set list listchars=tab:>-,trail:.,extends:>,nbsp:_
 
 try | execute pathogen#infect()       | catch /E117/ | endtry
+
+let g:netrw_banner = 0
 
 set background=dark
 try

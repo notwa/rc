@@ -288,6 +288,7 @@ nn <Leader>, :Tab /,\zs<cr>
 
 " via bit101
 nn - :E<cr>
+nn _ :E <c-r>=expand('%:h')<cr><cr>
 nn <Leader>f :E .<cr>
 nn <Leader>F :E <c-r>=expand('%:h')<cr><cr>
 

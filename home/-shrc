@@ -70,7 +70,7 @@ unset x
 #alias make="$(has colormake || has make)"
 
 # just flags
-export LESS='-SR'
+export LESS='-SRQ'
 alias db="dropbox_uploader"
 alias fils="du -bahd1"
 alias lsa="ls -A --group-directories-first"

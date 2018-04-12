@@ -301,7 +301,7 @@ fu! HiDump()
     redir => out
     silent hi
     redir END
-    let @a = out
+    let @a=out
     put a
 endf
 
@@ -363,7 +363,7 @@ set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
 
 try | execute pathogen#infect()       | catch /E117/ | endtry
 
-let g:netrw_banner = 0
+let g:netrw_banner=0
 
 set background=dark
 try
@@ -393,11 +393,11 @@ augroup END
 
 " ctrlp {{{1
 
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:24,results:24'
+let g:ctrlp_match_window='bottom,order:btt,min:1,max:24,results:24'
 
 " machine-specific configs {{{1
 
-let s:hostname = hostname()
+let s:hostname=hostname()
 if s:hostname == "phantom-pi" || s:hostname == "wraith"
     colo Tomorrow-Night
 endif

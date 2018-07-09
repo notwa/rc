@@ -160,6 +160,7 @@ alias cleanse='tr -cd "\11\12\15\40-\176"'
 alias rot13='tr "A-Za-z0-9" "N-ZA-Mn-za-m5-90-4"'
 alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\'
 alias double='awk "{print;print}"'
+alias join2='paste -d" " - -'
 alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r'"'"
 
 #

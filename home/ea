@@ -14,7 +14,7 @@ eaget() {
 }
 
 eaput() {
-    curl -n -T "$1" "$_REMOTE_DOMAIN/$_REMOTE_AUTH/"
+    curl -g -n -T "$1" "$_REMOTE_DOMAIN/$_REMOTE_AUTH/"
 }
 
 eamove() {

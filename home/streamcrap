@@ -87,7 +87,7 @@ yt() {
     fi
     mpv --af=lavfi="[$_M_PROCESS]" \
       --audio-samplerate=44100 --audio-format=s16 \
-      --ytdl-format=22,best "$@" "$vid"
+      --ytdl-format '[width<=1280],best' "$vid" "$@"
     popd >/dev/null
 }
 
@@ -102,8 +102,8 @@ ai() {
 }
 
 asmr() {
-    _M_PROCESS="acompressor=threshold=0.0032:ratio=1.414:attack=17:release=640:makeup=5.5:knee=8:mix=0.8,alimiter" \
-      mpv --volume=85 --ytdl-format=251,best "$@"
+    _M_PROCESS="acompressor=threshold=0.0032:ratio=1.414:attack=17:release=640:makeup=6:knee=8:mix=0.8,alimiter=level_in=1.414:level_out=0.707" \
+      yt "$@" --volume=90 --ytdl-format=251,best
 }
 
 _nn=

@@ -81,7 +81,7 @@ yt() {
     pushd ~/play >/dev/null
     local vid="$1"
     shift
-    if [[ "$(expr substr "$vid" 1 4)" != "http" ]]; then
+    if [[ ! -e "$vid" && "$(expr substr "$vid" 1 4)" != "http" ]]; then
         vid="ytdl://$vid"
     fi
     mpv --af=lavfi="[$_M_PROCESS]" \

@@ -337,11 +337,6 @@ i think this is broken.
 
 (zsh) literally just `watch` reimplemented as a shell script. kinda nice though.
 
-### [mw](/sh/mw) + [mw-cyg](/sh/mw-cyg)
-
-(zsh) manages a ton of environment variables for cross-compiling programs.
-you'll want to tweak this if you use it yourself.
-
 ### [now](/sh/now)
 
 (bash) returns the local date-time in a sortable format.

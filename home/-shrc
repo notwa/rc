@@ -4,7 +4,9 @@
 umask 022 # don't inherit last umask. pip will break itself.
 
 [ -z "$MSYSTEM" ] && cdrive="/cygdrive/c" || cdrive="/c"
+[ -z "$MSYSTEM" ] && ddrive="/cygdrive/d" || ddrive="/d"
 hash -d c="$cdrive"
+hash -d d="$ddrive"
 hash -d cyg=~c"/cygwin/home/$USER"
 hash -d msys=~c"/msys64/home/$USER"
 hash -d e="/media/chibi"
@@ -186,6 +188,7 @@ mpqize() {
 }
 
 unset cdrive
+unset ddrive
 
 #[ -e ~/sh/z/z.sh ] && . ~/sh/z/z.sh
 . ~/.streamcrap

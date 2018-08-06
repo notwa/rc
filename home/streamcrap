@@ -53,46 +53,46 @@ if [[ "$_nn" == "banshee" ]]; then
     speakers
 fi
 
-_mpv_flags() {
-    REPLY="$MPV_STREAM_FLAGS --af=lavfi=[$_M_PROCESS]"
+mpv_watch() {
+    pushd ~/play >/dev/null
+    local url="$1"; shift
+    #--audio-samplerate=44100 --audio-format=s16 \
+    mpv --af=lavfi="[$_M_PROCESS]" --ytdl-format '[width<=1280],best' \
+      "$@" "$url"
+    popd >/dev/null
 }
 
-watchstream() {
+mpv_stream() {
     pushd ~/play >/dev/null
-    local url="$1"
-    shift
-    _mpv_flags
+    local url="$1"; shift
     if [ -n "$ZSH_VERSION" ]; then
         # zsh syntax
-        mpv $=REPLY "$@" "$url"
+        mpv $=MPV_STREAM_FLAGS --af=lavfi="[$_M_PROCESS]" "$@" "$url"
     else
-        # bash syntax
-        mpv $REPLY "$@" "$url"
+        mpv $MPV_STREAM_FLAGS --af=lavfi="[$_M_PROCESS]" "$@" "$url"
     fi
     popd >/dev/null
 }
 
 twitch() {
-    local user="$1"
-    shift
-    watchstream "http://twitch.tv/$user" "$@"
+    local user="$1"; shift
+    mpv_stream "http://twitch.tv/$user" "$@"
 }
 
 yt() {
-    pushd ~/play >/dev/null
-    local vid="$1"
-    shift
+    local vid="$1"; shift
     if [[ ! -e "$vid" && "$(expr substr "$vid" 1 4)" != "http" ]]; then
         vid="ytdl://$vid"
     fi
-    mpv --af=lavfi="[$_M_PROCESS]" \
-      --audio-samplerate=44100 --audio-format=s16 \
-      --ytdl-format '[width<=1280],best' "$vid" "$@"
-    popd >/dev/null
+    mpv_watch "$vid" "$@"
 }
 
 ytg() {
-    yt "$@" --ytdl-format=95,best
+    local vid="$1"; shift
+    if [[ ! -e "$vid" && "$(expr substr "$vid" 1 4)" != "http" ]]; then
+        vid="ytdl://$vid"
+    fi
+    mpv_stream "$vid" --ytdl-format=95,best "$@"
 }
 
 ai() {

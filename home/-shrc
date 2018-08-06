@@ -155,7 +155,7 @@ alias counts='find . | wc -l'
 alias exts='print -l *(:e:l) | sort | uniq -c | sort -n'
 alias freq="cut -d' ' -f1 < ~/.histfile | sort | uniq -c | sort -rn | head"
 #
-alias nocom='grep -oP --line-buffered --color=never "^[^#]+"'
+alias nocom='egrep -v --line-buffered --color=never "^[[:space:]]*(//|#)"'
 alias jrep='grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+"'
 alias bomb='uconv -f utf-8 -t utf-8 --add-signature'
 alias cleanse='tr -cd "\11\12\15\40-\176"'

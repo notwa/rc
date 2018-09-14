@@ -37,11 +37,13 @@ compile() {
             printf "%s\n" "/c/Program Files/LLVM"*(On/N[1]) | read -r dir
             if [ -d "$dir" ] && [ -e "$dir/bin/clang" ]; then
                 clang="$dir/bin/clang"
+
                 # not sure if i'll need this
                 #local clang_include
                 #printf "%s\n" "$dir/lib/clang/"*(On/N[1]) | read -r clang_include
                 #[ -n "$clang_include" ] || { echo "failed glob; missing clang include" >&2; return 1 }
-                #clang_flags+=(-I "$clang_include/include")
+                #clang_flags+=(-I"$clang_include/include")
+
                 export PATH="$PATH:$dir/bin/"
             fi
         fi
@@ -69,13 +71,16 @@ compile() {
             export LIBPATH="$vc/LIB$clarch;$vc/ATLMFC/LIB$clarch"
 
             for d in "${(@s/;/)INCLUDE}"; do
-                clang_flags+=(-I "$d")
+                clang_flags+=(-I"$d")
             done
 
             # convert msys2 paths to windows paths.
             export INCLUDE="${${INCLUDE//\/c\//C:\\}//\//\\}"
             export LIB="${${LIB//\/c\//C:\\}//\//\\}"
             export LIBPATH="${${LIBPATH//\/c\//C:\\}//\//\\}"
+
+            # ignore MSVC's non-standard deprecation warnings.
+            clang_flags+=(-D_CRT_SECURE_NO_WARNINGS)
         fi
     fi
 
@@ -109,8 +114,15 @@ compile() {
     { [ "$1" = gcc ] && CC="gcc" && CXX="g++" && shift } || \
     { [ "$1" = msvc ] && CC="cl" && CXX="cl" && shift }
 
+    # always color outputs.
+    [ "$1" = msvc ] || our_flags+=-fdiagnostics-color=always
+
     # add our clang-specific flags. (currently just for clang-msvc)
-    [ $CC = clang ] && [ -n "$clang_flags" ] && our_flags+="${clang_flags[@]}"
+    if [ $CC = clang ] && [ -n "$clang_flags" ]; then
+        for flag in $clang_flags; do
+            our_flags+=($flag)
+        done
+    fi
 
     # if they exist, include some directories that contain useful headers.
     maybe_include() {

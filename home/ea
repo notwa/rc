@@ -6,7 +6,7 @@ _REMOTE_DIR="t"
 _REMOTE_AUTH="auth"
 
 eahead() {
-    curl -I "$_REMOTE_DOMAIN/$_REMOTE_DIR/$1"
+    curl -s -I "$_REMOTE_DOMAIN/$_REMOTE_DIR/$1"
 }
 
 eaget() {

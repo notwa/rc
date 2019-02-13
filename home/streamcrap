@@ -96,6 +96,10 @@ ytg() {
     mpv_stream "$vid" --ytdl-format=95,best "$@"
 }
 
+ytll() {
+    youtube-dl -q -f best "$1" -o - | mpv_stream - --no-ytdl
+}
+
 ai() {
     # hai domo
     yt "$@" --slang=en --sub-font='Tekton Pro' --sub-bold=yes \

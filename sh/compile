@@ -4,8 +4,8 @@
 __setup_clang_ubuntu() {
     local site="http://apt.llvm.org"
     local name="$(lsb_release -c | cut -f2)"
-    local version=6.0
-    local priority=$(( int(version * 100 + 0.5) ))
+    local version=8 # NOTE: no longer decimal-based
+    local priority=$(( version * 100 ))
     # TODO: use https? this is sketchy
     echo wget -O - "$site/llvm-snapshot.gpg.key" \| apt-key add -
     echo echo -n \""\
@@ -38,7 +38,7 @@ compile() {
             if [ -d "$dir" ] && [ -e "$dir/bin/clang" ]; then
                 clang="$dir/bin/clang"
 
-                # not sure if i'll need this
+                # not sure if i'll need this:
                 #local clang_include
                 #printf "%s\n" "$dir/lib/clang/"*(On/N[1]) | read -r clang_include
                 #[ -n "$clang_include" ] || { echo "failed glob; missing clang include" >&2; return 1 }
@@ -50,8 +50,8 @@ compile() {
 
         # detect and setup MSVC.
         local clarch
-        [ "$MSYSTEM" = MINGW64 ] && clarch="/amd64" || clarch=""
         local arch
+        [ "$MSYSTEM" = MINGW64 ] && clarch="/amd64" || clarch=""
         [ "$MSYSTEM" = MINGW64 ] && arch="x64" || arch="x86"
         printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio "*(On/N[1]) | read vc
         vc="$vc/VC"
@@ -131,7 +131,7 @@ compile() {
     maybe_include "$HOME/opt/local/include"
     maybe_include "$HOME/src/ustl"
 
-    # set our build flags for each mode.
+    # set the build flags for each mode.
     if [ $CC = cl ]; then
         our_flags+=(-nologo -utf-8)
         local debug_flags=(-Od -ZI -sdl);
@@ -278,7 +278,7 @@ compile() {
     # do the thing!
     [ $CC = cl ] && local outflag=-Fe: || local outflag=-o
     echo $compiler $std ${final_flags[@]} $file ${libraries[@]} $outflag $out >&2
-    $compiler $std ${final_flags[@]} $file ${libraries[@]} ${warnings[@]} $outflag $out >&2
+    $compiler $std ${final_flags[@]} $file ${libraries[@]} ${warnings[@]} $outflag $out
 }
 
 compile "$@"

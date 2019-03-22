@@ -93,7 +93,7 @@ ytg() {
     if [[ ! -e "$vid" && "$(expr substr "$vid" 1 4)" != "http" ]]; then
         vid="ytdl://$vid"
     fi
-    mpv_stream "$vid" --ytdl-format=95,best "$@"
+    mpv_stream "$vid" --ytdl-format=22,95,best "$@"
 }
 
 ytll() {

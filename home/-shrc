@@ -69,6 +69,7 @@ for x in ls dir vdir grep fgrep egrep; do
     alias $x="$x --color=auto"
 done
 unset x
+alias lr="lr -G"
 #alias make="$(has colormake || has make)"
 
 # just flags
@@ -145,10 +146,15 @@ alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='sudo rsync -aHA --info=progress2 --no-i-r'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
-# TODO: dotfiles first, like `LC_ALL=C ls -A` which doesnt work with -X flag
-alias ll="ify less ls -lAX --group-directories-first --color=force"
 alias get="git clone --single-branch --depth 1"
 alias aligntabs="column -t -s$'\t'"
+alias gc="git column --mode=dense --padding=2"
+
+ll() {
+    { lr -1lshGG -o tev -t 'name~~".*"||type==d' "$@" \
+     && lr -1lshGG -o tev -t 'name!~~".*"&&type!=d' "$@" \
+     || ls -lAX --group-directories-first --color=force "$@"; } | less
+}
 
 # providing extra functionality
 alias counts='find . | wc -l'

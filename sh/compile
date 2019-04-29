@@ -48,37 +48,51 @@ compile() {
             fi
         fi
 
-        # detect and setup MSVC.
+        local winkit
+        printf "%s\n" "/c/Program Files (x86)/Windows Kits/"*(on/N[1]) | read -r winkit
+        [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
+        printf "%s\n" "$winkit/Lib/"*(On/N[1]) | read -r winkit
+        [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
+
+        # detect MSVC.
         local clarch
         local arch
+        local msvc_dig_deep
         [ "$MSYSTEM" = MINGW64 ] && clarch="/amd64" || clarch=""
         [ "$MSYSTEM" = MINGW64 ] && arch="x64" || arch="x86"
-        printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio "*(On/N[1]) | read vc
-        vc="$vc/VC"
-        if [ -d "$vc/bin$clarch" ] && [ -e "${vc}/bin$clarch/$cl" ]; then
-            cl="${vc}/bin$clarch/cl"
-            vc="$vc"
+        if [ -d "/c/Program Files (x86)/Microsoft Visual Studio" ]; then # 2017+
+            printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio/20"*(On/N[1]) | read vc
+            printf "%s\n" "$vc"/*/VC | read vc
+            printf "%s\n" "$vc/Tools/MSVC/"*(On/N[1]) | read vc
+            msvc_dig_deep="yes"
+        else # older versions
+            printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio "*(On/N[1]) | read vc
+            vc="$vc/VC"
+        fi
 
-            local winkit
-            printf "%s\n" "/c/Program Files (x86)/Windows Kits/"*(on/N[1]) | read -r winkit
-            [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
-            printf "%s\n" "$winkit/Lib/"*(On/N[1]) | read -r winkit
-            [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
-
+        # setup MSVC.
+        if [ -n "$msvc_dig_deep" ] && [ -e "$vc/bin/Host$arch/$arch/cl" ]; then
+            cl="$vc/bin/Host$arch/$arch/cl"
+            export PATH="$PATH:$vc/bin/Host$arch/$arch"
+            export LIB="$(cygpath -w "$vc/lib/$arch")"
+            export LIBPATH="$(cygpath -w "$vc/lib/$arch")"
+        elif [ -d "$vc/bin$clarch" ] && [ -e "$vc/bin$clarch/$cl" ]; then
+            cl="$vc/bin$clarch/cl"
             export PATH="$PATH:$vc/bin$clarch"
-            export INCLUDE="$vc/INCLUDE;$vc/ATLMFC/INCLUDE;${winkit/Lib/Include}/ucrt"
-            export LIB="$vc/LIB$clarch;$vc/ATLMFC/LIB$clarch;$winkit/um/$arch;$winkit/ucrt/$arch"
-            export LIBPATH="$vc/LIB$clarch;$vc/ATLMFC/LIB$clarch"
+            export LIB="$(cygpath -w "$vc/LIB$clarch")"
+            export LIBPATH="$(cygpath -w "$vc/LIB$clarch")"
+        fi
+
+        # finish up.
+        if [ -n "$cl" ]; then
+            export INCLUDE="$(cygpath -w "$vc/INCLUDE")"
+            export INCLUDE="$INCLUDE;$(cygpath -w "${winkit/Lib/Include}/ucrt")"
+            export LIB="$LIB;$(cygpath -w "$winkit/um/$arch")"
+            export LIB="$LIB;$(cygpath -w "$winkit/ucrt/$arch")"
 
             for d in "${(@s/;/)INCLUDE}"; do
                 clang_flags+=(-I"$d")
             done
-
-            # convert msys2 paths to windows paths.
-            export INCLUDE="${${INCLUDE//\/c\//C:\\}//\//\\}"
-            export LIB="${${LIB//\/c\//C:\\}//\//\\}"
-            export LIBPATH="${${LIBPATH//\/c\//C:\\}//\//\\}"
-
             # ignore MSVC's non-standard deprecation warnings.
             clang_flags+=(-D_CRT_SECURE_NO_WARNINGS)
         fi

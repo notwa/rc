@@ -55,8 +55,8 @@ unset LD_LIBRARY_PATH
 
 export PREFIX="$HOME/opt/local"
 export EDITOR='vim'
-export CC="$(has clang || has clang-3.8 || has gcc)"
-export CXX="$(has clang++ || has clang++-3.8 || has g++)"
+export CC="$(has clang || has gcc)"
+export CXX="$(has clang++ || has g++)"
 export CXXFLAGS="$CFLAGS"
 export MAKEFLAGS="-j2"
 export OMP_NUM_THREADS=4

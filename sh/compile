@@ -227,7 +227,7 @@ compile() {
     local flags=(${@[1,-2]})
 
     # drop everything past the first dot and use that as our output filename.
-    local out=/tmp/${${file%%.*}##*/}
+    local out=/tmp/${${file##*/}%%.*}
     if [ -n "$MSYSTEM" ]; then
         # explicitly output as .exe to avoid weirdness.
         out="$out.exe"

@@ -88,7 +88,6 @@ alias perlu='perl -Mopen=locale -Mutf8'
 alias rgn="rg --no-ignore"
 
 whoa=(
-    -fdiagnostics-color=always
     -Wall
     -Wextra
 #   -Winline # only for C

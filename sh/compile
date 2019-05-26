@@ -129,7 +129,7 @@ compile() {
     { [ "$1" = msvc ] && CC="cl" && CXX="cl" && shift }
 
     # always color outputs.
-    [ "$1" = msvc ] || our_flags+=-fdiagnostics-color=always
+    [ "$CC" = cl ] || our_flags+=-fdiagnostics-color=always
 
     # add our clang-specific flags. (currently just for clang-msvc)
     if [ $CC = clang ] && [ -n "$clang_flags" ]; then
@@ -246,7 +246,7 @@ compile() {
             libraries+=($flag)
 
         # split warning flags so they don't spam the console.
-        elif [[ $flag == -W* ]] && [[ $flag != -Wl* ]]; then
+        elif [[ $flag == -W* ]] && [[ $flag != -Wl* ]] || [[ $flag == -Wlogical-op ]]; then
             warnings+=($flag)
 
             if [ $sepples -eq 0 ] && [[ $flag == -Wextra ]] then

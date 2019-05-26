@@ -155,6 +155,7 @@ if has('autocmd')
         au FileType ruby call TabTwo()
         au FileType nim call TabTwo()
         au BufRead,BufNewFile *.bt,*.1sc call TabFour()
+        au BufRead,BufNewFile *.ys call TabTwo()
         au FileType javascript,processing call TabTwo()
     augroup END
 

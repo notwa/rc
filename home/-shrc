@@ -16,6 +16,7 @@ hash -d py=~win"/Dropbox/py"
 
 ADDPATH() {
     new="$(readlink -f "$1")"
+    [ -d "$new" ] || echo -E "ADDPATH: path doesn't exist: $new" >&2
     grep ":$new:" <<<":$PATH:" >/dev/null || export PATH="$PATH:$new"
 }
 ADDPATH "$HOME/opt/local/bin"

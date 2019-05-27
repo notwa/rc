@@ -45,7 +45,11 @@ unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY COMPILER_PATH
 unset LD_LIBRARY_PATH
 
-[ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ] && echo "Warning: LANG is $LANG"
+if [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ]; then
+    if [ -z "$MSYSTEM" ] || [ "$LANG" != "C.UTF-8" ]; then
+        echo -E "Warning: LANG is $LANG" >&2
+    fi
+fi
 
 # PuTTY over serial
 [[ "$TERM" == vt102 ]] && export TERM="xterm"

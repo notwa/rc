@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [ -n "${ZSH_VERSION:-}" ]; then
-    $CC -dM -E - $=CFLAGS $=LDFLAGS < /dev/null
+    $CC -dM -E - $=CPPFLAGS $=CFLAGS $=LDFLAGS < /dev/null
 else
-    $CC -dM -E - $CFLAGS $LDFLAGS < /dev/null
+    $CC -dM -E - $CPPFLAGS $CFLAGS $LDFLAGS < /dev/null
 fi

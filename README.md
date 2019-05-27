@@ -372,7 +372,7 @@ $
 
 ### [pre](/sh/pre)
 
-(bash/zsh) dumps all the #defines that `$CC $CFLAGS $LDFLAGS` would result in.
+(bash/zsh) dumps all the #defines that `$CC $CPPFLAGS $CFLAGS $LDFLAGS` would result in.
 
 ```
 $ pre | shuf | head -10

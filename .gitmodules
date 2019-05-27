@@ -1,6 +1,0 @@
-[submodule "sh/z"]
-	path = sh/z
-	url = https://github.com/rupa/z.git
-[submodule "sh/meow.sh"]
-	path = sh/meow.sh
-	url = https://github.com/notwa/meow.sh.git

@@ -512,13 +512,3 @@ $ unwrap /usr/share/licenses/common/GPL3/license.txt | trunc | head
   The licenses for most software and other practical works are …
 $ echo 'this is just an example; these scripts are (mostly) unlicensed.'
 ```
-
-## submodules
-
-### [meow.sh](//github.com/notwa/meow.sh)
-
-<!--rip nyaa?-->
-
-### [z](//github.com/rupa/z)
-
-<!--spits out errors every other command you run. sorry rupa.-->

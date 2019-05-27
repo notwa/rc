@@ -187,19 +187,11 @@ trash() {
 }
 
 # buncha crap i need to clean up:
-alias py="~/python3 -u"
-alias mpq=~win/Desktop/starcraft/MPQEditor.exe
+[ -e "$HOME/python3" ] && alias py="~/python3" || alias py="python3"
 alias pippy="py -m pip install --upgrade --upgrade-strategy only-if-needed"
-
-mpqize() {
-    [ -s "$1" ] && rm "$1"
-    mpq new "$1"
-    mpq add "$1" "$2" staredit\\scenario.chk
-}
 
 unset cdrive
 unset ddrive
 
-#[ -e ~/sh/z/z.sh ] && . ~/sh/z/z.sh
 . ~/.streamcrap
 . ~/.ea

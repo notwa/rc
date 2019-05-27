@@ -4,11 +4,11 @@ now() {
     local dt=
     local fmt='+%F_%T_%N'
     if [ -z "$1" ]; then
-        dt="$(date "$fmt")"
+        dt="$(date -u "$fmt")"
     elif [ -e "$1" ]; then
-        dt="$(date -r "$1" "$fmt")"
+        dt="$(date -u -r "$1" "$fmt")"
     else
-        dt="$(date -d "$1" "$fmt")"
+        dt="$(date -u -d "$1" "$fmt")"
     fi
 
     local F= T= N=

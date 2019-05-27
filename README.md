@@ -277,6 +277,11 @@ Filesystem              Used     Max    Left    Misc
 /media/chibi         1275.73 1304.45   28.72   69.88
 ```
 
+### [disf](/sh/disf)
+
+disassembles a single function from an unstripped executable.
+not robust.
+
 ### [e](/sh/e)
 
 (zsh) wraps around $EDITOR to run as root if necessary.

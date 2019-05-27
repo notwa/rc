@@ -328,11 +328,6 @@ not the minute of the hour.
 * * * * * minutemaid 9 cd repo && git pull # runs every nine minutes
 ```
 
-### [mkgist](/sh/mkgist)
-
-(bash) makes a (mostly) empty gist and pulls it so you never have to visit the site.
-i think this is broken.
-
 ### [monitor](/sh/monitor)
 
 (zsh) literally just `watch` reimplemented as a shell script. kinda nice though.

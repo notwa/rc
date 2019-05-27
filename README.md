@@ -110,7 +110,7 @@ out there we bringing it live
 ### katagana
 
 converts katakana to hiragana.
-useful for translating debug text from ancient games.
+useful for translating [debug text from ancient games.](https://tcrf.net/)
 
 ### picky + unused
 

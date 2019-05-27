@@ -97,6 +97,21 @@ e.g. this readme file.
 prints every line twice.
 prints every line twice.
 
+### join2
+
+joins every other line.
+
+```
+$ echo "hey\nyou\nout there\nwe bringing it live" | join2
+hey you
+out there we bringing it live
+```
+
+### katagana
+
+converts katakana to hiragana.
+useful for translating debug text from ancient games.
+
 ### picky + unused
 
 attempts to print non-standard packages that were installed on an arch linux box,

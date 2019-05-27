@@ -114,9 +114,9 @@ given a number of bytes, outputs binary garbage from `/dev/random`.
 
 ### wipe
 
-(zsh) clears the screen and scrollback and prints an ugly horizontal line
+(zsh) clears the screen and scrollback and prints an ugly horizontal line,
 so you know with absolute certainty that you're looking
-at the top of your history and your terminal's scrollback
+at the top of your history, and that your terminal's scrollback
 didn't cap out and eat text.
 
 ```
@@ -125,16 +125,14 @@ $ wipe; ./configure && make
  you piped it to a file or less or wiped scrollback beforehand]
 ```
 
-### yt / ytg / ai
+### yt
 
 watches a youtube video through mpv with a bunch of audio filtering crap.
 
 can be given a full URL or just a video ID.
 remaining arguments are passed to mpv.
 
-the `ytg` variant specifies a format specific to youtube-gaming streams.
-
-the `ai` variant retrieves english subtitles and renders them in a kizuna way.
+there exist several variants for various situations: `ytg`, `ytll`, `ai`, `asmr`.
 
 ### twitch
 
@@ -209,7 +207,7 @@ kinda pointless now that acompressor is wildly supported.
 supports gcc and clang on \*nix,
 and mingw64 gcc, msvc clang, and regular msvc on Windows.
 tested on x86\_64 and on ARMv7 as well.
-does not support MacOS ;\_;
+does not support MacOS, maybe someday…
 
 defaults to gnu11 and gnu++1z as C and C++ standards respectively.
 defaults to clang, gcc, and msvc in that order.
@@ -268,7 +266,7 @@ $ days 'January 1 1970'
 
 ### [dfu](/sh/dfu)
 
-(sh) pretty df output in GiB.
+(sh) pretty-print `df` in GiB.
 
 ```
 $ dfu
@@ -413,8 +411,8 @@ $ randir
 
 (zsh) record screen. does not record audio.
 
-currently only works on winderp (gdigrab).
-there's probably some equivalent thing on leenucks.
+currently only works on Windows (gdigrab).
+i'm sure there's something equivalent for Linux.
 
 ### [sc](/sh/sc)
 
@@ -487,6 +485,7 @@ them=those
 
 (bash) adds a 1px transparent border around an image
 so that twitter doesn't mangle it into a jpg.
+sadly, this trick doesn't work anymore.
 
 ### [trunc](/sh/trunc)
 

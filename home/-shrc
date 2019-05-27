@@ -1,7 +1,8 @@
 #!/bin/zsh
 # for both zsh and bash
 
-umask 022 # don't inherit last umask. pip will break itself.
+# umask should be reset else pip might make faulty installations.
+umask 022
 
 [ -z "$MSYSTEM" ] && cdrive="/cygdrive/c" || cdrive="/c"
 [ -z "$MSYSTEM" ] && ddrive="/cygdrive/d" || ddrive="/d"

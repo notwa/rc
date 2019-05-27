@@ -101,7 +101,7 @@ rc="$(readlink -f "$(dirname "$0")" )"
 cd "$HOME"
 PATH="${PATH:?No existing PATH}:$rc/sh"
 
-backup_dir="$rc/backup-$(date '+%s')"
+backup_dir="$rc/backup-$(date -u '+%s')"
 
 for f in .bashrc .zshrc .-shrc .streamcrap .ea .vimrc \
   .inputrc .Xresources .screenrc; do

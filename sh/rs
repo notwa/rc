@@ -1,0 +1,70 @@
+#!/usr/bin/env zsh
+# rs: record screen
+
+rs() {
+    set -e
+
+    local o_overwrite= o_rate=30 o_duration=0
+    local o_x=0 o_y=0 o_w=1920 o_h=1080
+    local o_filename="output.mp4"
+    local opt=
+
+    while getopts -- 'yr:t:o:s:h' opt; do
+        case $opt in
+        y)  o_overwrite='-y';;
+        r)  o_rate=$OPTARG;;
+        t)  o_duration=$OPTARG;;
+        o)  o_x=${OPTARG%%,*}
+            o_y=${${OPTARG#*,}%%,*};;
+        s)  o_w=${OPTARG%%,*}
+            o_h=${${OPTARG#*,}%%,*};;
+        ?)  local fd=0
+            [ $opt = h ] && fd=0 || fd=2
+            echo -E "usage: $0 [-r framerate] [-t duration] [-o x,y] [-s w,h] [filename]" >&$fd
+            [ $opt = h ] && return 0 || return 1;;
+        esac
+    done
+
+    shift $((OPTIND-1))
+
+    if [ "$#" -gt 0 ]; then
+        o_filename="$1"
+        shift
+        if [ "$#" -gt 0 ]; then
+            echo -E "too many arguments"
+            return 1
+        fi
+    fi
+
+    local extless="${o_filename%.*}"
+    local ext="${o_filename##*.}"
+
+    # TODO: handle extensionless case (-f mp4) or something?
+
+    local duration=()
+    if [ "$o_duration" -gt 0 ]; then
+        duration=(-t $o_duration)
+    fi
+
+    # TODO: try -qp 0 with fullscreen (instead of -crf 17)
+
+    ffmpeg -hide_banner -loglevel warning \
+        -rtbufsize 100M -f gdigrab \
+        -framerate "$o_rate" \
+        -offset_x "$o_x" -offset_y "$o_y" \
+        -video_size "$o_w"x"$o_h" \
+        -draw_mouse 0 -i desktop \
+        -c:v libx264 -preset superfast -crf 17 \
+        -me_method 1 -partitions i4x4 -x264opts no-cabac \
+        -r "$o_rate" ${duration[@]} \
+        $o_overwrite "$o_filename"
+
+    ffmpeg -hide_banner -loglevel warning \
+        -i "$o_filename" \
+        -sn -dn -metadata = -map_chapters -1 -movflags +faststart \
+        -crf 22 -maxrate 3840k -bufsize 4800k \
+        -c:v libx264 -pix_fmt yuv420p -profile:v high -preset slow -threads 0 \
+        $o_overwrite "$extless.enc.$ext"
+}
+
+rs "$@"

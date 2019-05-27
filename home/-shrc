@@ -142,6 +142,7 @@ welp=(
 )
 
 # being specific
+[ -e "$HOME/python3" ] && alias py="~/python3" || alias py="python3"
 alias pip="sudo -H pip3"
 alias irc='screeny "$USER" irc irssi'
 alias crawl='screeny "$USER" crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
@@ -153,6 +154,7 @@ alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 alias get="git clone --single-branch --depth 1"
 alias aligntabs="column -t -s$'\t'"
 alias gc="git column --mode=dense --padding=2"
+alias pippy="py -m pip install --upgrade --upgrade-strategy only-if-needed"
 
 ll() {
     { lr -1lshGG -o tev -t 'name~~".*"||type==d' "$@" \
@@ -185,10 +187,6 @@ alias rakef='rake && gem build *.gemspec && gem install *.gem'
 trash() {
     dd status=none if=/dev/random bs=1 count="$1"
 }
-
-# buncha crap i need to clean up:
-[ -e "$HOME/python3" ] && alias py="~/python3" || alias py="python3"
-alias pippy="py -m pip install --upgrade --upgrade-strategy only-if-needed"
 
 unset cdrive
 unset ddrive

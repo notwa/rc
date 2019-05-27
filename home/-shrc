@@ -85,11 +85,13 @@ alias fils="du -bahd1"
 alias lsa="ls -A --group-directories-first"
 alias logs="logs -o cat -b -e"
 alias logsf="logs -f -e"
+alias get="git clone --single-branch --depth 1"
 alias diff="git diff --color=auto --no-ext-diff --no-index"
 alias gs='git status' # rip ghostscript
 alias gd='git diff -U2'
 alias gds='git --no-pager diff --stat'
 alias gl='git log --oneline'
+alias glo='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
 alias perlu='perl -Mopen=locale -Mutf8'
 alias rgn="rg --no-ignore"
 
@@ -153,7 +155,6 @@ alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='sudo rsync -aHA --info=progress2 --no-i-r'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
-alias get="git clone --single-branch --depth 1"
 alias aligntabs="column -t -s$'\t'"
 alias gc="git column --mode=dense --padding=2"
 alias pippy="py -m pip install --upgrade --upgrade-strategy only-if-needed"

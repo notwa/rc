@@ -61,8 +61,12 @@ softlink_pseudo() {
         local d1="$1/$REPLY"
         local d2="$2/$REPLY"
         if [ -d "$d2" ]; then
-            softlink_pseudo "$d1" "$d2"
+            if [ "$d1" != ".vim/bundle" ]; then # buggy on Windows
+                #warn $'\e[34m / \e[0m' "$d1 $d2"
+                softlink_pseudo "$d1" "$d2" || exit 1
+            fi
         elif [ -f "$d2" ]; then
+            #warn $'\e[34m * \e[0m' "$d1"
             hardlink "$d1" "$d2"
         else
             die "i don't know how to pseudo-symlink $d2"
@@ -80,8 +84,9 @@ softlink_pseudo() {
             [ "$d1" == ".vim/bundle" ] && continue
             [ "$d1" == ".vim/swp" ] && continue
             [ "$d1" == ".vim/undo" ] && continue
-            warn "new destination file. consider manually moving it:"
-            warn "$d1"
+            #warn "new destination file. consider manually moving it:"
+            #warn $'\e[32m + \e[0m' "$d1"
+            warn ' + ' "$d1"
         fi
     done
 }
@@ -89,13 +94,13 @@ softlink_pseudo() {
 softlink() {
     if [ -n "$MSYSTEM" ]; then
         # MSYS2 does not have nor emulate symbolic links.
-        softlink_pseudo "$@"
+        softlink_pseudo "$@" || exit 1
     else
         softlink_nix "$@"
     fi
 }
 
-which readlink >/dev/null || exit 1
+which readlink >/dev/null || exit 1 # sanity check
 
 rc="$(readlink -f "$(dirname "$0")" )"
 cd "$HOME"

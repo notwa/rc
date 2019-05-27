@@ -114,8 +114,9 @@ useful for translating [debug text from ancient games.](https://tcrf.net/)
 
 ### picky + unused
 
-attempts to print non-standard packages that were installed on an arch linux box,
-so you can reinstall them later on a fresh installation.
+attempts to find any non-standard packages that were installed
+on an Arch Linux box so that you can make note
+to install them later on a fresh installation.
 
 `unused` will print unused packages instead.
 

@@ -1,0 +1,4 @@
+#!/bin/zsh
+# via: https://github.com/sorin-ionescu/prezto/
+# this version uses tabs for input/output field separators.
+awk "BEGIN { FS=\"\\t\"; OFS=\"\\t\" } { print ${(j:,:):-\$${^@}} }"

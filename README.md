@@ -467,7 +467,7 @@ $ ~/sh/sc $(~/sh/scropt -s -d0.5)
 
 (sh) sorts stdin and highlights similarities between adjacent lines.
 
-### [slit](/sh/slit)
+### [slit](/sh/slit) + [slitt](/sh/slitt)
 
 (zsh) views specific columns of text.
 via [pretzo.](https://github.com/sorin-ionescu/prezto/)
@@ -483,6 +483,8 @@ tmpfs 0%
 tmpfs 1%
 tmpfs 1%
 ```
+
+`slitt` is exactly the same, but it works with tabs instead of spaces.
 
 ### [sram](/sh/sram)
 

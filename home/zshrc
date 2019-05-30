@@ -63,7 +63,6 @@ function {
         ksh_typeset # treat `local x=$(cmd)` and `x=$(cmd)` the same
     )
     setopt "${opts[@]}"
-    unsetopt rm_star_silent rm_star_wait # yolo
 }
 
 autoload -U zmv
@@ -141,7 +140,7 @@ wipe() {
 
 for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
     alias $x="nocorrect $x"
-for x in arith hex curl fc find ftp history let locate rsync scp sftp wget twitch hitbox yt ytg ai
+for x in arith hex curl fc find ftp history let locate rsync scp sftp wget twitch yt ytg ai
     alias $x="noglob $x"
 unset x
 
@@ -153,6 +152,7 @@ tw() {
 }
 
 if [[ "$TERM" = xterm* ]]; then
+    # set window title
     precmd() { print -Pn "\e]2;%M: %~\a" }
 fi
 
@@ -167,8 +167,8 @@ function {
 }
 
 reload() {
-    # This doesn't seem to help with _vim_files errors, ehh
-    # you wanna rm .zcompdump then exit, that's why
+    # this doesn't seem to help with _vim_files errors, eh.
+    # you wanna rm .zcompdump first, then exit. that's why!
     cd ~
     autoload -U zrecompile
     [ -f .zshrc ] && zrecompile -p .zshrc
@@ -176,17 +176,6 @@ reload() {
     [ -f .zshrc.zwc.old ] && rm -f .zshrc.zwc.old
     [ -f .zcompdump.zwc.old ] && rm -f .zcompdump.zwc.old
     exec zsh # reload shell, inheriting environment
-}
-
-[ -e "/home/$USER/opt/local/bin/torch-activate" ] && \
-   . "/home/$USER/opt/local/bin/torch-activate"
-
-function {
-    local gm
-    printf "%s\n" "/c/Program Files/GraphicsMagick"*(On/N[1]) | read gm
-    if [ -d "$gm" ]; then
-        ADDPATH $gm
-    fi
 }
 
 if [[ "$host" == "spectre" ]] || [[ "$host" == *"banshee" ]]; then

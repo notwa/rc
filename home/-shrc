@@ -44,7 +44,7 @@ has() { which "$1" >&/dev/null && which "$1"; }
 
 # cleanup in case of inherited exports
 unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
-unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY COMPILER_PATH
+unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY
 unset LD_LIBRARY_PATH
 
 if [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ]; then

@@ -1,11 +1,16 @@
 setopt extended_glob
 
+local host="${(L)HOST}"
 fpath=(~/sh $fpath)
 
 function {
     local f
     for f in ~/sh/^([_.]*)(N^/:t); do
-        autoload -Uz $f
+        if [[ "$f" == fasd ]]; then
+            emulate sh -c "autoload -U $f"
+        else
+            autoload -Uz $f
+        fi
     done
 
     zsc() {
@@ -154,7 +159,6 @@ fi
 # note: zsh adds a % symbol to newline-less output, so bash prompt is overkill
 function {
     local good='green'
-    local host="${(L)HOST}"
     [[ "$host" == "neobanshee" ]] && good='cyan'
     [[ "$host" == "spectre" ]] && good='white'
     [[ "$host" == "wraith" ]] && good='yellow'
@@ -184,3 +188,18 @@ function {
         ADDPATH $gm
     fi
 }
+
+if [[ "$host" == "spectre" ]] || [[ "$host" == *"banshee" ]]; then
+    # via https://github.com/whjvenyl/fasd
+    if [ ! -s "$HOME/.fasd_init" ]; then
+        # note that posix-alias defines aliases for the following:
+        # a s d f sd sf z zz
+        fasd --init \
+          posix-alias \
+          zsh-hook zsh-ccomp zsh-ccomp-install \
+          zsh-wcomp zsh-wcomp-install \
+          >| "$HOME/.fasd_init"
+    fi
+    source "$HOME/.fasd_init"
+    alias v="f -e $EDITOR"
+fi

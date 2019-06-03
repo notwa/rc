@@ -1,0 +1,49 @@
+whoa=(
+    -Wall
+    -Wextra
+#   -Winline # only for C
+#   -Wshadow # only for C
+    -Wwrite-strings
+#   -Wmissing-prototypes
+
+    -Werror=implicit-function-declaration
+    -Werror=uninitialized
+    -Werror=format-security
+    -Werror=format-extra-args
+    -Werror=pointer-to-int-cast
+    -Werror=int-to-pointer-cast
+    -Werror=return-type
+    -Werror=memset-transposed-args
+#   -Werror=tautological-constant-out-of-range-compare # gcc doesn't like this
+#   -Werror=undef
+
+    -Wno-unused
+    -Wno-padded
+    -Wno-missing-field-initializers
+#   -Wno-type-limits # bad for generated code (macros, templates)
+    -Wno-misleading-indentation # gcc 6
+    -Wno-disabled-macro-expansion # clang
+    -Wno-language-extension-token # clang
+    -Wno-unknown-warning-option # clang
+
+    # trying some stuff:
+    -Wduplicated-cond # gcc 6
+    -Wduplicated-branches # gcc 7
+    -Wlogical-op
+    -Wrestrict # gcc 7
+    -Wnull-dereference # gcc 6
+    #-Wjump-misses-init # only for C
+    -Wdouble-promotion
+    -Wformat=2
+)
+
+welp=(
+    -fno-exceptions
+    -fno-non-call-exceptions
+    -fno-rtti
+    #-fno-use-cxa-atexit
+    #-ffreestanding
+    -fno-common
+    -ffunction-sections -fdata-sections -Wl,--gc-sections
+    -finline-small-functions -findirect-inlining
+)

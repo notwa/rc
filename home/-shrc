@@ -1,24 +1,28 @@
 #!/bin/zsh
-# for both zsh and bash
+# for zsh, bash, and ash.
 
 # umask should be reset else pip might make faulty installations.
 umask 022
 
-[ -z "$MSYSTEM" ] && cdrive="/cygdrive/c" || cdrive="/c"
-[ -z "$MSYSTEM" ] && ddrive="/cygdrive/d" || ddrive="/d"
-hash -d c="$cdrive"
-hash -d d="$ddrive"
-hash -d cyg=~c"/cygwin/home/$USER"
-hash -d msys=~c"/msys64/home/$USER"
-hash -d e="/media/chibi"
-hash -d win=~c"/Users/$USER"
-hash -d mm=~c"/Program Files (x86)/mupen64plus/mm"
-hash -d py=~win"/Dropbox/py"
+[ -n "$ZSH_VERSION" -o -n "$BASH" ] && FANCY=1 || FANCY=0
+
+if [ $FANCY -eq 1 ]; then
+    # these drive letters only help because of a bug in my zsh completions...
+    hash -d c="/c"
+    hash -d d="/d"
+    [ -d /media/chibi ] && hash -d e="/media/chibi" || hash -d e="/e"
+
+    hash -d cyg=~c"/cygwin/home/$USER"
+    hash -d msys=~c"/msys64/home/$USER"
+    hash -d win=~c"/Users/$USER"
+    hash -d mm=~c"/Program Files (x86)/mupen64plus/mm"
+    hash -d py=~win"/Dropbox/py"
+fi
 
 ADDPATH() {
     new="$(readlink -f "$1")"
-    [ -d "$new" ] || echo -E "ADDPATH: path doesn't exist: $new" >&2
-    grep ":$new:" <<<":$PATH:" >/dev/null || export PATH="$PATH:$new"
+    [ -d "$new" ] || echo -E "ADDPATH: path doesn't exist: $1" >&2
+    echo ":$PATH:" | grep -q ":$new:" || export PATH="$PATH:$new"
 }
 ADDPATH "$HOME/opt/local/bin"
 [ -n "$MSYSTEM" ] && ADDPATH "/c/path"
@@ -100,56 +104,6 @@ alias perlu='perl -Mopen=locale -Mutf8'
 alias rgn="rg --no-ignore"
 alias cms="cryptominisat5 --verb 0"
 
-whoa=(
-    -Wall
-    -Wextra
-#   -Winline # only for C
-#   -Wshadow # only for C
-    -Wwrite-strings
-#   -Wmissing-prototypes
-
-    -Werror=implicit-function-declaration
-    -Werror=uninitialized
-    -Werror=format-security
-    -Werror=format-extra-args
-    -Werror=pointer-to-int-cast
-    -Werror=int-to-pointer-cast
-    -Werror=return-type
-    -Werror=memset-transposed-args
-#   -Werror=tautological-constant-out-of-range-compare # gcc doesn't like this
-#   -Werror=undef
-
-    -Wno-unused
-    -Wno-padded
-    -Wno-missing-field-initializers
-#   -Wno-type-limits # bad for generated code (macros, templates)
-    -Wno-misleading-indentation # gcc 6
-    -Wno-disabled-macro-expansion # clang
-    -Wno-language-extension-token # clang
-    -Wno-unknown-warning-option # clang
-
-    # trying some stuff:
-    -Wduplicated-cond # gcc 6
-    -Wduplicated-branches # gcc 7
-    -Wlogical-op
-    -Wrestrict # gcc 7
-    -Wnull-dereference # gcc 6
-    #-Wjump-misses-init # only for C
-    -Wdouble-promotion
-    -Wformat=2
-)
-
-welp=(
-    -fno-exceptions
-    -fno-non-call-exceptions
-    -fno-rtti
-    #-fno-use-cxa-atexit
-    #-ffreestanding
-    -fno-common
-    -ffunction-sections -fdata-sections -Wl,--gc-sections
-    -finline-small-functions -findirect-inlining
-)
-
 if which sudo >/dev/null 2>/dev/null; then
     alias maybesudo=sudo
 else
@@ -205,8 +159,9 @@ trash() {
     dd status=none if=/dev/random bs=1 count="$1"
 }
 
-unset cdrive
-unset ddrive
+if [ $FANCY -eq 1 ]; then
+    source ~/.arrays
+    source ~/.streamcrap
+fi
 
-. ~/.streamcrap
-. ~/.ea
+source ~/.ea

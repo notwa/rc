@@ -49,7 +49,11 @@ unset LD_LIBRARY_PATH
 
 if [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ]; then
     if [ -z "$MSYSTEM" ] || [ "$LANG" != "C.UTF-8" ]; then
-        echo -E "Warning: LANG is $LANG" >&2
+        if [ -z "$LANG" ]; then
+            echo -E "Warning: LANG is empty!" >&2
+        else
+            echo -E "Warning: LANG is $LANG" >&2
+        fi
     fi
 fi
 

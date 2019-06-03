@@ -2,6 +2,12 @@
 
 _(plus some little shell scripts)_
 
+quick install for random boxes:
+
+```
+cd && curl -L https://github.com/notwa/rc/archive/master.tar.gz | tar zx && mv rc-master rc && rc/install
+```
+
 ## stuff defined in RC files
 
 such as [.bashrc](/home/bashrc) and [.zshrc](/home/zshrc)

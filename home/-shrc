@@ -146,15 +146,24 @@ welp=(
     -finline-small-functions -findirect-inlining
 )
 
+if which sudo >/dev/null 2>/dev/null; then
+    alias maybesudo=sudo
+else
+    function maybesudo() {
+        while [[ "$1" == -* ]]; do shift; done
+        "$@"
+    }
+fi
+
 # being specific
 [ -e "$HOME/python3" ] && alias py="~/python3" || alias py="python3"
-alias pip="sudo -H pip3"
+alias pip="maybesudo -H pip3"
 alias irc='screeny "$USER" irc irssi'
 alias crawl='screeny "$USER" crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
 alias crawla='screeny "$USER" crawl ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl'
 alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
-alias clone='sudo rsync -aHA --info=progress2 --no-i-r'
+alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r'
 alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 alias aligntabs="column -t -s$'\t'"
 alias gc="git column --mode=dense --padding=2"
@@ -185,7 +194,7 @@ alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-�
 alias picky='{ pacman -Qgq base base-devel xorg xorg-drivers xfce4 | double; pacman -Qeq; } | sort | uniq -u'
 alias unused='{ pacman -Qtq; pacman -Qeq | double; } | sort | uniq -u'
 #
-alias makepkgf='sudo -u $USER makepkg -Af --skipchecksums --skippgpcheck'
+alias makepkgf='maybesudo -u $USER makepkg -Af --skipchecksums --skippgpcheck'
 alias rakef='rake && gem build *.gemspec && gem install *.gem'
 
 trash() {

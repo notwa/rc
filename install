@@ -1,11 +1,13 @@
 #!/usr/bin/env sh
+# this script is compatible with following shells:
+# dash, ash, bash, zsh
 
 note() {
-    echo -E "$@"
+    printf "%s\n" "$@"
 }
 
 warn() {
-    echo -E "$@">&2
+    printf "%s\n" "$@" >&2
 }
 
 die() {
@@ -14,7 +16,15 @@ die() {
 }
 
 dotless() {
-    [[ "${1:0:1}" == "." ]] && REPLY="${1:1}" || REPLY="$1"
+    local f="$1"
+    local ind="$(expr index "$f" .)"
+    if [ "$ind" -gt 0 ]; then
+        local len="$(expr length "$f")"
+        REPLY="$(expr substr "$f" 2 "$len")"
+    else
+        REPLY="$1"
+    fi
+    #warn "$f -> $REPLY"
 }
 
 backup() {
@@ -39,7 +49,7 @@ hardlink() {
 softlink_nix() {
     if [ -e "$1" ]; then
         if [ -h "$1" ]; then
-            [ "$(readlink "$1")" == "$2" ] && return
+            [ "$(readlink "$1")" = "$2" ] && return
             note "removing symbolic link $1"
             rm "$1"
         else
@@ -57,7 +67,7 @@ softlink_pseudo() {
         mkdir "$1" || die "couldn't mkdir $1"
     fi
 
-    ls -A "$2" | while read -r; do
+    ls -A "$2" | while read -r REPLY; do
         local d1="$1/$REPLY"
         local d2="$2/$REPLY"
         if [ -d "$d2" ]; then
@@ -73,17 +83,17 @@ softlink_pseudo() {
         fi
     done
 
-    ls -A "$1" | while read -r; do
+    ls -A "$1" | while read -r REPLY; do
         local d1="$1/$REPLY"
         local d2="$2/$REPLY"
         if [ -d "$d2" ]; then
             :
         elif [ ! "$d1" -ef "$d2" ]; then
-            [ "$d1" == ".vim/.netrwhist" ] && continue
-            [ "$d1" == ".vim/backup" ] && continue
-            [ "$d1" == ".vim/bundle" ] && continue
-            [ "$d1" == ".vim/swp" ] && continue
-            [ "$d1" == ".vim/undo" ] && continue
+            [ "$d1" = ".vim/.netrwhist" ] && continue
+            [ "$d1" = ".vim/backup" ] && continue
+            [ "$d1" = ".vim/bundle" ] && continue
+            [ "$d1" = ".vim/swp" ] && continue
+            [ "$d1" = ".vim/undo" ] && continue
             #warn "new destination file. consider manually moving it:"
             #warn $'\e[32m + \e[0m' "$d1"
             warn ' + ' "$d1"
@@ -121,8 +131,10 @@ for d in sh .vim .mpv; do
     softlink "$d" "$r"
 done
 
-grep .bashrc .bash_profile >/dev/null 2>&1 \
- || echo -e '\n[[ -f ~/.bashrc ]] && . ~/.bashrc' >> .bash_profile
+if [ ! -e .bash_profile ] || ! grep -qF .bashrc .bash_profile; then
+    echo >> .bash_profile
+    echo '[[ -f ~/.bashrc ]] && . ~/.bashrc' >> .bash_profile
+fi
 
 for d in Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
     [ -d "$d" ] || continue

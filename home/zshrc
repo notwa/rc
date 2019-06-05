@@ -1,7 +1,8 @@
 [ -e /etc/profile ] && emulate sh -c "source /etc/profile"
 if [ "$SHLVL" -le 1 ] && ! expr "$TERM" : screen >/dev/null; then
     if which tmux >/dev/null 2>/dev/null; then
-        tmux attach || tmux && exit
+        # create a new session called "what" or attach if it already exists
+        tmux new -A -s what && exit
         echo "tmux died ($?), continuing..."
     fi
 fi

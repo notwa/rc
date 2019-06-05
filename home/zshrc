@@ -1,3 +1,4 @@
+[ -e /etc/profile ] && emulate sh -c "source /etc/profile"
 if [ "$SHLVL" -le 1 ] && ! expr "$TERM" : screen >/dev/null; then
     if which tmux >/dev/null 2>/dev/null; then
         tmux attach || tmux && exit

@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+countdiff() {
+    git --no-pager diff --stat --no-color --no-index "$1" "$2" \
+    | awk '/changed/{print $4+$6;a=1}END{if(!a)print 0}'
+}
+countdiff "$@"

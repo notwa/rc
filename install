@@ -119,7 +119,7 @@ PATH="${PATH:?No existing PATH}:$rc/sh"
 backup_dir="$rc/backup-$(date -u '+%s')"
 
 for f in .bashrc .zshrc .-shrc .arrays .streamcrap .ea .vimrc \
-  .inputrc .Xresources .screenrc; do
+  .inputrc .Xresources .screenrc .tmux.conf; do
     dotless "$f"
     r="$rc/home/$REPLY"
     hardlink "$f" "$r"

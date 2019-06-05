@@ -119,6 +119,8 @@ bindkey ';3B' dirview # alt+down
 #bindkey -s ';3A' ' ^Ucd ..^M^Y^H' # alt+up
 bindkey -s '^[s' '^Asudo ^E' # alt+s
 
+bindkey -s '^[[6;2~' '\a' # shift+PgDn, do nothing, already at bottom (tmux)
+
 autoload edit-command-line
 zle -N edit-command-line # new widget of the same function name
 bindkey '^Xe' edit-command-line # ctrl+x -> e

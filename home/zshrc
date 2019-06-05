@@ -167,6 +167,8 @@ function {
     RPROMPT='%8F%h%b'
 }
 
+TIMEFMT=$'\e[93m%*U/%*E cpu/real (%P), %MM mem:\e[36m %J\e[0m'
+
 reload() {
     # this doesn't seem to help with _vim_files errors, eh.
     # you wanna rm .zcompdump first, then exit. that's why!

@@ -138,7 +138,7 @@ fi
 
 for d in Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
     [ -d "$d" ] || continue
-    is_empty "$d" && rmdir "$d" || note "skipping unempty $d"
+    is_empty "$d" && rm -r "$d" || note "skipping unempty $d"
 done
 
 mkdir -p opt/local/bin src work play

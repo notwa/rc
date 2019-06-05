@@ -1,3 +1,10 @@
+if [ "$SHLVL" -le 1 ] && ! expr "$TERM" : screen >/dev/null; then
+    if which tmux >/dev/null 2>/dev/null; then
+        tmux attach || tmux && exit
+        echo "tmux died ($?), continuing..."
+    fi
+fi
+
 setopt extended_glob
 
 local host="${(L)HOST}"

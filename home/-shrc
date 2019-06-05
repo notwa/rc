@@ -100,6 +100,7 @@ alias gd='git diff -U2'
 alias gds='git --no-pager diff --stat'
 alias gl='git log --oneline'
 alias glo='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
+alias gb='git --no-pager branch'
 alias perlu='perl -Mopen=locale -Mutf8'
 alias rgn="rg --no-ignore"
 alias cms="cryptominisat5 --verb 0"

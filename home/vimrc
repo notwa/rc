@@ -110,7 +110,7 @@ if has('wildignore')
     set wildignore+=*.png,*.jpg,*.jpeg,*.gif,*.pdf
     set wildignore+=__pycache__,*.pyc,*.pyo,*.pyd,*.npy,*.npz,*.pkl
     set wildignore+=*.gem,.bundle
-    set wildignore+=CMake*,cmake_install.cmake,install_manifest.txt
+    set wildignore+=CMakeCache.txt,CMakeFiles,install_manifest.txt
     set wildignore+=*.h5,*.npz
 endif
 

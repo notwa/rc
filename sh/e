@@ -4,14 +4,15 @@ local editor=(${=EDITOR})
 local running=0
 
 if [ -n "$MSYSTEM" ]; then
-    if ps -f | awk '{print $6}' | grep -qF "/usr/bin/${editor[1]}"; then
+    if ps -f | awk '{print $6}' \
+    | grep -o '[^/]*$' | grep -qFx "${editor[1]}"; then
         running=1
     fi
 elif ps -o comm | grep -qFx "${editor[1]}"; then
     running=1
 fi
 
-if [ "$running" -eq 1 ]; then
+if [ $running -eq 1 ]; then
     printf "%s\n" "${editor[1]} is already running" >&2
     read -q '?Continue? [y/N] ' _ || { echo; return; }
     echo

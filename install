@@ -114,7 +114,6 @@ which readlink >/dev/null || exit 1 # sanity check
 
 rc="$(readlink -f "$(dirname "$0")" )"
 cd "$HOME"
-PATH="${PATH:?No existing PATH}:$rc/sh"
 
 backup_dir="$rc/backup-$(date -u '+%s')"
 
@@ -136,9 +135,21 @@ if [ ! -e .bash_profile ] || ! grep -qF .bashrc .bash_profile; then
     echo '[[ -f ~/.bashrc ]] && . ~/.bashrc' >> .bash_profile
 fi
 
+is_empty() {
+    local f="${1:?is_empty requires an argument}"
+    find "$f" -type f | while read -r f; do
+        return 1
+    done || return 1 # just in case pipes mess things up
+    return 0
+}
+
+# delete any directory structure that may have been included with the OS.
+# note that i'm careful not to delete them if they contain even a single file,
+# but you might still want to remove this if you're adapting my install script.
 for d in Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
     [ -d "$d" ] || continue
     is_empty "$d" && rm -r "$d" || note "not removing $d because it contains files"
 done
 
+# create instead my preferred directory structure.
 mkdir -p opt/local/bin src work play

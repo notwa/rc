@@ -302,6 +302,9 @@ nn _ :E <c-r>=expand('%:h')<cr><cr>
 nn <Leader>f :E .<cr>
 nn <Leader>F :E <c-r>=expand('%:h')<cr><cr>
 
+" alias :W to :w, via https://stackoverflow.com/a/3879737
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+
 " extension binds {{{1
 map <silent> <c-n> :CtrlPBuffer<cr>
 

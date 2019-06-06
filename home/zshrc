@@ -165,6 +165,8 @@ tw() {
 if [[ "$TERM" = xterm* ]]; then
     # set window title
     precmd() { print -Pn "\e]2;%M: %~\a" }
+else
+    precmd() {}
 fi
 
 function {

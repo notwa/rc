@@ -96,7 +96,7 @@ softlink_pseudo() {
             [ "$d1" = ".vim/undo" ] && continue
             #warn "new destination file. consider manually moving it:"
             #warn $'\e[32m + \e[0m' "$d1"
-            warn ' + ' "$d1"
+            warn " + $d1"
         fi
     done
 }
@@ -138,7 +138,7 @@ fi
 
 for d in Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
     [ -d "$d" ] || continue
-    is_empty "$d" && rm -r "$d" || note "skipping unempty $d"
+    is_empty "$d" && rm -r "$d" || note "not removing $d because it contains files"
 done
 
 mkdir -p opt/local/bin src work play

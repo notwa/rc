@@ -248,6 +248,14 @@ Inn <silent> <c-s-down> :m+1<cr>
 Inn <silent> <c-s-PageUp> :tabm -1<cr>
 Inn <silent> <c-s-PageDown> :tabm +1<cr>
 
+" jump to top and bottom
+Inn <c-Home> gg
+Inn <c-End>  G
+nn <Esc>[1;5H gg
+nn <Esc>[1;5F G
+ino <Esc>[1;5H <c-o>gg
+ino <Esc>[1;5F <c-o>G
+
 " hide search highlighting
 Inn <silent> <c-]> :nohls<enter>
 

@@ -2,7 +2,7 @@
 if [ "$SHLVL" -le 1 ] && ! expr "$TERM" : screen >/dev/null; then
     if which tmux >/dev/null 2>/dev/null; then
         # create a new session called "what" or attach if it already exists
-        TZ=":/etc/localtime" tmux new -A -s what && exit
+        LANG="en_US.UTF-8" TZ=":/etc/localtime" tmux new -A -s what && exit
         echo "tmux died ($?), continuing..."
     fi
 fi

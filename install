@@ -130,6 +130,7 @@ for d in sh .vim .mpv; do
     softlink "$d" "$r"
 done
 
+# ensure that .bashrc gets executed
 if [ ! -e .bash_profile ] || ! grep -qF .bashrc .bash_profile; then
     echo >> .bash_profile
     echo '[[ -f ~/.bashrc ]] && . ~/.bashrc' >> .bash_profile

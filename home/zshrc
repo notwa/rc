@@ -124,8 +124,6 @@ bindkey ';3D' dirprev # alt+left
 bindkey ';3C' dirnext # alt+right
 bindkey ';3A' dirup # alt+up
 bindkey ';3B' dirview # alt+down
-# we type a space (and delete it afterwards) to force ^Y to yank from ^U
-#bindkey -s ';3A' ' ^Ucd ..^M^Y^H' # alt+up
 bindkey -s '^[s' '^Asudo ^E' # alt+s
 
 bindkey -s '^[[6;2~' '\a' # shift+PgDn, do nothing, already at bottom (tmux)

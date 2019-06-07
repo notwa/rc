@@ -166,6 +166,8 @@ most (but not all) stuff that's written for bash will work in zsh too.
 if it just says `(sh)` then it'll probably work on any shell,
 but might depend on GNU awk.
 
+[prezto]: https://github.com/sorin-ionescu/prezto
+
 ### [arith](/sh/arith) + [hex](/sh/hex)
 
 (zsh) does arithmetic using the shell.
@@ -328,7 +330,7 @@ nay
 
 ### [lsarchive](/sh/lsarchive) + [unarchive](/sh/unarchive)
 
-(zsh) guess what these do. written by Sorin Ionescu.
+(zsh) guess what these do. [via prezto.][prezto]
 includes autocomplete files.
 
 ### [lsz](/sh/lsz)
@@ -382,7 +384,7 @@ $ pacbm | head -n -1 | tail -2
 ### [pacman-list-disowned](/sh/pacman-list-disowned)
 
 (zsh?) lists disowned pacman files. this might take a while.
-written by Benjamin Boudreau and Sorin Ionescu.
+[via prezto][prezto]
 
 ### [pause](/sh/pause)
 
@@ -476,7 +478,7 @@ $ ~/sh/sc $(~/sh/scropt -s -d0.5)
 ### [slit](/sh/slit) + [slitt](/sh/slitt)
 
 (zsh) views specific columns of text.
-via [pretzo.](https://github.com/sorin-ionescu/prezto/)
+[via pretzo.][prezto]
 
 ```
 $ df | slit 1 5

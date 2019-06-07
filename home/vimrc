@@ -80,6 +80,7 @@ set foldmethod=marker                 " (performance issues with other methods)
 set foldlevelstart=99                 " start with everything unfolded...?
 let c_syntax_for_h=1                  " use C highlighting for .h files
 set nowrap                            " word wrapping is pretty weak in vim
+set nojoinspaces                      " don't use double-spaces for J and gq
 set ffs=unix,dos                      " ffs indeed
 set nobomb                            " bombs are bad ok
 set undofile                          " remember undos across files/sessions

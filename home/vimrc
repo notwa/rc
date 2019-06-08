@@ -181,11 +181,6 @@ nn <s-tab> <<
 vn <silent> <tab> >gv
 vn <silent> <s-tab> <gv
 
-" might make return useful
-"nn <s-cr> J
-"nn <c-cr> dd
-" oh wait, terminals don't do that...
-
 fu! Inn(q)
     " bind both normal and insert modes
     let args=split(a:q, '^\s*\(<[^>]\+>\s\+\)\+\zs')
@@ -237,7 +232,7 @@ nn <bar> <c-]>
 vmap <space> "xy:@x<cr>
 
 " this frees up x and X for use if you like
-set <s-Del>=[3;2~
+exec "set <s-Del>=\<Esc>[3;2~"
 Inn <s-Del> X
 
 " unfollow your leaders

@@ -19,7 +19,7 @@ if [ $running -eq 1 ]; then
 fi
 
 if [ $# -eq 0 ] || [ -n "$MSYSTEM" ]; then
-    $=EDITOR
+    $=EDITOR "$@"
     return
 fi
 

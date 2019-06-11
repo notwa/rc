@@ -144,7 +144,6 @@ fi
 function {
     if [[ "$TERM" != xterm* ]] && [[ "$TERM" != screen* ]]; then
         PROMPT="%# "
-        unset RPROMPT
         return
     fi
 
@@ -164,7 +163,6 @@ function {
 
     # NOTE: i had ${s}10${e} here before, is it still necessary?
     PROMPT="%{$reset${s}%(?.${good}.${bad})${e}${s}97${e}%}%#%{$reset%} "
-    RPROMPT="%{${s}90${e}%}%h%{$reset%}"
 }
 
 TIMEFMT=$'\e[93m%*U/%*E cpu/real (%P), %MM mem:\e[36m %J\e[0m'

@@ -45,31 +45,6 @@ export CC="$(has clang || has clang-3.8 || has gcc)"
 
 reverses the 4-byte endianness of a file. this is an in-place operation!
 
-### exts
-
-prints and sorts the most used file extensions in the CWD.
-
-### freq
-
-prints the most frequently used commands found in `~/.histfile`.
-arguments are passed to `head`.
-
-```
-$ freq
-   2533 git
-   1600 tw
-   1572 twitch
-   1019 yt
-    994 wipe;
-    621 compile
-    616 ls
-    567 gd
-    522 ssh
-    521 less
-```
-
-**TODO:** fix `:` and extraneous semicolons showing up in results.
-
 ### nocom
 
 strips lines that begin with a `#` character.

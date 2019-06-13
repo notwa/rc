@@ -1,5 +1,7 @@
 [ -e /etc/profile ] && emulate sh -c "source /etc/profile"
-if [ "$SHLVL" -le 1 ] && ! expr "$TERM" : screen >/dev/null; then
+
+if [ "$SHLVL" -le 1 ] && [[ "$TERM" != screen* ]] && [[ "$TERM" != tmux* ]]
+then
     if which tmux >/dev/null 2>/dev/null; then
         # create a new session called "what" or attach if it already exists
         LANG="en_US.UTF-8" TZ=":/etc/localtime" tmux new -A -s what && exit
@@ -94,6 +96,8 @@ bindkey '^[[3~' delete-char
 
 bindkey ';5D' emacs-backward-word # ctrl+left
 bindkey ';5C' emacs-forward-word # ctrl+right
+#bindkey '^[[D' emacs-backward-word # ctrl+left
+#bindkey '^[[D' emacs-forward-word # ctrl+right
 bindkey ';3D' dirprev # alt+left
 bindkey ';3C' dirnext # alt+right
 bindkey ';3A' dirup # alt+up
@@ -134,15 +138,19 @@ tw() {
     twitch "$@" OMFG STFU &
 }
 
-if [[ "$TERM" = xterm* ]]; then
-    # set window title
-    precmd() { print -Pn "\e]2;%M: %~\a" }
-else
-    precmd() {}
-fi
-
 function {
-    if [[ "$TERM" != xterm* ]] && [[ "$TERM" != screen* ]]; then
+    local t="${TERM%%-*}"
+    if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
+        # set window title
+        if [ "$t" = tmux ]; then
+            # don't include host, tmux prepends it
+            precmd() { print -Pn "\e]2;%~\a" }
+        else
+            precmd() { print -Pn "\e]2;%M: %~\a" }
+        fi
+    else
+        # act dumb
+        precmd() {}
         PROMPT="%# "
         return
     fi

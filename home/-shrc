@@ -1,10 +1,34 @@
 #!/bin/zsh
 # for zsh, bash, and ash.
-
-# umask should be reset else pip might make faulty installations.
-umask 022
-
 [ -n "$ZSH_VERSION" -o -n "$BASH" ] && FANCY=1 || FANCY=0
+
+# {{{1 utilities
+
+ify() {
+    [ $# -ge 2 ] || return
+    local ex=$1
+    shift
+    $@ | $ex
+}
+
+if which sudo >/dev/null 2>/dev/null; then
+    alias maybesudo=sudo
+else
+    function maybesudo() {
+        while [[ "$1" == -* ]]; do shift; done
+        "$@"
+    }
+fi
+
+has() { which "$1" >&/dev/null && which "$1"; }
+
+ADDPATH() {
+    new="$(readlink -f "$1")"
+    [ -d "$new" ] || echo -E "ADDPATH: path doesn't exist: $1" >&2
+    echo ":$PATH:" | grep -q ":$new:" || export PATH="$PATH:$new"
+}
+
+# shortcuts {{{1
 
 if [ $FANCY -eq 1 ]; then
     # these drive letters only help because of a bug in my zsh completions...
@@ -19,11 +43,11 @@ if [ $FANCY -eq 1 ]; then
     hash -d py=~win"/Dropbox/py"
 fi
 
-ADDPATH() {
-    new="$(readlink -f "$1")"
-    [ -d "$new" ] || echo -E "ADDPATH: path doesn't exist: $1" >&2
-    echo ":$PATH:" | grep -q ":$new:" || export PATH="$PATH:$new"
-}
+# {{{1 configurations
+
+# umask should be reset else pip might make faulty installations.
+umask 022
+
 ADDPATH "$HOME/opt/local/bin"
 [ -n "$MSYSTEM" ] && ADDPATH "/c/path"
 
@@ -37,29 +61,10 @@ export TZ=':/etc/localtime'
 # damnit python.
 export PYTHONIOENCODING=utf-8
 
-ify() {
-    [ $# -ge 2 ] || return
-    local ex=$1
-    shift
-    $@ | $ex
-}
-
-has() { which "$1" >&/dev/null && which "$1"; }
-
 # cleanup in case of inherited exports
 unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY
 unset LD_LIBRARY_PATH
-
-if [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ]; then
-    if [ -z "$MSYSTEM" ] || [ "$LANG" != "C.UTF-8" ]; then
-        if [ -z "$LANG" ]; then
-            echo -E "Warning: LANG is empty!" >&2
-        else
-            echo -E "Warning: LANG is $LANG" >&2
-        fi
-    fi
-fi
 
 # PuTTY over serial
 [[ "$TERM" == vt102 ]] && export TERM="xterm"
@@ -78,52 +83,55 @@ export VST_SDK_DIR="$HOME/src/vstsdk2.4"
 export LADSPA_PATH="/usr/lib/ladspa"
 export NQDIR="$HOME/play"
 
-# enable colors
+if [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ]; then
+    if [ -z "$MSYSTEM" ] || [ "$LANG" != "C.UTF-8" ]; then
+        if [ -z "$LANG" ]; then
+            echo -E "Warning: LANG is empty!" >&2
+        else
+            echo -E "Warning: LANG is $LANG" >&2
+        fi
+    fi
+fi
+
+# aliases {{{1
+
+# enable colors {{{2
+
 (echo test | grep --color=auto blah >/dev/null 2>&1) && alias grep='grep --color=auto'
 (ls --color=auto >/dev/null 2>&1) && alias ls='ls --color=auto'
 alias lr="lr -G"
 #alias make="$(has colormake || has make)"
 
-# just flags
+# just flags {{{2
+
 export LESS='-SRQ'
 alias db="dropbox_uploader"
 alias fils="du -bahd1"
 alias lsa="ls -A --group-directories-first"
 alias logs="logs -o cat -b -e"
 alias logsf="logs -f -e"
+alias perlu='perl -Mopen=locale -Mutf8'
+alias rgn="rg --no-ignore"
+alias cms="cryptominisat5 --verb 0"
+
+# git {{{2
+
 alias get="git clone --single-branch --depth 1"
-alias diff="git diff --color=auto --no-ext-diff --no-index"
 alias gs='git status' # rip ghostscript
 alias gd='git diff -U2'
 alias gds='git --no-pager diff --stat'
 alias gl='git log --oneline'
 alias glo='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
 alias gb='git --no-pager branch'
-alias perlu='perl -Mopen=locale -Mutf8'
-alias rgn="rg --no-ignore"
-alias cms="cryptominisat5 --verb 0"
 
-if which sudo >/dev/null 2>/dev/null; then
-    alias maybesudo=sudo
-else
-    function maybesudo() {
-        while [[ "$1" == -* ]]; do shift; done
-        "$@"
-    }
-fi
+# being specific {{{2
 
-# being specific
 [ -e "$HOME/python3" ] && alias py="~/python3" || alias py="python3"
 alias pip="maybesudo -H pip3"
-alias irc='screeny "$USER" irc irssi'
-alias crawl='screeny "$USER" crawl ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
-alias crawla='screeny "$USER" crawl ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl'
 alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r'
-alias meow='( cd ~/play/meow; ~/sh/meow.sh/run -pa )'
 alias aligntabs="column -t -s$'\t'"
-alias gc="git column --mode=dense --padding=2"
 alias pippy="py -m pip install --upgrade --upgrade-strategy only-if-needed"
 
 ll() {
@@ -132,7 +140,10 @@ ll() {
      || ls -lAX --group-directories-first --color=force "$@"; } | less
 }
 
-# providing extra functionality
+# providing extra functionality {{{2
+
+alias diff="git diff --color=auto --no-ext-diff --no-index"
+alias gc="git column --mode=dense --padding=2"
 alias counts='find . | wc -l'
 alias nocom='grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)"'
 alias jrep='grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+"'
@@ -143,17 +154,16 @@ alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i
 alias double='awk "{print;print}"'
 alias join2='paste -d" " - -'
 alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r'"'"
-
-#
 alias picky='{ pacman -Qgq base base-devel xorg xorg-drivers xfce4 | double; pacman -Qeq; } | sort | uniq -u'
 alias unused='{ pacman -Qtq; pacman -Qeq | double; } | sort | uniq -u'
-#
 alias makepkgf='maybesudo -u $USER makepkg -Af --skipchecksums --skippgpcheck'
 alias rakef='rake && gem build *.gemspec && gem install *.gem'
 
 trash() {
     dd status=none if=/dev/random bs=1 count="$1"
 }
+
+# sources {{{1
 
 if [ $FANCY -eq 1 ]; then
     source ~/.arrays

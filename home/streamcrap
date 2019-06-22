@@ -5,17 +5,16 @@ MPV_STREAM_FLAGS="--quiet --autofit=1280x720 --loop-playlist=no --no-resume-play
 --no-initial-audio-sync --mc=0.02 --autosync=30"
 #--cache-secs=10 --cache-initial=1024 --cache-pause --cache-backbuffer=0 --cache-seek-min=2048"
 
-_M_STEREO='aformat=channel_layouts=stereo'
 _M_PRE_EMPH='equalizer=f=50.0:g=-10:width_type=o:w=4,equalizer=f=5000:g=+05:width_type=o:w=4'
 _M_POST_EMPH='equalizer=f=50.0:g=+10:width_type=o:w=4,equalizer=f=5000:g=-05:width_type=o:w=4'
-_M_COMPRESS='compand=0.001|0.001:0.25|0.25:-42/-42|0/-21:6:18:-30:0.001'
-_M_COMPRESS_SOFT='acompressor=threshold=0.01:ratio=1.667:attack=50:release=3200:makeup=6.7:knee=8:mix=0.67'
-_M_KILL="$_M_STEREO,$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
+_M_COMPRESS="acompressor=threshold=0.0032:ratio=1.414:attack=17:release=640:makeup=5.5:knee=8:mix=0.8"
+_M_KILL="$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
 _M_MULTI="volume=10,mcompand=0.256\,2.56 9 -90/-90\,-44/-44\,0/-26.4\,20/0 80 0 -44 0 | 0.128\,1.28 9 -90/-90\,-36/-36\,0/-18\,20/0 160 0 -36 0 | 0.064\,0.64 9 -90/-90\,-37/-37\,0/-18.5\,20/0 320 0 -37 0 | 0.032\,0.32 9 -90/-90\,-38/-38\,0/-19\,20/0 640 0 -38 0 | 0.016\,0.16 9 -90/-90\,-40/-40\,0/-20\,20/0 1280 0 -40 0 | 0.008\,0.08 9 -90/-90\,-41/-41\,0/-20.5\,20/0 2560 0 -41 0 | 0.004\,0.04 9 -90/-90\,-44/-44\,0/-22\,20/0 5120 0 -44 0 | 0.002\,0.02 9 -90/-90\,-52/-52\,0/-26\,20/0 10240 0 -52 0 | 0.001\,0.01 9 -90/-90\,-60/-60\,0/-36\,20/0 20480 0 -60 0"
 _M_MULTI2="volume=10,mcompand=0.25600\,5.12000 9.0 -90/-90\,-46.0/-46.0\,0/-18.9\,20/0 62.9 0.0 -46.0 0.0 | 0.12800\,2.56000 9.0 -90/-90\,-34.0/-34.0\,0/-9.7\,20/0 141.1 0.0 -34.0 0.0 | 0.06400\,1.28000 9.0 -90/-90\,-37.0/-37.0\,0/-10.6\,20/0 316.8 0.0 -37.0 0.0 | 0.03200\,0.64000 9.0 -90/-90\,-39.0/-39.0\,0/-11.1\,20/0 711.2 0.0 -39.0 0.0 | 0.01600\,0.32000 9.0 -90/-90\,-41.0/-41.0\,0/-11.7\,20/0 1596.0 0.0 -41.0 0.0 | 0.00800\,0.16000 9.0 -90/-90\,-46.0/-46.0\,0/-13.1\,20/0 3584.0 0.0 -46.0 0.0 | 0.00400\,0.08000 9.0 -90/-90\,-49.0/-49.0\,0/-14.0\,20/0 8046.0 0.0 -49.0 0.0 | 0.00200\,0.04000 9.0 -90/-90\,-58.0/-58.0\,0/-23.9\,20/0 18062.0 0.0 -58.0 0.0"
+_M_INSANE="$_M_PRE_EMPH,acompressor=threshold=0.001:ratio=2:attack=1000:release=9000:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.002:ratio=2:attack=320:release=2880:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.004:ratio=2:attack=100:release=900:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.008:ratio=2:attack=32:release=288:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.016:ratio=2:attack=10:release=90:makeup=3:knee=6:mix=0.5,$_M_POST_EMPH,alimiter"
 
 getladspa() {
-    REPLY="volume"
+    REPLY=volume
     if [ -e "/usr/lib/ladspa/${1}.so" ]; then
         REPLY="ladspa=f=${1}:p=${1}"
     fi
@@ -30,10 +29,10 @@ earphones() {
     _M_PROCESS="lowpass=8000:p=1,$_M_KILL,alimiter=level_out=0.707"
 }
 
-if [[ "$_nn" == "spectre" ]]; then
+if [[ "$_nn" == spectre ]]; then
     _M_PROCESS="$_M_KILL,alimiter=level_out=0.7071"
 fi
-if [[ "$_nn" == "neobanshee" ]]; then
+if [[ "$_nn" == neobanshee ]]; then
     speakers() {
         _M_PROCESS="highpass=311,$_M_KILL,\
 equalizer=700:o:1.3:-5,\
@@ -45,7 +44,7 @@ alimiter=level_in=2"
     }
     speakers
 fi
-if [[ "$_nn" == "banshee" ]]; then
+if [[ "$_nn" == banshee ]]; then
     getladspa crap_eq_const_T420
     _M_SPEAKERS="$REPLY"
     speakers() {
@@ -57,7 +56,6 @@ fi
 mpv_watch() {
     pushd ~/play >/dev/null
     local url="$1"; shift
-    #--audio-samplerate=44100 --audio-format=s16 \
     mpv --af=lavfi="[$_M_PROCESS]" --ytdl-format '[width<=1280],best' \
       "$@" "$url"
     popd >/dev/null
@@ -112,7 +110,7 @@ ai() {
 
 asmr() {
     _M_PROCESS="acompressor=threshold=0.001:ratio=1.414:attack=300:release=3000:makeup=9:knee=8:mix=0.88,alimiter=level_in=1.414:level_out=0.707" \
-      yt "$@" --volume=90 --ytdl-format=251,best
+      yt "$@" --volume=90 --ytdl-format=251/best
 }
 
-_nn=
+unset _nn

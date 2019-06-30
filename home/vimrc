@@ -121,6 +121,10 @@ fu! TabTwo()
     setlocal tabstop=2 shiftwidth=2 expandtab
 endf
 
+fu! TabBad()
+    setlocal tabstop=4 shiftwidth=4 noexpandtab softtabstop=4
+endf
+
 " set TabFour as default
 set tabstop=8 shiftwidth=4 expandtab softtabstop=4
 

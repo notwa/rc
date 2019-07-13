@@ -72,13 +72,7 @@ unset LD_LIBRARY_PATH
 # Qt is stupid and thinks we're running unity so it hides the menu bar
 [[ "$DESKTOP_SESSION" == xfce ]] && export QT_QPA_PLATFORMTHEME=""
 
-export PREFIX="$HOME/opt/local"
-export EDITOR='vim'
-export CC="$(has clang || has gcc)"
-export CXX="$(has clang++ || has g++)"
-export CXXFLAGS="$CFLAGS"
-export MAKEFLAGS="-j2"
-export OMP_NUM_THREADS=4
+export EDITOR=vim
 export VST_SDK_DIR="$HOME/src/vstsdk2.4"
 export LADSPA_PATH="/usr/lib/ladspa"
 export NQDIR="$HOME/play"

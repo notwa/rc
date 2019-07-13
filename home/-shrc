@@ -73,6 +73,7 @@ unset LD_LIBRARY_PATH
 [[ "$DESKTOP_SESSION" == xfce ]] && export QT_QPA_PLATFORMTHEME=""
 
 export EDITOR=vim
+export PAGER=less
 export VST_SDK_DIR="$HOME/src/vstsdk2.4"
 export LADSPA_PATH="/usr/lib/ladspa"
 export NQDIR="$HOME/play"

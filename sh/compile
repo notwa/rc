@@ -160,7 +160,7 @@ compile() {
             our_flags+=(-march=native)
         fi
         local debug_flags=(-O1 -g -D_DEBUG);
-        local release_flags=(-Ofast -mtune=native -g0 -fomit-frame-pointer -s -DNDEBUG)
+        local release_flags=(-Ofast -fwhole-program -fweb -mtune=native -g0 -fomit-frame-pointer -s -DNDEBUG)
         local dr_flags=(-Ofast -g -fomit-frame-pointer -DNDEBUG)
         local hardened_flags=(-O3 -g0 -s
                               -DNDEBUG -D_FORTIFY_SOURCE=2

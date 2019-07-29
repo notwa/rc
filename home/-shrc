@@ -139,7 +139,7 @@ ll() {
 
 # providing extra functionality {{{2
 
-alias diff="git diff --color=auto --no-ext-diff --no-index"
+alias diff="git diff --color=auto --no-ext-diff --no-index --no-prefix"
 alias gc="git column --mode=dense --padding=2"
 alias counts='find . | wc -l'
 alias nocom='grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)"'

@@ -178,6 +178,15 @@ set backspace=eol,start,indent        " make backspace useful
 " tab completion in command-line
 if has('wildmenu') | set wildmenu | endif
 
+if &term =~ '^tmux'
+    " https://unix.stackexchange.com/a/34723
+    " tmux will send xterm-style keys when xterm-keys is on
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif
+
 " easy indent/unindent
 nn <tab> >>
 nn <s-tab> <<

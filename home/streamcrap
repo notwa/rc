@@ -51,7 +51,10 @@ fi
 mpv_watch() {
     pushd ~/play >/dev/null
     local url="$1"; shift
-    mpv --af=lavfi="[$_M_PROCESS]" --ytdl-format '[width<=1280],best' \
+    mpv \
+      --force-window=yes \
+      --af=lavfi="[$_M_PROCESS]" \
+      --ytdl-format '[width<=1280],best' \
       "$@" "$url"
     popd >/dev/null
 }

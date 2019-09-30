@@ -10,7 +10,7 @@ eahead() {
 }
 
 eaget() {
-    curl "$_REMOTE_DOMAIN/$_REMOTE_DIR/$1" -o "${2:-$1}"
+    curl -R "$_REMOTE_DOMAIN/$_REMOTE_DIR/$1" -o "${2:-$1}"
 }
 
 eaput() {

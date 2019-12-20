@@ -107,7 +107,7 @@ ai() {
 }
 
 asmr() {
-    _M_PROCESS="acompressor=threshold=0.001:ratio=1.414:attack=300:release=3000:makeup=9:knee=8:mix=0.88,alimiter=level_in=1.414:level_out=0.707" \
+    _M_PROCESS="acompressor=threshold=0.001:ratio=1.33:attack=900:release=6000:makeup=6:knee=8:mix=0.9,alimiter" \
       yt "$@" --volume=90 --ytdl-format=251/300/best
 }
 

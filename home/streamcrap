@@ -54,7 +54,7 @@ mpv_watch() {
     mpv \
       --force-window=yes \
       --af=lavfi="[$_M_PROCESS]" \
-      --ytdl-format '[width<=1280],best' \
+      --ytdl-format '[width<=1280]/best' \
       "$@" "$url"
     popd >/dev/null
 }
@@ -108,7 +108,7 @@ ai() {
 
 asmr() {
     _M_PROCESS="acompressor=threshold=0.001:ratio=1.414:attack=300:release=3000:makeup=9:knee=8:mix=0.88,alimiter=level_in=1.414:level_out=0.707" \
-      yt "$@" --volume=90 --ytdl-format=251/best
+      yt "$@" --volume=90 --ytdl-format=251/300/best
 }
 
 unset _nn

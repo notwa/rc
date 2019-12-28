@@ -138,6 +138,14 @@ tw() {
     twitch "$@" OMFG STFU &
 }
 
+sum() {
+    local sum=0
+    for i; do
+        sum=$((sum+i))
+    done
+    echo "$sum"
+}
+
 function {
     local t="${TERM%%-*}"
     if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then

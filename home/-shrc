@@ -127,7 +127,7 @@ alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r'
 alias aligntabs="column -t -s$'\t'"
-alias pippy="py -m pip install --upgrade --upgrade-strategy only-if-needed"
+alias pippy="maybesudo python3 -m pip install --upgrade --upgrade-strategy only-if-needed"
 alias crawla='ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl'
 alias crawlz='ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
 

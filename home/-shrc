@@ -160,6 +160,10 @@ trash() {
     dd status=none if=/dev/random bs=1 count="$1"
 }
 
+explore() {
+    explorer "$(cygpath -w $1)"
+}
+
 # sources {{{1
 
 if [ $FANCY -eq 1 ]; then

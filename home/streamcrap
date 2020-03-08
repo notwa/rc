@@ -54,7 +54,7 @@ mpv_watch() {
     mpv \
       --force-window=yes \
       --af=lavfi="[$_M_PROCESS]" \
-      --ytdl-format '[width<=1280]/best' \
+      --ytdl-format='[width<=1280]/best' \
       "$@" "$url"
     popd >/dev/null
 }

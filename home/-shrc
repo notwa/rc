@@ -143,6 +143,7 @@ alias diff="git diff --color=auto --no-ext-diff --no-index --no-prefix"
 alias gc="git column --mode=dense --padding=2"
 alias counts='find . | wc -l'
 alias nocom='grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)"'
+alias sortip="sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n"
 alias jrep='grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+"'
 alias bomb='uconv -f utf-8 -t utf-8 --add-signature'
 alias cleanse='tr -cd "\11\12\15\40-\176"'

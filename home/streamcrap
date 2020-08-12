@@ -54,7 +54,7 @@ mpv_watch() {
       --force-window=yes \
       --af=lavfi="[$_M_PROCESS]" \
       --ytdl-format='[width<=1280]/best' \
-      "$@" "$url"
+      "$@" -- "$url"
     popd >/dev/null
 }
 
@@ -84,7 +84,8 @@ yt() {
 }
 
 ytg() {
-    yt "$1" --ytdl-format=22/95/300/best "$@"
+    local vid="$1"; shift
+    yt "$vid" --ytdl-format=22/95/300/best "$@"
 }
 
 ytll() {

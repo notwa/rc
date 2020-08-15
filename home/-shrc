@@ -166,6 +166,10 @@ explore() {
     explorer "$(cygpath -w $1)"
 }
 
+pegg() {
+    pippy "https://github.com/$1/$2/tarball/${3:-master}#egg=$2"
+}
+
 # sources {{{1
 
 if [ $FANCY -eq 1 ]; then

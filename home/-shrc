@@ -14,7 +14,7 @@ ify() {
 if which sudo >/dev/null 2>/dev/null; then
     alias maybesudo=sudo
 else
-    function maybesudo() {
+    maybesudo() {
         while [[ "$1" == -* ]]; do shift; done
         "$@"
     }
@@ -67,10 +67,10 @@ unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY
 unset LD_LIBRARY_PATH
 
 # PuTTY over serial
-[[ "$TERM" == vt102 ]] && export TERM="xterm"
+test "$TERM" = vt102 && export TERM="xterm"
 
 # Qt is stupid and thinks we're running unity so it hides the menu bar
-[[ "$DESKTOP_SESSION" == xfce ]] && export QT_QPA_PLATFORMTHEME=""
+test "$DESKTOP_SESSION" = xfce && export QT_QPA_PLATFORMTHEME=""
 
 export EDITOR=vim
 export PAGER=less
@@ -177,4 +177,4 @@ if [ $FANCY -eq 1 ]; then
     source ~/.streamcrap
 fi
 
-source ~/.ea
+. ~/.ea

@@ -170,6 +170,24 @@ pegg() {
     pippy "https://github.com/$1/$2/tarball/${3:-master}#egg=$2"
 }
 
+bak() {
+    if [ -s "$1.bak" ]; then
+        bak "$1.bak"
+    fi
+    cp -p "$1" "$1.bak"
+}
+
+baks() {  # backup, timestamped
+    local fp="$1"
+    local now="$(date -u '+%y-%m-%d_%H-%M-%S')"
+    local bak="$fp.$now.bak"
+    if [ -s "$bak" ]; then
+        echo "how in the hell? $bak already exists" >&2
+        return
+    fi
+    cp -p "$fp" "$bak"
+}
+
 # sources {{{1
 
 if [ $FANCY -eq 1 ]; then

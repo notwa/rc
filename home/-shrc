@@ -103,8 +103,6 @@ export LESS='-SRQ'
 alias db="dropbox_uploader"
 alias fils="du -bahd1"
 alias lsa="ls -A --group-directories-first"
-alias logs="logs -o cat -b -e"
-alias logsf="logs -f -e"
 alias perlu='perl -Mopen=locale -Mutf8'
 alias rgn="rg --no-ignore"
 alias cms="cryptominisat5 --verb 0"

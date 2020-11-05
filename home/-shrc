@@ -106,6 +106,7 @@ alias lsa="ls -A --group-directories-first"
 alias perlu='perl -Mopen=locale -Mutf8'
 alias rgn="rg --no-ignore"
 alias cms="cryptominisat5 --verb 0"
+alias curls="curl -sS"
 
 # git {{{2
 

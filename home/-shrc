@@ -187,6 +187,13 @@ baks() {  # backup, timestamped
     cp -p "$fp" "$bak"
 }
 
+eashare() {
+    # NOTE: this only works on MSYS2 for now.
+    local dest="${1##*/}"
+    eaput "$1" || return 1
+    printf "%s" "$_REMOTE_DOMAIN/$_REMOTE_DIR/$dest" > /dev/clipboard
+}
+
 # sources {{{1
 
 if [ $FANCY -eq 1 ]; then

@@ -87,6 +87,7 @@ set undofile                          " remember undos across files/sessions
 set diffopt+=iwhite                   " ignore whitespace in diff command
 set ttimeoutlen=50                    " make changing modes a bit snappier
 set hidden                            " allow swapping out of unsaved buffers
+set complete=.,w,b,u,t                " don't scan every file with autocomplete
 if has('mksession')
     set sessionoptions=blank,buffers,curdir,options,folds,tabpages,winsize,resize,winpos
 end

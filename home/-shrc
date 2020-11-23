@@ -162,7 +162,7 @@ trash() {
 }
 
 explore() {
-    explorer "$(cygpath -w $1)"
+    explorer "$(cygpath -w "$1")"
 }
 
 pegg() {

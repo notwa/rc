@@ -11,6 +11,7 @@ HISTFILESIZE=2000
 shopt -s histappend
 shopt -s checkwinsize
 #shopt -s physical # chaselinks (doesn't exist?)
+set -o hashall # enable hash command
 
 if [[ "$TERM" = xterm* ]]; then
     _title="\[\033]2;\w\a\]"

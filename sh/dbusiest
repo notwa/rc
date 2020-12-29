@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 local c d
 for d in *(FDN); do
     print $(find $d 2>/dev/null | wc -l) $d

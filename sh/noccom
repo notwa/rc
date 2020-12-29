@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # the first expression is taken from this FAQ:
 # https://perldoc.perl.org/perlfaq6.html#How-do-I-use-a-regular-expression-to-strip-C-style-comments-from-a-file%3f
 noccom() {

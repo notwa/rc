@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 df -xtmpfs | awk '
 NR==1{printf"%-20s %7s %7s %7s %7s\n","Filesystem","Used","Max","Left","Misc"}
 NR>1{printf"%-20s %7.2f %7.2f %7.2f %7.2f\n",$6,$3/2^20,($3+$4)/2^20,($4)/2^20,($2-$4-$3)/2^20}'

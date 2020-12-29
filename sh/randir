@@ -1,2 +1,2 @@
-#!/bin/sh
+#!/usr/bin/env sh
 find -maxdepth 1 -type d \( -path '/root' -prune -o -print \) | tail -n+2 | shuf | head -1

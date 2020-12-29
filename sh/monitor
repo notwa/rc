@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 local bottom=0 strip=0 interval=2 opt=
 while getopts 'fsn:h' opt; do
     case $opt in

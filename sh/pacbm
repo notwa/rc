@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 expac -s '%m %n' | awk '
 {t+=$1;printf("%8.2fM %s\n",$1/(1024*1024),$2)}
 END{printf("%8.2fM\n",t/(1024*1024))}

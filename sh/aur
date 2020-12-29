@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # http://aur.sh with massive feature creep
 aur() {
     trap 'exit 1' SIGINT SIGTERM

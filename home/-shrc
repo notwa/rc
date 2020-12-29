@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 # for zsh, bash, and ash.
 [ -n "$ZSH_VERSION" -o -n "$BASH" ] && FANCY=1 || FANCY=0
 
@@ -131,7 +131,8 @@ alias pippy="maybesudo py -m pip install --upgrade --upgrade-strategy only-if-ne
 alias crawla='ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl'
 alias crawlz='ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
 
-ll() {
+alias ll="lol" # workaround for a strange issue with bash
+lol() {
     { lr -1lshGG -o tev -t 'name~~".*"||type==d' "$@" \
      && lr -1lshGG -o tev -t 'name!~~".*"&&type!=d' "$@" \
      || ls -lAX --group-directories-first --color=force "$@"; } | less

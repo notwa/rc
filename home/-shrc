@@ -163,7 +163,7 @@ trash() {
 }
 
 explore() {
-    explorer "$(cygpath -w "$1")"
+    explorer "$(cygpath -w "${1:-.}")"
 }
 
 pegg() {
@@ -182,8 +182,8 @@ baks() {  # backup, timestamped
     local now="$(date -u '+%y-%m-%d_%H-%M-%S')"
     local bak="$fp.$now.bak"
     if [ -s "$bak" ]; then
-        echo "how in the hell? $bak already exists" >&2
-        return
+        printf "how in the hell? %s already exists\n" "$bak" >&2
+        return 1
     fi
     cp -p "$fp" "$bak"
 }

@@ -93,8 +93,8 @@ useful for translating [debug text from ancient games.](https://tcrf.net/)
 ### picky + unused
 
 attempts to find any non-standard packages that were installed
-on an Arch Linux box so that you can make note
-to install them later on a fresh installation.
+with pacman so that you can make note to install them, later,
+on a fresh installation.
 
 `unused` will print unused packages instead.
 
@@ -126,7 +126,7 @@ watches a youtube video through mpv with a bunch of audio filtering crap.
 can be given a full URL or just a video ID.
 remaining arguments are passed to mpv.
 
-there exist several variants for various situations: `ytg`, `ytll`, `ai`, `asmr`.
+there exist several other variants for specific use cases.
 
 ### twitch
 
@@ -281,7 +281,7 @@ not robust.
 ### [e](/sh/e)
 
 (zsh) wraps around $EDITOR to run as root if necessary.
-still needs some work to detect root-owned directories.
+this still needs some work to detect root-owned directories.
 
 ```
 $ e /etc/sudoers
@@ -329,7 +329,7 @@ not the minute of the hour.
 
 ### [monitor](/sh/monitor)
 
-(zsh) literally just `watch` reimplemented as a shell script. kinda nice though.
+(zsh) basically just `watch` reimplemented as a shell script. kinda nice though.
 
 ### [now](/sh/now)
 
@@ -359,7 +359,7 @@ $ pacbm | head -n -1 | tail -2
 ### [pacman-list-disowned](/sh/pacman-list-disowned)
 
 (zsh?) lists disowned pacman files. this might take a while.
-[via prezto][prezto]
+[via prezto.][prezto]
 
 ### [pause](/sh/pause)
 
@@ -432,7 +432,7 @@ has some extra logic for screenshots created by `scropt`.
 
 (zsh) sets up and detaches a screen for running daemons as other users, etc.
 
-will close any existing screens of the same name using its companion script, unscreen.
+this will close any existing screens of the same name using its companion script, unscreen.
 
 e.g. run znc as user znc in a screen called znc: `screeny znc znc znc -f`. znc!
 
@@ -448,7 +448,7 @@ $ ~/sh/sc $(~/sh/scropt -s -d0.5)
 
 ### [similar](/sh/similar)
 
-(sh) sorts stdin and highlights similarities between adjacent lines.
+(sh) highlights similarities between adjacent lines.
 
 ### [slit](/sh/slit) + [slitt](/sh/slitt)
 
@@ -493,19 +493,3 @@ sadly, this trick doesn't work anymore.
 ### [trunc](/sh/trunc)
 
 (bash) truncates text to fit within your terminal using the unicode character `…`.
-
-```
-$ echo $COLUMNS
-64
-$ unwrap /usr/share/licenses/common/GPL3/license.txt | trunc | head
-                    GNU GENERAL PUBLIC LICENSE                 …
-
- Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.…
-
-                            Preamble 
-
-  The GNU General Public License is a free, copyleft license fo…
-
-  The licenses for most software and other practical works are …
-$ echo 'this is just an example; these scripts are (mostly) unlicensed.'
-```

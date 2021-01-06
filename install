@@ -16,10 +16,10 @@ die() {
 }
 
 dotless() {
-    local f="$1"
-    local ind="$(expr index "$f" .)"
+    local f="$1" ind len
+    ind="$(expr index "$f" .)"
     if [ "$ind" -gt 0 ]; then
-        local len="$(expr length "$f")"
+        len="$(expr length "$f")"
         REPLY="$(expr substr "$f" 2 "$len")"
     else
         REPLY="$1"
@@ -67,7 +67,7 @@ softlink_pseudo() {
         mkdir "$1" || die "couldn't mkdir $1"
     fi
 
-    ls -A "$2" | while read -r REPLY; do
+    find "$2" -maxdepth 1 | while read -r REPLY; do
         local d1="$1/$REPLY"
         local d2="$2/$REPLY"
         if [ -d "$d2" ]; then
@@ -83,7 +83,7 @@ softlink_pseudo() {
         fi
     done
 
-    ls -A "$1" | while read -r REPLY; do
+    find "$2" -maxdepth 1 | while read -r REPLY; do
         local d1="$1/$REPLY"
         local d2="$2/$REPLY"
         if [ -d "$d2" ]; then
@@ -113,7 +113,7 @@ softlink() {
 which readlink >/dev/null || exit 1 # sanity check
 
 rc="$(readlink -f "$(dirname "$0")" )"
-cd "$HOME"
+cd "$HOME" || exit 1
 
 backup_dir="$rc/backup-$(date -u '+%s')"
 
@@ -149,7 +149,11 @@ is_empty() {
 # but you might still want to remove this if you're adapting my install script.
 for d in Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
     [ -d "$d" ] || continue
-    is_empty "$d" && rm -r "$d" || note "not removing $d because it contains files"
+    if is_empty "$d"; then
+        rm -r "$d"
+    else
+        note "not removing $d because it contains files"
+    fi
 done
 
 # create instead my preferred directory structure.

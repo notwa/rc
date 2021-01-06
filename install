@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # this script is compatible with following shells:
-# dash, ash, bash, zsh
+# dash, bash, zsh
 
 note() {
     printf "%s\n" "$@"
@@ -19,8 +19,7 @@ dotless() {
     local f="$1" ind len
     ind="$(expr index "$f" .)"
     if [ "$ind" -gt 0 ]; then
-        len="$(expr length "$f")"
-        REPLY="$(expr substr "$f" 2 "$len")"
+        REPLY="$(expr substr "$f" 2 "${#f}")"
     else
         REPLY="$1"
     fi
@@ -60,6 +59,13 @@ softlink_nix() {
     ln -s "$2" "$1" || die "couldn't symlink $1"
 }
 
+list_files() {
+    find "${1:-.}" -maxdepth 1 -printf "%P\n" | while read -r f; do
+        [ "${#f}" -gt 0 ] || continue
+        printf "%s\n" "$f"
+    done
+}
+
 softlink_pseudo() {
     [ -d "$2" ] || die "$1 is not a directory to softlink"
 
@@ -67,13 +73,14 @@ softlink_pseudo() {
         mkdir "$1" || die "couldn't mkdir $1"
     fi
 
-    find "$2" -maxdepth 1 | while read -r REPLY; do
-        local d1="$1/$REPLY"
-        local d2="$2/$REPLY"
+    list_files "$2" | while read -r f; do
+        local d1="$1/$f"
+        local d2="$2/$f"
+
         if [ -d "$d2" ]; then
             if [ "$d1" != ".vim/bundle" ]; then # buggy on Windows
                 #warn $'\e[34m / \e[0m' "$d1 $d2"
-                softlink_pseudo "$d1" "$d2" || exit 1
+                softlink_pseudo "$d1" "$d2"
             fi
         elif [ -f "$d2" ]; then
             #warn $'\e[34m * \e[0m' "$d1"
@@ -81,19 +88,22 @@ softlink_pseudo() {
         else
             die "i don't know how to pseudo-symlink $d2"
         fi
-    done
 
-    find "$2" -maxdepth 1 | while read -r REPLY; do
-        local d1="$1/$REPLY"
-        local d2="$2/$REPLY"
+    done || exit $?
+}
+
+find_new_files() {
+    list_files "$1" | while read -r f; do
+        local d1="$1/$f"
+        local d2="$2/$f"
+        [ "$d1" = ".vim/.netrwhist" ] && continue
+        [ "$d1" = ".vim/backup" ] && continue
+        [ "$d1" = ".vim/bundle" ] && continue
+        [ "$d1" = ".vim/swp" ] && continue
+        [ "$d1" = ".vim/undo" ] && continue
         if [ -d "$d2" ]; then
-            :
+            find_new_files "$d1" "$d2"
         elif [ ! "$d1" -ef "$d2" ]; then
-            [ "$d1" = ".vim/.netrwhist" ] && continue
-            [ "$d1" = ".vim/backup" ] && continue
-            [ "$d1" = ".vim/bundle" ] && continue
-            [ "$d1" = ".vim/swp" ] && continue
-            [ "$d1" = ".vim/undo" ] && continue
             #warn "new destination file. consider manually moving it:"
             #warn $'\e[32m + \e[0m' "$d1"
             warn " + $d1"
@@ -104,7 +114,8 @@ softlink_pseudo() {
 softlink() {
     if [ -n "$MSYSTEM" ]; then
         # MSYS2 does not have nor emulate symbolic links.
-        softlink_pseudo "$@" || exit 1
+        softlink_pseudo "$@"
+        find_new_files "$@" # to make up for git status not seeing new files
     else
         softlink_nix "$@"
     fi

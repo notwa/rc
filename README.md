@@ -308,13 +308,6 @@ nay
 (zsh) guess what these do. [via prezto.][prezto]
 includes autocomplete files.
 
-### [lsz](/sh/lsz)
-
-(zsh) a needlessly fancy alternative to `ls`.
-
-based on lsf or something, which might be [a gist somewhere.](//gist.github.com/notwa)
-you can find [similar, more mature projects on github.](//github.com/trapd00r/ls--)
-
 ### [minutemaid](/sh/minutemaid)
 
 (zsh) returns 0 if the current minute is divisible by a number.

@@ -326,8 +326,9 @@ not the minute of the hour.
 
 ### [now](/sh/now)
 
-(bash) returns the local date-time in a sortable format.
-will take a date or a file as an argument too.
+(bash) prints a date-time (UTC) in a sortable format.
+it takes a date or file as an argument,
+else defaults to the current time.
 
 ```
 $ now

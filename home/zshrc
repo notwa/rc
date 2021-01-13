@@ -104,6 +104,35 @@ bindkey -s '^[s' '^Asudo ^E' # alt+s
 
 bindkey -s '^[[6;2~' '\a' # shift+PgDn, do nothing, already at bottom (tmux)
 
+# these binds were meant to prevent erroneous inputs from
+# inputting anything, but they don't work for some reason:
+#bindkey -s '^[[3;5~' '\a' # ctrl+del
+#bindkey -s '^[[5;5~' '\a' # ctrl+PgUp
+#bindkey -s '^[[6;5~' '\a' # ctrl+PgDn
+#bindkey -s '^[[5;6~' '\a' # ctrl+shift+PgUp
+#bindkey -s '^[[6;6~' '\a' # ctrl+shift+PgDn
+#bindkey -s '^[[2;3~' '\a' # alt+ins
+#bindkey -s '^[[3;3~' '\a' # alt+del
+#bindkey -s '^[[5;3~' '\a' # alt+PgUp
+#bindkey -s '^[[6;3~' '\a' # alt+PgDn
+#bindkey -s '^[[1;6q' '\a' # ctrl+shift+1
+#bindkey -s '^[[1;6s' '\a' # ctrl+shift+3
+#bindkey -s '^[[1;6t' '\a' # ctrl+shift+4
+#bindkey -s '^[[1;6u' '\a' # ctrl+shift+5
+#bindkey -s '^[[1;6w' '\a' # ctrl+shift+7
+#bindkey -s '^[[1;6x' '\a' # ctrl+shift+8
+#bindkey -s '^[[1;6y' '\a' # ctrl+shift+9
+#bindkey -s '^[[1;6l' '\a' # ctrl+shift+comma
+#bindkey -s '^[[1;6n' '\a' # ctrl+shift+period
+#bindkey -s '^[[1;7A' '\a' # ctrl+alt+arrow
+#bindkey -s '^[[1;7B' '\a' # ctrl+alt+arrow
+#bindkey -s '^[[1;7C' '\a' # ctrl+alt+arrow
+#bindkey -s '^[[1;7D' '\a' # ctrl+alt+arrow
+#bindkey -s '^[[1;8A' '\a' # ctrl+alt+shift+arrow
+#bindkey -s '^[[1;8B' '\a' # ctrl+alt+shift+arrow
+#bindkey -s '^[[1;8C' '\a' # ctrl+alt+shift+arrow
+#bindkey -s '^[[1;8D' '\a' # ctrl+alt+shift+arrow
+
 autoload edit-command-line
 zle -N edit-command-line # new widget of the same function name
 bindkey '^Xe' edit-command-line # ctrl+x -> e

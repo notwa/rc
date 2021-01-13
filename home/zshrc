@@ -125,7 +125,7 @@ wipe() {
 
 for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
     alias $x="nocorrect $x"
-for x in arith hex curl fc find ftp history let locate rsync scp sftp wget twitch yt ytg ai
+for x in ai arith curl fc find ftp hex history let locate rsync scp sftp tw twitch wget youtube-dl yt ytg
     alias $x="noglob $x"
 unset x
 

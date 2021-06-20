@@ -182,10 +182,10 @@ if has('wildmenu') | set wildmenu | endif
 if &term =~ '^tmux'
     " https://unix.stackexchange.com/a/34723
     " tmux will send xterm-style keys when xterm-keys is on
-    execute "set <xUp>=\e[1;*A"
-    execute "set <xDown>=\e[1;*B"
-    execute "set <xRight>=\e[1;*C"
-    execute "set <xLeft>=\e[1;*D"
+    exec "set <xUp>=\e[1;*A"
+    exec "set <xDown>=\e[1;*B"
+    exec "set <xRight>=\e[1;*C"
+    exec "set <xLeft>=\e[1;*D"
 endif
 
 " easy indent/unindent
@@ -279,7 +279,7 @@ set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
 " including this in case i'm on a _really_ bad terminal:
 "set list listchars=tab:>-,trail:.,extends:>,nbsp:_
 
-try | execute pathogen#infect()       | catch /E117/ | endtry
+try | exec pathogen#infect()          | catch /E117/ | endtry
 
 let g:netrw_banner=0
 

@@ -155,7 +155,7 @@ wipe() {
 alias sc="~/sh/sc" # only runs in bash (for now), so be explicit with path
 alias pl="print -l" # not in -shrc because this only makes sense with zsh
 
-tw() {
+function tw() {  # needs the "function" keyword or else zsh complains
     twitch "$@" OMFG STFU &
 }
 

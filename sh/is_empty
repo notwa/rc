@@ -3,6 +3,8 @@ is_empty() {
     while read -r; do
         [ ! -d "$REPLY" ] && [ -s "$REPLY" ] && return 1
     done < <(find ${1:-.})
+    # TODO: done < <(find ${1:-.} -type f -print -quit)
+    # this needs to skip empty files as well.
     return 0
 }
 is_empty "$@"

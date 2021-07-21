@@ -50,6 +50,8 @@ if [[ "$_nn" == banshee ]]; then
     speakers
 fi
 
+unset _nn
+
 mpv_watch() {
     pushd ~/play >/dev/null
     local url="$1"; shift
@@ -110,4 +112,4 @@ asmr() {
       yt "$@" --volume=90 --ytdl-format=251/300/best
 }
 
-unset _nn
+[ -e "$HOME/.nara" ] && . "$HOME/.nara"

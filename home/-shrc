@@ -24,7 +24,10 @@ has() { which "$1" >&/dev/null && which "$1"; }
 
 ADDPATH() {
     new="$(readlink -f "$1")"
-    [ -d "$new" ] || echo -E "ADDPATH: path doesn't exist: $1" >&2
+    if [ ! -d "$new" ]; then
+        echo -E "ADDPATH: path doesn't exist: $1" >&2
+        return 1
+    fi
     echo ":$PATH:" | grep -q ":$new:" || export PATH="$PATH:$new"
 }
 
@@ -35,6 +38,7 @@ if [ $FANCY -eq 1 ]; then
     hash -d c="/c"
     hash -d d="/d"
     [ -d /media/chibi ] && hash -d e="/media/chibi" || hash -d e="/e"
+    hash -d s="/s"
 
     hash -d cyg=~c"/cygwin/home/$USER"
     hash -d msys=~c"/msys64/home/$USER"
@@ -50,6 +54,9 @@ umask 022
 
 ADDPATH "$HOME/opt/local/bin"
 [ -n "$MSYSTEM" ] && ADDPATH "/c/path"
+[ -n "$MSYSTEM" ] && ADDPATH "/c/path/mpv-shinchiro" 2>/dev/null
+[ -n "$MSYSTEM" ] && ADDPATH "/c/Program Files/7-Zip-Zstandard" 2>/dev/null
+[ -n "$MSYSTEM" ] && ADDPATH ~win"/Desktop/_programs/rakudo-2021.06/bin" 2>/dev/null
 
 # https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/1380084
 export SSH_AUTH_SOCK=0
@@ -175,7 +182,7 @@ pegg() {
 
 bak() {
     if [ -s "$1.bak" ]; then
-        bak "$1.bak"
+        bak "$1.bak" || return $?
     fi
     cp -p "$1" "$1.bak"
 }
@@ -193,6 +200,7 @@ baks() {  # backup, timestamped
 
 eashare() {
     # NOTE: this only works on MSYS2 for now.
+    # NOTE: i lied, this doesn't work anymore. idk
     local dest="${1##*/}"
     eaput "$1" || return 1
     printf "%s" "$_REMOTE_DOMAIN/$_REMOTE_DIR/$dest" > /dev/clipboard

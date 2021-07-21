@@ -188,6 +188,11 @@ if &term =~ '^tmux'
     exec "set <xLeft>=\e[1;*D"
 endif
 
+" mintty pls
+"exec "set <s-Tab>=\e[Z"
+"map <Esc>[Z <s-tab>
+"ounmap <Esc>[Z
+
 " easy indent/unindent
 nn <tab> >>
 nn <s-tab> <<

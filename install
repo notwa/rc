@@ -2,12 +2,17 @@
 # this script is compatible with following shells:
 # dash, bash, zsh
 
+VERBOSE=1
+
+[ -n "$ZSH_VERSION" -o -n "$BASH" ] || VERBOSE=0 # no colors for you
+
 note() {
-    printf "%s\n" "$@"
+    local IFS=" "
+    printf "%s\n" "$*"
 }
 
 warn() {
-    printf "%s\n" "$@" >&2
+    note "$@" >&2
 }
 
 die() {
@@ -23,7 +28,6 @@ dotless() {
     else
         REPLY="$1"
     fi
-    #warn "$f -> $REPLY"
 }
 
 backup() {
@@ -79,11 +83,11 @@ softlink_pseudo() {
 
         if [ -d "$d2" ]; then
             if [ "$d1" != ".vim/bundle" ]; then # buggy on Windows
-                #warn $'\e[34m / \e[0m' "$d1 $d2"
+                [ "${VERBOSE:-0}" -lt 1 ] || warn $'\e[34m / \e[0m' "$d1 $d2"
                 softlink_pseudo "$d1" "$d2"
             fi
         elif [ -f "$d2" ]; then
-            #warn $'\e[34m * \e[0m' "$d1"
+            [ "${VERBOSE:-0}" -lt 1 ] || warn $'\e[34m * \e[0m' "$d1"
             hardlink "$d1" "$d2"
         else
             die "i don't know how to pseudo-symlink $d2"
@@ -104,9 +108,12 @@ find_new_files() {
         if [ -d "$d2" ]; then
             find_new_files "$d1" "$d2"
         elif [ ! "$d1" -ef "$d2" ]; then
-            #warn "new destination file. consider manually moving it:"
-            #warn $'\e[32m + \e[0m' "$d1"
-            warn " + $d1"
+            if [ "${VERBOSE:-0}" -lt 1 ]; then
+                warn " + $d1"
+            else
+                #warn "new destination file. consider manually moving it:"
+                warn $'\e[32m + \e[0m' "$d1"
+            fi
         fi
     done
 }

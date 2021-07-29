@@ -2,6 +2,8 @@
 # http://aur.sh with massive feature creep
 # YES_ZSH
 
+# TODO: check compatibility with bash and dash.
+
 aur() {
     trap 'exit 1' SIGINT SIGTERM
 

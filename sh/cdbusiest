@@ -4,7 +4,7 @@
 cdbusiest() {
     dbusiest | read -r c d
     [ -z $c ] && return 1
-    <<<"$c $d"
+    printf "%s\n" "$c $d"
     cd $d
 }
 

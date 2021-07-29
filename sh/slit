@@ -1,9 +1,14 @@
-#!/usr/bin/env zsh
-# from https://github.com/sorin-ionescu/prezto/
+#!/usr/bin/env dash
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 slit() {
-    awk "{ print ${(j:,:):-\$${^@}} }"
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
+    awk "{ print $(printf ',$%s' $@ | cut -b2-) }"
+
+    # via: https://github.com/sorin-ionescu/prezto/
+    #awk "{ print ${(j:,:):-\$${^@}} }"
 }
 
 [ "${SOURCING:-0}" -gt 0 ] || slit "$@"

@@ -1,17 +1,19 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env dash
 # crontab usage:
-#* * * * * minutemaid 9 cd repo && git pull # runs every nine minutes
+#* * * * * minutemaid 9 ~/work/do_my_bidding # runs every nine minutes
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 minutemaid() {
-    local offset=0 opt=
-    while getopts 'o:h' opt; do
-        case $opt in
+    local offset=0 name
+    while getopts 'o:h' name; do
+        case $name in
         o)  offset="$OPTARG";;
         ?)  local fd=0
-            [ $opt = h ] && fd=0 || fd=2
-            echo -E "usage: $0 [-o offset] {interval} [{command} [{args...}]]" >&$fd
-            [ $opt = h ] && return 0 || return 1;;
+            [ $name = h ] && fd=1 || fd=2
+            printf "%s\n" "usage: $0 [-o offset] {interval} [{command} [{args...}]]" >&$fd
+            [ $name = h ] && return 0 || return 1;;
         esac
     done
     shift $((OPTIND-1))
@@ -20,13 +22,10 @@ minutemaid() {
     shift
 
     local sec="$(date +%s)"
-    let min=sec/60+offset
-    let mod=min%interval
+    local min="$((sec/60+offset))"
+    local mod="$((min%interval))"
     if [ $# -gt 0 ]; then
-        local cmd="${1}"
-        shift
-
-        [ $mod -eq 0 ] && "$cmd" "$@"
+        [ $mod -ne 0 ] || "$@"
     else
         [ $mod -eq 0 ] && return 0 || return 1
     fi

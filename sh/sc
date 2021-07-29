@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-. ~/.ea # FIXME: don't do this? somehow?
+SOURCING=$((SOURCING+1))
+. ~/sh/ea # FIXME: don't do this? somehow?
+SOURCING=$((SOURCING-1))
 
 sc_shorten() {
     REPLY="${1:2:2}${1:5:2}${1:8:2}${1:11:12}"
@@ -59,4 +61,4 @@ sc() {
     return 0
 }
 
-sc "$@"
+[ "${SOURCING:-0}" -gt 0 ] || sc "$@"

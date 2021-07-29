@@ -1,7 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 sv() {
+    [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     awk "-F${1:- }" '
     NF>1{f[$1]=substr($0,length($1)+1+length(FS))}END{for(k in f)print k FS f[k]}
     '

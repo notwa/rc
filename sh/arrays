@@ -1,5 +1,7 @@
 #!/usr/bin/env false
 # YES_ZSH
+# YES_BASH
+# NO_DASH
 
 whoa=(
     -Wall

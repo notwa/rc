@@ -1,10 +1,11 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 tpad() {
-    while [ $# -gt 0 ]; do
-        gm convert -bordercolor "#000000FF" -border 1x1 "$1" "${1/.png/}.tt.png";
-        shift
+    for f; do
+        gm convert -bordercolor "#000000FF" -border 1x1 "$f" "${f%.png}.tt.png"
     done
 }
 

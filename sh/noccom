@@ -2,6 +2,10 @@
 # the first expression is taken from this FAQ:
 # https://perldoc.perl.org/perlfaq6.html#How-do-I-use-a-regular-expression-to-strip-C-style-comments-from-a-file%3f
 # YES_ZSH
+# YES_BASH
+# YES_DASH
+
+# TODO: what's the minimum version of perl required for this?
 
 noccom() {
     [ -s ~/opt/local/bin/noccom ] || cat > ~/opt/local/bin/noccom <<EOF

@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 # YES_ZSH
+# NO_BASH
+# NO_DASH
 
 unscreen() {
     local pids="$(screen -ls | fgrep "$1" | cut -d. -f1)"

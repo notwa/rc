@@ -1,10 +1,17 @@
-#!/usr/bin/env zsh
-# via: https://github.com/sorin-ionescu/prezto/
-# this version uses tabs for input/output field separators.
+#!/usr/bin/env dash
+# this version of slit uses tabs for input/output field separators.
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 slitt() {
-    awk "BEGIN { FS=\"\\t\"; OFS=\"\\t\" } { print ${(j:,:):-\$${^@}} }"
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
+    #echo "$@" | awk '{for(i=1;i<NF;i++)printf"$%s,",$(i);print"$"$NF}'
+    local fields="$(printf ',$%s' $@ | cut -b2-)"
+    awk "BEGIN { FS=\"\\t\"; OFS=\"\\t\" } { print $fields }"
+
+    # via: https://github.com/sorin-ionescu/prezto/
+    #awk "BEGIN { FS=\"\\t\"; OFS=\"\\t\" } { print ${(j:,:):-\$${^@}} }"
 }
 
 [ "${SOURCING:-0}" -gt 0 ] || slitt "$@"

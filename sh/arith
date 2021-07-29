@@ -1,8 +1,14 @@
 #!/usr/bin/env zsh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
+
+# though technically compatible with other shells,
+# extra functionality is through zsh's extended arithmetic functions.
 
 arith() {
-    <<<"$(($@))"
+#   <<<"$(($@))"
+    printf "%s\n" "$(($@))"
 }
 
 [ "${SOURCING:-0}" -gt 0 ] || arith "$@"

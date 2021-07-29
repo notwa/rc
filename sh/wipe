@@ -1,14 +1,20 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 wipe() {
     # TODO: rename because wipe(1) already exists.
     [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     clear
     clear # twice because mintty is weird
-    echo "\033[30m\033[107m"
-    printf "*%.0s" {1..$COLUMNS}
-    echo "\033[0m\n"
+    echo $'\033[30m\033[107m' | tr -d '$'
+    if [ -n "${ZSH_VERSION:-}" ]; then
+        printf '*%.0s' {1..$COLUMNS}
+    else
+        tput cols | awk '{for(i=0;i<$0;i++)printf "*"}'
+    fi
+    echo $'\033[0m\n' | tr -d '$'
 }
 
 [ "${SOURCING:-0}" -gt 0 ] || wipe "$@"

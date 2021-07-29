@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 echo2() {
     local IFS=" "

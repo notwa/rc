@@ -1,5 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
+
+# dash compatibility is not fully tested, but it's probably okay.
 
 now() {
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
@@ -32,8 +36,8 @@ now() {
     M=${M#0*}
     S=${S#0*}
 
-    local ms=
-    let 'ms=(H*60*60+M*60+S)*1000+N/1000000'
+    local ms
+    ms=$(((H*60*60+M*60+S)*1000+N/1000000))
     ms=$(printf '%08i' $ms)
     echo "${F}_${ms}"
 }

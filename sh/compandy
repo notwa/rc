@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
-# YES_ZSH
 # script to make sense of compand's parameters
+# YES_ZSH
 
 compandy() {
     if [ $# -eq 0 ]; then

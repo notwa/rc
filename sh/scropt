@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 # YES_ZSH
 
+#SOURCING=$((SOURCING+1))
+#. ~/sh/now # FIXME: don't do this?
+#SOURCING=$((SOURCING-1))
+
 scropt() {
-    local now=
-    which ~/sh/now 2>/dev/null >/dev/null && now=$(~/sh/now) || now=$(date +%F_%T)
+    local now=$(now)
+    [ $? -eq 0 ] || return $?
     local fn="$HOME/play/$now.png"
     scrot "$fn" -e "optipng -quiet \$f" "$@"
-    echo "$fn"
+    [ $? -eq 0 ] && echo "$fn" || return $?
 }
 
 [ "${SOURCING:-0}" -gt 0 ] || scropt "$@"

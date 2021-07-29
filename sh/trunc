@@ -1,7 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 trunc() {
+    [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     COLUMNS=${COLUMNS:-$(tput cols)}
     awk -vL=${1:-$COLUMNS} '{e=length>L?"…":"";print substr($0,0,L-(e?1:0)) e}'
 }

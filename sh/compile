@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 # YES_ZSH
+# NO_BASH
+# NO_DASH
 
 # I'll just leave this here...
 __setup_clang_ubuntu() {
@@ -54,51 +56,54 @@ compile() {
 
         local winkit
         printf "%s\n" "/c/Program Files (x86)/Windows Kits/"*(on/N[1]) | read -r winkit
-        [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
-        printf "%s\n" "$winkit/Lib/"*(On/N[1]) | read -r winkit
-        [ -n "$winkit" ] || { echo "failed glob; missing winkit" >&2; return 1 }
+        [ -z "$winkit" ] || printf "%s\n" "$winkit/Lib/"*(On/N[1]) | read -r winkit
 
-        # detect MSVC.
-        local clarch
-        local arch
-        local msvc_dig_deep
-        [ "$MSYSTEM" = MINGW64 ] && clarch="/amd64" || clarch=""
-        [ "$MSYSTEM" = MINGW64 ] && arch="x64" || arch="x86"
-        if [ -d "/c/Program Files (x86)/Microsoft Visual Studio" ]; then # 2017+
-            printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio/20"*(On/N[1]) | read vc
-            printf "%s\n" "$vc"/*/VC | read vc
-            printf "%s\n" "$vc/Tools/MSVC/"*(On/N[1]) | read vc
-            msvc_dig_deep="yes"
-        else # older versions
-            printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio "*(On/N[1]) | read vc
-            vc="$vc/VC"
-        fi
+        if [ -z "$winkit" ]; then
+            #echo "failed glob; missing winkit" >&2
+            :
+        else
+            # detect MSVC.
+            local clarch
+            local arch
+            local msvc_dig_deep
+            [ "$MSYSTEM" = MINGW64 ] && clarch="/amd64" || clarch=""
+            [ "$MSYSTEM" = MINGW64 ] && arch="x64" || arch="x86"
+            if [ -d "/c/Program Files (x86)/Microsoft Visual Studio" ]; then # 2017+
+                printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio/20"*(On/N[1]) | read vc
+                printf "%s\n" "$vc"/*/VC | read vc
+                printf "%s\n" "$vc/Tools/MSVC/"*(On/N[1]) | read vc
+                msvc_dig_deep="yes"
+            else # older versions
+                printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio "*(On/N[1]) | read vc
+                vc="$vc/VC"
+            fi
 
-        # setup MSVC.
-        if [ -n "$msvc_dig_deep" ] && [ -e "$vc/bin/Host$arch/$arch/cl" ]; then
-            cl="$vc/bin/Host$arch/$arch/cl"
-            export PATH="$PATH:$vc/bin/Host$arch/$arch"
-            export LIB="$(cygpath -w "$vc/lib/$arch")"
-            export LIBPATH="$(cygpath -w "$vc/lib/$arch")"
-        elif [ -d "$vc/bin$clarch" ] && [ -e "$vc/bin$clarch/$cl" ]; then
-            cl="$vc/bin$clarch/cl"
-            export PATH="$PATH:$vc/bin$clarch"
-            export LIB="$(cygpath -w "$vc/LIB$clarch")"
-            export LIBPATH="$(cygpath -w "$vc/LIB$clarch")"
-        fi
+            # setup MSVC.
+            if [ -n "$msvc_dig_deep" ] && [ -e "$vc/bin/Host$arch/$arch/cl" ]; then
+                cl="$vc/bin/Host$arch/$arch/cl"
+                export PATH="$PATH:$vc/bin/Host$arch/$arch"
+                export LIB="$(cygpath -w "$vc/lib/$arch")"
+                export LIBPATH="$(cygpath -w "$vc/lib/$arch")"
+            elif [ -d "$vc/bin$clarch" ] && [ -e "$vc/bin$clarch/$cl" ]; then
+                cl="$vc/bin$clarch/cl"
+                export PATH="$PATH:$vc/bin$clarch"
+                export LIB="$(cygpath -w "$vc/LIB$clarch")"
+                export LIBPATH="$(cygpath -w "$vc/LIB$clarch")"
+            fi
 
-        # finish up.
-        if [ -n "$cl" ]; then
-            export INCLUDE="$(cygpath -w "$vc/INCLUDE")"
-            export INCLUDE="$INCLUDE;$(cygpath -w "${winkit/Lib/Include}/ucrt")"
-            export LIB="$LIB;$(cygpath -w "$winkit/um/$arch")"
-            export LIB="$LIB;$(cygpath -w "$winkit/ucrt/$arch")"
+            # finish up.
+            if [ -n "$cl" ]; then
+                export INCLUDE="$(cygpath -w "$vc/INCLUDE")"
+                export INCLUDE="$INCLUDE;$(cygpath -w "${winkit/Lib/Include}/ucrt")"
+                export LIB="$LIB;$(cygpath -w "$winkit/um/$arch")"
+                export LIB="$LIB;$(cygpath -w "$winkit/ucrt/$arch")"
 
-            for d in "${(@s/;/)INCLUDE}"; do
-                clang_flags+=(-I"$d")
-            done
-            # ignore MSVC's non-standard deprecation warnings.
-            clang_flags+=(-D_CRT_SECURE_NO_WARNINGS)
+                for d in "${(@s/;/)INCLUDE}"; do
+                    clang_flags+=(-I"$d")
+                done
+                # ignore MSVC's non-standard deprecation warnings.
+                clang_flags+=(-D_CRT_SECURE_NO_WARNINGS)
+            fi
         fi
     fi
 

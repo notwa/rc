@@ -1,5 +1,7 @@
 #!/usr/bin/sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 ify() {
     [ $# -ge 2 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }

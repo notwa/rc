@@ -1,7 +1,10 @@
 #!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 similar() {
+    [ $# -eq 0 ] || { printf "%s\n" "$0: does not take arguments" >&2; return 1; }
     awk '
     {
         i=0

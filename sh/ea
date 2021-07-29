@@ -1,6 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env false
 # remote file access (http file-sharing shenanigans)
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 _REMOTE_DOMAIN="https://eaguru.guru"
 _REMOTE_DIR="t"

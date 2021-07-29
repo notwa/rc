@@ -1,7 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 scramble() {
+    [ $# -eq 0 ] || { printf "%s\n" "$0: does not take arguments" >&2; return 1; }
     local eggs='s/@\(\w\)\(\w\)\(\w\)/@\3\1@\2/g'
     sed \
     -e 's/\b\w/&@/g' \

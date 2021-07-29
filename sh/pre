@@ -1,5 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 pre() {
     if [ -n "${ZSH_VERSION:-}" ]; then

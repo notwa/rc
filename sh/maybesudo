@@ -1,10 +1,12 @@
 #!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
 
 maybesudo_() {
     local name
     local env_cleanup=0
-    while getopts ':AEHKPSVbhiklnsvC:U:g:p:r:t:u:' name; do
+    while getopts :AEHKPSVbhiklnsvC:U:g:p:r:t:u: name; do
         case $name in
         K|V|k)
         # K: sure kill
@@ -122,6 +124,8 @@ maybesudo_() {
 
     else
         # run it in a subshell so it won't affect ours.
+        # TODO: run through env anyway for consistency.
+        #       (`maybesudo export` should fail)
         ( "$@"; )
     fi
 

@@ -1,6 +1,4 @@
-echo START.PROFILE
 [ -e /etc/profile ] && emulate sh -c "source /etc/profile"
-echo FINISH.PROFILE
 
 # trace:
 # /etc/zsh/zshenv{.zwc,}
@@ -53,8 +51,6 @@ autoload edit-command-line
 autoload history-search-end
 zmodload zsh/mathfunc
 
-echo START.SH
-
 function {
     local a b
 
@@ -74,8 +70,6 @@ function {
 SOURCING=$((SOURCING+1))
 . ~/.sh
 SOURCING=$((SOURCING-1))
-
-echo FINISH.SH
 
 local fuzzy=`has fzy || print`
 
@@ -164,9 +158,7 @@ bindkey -s '^[[6;2~' '\a' # shift+PgDn, do nothing, already at bottom (tmux)
 zle -N edit-command-line # new widget of the same function name
 bindkey '^Xe' edit-command-line # ctrl+x -> e
 
-echo START.-
 . ~/.-shrc
-echo FINISH.-
 
 alias -g OMFG="1>/dev/null"
 alias -g STFU="2>/dev/null"
@@ -255,6 +247,4 @@ for x in ai arith curl fc find ftp hex history let locate rsync scp sftp tw twit
     alias $x="noglob $x"
 unset x
 
-echo START.COMPINIT
 . ~/.prezto-compinit
-echo FINISH.COMPINIT

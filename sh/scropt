@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # YES_ZSH
 
-#SOURCING=$((SOURCING+1))
+: $((SOURCING+=1))
 #. ~/sh/now # FIXME: don't do this?
-#SOURCING=$((SOURCING-1))
+: $((SOURCING-=1))
 
 scropt() {
     local now=$(now)

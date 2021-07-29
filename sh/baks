@@ -3,9 +3,9 @@
 # YES_BASH
 # YES_DASH
 
-#SOURCING=$((SOURCING+1))
+: $((SOURCING+=1))
 #. ~/sh/note # FIXME: don't do this?
-#SOURCING=$((SOURCING-1))
+: $((SOURCING-=1))
 
 baks() { # backup, timestamped
     local ret=0

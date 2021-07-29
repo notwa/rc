@@ -62,9 +62,9 @@ function {
     [ "$a" = "$b" ] && touch ~/.sh.zwc || zrecompile -p ~/.sh
 }
 
-SOURCING=$((SOURCING+1))
+: $((SOURCING+=1))
 . ~/.sh
-SOURCING=$((SOURCING-1))
+: $((SOURCING-=1))
 
 local fuzzy=`has fzy || print`
 

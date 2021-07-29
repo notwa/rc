@@ -6,7 +6,7 @@
 sum() {
     local sum=0
     for i; do
-        sum=$((sum+i))
+        : $((sum+=i))
     done
     echo "$sum"
 }

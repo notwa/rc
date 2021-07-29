@@ -42,9 +42,9 @@ ADDPATH "$HOME/sh"
       > ~/.sh-bash
 )
 
-SOURCING=$((SOURCING+1))
+: $((SOURCING+=1))
 . ~/.sh-bash
-SOURCING=$((SOURCING-1))
+: $((SOURCING-=1))
 
 # TODO: respect initctl like in .zshrc.
 alias reload='cd; exec bash'

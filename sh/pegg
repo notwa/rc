@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+pegg() {
+    [ $# -ge 2 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
+    pippy "https://github.com/$1/$2/tarball/${3:-master}#egg=$2"
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || pegg "$@"

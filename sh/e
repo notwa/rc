@@ -1,50 +1,55 @@
 #!/usr/bin/env zsh
+# YES_ZSH
 
-local editor=(${=EDITOR})
-local running=0
+e() {
+    local editor=(${=EDITOR})
+    local running=0
 
-if [ -n "$MSYSTEM" ]; then
-    if ps -f | awk '{print $6}' \
-    | grep -o '[^/]*$' | grep -qFx "${editor[1]}"; then
+    if [ -n "$MSYSTEM" ]; then
+        if ps -f | awk '{print $6}' \
+        | grep -o '[^/]*$' | grep -qFx "${editor[1]}"; then
+            running=1
+        fi
+    elif ps -o comm | grep -qFx "${editor[1]}"; then
         running=1
     fi
-elif ps -o comm | grep -qFx "${editor[1]}"; then
-    running=1
-fi
 
-if [ $running -eq 1 ]; then
-    printf "%s\n" "${editor[1]} is already running" >&2
-    read -q '?Continue? [y/N] ' _ || { echo; return; }
-    echo
-fi
+    if [ $running -eq 1 ]; then
+        printf "%s\n" "${editor[1]} is already running" >&2
+        read -q '?Continue? [y/N] ' _ || { echo; return; }
+        echo
+    fi
 
-if [ $# -eq 0 ] || [ -n "$MSYSTEM" ]; then
-    $=EDITOR "$@"
-    return
-fi
+    if [ $# -eq 0 ] || [ -n "$MSYSTEM" ]; then
+        $=EDITOR "$@"
+        return
+    fi
 
-local f needroot=0
-for f in "$@"; do
-    # easy: file exists, we have write permissions
-    [ -w "$f" ] && continue
+    local f needroot=0
+    for f in "$@"; do
+        # easy: file exists, we have write permissions
+        [ -w "$f" ] && continue
 
-    # easy: file exists, but no write permissions
-    [ -e "$f" ] && { needroot=1; break }
+        # easy: file exists, but no write permissions
+        [ -e "$f" ] && { needroot=1; break }
 
-    # hard: file may be in a directory that we can't inspect
-    local d="$f"
-    while expr index "$d" / >/dev/null; do
-        d="${d%/*}"
-        # NOTE: this gets weird with the root directory, not sure how to handle
-        [ -e "$d" ] && [ ! -w "$d" ] && { needroot=1 && break; }
+        # hard: file may be in a directory that we can't inspect
+        local d="$f"
+        while expr index "$d" / >/dev/null; do
+            d="${d%/*}"
+            # NOTE: this gets weird with the root directory, not sure how to handle
+            [ -e "$d" ] && [ ! -w "$d" ] && { needroot=1 && break; }
+        done
+        [ $needroot -eq 1 ] && break
+
+        # easy: file just doesn't exist
     done
-    [ $needroot -eq 1 ] && break
 
-    # easy: file just doesn't exist
-done
+    if [ $needroot -eq 0 ]; then
+        $=EDITOR "$@"
+    else
+        sudo -e "$@"
+    fi
+}
 
-if [ $needroot -eq 0 ]; then
-    $=EDITOR "$@"
-else
-    sudo -e "$@"
-fi
+[ "${SOURCING:-0}" -gt 0 ] || e "$@"

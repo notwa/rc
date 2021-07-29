@@ -1,5 +1,6 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env false
 # awful things
+# YES_ZSH
 
 MPV_STREAM_FLAGS="--quiet --autofit=1280x720 --loop-playlist=no --no-resume-playback --no-sub \
 --no-initial-audio-sync --mc=0.02 --autosync=30"
@@ -111,5 +112,3 @@ asmr() {
     _M_PROCESS="acompressor=threshold=0.001:ratio=1.33:attack=900:release=6000:makeup=6:knee=8:mix=0.9,alimiter" \
       yt "$@" --volume=90 --ytdl-format=251/300/best
 }
-
-[ -e "$HOME/.nara" ] && . "$HOME/.nara"

@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# YES_ZSH
 
 unscreen() {
     local pids="$(screen -ls | fgrep "$1" | cut -d. -f1)"
@@ -9,4 +10,4 @@ unscreen() {
     return 0
 }
 
-unscreen "$@"
+[ "${SOURCING:-0}" -gt 0 ] || unscreen "$@"

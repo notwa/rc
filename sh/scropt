@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# YES_ZSH
 
 scropt() {
     local now=
@@ -7,4 +8,5 @@ scropt() {
     scrot "$fn" -e "optipng -quiet \$f" "$@"
     echo "$fn"
 }
-scropt "$@"
+
+[ "${SOURCING:-0}" -gt 0 ] || scropt "$@"

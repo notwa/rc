@@ -1,35 +1,41 @@
 #!/usr/bin/env zsh
-local bottom=0 strip=0 interval=2 opt=
-while getopts 'fsn:h' opt; do
-    case $opt in
-    f) bottom=1;; # align with bottom of terminal
-    s) strip=1;; # strip last character assuming it's a newline
-    n) interval="$OPTARG";;
-    ?) echo -E "usage: $0 [-fs] [-n {period}] {command} [{args...}]"
-       [ $opt = h ] && return 0 || return 1;;
-    esac
-done
-shift $((OPTIND-1))
+# YES_ZSH
 
-local cmd=${1:?no command specified}
-shift
+monitor() {
+    local bottom=0 strip=0 interval=2 opt=
+    while getopts 'fsn:h' opt; do
+        case $opt in
+        f) bottom=1;; # align with bottom of terminal
+        s) strip=1;; # strip last character assuming it's a newline
+        n) interval="$OPTARG";;
+        ?) echo -E "usage: $0 [-fs] [-n {period}] {command} [{args...}]"
+           [ $opt = h ] && return 0 || return 1;;
+        esac
+    done
+    shift $((OPTIND-1))
 
-function _monclear() {
-    [ $bottom -eq 1 ] && printf ${(l:$((LINES*2))::\n:)}
+    local cmd=${1:?no command specified}
+    shift
+
+    function _monclear() {
+        [ $bottom -eq 1 ] && printf ${(l:$((LINES*2))::\n:)}
+    }
+    function _monfit() {
+        if [ $strip -eq 1 ]; then
+            tail -$((LINES)) | head -c-1
+        else
+            tail -$((LINES-1))
+        fi
+    }
+
+    local stop=0
+    trap stop=1 INT
+    echo -en "\e[H\e[2J"
+    while [ $stop -eq 0 ]; do
+        echo -en "\e[1J\e[H"
+        { _monclear; "$cmd" "$@" 2>&1 } | fold -w $COLUMNS | _monfit
+        sleep "$interval" || break
+    done
 }
-function _monfit() {
-    if [ $strip -eq 1 ]; then
-        tail -$((LINES)) | head -c-1
-    else
-        tail -$((LINES-1))
-    fi
-}
 
-local stop=0
-trap stop=1 INT
-echo -en "\e[H\e[2J"
-while [ $stop -eq 0 ]; do
-    echo -en "\e[1J\e[H"
-    { _monclear; "$cmd" "$@" 2>&1 } | fold -w $COLUMNS | _monfit
-    sleep "$interval" || break
-done
+[ "${SOURCING:-0}" -gt 0 ] || monitor "$@"

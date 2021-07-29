@@ -1,3 +1,9 @@
 #!/usr/bin/env zsh
 # from https://github.com/sorin-ionescu/prezto/
-awk "{ print ${(j:,:):-\$${^@}} }"
+# YES_ZSH
+
+slit() {
+    awk "{ print ${(j:,:):-\$${^@}} }"
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || slit "$@"

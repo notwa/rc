@@ -1,0 +1,11 @@
+#!/usr/bin/sh
+# YES_ZSH
+
+ify() {
+    [ $# -ge 2 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
+    local ex="$1"
+    shift
+    "$@" | "$ex"
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || ify "$@"

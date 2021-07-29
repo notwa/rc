@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+trash() {
+    [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    dd status=none if=/dev/random bs=1 count="${1:?missing count argument}"
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || trash "$@"

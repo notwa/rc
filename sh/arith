@@ -1,2 +1,8 @@
 #!/usr/bin/env zsh
-<<<"$(($@))"
+# YES_ZSH
+
+arith() {
+    <<<"$(($@))"
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || arith "$@"

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-. ~/.ea
+
+. ~/.ea # FIXME: don't do this? somehow?
 
 sc_shorten() {
     REPLY="${1:2:2}${1:5:2}${1:8:2}${1:11:12}"

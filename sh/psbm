@@ -1,5 +1,11 @@
 #!/usr/bin/env sh
-ps axco rss,pid,command | awk '
-NR>1&&$1>0{t+=$1;printf("%8.2fM %7d %s\n",$1/1024,$2,$3)}
-END{printf("%8.2fM\n",t/1024)}
-' | sort -n
+# YES_ZSH
+
+psbm() {
+    ps axco rss,pid,command | awk '
+    NR>1&&$1>0{t+=$1;printf("%8.2fM %7d %s\n",$1/1024,$2,$3)}
+    END{printf("%8.2fM\n",t/1024)}
+    ' | sort -n
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || psbm "$@"

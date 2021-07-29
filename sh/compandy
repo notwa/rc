@@ -1,5 +1,7 @@
 #!/usr/bin/zsh
+# YES_ZSH
 # script to make sense of compand's parameters
+
 compandy() {
     if [ $# -eq 0 ]; then
         echo -E "usage: $0 {threshold} {ratio} [attack] [release] [knee] [gain] [delay]"
@@ -17,4 +19,5 @@ compandy() {
     printf "compand=%.5f|%.5f:%.5f|%.5f:%.1f/%.1f|0/%.2f:%.2f:%.2f:%.1f:%.5f" \
       $atk $atk $rel $rel $thresh $thresh $end $knee $gain $start $delay
 }
-compandy "$@"
+
+[ "${SOURCING:-0}" -gt 0 ] || compandy "$@"

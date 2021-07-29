@@ -1,4 +1,11 @@
 #!/usr/bin/env sh
-df -xtmpfs | awk '
-NR==1{printf"%-20s %7s %7s %7s %7s\n","Filesystem","Used","Max","Left","Misc"}
-NR>1{printf"%-20s %7.2f %7.2f %7.2f %7.2f\n",$6,$3/2^20,($3+$4)/2^20,($4)/2^20,($2-$4-$3)/2^20}'
+# YES_ZSH
+
+dfu() {
+    [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    df -xtmpfs | awk '
+    NR==1{printf"%-20s %7s %7s %7s %7s\n","Filesystem","Used","Max","Left","Misc"}
+    NR>1{printf"%-20s %7.2f %7.2f %7.2f %7.2f\n",$6,$3/2^20,($3+$4)/2^20,($4)/2^20,($2-$4-$3)/2^20}'
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || dfu

@@ -1,7 +1,10 @@
 #!/usr/bin/zsh
+# YES_ZSH
+
 isup() {
     local c
     curl -sLI -w '%{http_code}' -o /dev/null "$1" | read -r c
     [ "${c:0:1}" -eq 2 ]
 }
-isup "$@"
+
+[ "${SOURCING:-0}" -gt 0 ] || isup "$@"

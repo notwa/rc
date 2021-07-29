@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# YES_ZSH
+
+cutv() {
+    [ $# -le 4 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    local nel="${1?missing length parameter}"
+    local f="${2?missing file parameter}"
+    local g="cut."${${f##*/}%.*}".mp4"
+    ffmpeg -hide_banner -i "$f" 2>&1 \
+      | grep Duration \
+      | grep -Eo '[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9]' | awk -F: '{print (($1*60+$2)*60+$3)+$4/100}' | read len
+    [[ "$len" -gt 0 ]] || return 1
+    echo "$g"
+    ffmpeg \
+      -hide_banner -loglevel warning -stats -stats_period 5 \
+      -i "$f" -ss "$(((nel<len)*(len-nel)))" \
+      -sn -dn -metadata = -map_chapters -1 -movflags +faststart \
+      -ar 44100 -acodec libfdk_aac -b:a 256k -cutoff 20000 -af alimiter=level_in=2.5:level_out=0.9 \
+      -maxrate 7680k -bufsize 9600k -vcodec libx264 -preset medium -crf 21 -vf scale=1280:720 \
+      -threads 2 -y "$g" || return 1
+    # -maxrate 7680k -bufsize 9600k -vcodec libx264 -preset medium -crf 21 -vf scale=1280:720
+    # -maxrate 9600k -bufsize 12000k -vcodec libx264 -preset medium -crf 22 -vf scale=1280:720
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || cutv "$@"

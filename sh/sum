@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+sum() {
+    local sum=0
+    for i; do
+        sum=$((sum+i))
+    done
+    echo "$sum"
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || sum "$@"

@@ -1,61 +1,84 @@
+echo START.PROFILE
 [ -e /etc/profile ] && emulate sh -c "source /etc/profile"
+echo FINISH.PROFILE
 
-if [ "$SHLVL" -le 1 ] && [[ "$TERM" != screen* ]] && [[ "$TERM" != tmux* ]]
-then
-    if which tmux >/dev/null 2>/dev/null; then
-        # create a new session called "what" or attach if it already exists
-        LANG="en_US.UTF-8" TZ=":/etc/localtime" tmux new -A -s what && exit
-        echo "tmux died ($?), continuing..."
-    fi
-fi
-
-setopt extended_glob # required for various scripts in this file and otherwise
-
-local host="${(L)HOST}"
-fpath=(~/sh $fpath)
-
-function {
-    local f
-    for f in ~/sh/^([_.]*)(N^/:t); do
-        if [[ "$f" == fasd ]]; then
-            emulate sh -c "autoload -U $f"
-        else
-            autoload -Uz $f
-        fi
-    done
-}
+# trace:
+# /etc/zsh/zshenv{.zwc,}
+# ~/.zshenv{.zwc,}
+# /etc/zsh/zshrc{.zwc,}
 
 HISTFILE=~/.histfile
 HISTSIZE=99999
 SAVEHIST=99999
+TIMEFMT=$'\e[93m%*U/%*E cpu/real (%P), %MM mem:\e[36m %J\e[0m'
+DIRSTACKSIZE=24
 
-function {
-    local -a opts
-    opts=( no_beep
-        append_history share_history # across sessions
-        hist_expire_dups_first # sharing/appending will result in dups
-        hist_ignore_dups # don't push lines identical to the previous
-        hist_ignore_space # don't push lines beginning with spaces
-        auto_cd # exec a dir to cd
-        auto_pushd # cd acts as pushd
-        no_match # error on bad tab-complete
-        check_jobs notify # automatic job reporting
-        chase_links # cd into link resolves link
-        complete_aliases # allow original command completion within alias
-        complete_in_word # enable tab completion when cursor between words
-        rc_quotes # 'you''re dumb' like "you're dumb"
-        brace_ccl # for character ranges like {a-z}
-        ksh_typeset # treat `local x=$(cmd)` and `x=$(cmd)` the same
-    )
-    setopt "${opts[@]}"
-}
+setopt always_to_end            # Move cursor to the end of a completed word.
+setopt append_history
+setopt share_history            # across sessions
+setopt auto_cd                  # exec a dir to cd
+setopt auto_list                # Automatically list choices on ambiguous completion.
+setopt auto_menu                # Show completion menu on a successive tab press.
+setopt auto_param_slash         # If completed parameter is a directory, add a trailing slash.
+setopt auto_pushd               # cd acts as pushd
+setopt brace_ccl                # for character ranges like {a-z}
+setopt chase_links              # cd into link resolves link
+setopt check_jobs notify        # automatic job reporting
+setopt complete_aliases         # allow original command completion within alias
+setopt complete_in_word         # enable tab completion from any characters in a word
+setopt extended_glob            # required for various scripts in this file and otherwise
+setopt hist_expire_dups_first   # sharing/appending will result in dups
+setopt hist_ignore_dups         # don't push lines identical to the previous
+setopt hist_ignore_space        # don't push lines beginning with spaces
+setopt ksh_typeset              # treat `local x=$(cmd)` and `local x="$(cmd)"` the same
+setopt no_beep
+setopt no_match                 # error on bad tab-complete
+setopt path_dirs                # Perform path search even on command names with slashes.
+setopt rc_quotes                # 'it''s okay' becomes "it's okay"
+unsetopt flow_control           # Disable start/stop characters in shell editor.
+unsetopt menu_complete          # Do not autoselect the first completion entry.
+
+if [ "$SHLVL" -le 1 ] && [ "$TERM" = "${TERM#screen}" ] && [ "$TERM" = "${TERM#tmux}" ]; then
+    if (( $+commands[tmux] )); then
+        # create a new session called "what" or attach if it already exists
+        LANG="en_US.UTF-8" TZ=":/etc/localtime" tmux new -A -s what && exit
+        printf '\e[91m\ntmux died (%i), continuing...\n\e[0m\n' $?
+    fi
+fi
 
 autoload -U zmv
-
-zmodload zsh/mathfunc
+autoload -U zrecompile
 autoload -Uz zcalc
+autoload edit-command-line
+autoload history-search-end
+zmodload zsh/mathfunc
 
-DIRSTACKSIZE=24
+echo START.SH
+
+function {
+    local a b
+
+    [ -s ~/.sh.sha1 ] && read -r b < ~/.sh.sha1
+    ( cd ~/sh \
+      && print -l '#!/usr/bin/env false' '[ "${SOURCING:-0}" -gt 0 ] || exit 1' '' \
+      | cat - $(grep -lF 'YES_ZSH' *(.)) \
+      | tee ~/.sh \
+    ) | sha1sum - \
+      | cut -d' ' -f1 \
+      | tee ~/.sh.sha1 \
+      | read -r a
+
+    [ "$a" = "$b" ] && touch ~/.sh.zwc || zrecompile -p ~/.sh
+}
+
+SOURCING=$((SOURCING+1))
+. ~/.sh
+SOURCING=$((SOURCING-1))
+
+echo FINISH.SH
+
+local fuzzy=`has fzy || print`
+
 dirprev() {
     pushd -q +1
     zle reset-prompt
@@ -72,11 +95,17 @@ dirup() {
     precmd
 }
 dirview() {
-    # TODO: print under prompt if possible,
-    # truncate and columnize
     print
-    dirs -v
+    if [ -n "$fuzzy" ]; then
+        local d="$(dirs -pl | awk '!seen[$0]++' | "$fuzzy")"
+        cd "$d"
+    else
+        # TODO: print under prompt if possible,
+        # truncate and columnize
+        dirs -v
+    fi
     zle reset-prompt
+    precmd
 }
 
 for x (dirprev dirnext dirup dirview) zle -N $x
@@ -84,7 +113,6 @@ for x (dirprev dirnext dirup dirview) zle -N $x
 bindkey -e # emacs-style keybinds
 
 # oh thank god: http://blog.samsonis.me/2013/12/bash-like-history-search-functionality-for-zsh/
-autoload history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey '^[[A' history-beginning-search-backward-end # up
@@ -133,39 +161,26 @@ bindkey -s '^[[6;2~' '\a' # shift+PgDn, do nothing, already at bottom (tmux)
 #bindkey -s '^[[1;8C' '\a' # ctrl+alt+shift+arrow
 #bindkey -s '^[[1;8D' '\a' # ctrl+alt+shift+arrow
 
-autoload edit-command-line
 zle -N edit-command-line # new widget of the same function name
 bindkey '^Xe' edit-command-line # ctrl+x -> e
 
+echo START.-
 . ~/.-shrc
+echo FINISH.-
 
 alias -g OMFG="1>/dev/null"
 alias -g STFU="2>/dev/null"
 alias -g WHOA='${whoa[@]}'
 alias -g WELP='${welp[@]}'
 
-wipe() {
-    clear
-    clear # twice because mintty is weird
-    echo "\e[30m\e[107m"
-    printf "*%.0s" {1..$COLUMNS}
-    echo "\e[0m\n"
-}
-
 alias sc="~/sh/sc" # only runs in bash (for now), so be explicit with path
 alias pl="print -l" # not in -shrc because this only makes sense with zsh
 
-function tw() {  # needs the "function" keyword or else zsh complains
+function tw() { # needs the "function" keyword or else zsh complains
     twitch "$@" OMFG STFU &
 }
 
-sum() {
-    local sum=0
-    for i; do
-        sum=$((sum+i))
-    done
-    echo "$sum"
-}
+local host="${(L)HOST}"
 
 function {
     local t="${TERM%%-*}"
@@ -193,67 +208,37 @@ function {
     local good=42 # green
     local  bad=41 # red
 
-    [[ "$host" == neobanshee ]] && good=46 # cyan
-    [[ "$host" == spectre ]]    && good=47 # white
-    [[ "$host" == wraith ]]     && good=43 # yellow
-    [[ "$host" == sabotage ]]   && good=45 # magenta
+    [ "$host" = neobanshee ] && good=46 # cyan
+    [ "$host" = spectre ]    && good=47 # white
+    [ "$host" = wraith ]     && good=43 # yellow
+    [ "$host" = sabotage ]   && good=45 # magenta
 
     # NOTE: i had ${s}10${e} here before, is it still necessary?
     PROMPT="%{$reset${s}%(?.${good}.${bad})${e}${s}97${e}%}%#%{$reset%} "
 }
 
-TIMEFMT=$'\e[93m%*U/%*E cpu/real (%P), %MM mem:\e[36m %J\e[0m'
-
 reload() {
+    # initctl has a "reload" symlink, but i'm already too used to typing this.
+    # to remedy this, when args are passed, invoke initctl instead.
+    if [ $# -gt 0 ]; then
+        "${commands[reload]:?initctl is missing}" "$@"
+        return $?
+    fi
+
     # this doesn't seem to help with _vim_files errors, eh.
     # you wanna rm .zcompdump first, then exit. that's why!
     cd ~
-    autoload -U zrecompile
-    [ -f .zshrc ] && zrecompile -p .zshrc
-    rm -f .zcompdump
-    [ -f .zshrc.zwc.old ] && rm -f .zshrc.zwc.old
-    [ -f .zcompdump.zwc.old ] && rm -f .zcompdump.zwc.old
+    if [ $? -eq 0 ]; then
+        [ -f .zshrc ] && zrecompile -p .zshrc
+        [ -f .prezto-compinit ] && zrecompile -p .prezto-compinit
+        rm -f .zcompdump .zshrc.zwc.old .zcompdump.zwc.old
+    fi
     exec zsh # reload shell, inheriting environment
 }
 
-if [[ "$host" == "spectre" ]] || [[ "$host" == *"banshee" ]]; then
-    # via https://github.com/whjvenyl/fasd
-#   if [ ! -s "$HOME/.fasd_init" ]; then
-#       # note that posix-alias defines aliases for the following:
-#       # a s d f sd sf z zz
-#       fasd --init \
-#         posix-alias \
-#         zsh-hook zsh-ccomp zsh-ccomp-install \
-#         zsh-wcomp zsh-wcomp-install \
-#         >| "$HOME/.fasd_init"
-#   fi
-#   source "$HOME/.fasd_init"
-#   alias v="f -e $EDITOR"
-fi
-
-baknow() { cp -ip "$1" "$1.$(now "$1").bak"; }
-
-ff() { find "${1:-.}" -type f | fzy }
-
-cutv() {
-    local nel="${1?missing length parameter}"
-    local f="${2?missing file parameter}"
-    local g="cut."${${f##*/}%.*}".mp4"
-    ffmpeg -hide_banner -i "$f" 2>&1 \
-      | grep Duration \
-      | grep -Eo '[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9]' | awk -F: '{print (($1*60+$2)*60+$3)+$4/100}' | read len
-    [[ "$len" -gt 0 ]] || return 1
-    echo "$g"
-    ffmpeg \
-      -hide_banner -loglevel warning -stats -stats_period 5 \
-      -i "$f" -ss "$(((nel<len)*(len-nel)))" \
-      -sn -dn -metadata = -map_chapters -1 -movflags +faststart \
-      -ar 44100 -acodec libfdk_aac -b:a 256k -cutoff 20000 -af alimiter=level_in=2.5:level_out=0.9 \
-      -maxrate 7680k -bufsize 9600k -vcodec libx264 -preset medium -crf 21 -vf scale=1280:720 \
-      -threads 2 -y "$g" || return 1
-    # -maxrate 7680k -bufsize 9600k -vcodec libx264 -preset medium -crf 21 -vf scale=1280:720
-    # -maxrate 9600k -bufsize 12000k -vcodec libx264 -preset medium -crf 22 -vf scale=1280:720
-}
+#zmodload zsh/complist               # need all this
+#autoload -Uz compinit && compinit   # just for compdef
+#compdef wat=which
 
 # generated by dircolors with https://github.com/isene/LS_COLORS
 function {
@@ -270,4 +255,6 @@ for x in ai arith curl fc find ftp hex history let locate rsync scp sftp tw twit
     alias $x="noglob $x"
 unset x
 
-source ~/.prezto-compinit
+echo START.COMPINIT
+. ~/.prezto-compinit
+echo FINISH.COMPINIT

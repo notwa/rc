@@ -1,5 +1,11 @@
 #!/usr/bin/env zsh
-dbusiest | read -r c d
-[ -z $c ] && return 1
-<<<"$c $d"
-cd $d
+# YES_ZSH
+
+cdbusiest() {
+    dbusiest | read -r c d
+    [ -z $c ] && return 1
+    <<<"$c $d"
+    cd $d
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || cdbusiest "$@"

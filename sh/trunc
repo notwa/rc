@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
-COLUMNS=${COLUMNS:-$(tput cols)}
-awk -vL=${1:-$COLUMNS} '{e=length>L?"…":"";print substr($0,0,L-(e?1:0)) e}'
+# YES_ZSH
+
+trunc() {
+    COLUMNS=${COLUMNS:-$(tput cols)}
+    awk -vL=${1:-$COLUMNS} '{e=length>L?"…":"";print substr($0,0,L-(e?1:0)) e}'
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || trunc "$@"

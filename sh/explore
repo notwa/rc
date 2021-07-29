@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+explore() {
+    [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    explorer "$(cygpath -w "${1:-.}")"
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || explore "$@"

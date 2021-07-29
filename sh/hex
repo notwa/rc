@@ -1,2 +1,8 @@
 #!/usr/bin/env zsh
-printf "%08X\n" "$(($@))"
+# YES_ZSH
+
+hex() {
+    printf "%08X\n" "$(($@))"
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || hex "$@"

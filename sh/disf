@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 # disassembles a function given its symbolic name.
+# YES_ZSH
+
 function disf() {
+    [ $# -le 2 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     local exe="${1:?first argument should be an unstripped executable}"
     local symbol="${2:?second argument should be a function name}"
     # note: relies on GNU sed: https://unix.stackexchange.com/a/78485
     objdump -d -C --no-show-raw-insn "$exe" | sed '/<'"$symbol"'>:/,/^$/!d;//d'
 }
-disf "$@"
+
+[ "${SOURCING:-0}" -gt 0 ] || disf "$@"

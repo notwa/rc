@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # remote file access (http file-sharing shenanigans)
+# YES_ZSH
 
 _REMOTE_DOMAIN="https://eaguru.guru"
 _REMOTE_DIR="t"
@@ -36,3 +37,5 @@ eadelete() {
 alias eamv=eamove
 alias eacp=eacopy
 alias earm=eadelete
+
+# TODO: write "ea" interface with subcommands for each action, invoke it.

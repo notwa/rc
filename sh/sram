@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# YES_ZSH
 
 sram() {
     die() {
@@ -47,4 +48,4 @@ sram() {
     revend "$out"
 }
 
-sram "$@"
+[ "${SOURCING:-0}" -gt 0 ] || sram "$@"

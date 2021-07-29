@@ -1,26 +1,25 @@
 #!/usr/bin/env zsh
-# for zsh, bash, and ash.
+# for zsh, bash, and dash.
 [ -n "$ZSH_VERSION" -o -n "$BASH" ] && FANCY=1 || FANCY=0
 
 # {{{1 utilities
 
-ify() {
-    [ $# -ge 2 ] || return
-    local ex=$1
-    shift
-    $@ | $ex
-}
+#SOURCING=$((SOURCING+1))
+#. ~/sh/ify
+#. ~/sh/has
+#. ~/sh/maybesudo
+#SOURCING=$((SOURCING-1))
 
-if which sudo >/dev/null 2>/dev/null; then
+# not available in busybox:
+#exports() {
+#    printenv | cut -d= -f1
+#}
+
+if has sudo >/dev/null; then
     alias maybesudo=sudo
 else
-    maybesudo() {
-        while [[ "$1" == -* ]]; do shift; done
-        "$@"
-    }
+    alias maybesudo="maybesudo_ " # allows aliases within the alias
 fi
-
-has() { which "$1" >&/dev/null && which "$1"; }
 
 ADDPATH() {
     new="$(readlink -f "$1")"
@@ -54,9 +53,11 @@ umask 022
 
 ADDPATH "$HOME/opt/local/bin"
 [ -n "$MSYSTEM" ] && ADDPATH "/c/path"
-[ -n "$MSYSTEM" ] && ADDPATH "/c/path/mpv-shinchiro" 2>/dev/null
 [ -n "$MSYSTEM" ] && ADDPATH "/c/Program Files/7-Zip-Zstandard" 2>/dev/null
 [ -n "$MSYSTEM" ] && ADDPATH ~win"/Desktop/_programs/rakudo-2021.06/bin" 2>/dev/null
+
+# for dash:
+export ENV="$HOME/.-shrc"
 
 # https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/1380084
 export SSH_AUTH_SOCK=0
@@ -130,13 +131,11 @@ alias gb='git --no-pager branch'
 # being specific {{{2
 
 [ -e "$HOME/python3" ] && alias py="~/python3" || alias py="python3"
-alias maybesudo="maybesudo " # allows aliases within the alias
 alias pip="maybesudo -H pip3"
 alias revend='objcopy -I binary -O binary --reverse-bytes=4'
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r'
 alias aligntabs="column -t -s$'\t'"
-alias pippy="maybesudo py -m pip install --upgrade --upgrade-strategy only-if-needed"
 alias crawla='ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl'
 alias crawlz='ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
 
@@ -165,78 +164,13 @@ alias join2='paste -d" " - -'
 alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r'"'"
 alias picky='{ pacman -Qgq base base-devel xorg xorg-drivers xfce4 | double; pacman -Qeq; } | sort | uniq -u'
 alias unused='{ pacman -Qtq; pacman -Qeq | double; } | sort | uniq -u'
-alias makepkgf='maybesudo -u $USER makepkg -Af --skipchecksums --skippgpcheck'
+alias makepkgf='makepkg -Af --skipchecksums --skippgpcheck'
 alias rakef='rake && gem build *.gemspec && gem install *.gem'
-
-trash() {
-    dd status=none if=/dev/random bs=1 count="$1"
-}
-
-explore() {
-    explorer "$(cygpath -w "${1:-.}")"
-}
-
-pegg() {
-    pippy "https://github.com/$1/$2/tarball/${3:-master}#egg=$2"
-}
-
-bak() {
-    if [ -s "$1.bak" ]; then
-        bak "$1.bak" || return $?
-    fi
-    cp -p "$1" "$1.bak"
-}
-
-baks() {  # backup, timestamped
-    local fp="$1"
-    local now="$(date -u '+%y-%m-%d_%H-%M-%S')"
-    local bak="$fp.$now.bak"
-    if [ -s "$bak" ]; then
-        printf "how in the hell? %s already exists\n" "$bak" >&2
-        return 1
-    fi
-    cp -p "$fp" "$bak"
-}
 
 eashare() {
     # NOTE: this only works on MSYS2 for now.
     # NOTE: i lied, this doesn't work anymore. idk
     local dest="${1##*/}"
     eaput "$1" || return 1
-    printf "%s" "$_REMOTE_DOMAIN/$_REMOTE_DIR/$dest" > /dev/clipboard
+    printf "%s" "$_REMOTE_DOMAIN/$_REMOTE_DIR/$dest" >> /dev/clipboard
 }
-
-echo2() {
-    local IFS=" "
-    printf "%s\n" "$*" >&2
-}
-
-note() {
-    local IFS=" "
-    printf "\033[1m%s\033[0m\n" "$*" >&2
-}
-
-stfu() {
-    local ret=0
-    "$@" > .stdout 2> .stderr || ret=$?
-    if test "$ret" -ne 0; then
-        printf "command failed with exit status %s:\n" "$ret" >&2
-        echo2 "$@"
-        echo2
-        note '$ tail -n 20 .stdout'
-        tail -n 20 .stdout >&2
-        echo2
-        note '$ tail -n 20 .stderr'
-        tail -n 20 .stderr >&2
-        return "$ret"
-    fi
-}
-
-# sources {{{1
-
-if [ $FANCY -eq 1 ]; then
-    source ~/.arrays
-    source ~/.streamcrap
-fi
-
-. ~/.ea

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# YES_ZSH
+
+wipe() {
+    # TODO: rename because wipe(1) already exists.
+    [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    clear
+    clear # twice because mintty is weird
+    echo "\033[30m\033[107m"
+    printf "*%.0s" {1..$COLUMNS}
+    echo "\033[0m\n"
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || wipe "$@"

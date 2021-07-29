@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+#SOURCING=$((SOURCING+1))
+#. ~/sh/note # FIXME: don't do this?
+#SOURCING=$((SOURCING-1))
+
+baks() { # backup, timestamped
+    local ret=0
+    for fp; do
+        local now="$(date -u '+%y-%m-%d_%H-%M-%S')"
+        local bak="$fp.$now.bak"
+        if [ -s "$bak" ]; then
+            note "how in the hell?" "$bak" "already exists"
+            ret=1
+        fi
+        cp -p "$fp" "$bak" || ret=1
+    done
+    return $ret
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || baks "$@"

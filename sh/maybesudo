@@ -1,0 +1,131 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+maybesudo_() {
+    local name
+    local env_cleanup=0
+    while getopts ':AEHKPSVbhiklnsvC:U:g:p:r:t:u:' name; do
+        case $name in
+        K|V|k)
+        # K: sure kill
+        # V: version
+        # k: kill
+            note 'maybesudo: your system does not have sudo installed!'
+            return 0
+            ;;
+
+        h)
+            printf "%s\n" 'maybesudo - a dumb utility for systems without sudo'
+            printf "\n"
+            printf "%s\n" 'usage: maybesudo -h | -V'
+            printf "%s\n" 'usage: maybesudo [command]'
+            return 0
+            ;;
+
+        A|E|H|P|S|n|p)
+        # A: askpass
+        # E: preserve environment
+        # H: HOME
+        # P: preserve group vector
+        # S: stdin (password)
+        # n: non-interactive
+        # p: prompt
+            note 'maybesudo: option has no effect --' "'$name'"
+            ;;
+
+        C|U|b|g|i|l|r|s|t)
+        # C: close from (fd)
+        # U: other user (in conjunction wiht -l)
+        # b: background
+        # g: group
+        # i: simulate initial login (TODO)
+        # l: list
+        # r: role (SELinux)
+        # s: shell (TODO)
+        # t: type (SELinux)
+            note "maybesudo: unsupported option --" "'$name'"
+            return 1
+            ;;
+
+        u)      # user
+            if [ -z "$USER" -o "$OPTARG" != "$USER" ]; then
+                note 'maybesudo: users other than yourself are unsupported!'
+                return 1
+            fi
+            env_cleanup=1
+            ;;
+
+        :)
+            note 'maybesudo: option requires an argument --' "'$OPTARG'"
+            return 1
+            ;;
+        default)
+            note 'maybesudo: invalid option --' "'$OPTARG'"
+            return 1
+            ;;
+        esac
+    done
+
+    shift $((OPTIND-1))
+
+    if [ "$env_cleanup" = 1 ]; then
+        (
+            # portably listing exported variable names is virtually impossible
+            # without the blessing of null-terminated strings, so don't even try.
+            # just export the bare minimum that a fairly stock sudo would.
+
+            # $path is special in zsh, so call it pathy instead.
+            local colors display dpkg_colors home hostname krb5ccname \
+                ls_colors pathy ps1 ps2 user username xauthority xauthorization
+
+            [ -z "$COLORS" ] || colors=COLORS="$COLORS"
+            [ -z "$DISPLAY" ] || display=DISPLAY="$DISPLAY"
+            [ -z "$DPKG_COLORS" ] || dpkg_colors=DPKG_COLORS="$DPKG_COLORS"
+            [ -z "$HOME" ] || home=HOME="$HOME"
+            [ -z "$HOSTNAME" ] || hostname=HOSTNAME="$HOSTNAME"
+            [ -z "$KRB5CCNAME" ] || krb5ccname=KRB5CCNAME="$KRB5CCNAME"
+            [ -z "$LS_COLORS" ] || ls_colors=LS_COLORS="$LS_COLORS"
+            [ -z "$PATH" ] || pathy=PATH="$PATH"
+            [ -z "$PS1" ] || ps1=PS1="$PS1"
+            [ -z "$PS2" ] || ps2=PS2="$PS2"
+            [ -z "$USER" ] || user=USER="$USER"
+            [ -z "$USERNAME" ] || username=USERNAME="$USERNAME"
+            [ -z "$XAUTHORITY" ] || xauthority=XAUTHORITY="$XAUTHORITY"
+            [ -z "$XAUTHORIZATION" ] || xauthorization=XAUTHORIZATION="$XAUTHORIZATION"
+
+            # don't eat up precious command space with dumb colors.
+            # xargs --show-limits says:
+            # Maximum length of command we could actually use: 5080
+            [ "${#ls_colors}" -le 1024 ] || ls_colors==
+
+            # sudo also sets SUDO_COMMAND, SUDO_GID, SUDO_UID, SUDO_USER, and MAIL,
+            # but who needs those?
+
+            # env seems to treat arguments of "=" as a no-op across GNU and busybox.
+            env -i \
+                "${colors:-=}" \
+                "${display:-=}" \
+                "${dpkg_colors:-=}" \
+                "${home:-=}" \
+                "${hostname:-=}" \
+                "${krb5ccname:-=}" \
+                "${ls_colors:-=}" \
+                "${pathy:-=}" \
+                "${ps1:-=}" \
+                "${ps2:-=}" \
+                "${user:-=}" \
+                "${username:-=}" \
+                "${xauthority:-=}" \
+                "${xauthorization:-=}" \
+                "$@"
+        )
+
+    else
+        # run it in a subshell so it won't affect ours.
+        ( "$@"; )
+    fi
+
+    # don't put any code here or you'll clobber $?.
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || maybesudo_ "$@"

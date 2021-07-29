@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# YES_ZSH
+
 is_empty() {
     while read -r; do
         [ ! -d "$REPLY" ] && [ -s "$REPLY" ] && return 1
@@ -7,4 +9,5 @@ is_empty() {
     # this needs to skip empty files as well.
     return 0
 }
-is_empty "$@"
+
+[ "${SOURCING:-0}" -gt 0 ] || is_empty "$@"

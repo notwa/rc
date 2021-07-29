@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+note() {
+    local IFS=" "
+    printf "\033[1m%s\033[0m\n" "$*" >&2
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || note "$@"

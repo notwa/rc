@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+#. ~/sh/echo2 # FIXME
+#. ~/sh/note # FIXME
+
+stfu() {
+    # NOTE: don't use stfu for handling sensitive data or commands!
+    #       use it for 7zip.
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
+    local temp="${TMP:-/tmp}/stfu"
+
+    local time="$(date -u '+%s')"
+    [ $? -eq 0 ] || { printf "%s\n" "$0: failed to get current time" >&2; return 1; }
+
+    mkdir -p "$temp" || { printf "%s\n" "$0: failed to create temp directory" >&2; return 1; }
+
+    while [ -e "$temp/out_$time" -o -e "$temp/err_$time" ]; do time=$((time+1)); done
+    local out="$temp/out_$time"
+    local err="$temp/err_$time"
+
+    #local out="$(mktemp -t -p "$temp" out_XXXXXX)"
+    #[ $? -eq 0 ] || { printf "%s\n" "$0: failed to create temp file" >&2; return 1; }
+    #local err="$(mktemp -t -p "$temp" err_XXXXXX)"
+    #[ $? -eq 0 ] || { printf "%s\n" "$0: failed to create temp file" >&2; return 1; }
+
+    local ret=0
+    "$@" > "$out" 2> "$err" || ret=$?
+    if [ $ret -ne 0 ]; then
+        printf "command failed with exit status %s:\n" $ret >&2
+        echo2 "$@"
+        echo2
+        note '$ tail -n 20' "$out"
+        tail -n 20 "$out" >&2
+        echo2
+        note '$ tail -n 20' "$err"
+        tail -n 20 "$err" >&2
+    fi
+    return $ret
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || stfu "$@"

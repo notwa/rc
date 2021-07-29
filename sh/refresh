@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+refresh() {
+    hash -r
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || refresh "$@"

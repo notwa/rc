@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # rs: record screen
+# YES_ZSH
 
 rs() {
     set -e
@@ -67,4 +68,4 @@ rs() {
         $o_overwrite "$extless.enc.$ext"
 }
 
-rs "$@"
+[ "${SOURCING:-0}" -gt 0 ] || rs "$@"

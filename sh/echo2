@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+echo2() {
+    local IFS=" "
+    printf "%s\n" "$*" >&2
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || echo2 "$@"

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # http://aur.sh with massive feature creep
+# YES_ZSH
+
 aur() {
     trap 'exit 1' SIGINT SIGTERM
 
@@ -124,4 +126,5 @@ aur() {
 
     [ "$fail" -eq 0 ] && return 0 || return 1
 }
-aur "$@"
+
+[ "${SOURCING:-0}" -gt 0 ] || aur "$@"

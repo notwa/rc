@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-[ -n "${ZSH_VERSION:-}" ] \
-&& read -sk '?Press any key to continue
-' || read -n1 -u 1 -sp 'Press any key to continue
-'
+# YES_ZSH
+
+pause() {
+    [ -n "${ZSH_VERSION:-}" ] \
+    && read -sk '?Press any key to continue
+    ' || read -n1 -u 1 -sp 'Press any key to continue
+    '
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || pause "$@"

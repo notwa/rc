@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# YES_ZSH
 
 # I'll just leave this here...
 __setup_clang_ubuntu() {
@@ -298,4 +299,4 @@ compile() {
     $compiler $std ${final_flags[@]} $file ${libraries[@]} ${warnings[@]} $outflag $out
 }
 
-compile "$@"
+[ "${SOURCING:-0}" -gt 0 ] || compile "$@"

@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# YES_ZSH
 
 screeny() {
     local user="${1:?needs arg for user name}"
@@ -14,4 +15,4 @@ screeny() {
     return 0
 }
 
-screeny "$@"
+[ "${SOURCING:-0}" -gt 0 ] || screeny "$@"

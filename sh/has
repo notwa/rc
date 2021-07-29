@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# YES_ZSH
+
+has() {
+    if [ -n "$ZSH_VERSION" ]; then
+        whence -p "$1"
+    else
+        which "$1" >/dev/null 2>&1 && which "$1"
+    fi
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || has "$@"

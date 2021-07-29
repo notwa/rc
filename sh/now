@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
+# YES_ZSH
 
 now() {
-    local dt=
+    [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    local dt
     local fmt='+%F_%T_%N'
     if [ -z "$1" ]; then
         dt="$(date -u "$fmt")"
@@ -11,12 +13,12 @@ now() {
         dt="$(date -u -d "$1" "$fmt")"
     fi
 
-    local F= T= N=
+    local F T N
     F=${dt%%_*}
     T=${dt#*_}
     T=${T%_*}
     N=${dt##*_}
-    local H= M= S=
+    local H M S
     H=${T%%:*}
     M=${T#*:}
     M=${M%:*}
@@ -36,4 +38,4 @@ now() {
     echo "${F}_${ms}"
 }
 
-now "$@"
+[ "${SOURCING:-0}" -gt 0 ] || now "$@"

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
+# YES_ZSH
+
 if [ -n "${ZSH_VERSION:-}" ]; then
     confirm() {
+        [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
         read -q '?Continue? [y/N] '
         ret=$?
         echo
@@ -9,10 +12,12 @@ if [ -n "${ZSH_VERSION:-}" ]; then
 else
     confirm() {
         # specify stdin (1) to avoid taking input from pipes
+        [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
         read -n1 -u 1 -p "Continue? [y/N] " c
         echo
         [ "$c" != 'y' ] && [ "$c" != 'Y' ] && return 1
         return 0
     }
 fi
-confirm
+
+[ "${SOURCING:-0}" -gt 0 ] || confirm "$@"

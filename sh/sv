@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
-awk "-F${1:- }" '
-NF>1{f[$1]=substr($0,length($1)+1+length(FS))}END{for(k in f)print k FS f[k]}
-'
+# YES_ZSH
+
+sv() {
+    awk "-F${1:- }" '
+    NF>1{f[$1]=substr($0,length($1)+1+length(FS))}END{for(k in f)print k FS f[k]}
+    '
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || sv "$@"

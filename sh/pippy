@@ -1,0 +1,12 @@
+#!/usr/bin/env
+# YES_ZSH
+
+#. ~/sh/maybesudo
+#. ~/sh/has
+
+pippy() {
+    local sudo="$(has sudo || echo maybesudo_)"
+    "$sudo" py -m pip install --upgrade --upgrade-strategy only-if-needed "$@"
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || pippy "$@"

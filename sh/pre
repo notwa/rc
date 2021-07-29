@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
-if [ -n "${ZSH_VERSION:-}" ]; then
-    ${CC:-gcc} -dM -E - $=CPPFLAGS $=CFLAGS $=LDFLAGS < /dev/null
-else
-    ${CC:-gcc} -dM -E - $CPPFLAGS $CFLAGS $LDFLAGS < /dev/null
-fi
+# YES_ZSH
+
+pre() {
+    if [ -n "${ZSH_VERSION:-}" ]; then
+        ${CC:-gcc} -dM -E - $=CPPFLAGS $=CFLAGS $=LDFLAGS < /dev/null
+    else
+        ${CC:-gcc} -dM -E - $CPPFLAGS $CFLAGS $LDFLAGS < /dev/null
+    fi
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || pre "$@"

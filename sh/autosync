@@ -1,4 +1,6 @@
 #!/usr/bin/env zsh
+# YES_ZSH
+
 autosync() {
     target="$1"
     shift
@@ -8,4 +10,5 @@ autosync() {
         \rsync -rtl "$@" "$target"
     done
 }
-autosync "$@"
+
+[ "${SOURCING:-0}" -gt 0 ] || autosync "$@"

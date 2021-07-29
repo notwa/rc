@@ -38,24 +38,27 @@ ret_fail="$_title${Cfail}$_line1\n${Cfail}$_line2"
 
 PROMPT_COMMAND='[ $? = 0 ] && PS1=${ret_succ} || PS1=${ret_fail}'
 
-SOURCING=$((SOURCING+1))
-. ~/sh/echo2
-. ~/sh/note
-. ~/sh/stfu
-. ~/sh/has
-SOURCING=$((SOURCING-1))
-
 echo START.-shrc
 . ~/.-shrc
 echo FINISH.-shrc
 
-SOURCING=$((SOURCING+1))
-. ~/sh/arrays
-. ~/sh/streamcrap
-SOURCING=$((SOURCING-1))
+alias pl="printf '%s\n'"
 
 # this doesn't work for all scripts at the moment, but
 ADDPATH "$HOME/sh"
+
+echo START.MERGING
+(
+    cd ~/sh \
+      && printf "%s\n" '#!/usr/bin/env false' '[ "${SOURCING:-0}" -gt 0 ] || exit 1' '' \
+      | cat - $(grep -lF 'YES_BASH' $(find ~/sh -maxdepth 1 -type f)) \
+      > ~/.sh-bash
+)
+echo FINISH.MERGING
+
+SOURCING=$((SOURCING+1))
+. ~/.sh-bash
+SOURCING=$((SOURCING-1))
 
 # TODO: respect initctl like in .zshrc.
 alias reload='cd; exec bash'

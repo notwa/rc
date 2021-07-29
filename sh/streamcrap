@@ -1,6 +1,7 @@
 #!/usr/bin/env false
 # awful things
 # YES_ZSH
+# YES_BASH
 
 MPV_STREAM_FLAGS="--quiet --autofit=1280x720 --loop-playlist=no --no-resume-playback --no-sub \
 --no-initial-audio-sync --mc=0.02 --autosync=30"

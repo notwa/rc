@@ -4,11 +4,11 @@
 
 # {{{1 utilities
 
-#SOURCING=$((SOURCING+1))
-#. ~/sh/ify
-#. ~/sh/has
-#. ~/sh/maybesudo
-#SOURCING=$((SOURCING-1))
+if [ -z "$ZSH_VERSION" ]; then
+    has() { # hardcode this function from ~/sh/has for convenience
+        which "$1" >/dev/null 2>&1 && which "$1"
+    }
+fi
 
 # not available in busybox:
 #exports() {

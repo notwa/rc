@@ -1,10 +1,5 @@
 [ -e /etc/profile ] && emulate sh -c "source /etc/profile"
 
-# trace:
-# /etc/zsh/zshenv{.zwc,}
-# ~/.zshenv{.zwc,}
-# /etc/zsh/zshrc{.zwc,}
-
 HISTFILE=~/.histfile
 HISTSIZE=99999
 SAVEHIST=99999

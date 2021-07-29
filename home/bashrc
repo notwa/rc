@@ -1,14 +1,5 @@
 [ -z "$PS1" ] && return
 
-# trace: (on ubuntu)
-# /etc/bash.bashrc
-#=> /etc/debian_chroot
-#=> /.sudo_as_admin_successful
-#=> /.hushlogin
-#=> /usr/lib/command-not-found
-#=> /usr/share/command-not-found/command-not-found
-# ~/.bashrc
-
 if [ "$TERM" = rxvt-unicode-256color ]; then
     export TERM=xterm-256color
 fi

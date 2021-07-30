@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env false
 # for zsh, bash, and dash.
 [ -n "$ZSH_VERSION" -o -n "$BASH" ] && FANCY=1 || FANCY=0
 

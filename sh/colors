@@ -4,6 +4,7 @@
 # NO_DASH
 
 colors() {
+    [ $# -eq 0 ] || { printf "%s\n" "$0: does not take arguments" >&2; return 1; }
     printf "\e[%dm$(printf " \e[%dm mV \e[40m" {4,10}{0..7})\e[0m\n" {3,9}{0..7}
 }
 

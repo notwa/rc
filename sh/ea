@@ -8,36 +8,36 @@ _REMOTE_DOMAIN="https://eaguru.guru"
 _REMOTE_DIR="t"
 _REMOTE_AUTH="auth"
 
-eahead() {
+eahead() { ### @-
     curl -s -I "$_REMOTE_DOMAIN/$_REMOTE_DIR/$1"
 }
 
-eaget() {
+eaget() { ### @-
     curl -R "$_REMOTE_DOMAIN/$_REMOTE_DIR/$1" -o "${2:-$1}"
 }
 
-eaput() {
+eaput() { ### @-
     curl -g -n -T "$1" "$_REMOTE_DOMAIN/$_REMOTE_AUTH/"
 }
 
-eamove() {
+eamove() { ### @-
     local src="$_REMOTE_DOMAIN/$_REMOTE_AUTH/$1"
     local dst="$_REMOTE_DOMAIN/$_REMOTE_DIR/$2"
     curl -n -X MOVE -H "Destination: $dst" "$src"
 }
 
-eacopy() {
+eacopy() { ### @-
     local src="$_REMOTE_DOMAIN/$_REMOTE_AUTH/$1"
     local dst="$_REMOTE_DOMAIN/$_REMOTE_DIR/$2"
     curl -n -X COPY -H "Destination: $dst" "$src"
 }
 
-eadelete() {
+eadelete() { ### @-
     curl -n -X DELETE "$_REMOTE_DOMAIN/$_REMOTE_AUTH/$1"
 }
 
-alias eamv=eamove
-alias eacp=eacopy
-alias earm=eadelete
+alias eamv=eamove ### @-
+alias eacp=eacopy ### @-
+alias earm=eadelete ### @-
 
 # TODO: write "ea" interface with subcommands for each action, invoke it.

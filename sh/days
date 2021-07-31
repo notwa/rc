@@ -4,7 +4,7 @@
 # YES_DASH
 
 days() { ### @-
-    ### compute days since a given date.
+    ### compute the number of days since a given date.
     ###
     ### ```
     ### $ days 'January 1 1970'

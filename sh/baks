@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+# backup, timestamped
 # YES_ZSH
 # YES_BASH
 # YES_DASH

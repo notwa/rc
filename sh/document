@@ -9,18 +9,19 @@
 #       https://github.com/dylanaraps/pure-sh-bible
 
 document2() {
+    local c=0 # line count
+    local d="#""#""#" # marker/delimiter, written this way to avoid self-matching
+    # NOTE: since the marker corresponds to a <h3> in markdown, it's used there too.
+    local e="${f#sh/}" # function name to expect
     local f="$1" # file
-    local c=0 # (line) count
-    local e="${f#sh/}" # expecting (function name matches filename)
-    [ "$f" != "$e" ] || e=""
-    [ "$e" != document ] || return 0 # doesn't play nicely yet, so skip it
+    [ "$f" != "$e" ] || e="" # only expect function names for stuff in sh/
     while IFS= read -r line; do
         : $((c+=1))
         # we only care about lines with our docstring marker in them:
-        case "$line" in *'###'*) :;; *) continue;; esac
+        case "$line" in *"$d"*) :;; *) continue;; esac
 
         # split by the marker:
-        local code="${line%%###*}" docs="${line#*###}"
+        local code="${line%%$d*}" docs="${line#*$d}"
         code="${code#${code%%[! ]*}}" # ltrim
         docs="${docs#${docs%%[! ]*}}" # ltrim
 
@@ -68,11 +69,11 @@ document2() {
             [ "$f" != "${f#sh/}" ] && url="/sh/${f#sh/}#L$c" || url="/home/${f#.}#L$c"
             if [ "$n" = "$e" ]; then
                 # function name matches the filename.
-                printf '\n### [%s](%s)\n\n' "$n" "$url" >> rc/README.md~ || return 5
+                printf '\n%s [%s](%s)\n\n' "$d" "$n" "$url" >> rc/README.md~ || return 5
             else
                 # this file contains some other function, so include the filename.
-                printf '\n### [%s](%s)\n\n' "$n (${f#.})" "$url" >> rc/README.md~ || return 5
-                #printf '\n### %s\n\n* defined in [%s](%s)\n\n' "$n" "$f" "$url" >> rc/README.md~ || return 5
+                printf '\n%s [%s](%s)\n\n' "$d" "$n (${f#.})" "$url" >> rc/README.md~ || return 5
+                #printf '\n%s %s\n\n* defined in [%s](%s)\n\n' "%d" "$n" "$f" "$url" >> rc/README.md~ || return 5
             fi
         fi
 
@@ -122,6 +123,7 @@ document1() {
 
 document() { ### @-
     ### generate a markdown file out of docstrings in shell scripts.
+    ###
     ### **TODO:** describe. i have a rough outline written in my scrap file.
 
     document1 "$@"

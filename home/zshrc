@@ -68,28 +68,28 @@ function {
 
 local fuzzy=`has fzy || print`
 
-dirprev() { ### @ dirprev
+dirprev() { ### @-
     ### rotate and change to the previous directory in the directory stack
     ### without consuming the prompt.
     pushd -q +1
     zle reset-prompt
     precmd
 }
-dirnext() { ### @ dirnext
+dirnext() { ### @-
     ### rotate and change to the next directory in the directory stack
     ### without consuming the prompt.
     pushd -q -0
     zle reset-prompt
     precmd
 }
-dirup() { ### @ dirup
+dirup() { ### @-
     ### change to the parent directory of the current working directory
     ### without consuming the prompt.
     cd ..
     zle reset-prompt
     precmd
 }
-dirview() { ### @ dirview
+dirview() { ### @-
     ### use a fuzzy finder to select a recent directory in the directory stack
     ### and change to it without consuming the prompt.
     print
@@ -173,7 +173,7 @@ alias sc="~/sh/sc" # only runs in bash (for now), so be explicit with path
 alias pl="print -l" ### @ pl - print each argument on its own line.
 
 # needs the "function" keyword or else zsh complains:
-function tw() { ### @ tw
+function tw() { ### @-
     ### invoke `twitch` as a job with both stdout and stderr silenced.
     twitch "$@" OMFG STFU &
 }
@@ -217,7 +217,7 @@ function {
     PROMPT="%{$reset${s}%(?.${good}.${bad})${e}${s}97${e}%}%#%{$reset%} "
 }
 
-reload() { ### @ reload
+reload() { ### @-
     ### reload zsh by wiping temp files, recompiling rc files,
     ### and replacing the current process with a new zsh process.
     # initctl has a "reload" symlink, but i'm already too used to typing this.

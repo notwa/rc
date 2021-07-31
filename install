@@ -22,36 +22,44 @@ die() {
 }
 
 backup() {
+    : "${1:?missing arugment}"
     note "backing up $1"
     mkdir -p "${backup_dir:?backup_dir unset}/$(dirname "$1")"
-    [ -e "$backup_dir/$1" ] && die "backup already exists"
+    [ ! -e "$backup_dir/$1" ] || die "backup already exists"
     mv "$1" "$backup_dir/$1"
 }
 
 hardlink() {
+    : "${1:?missing arugment}"
+    : "${2:?missing arugment}"
     if [ -e "$1" ]; then
-        [ "$1" -ef "$2" ] && return
-        [ -h "$1" ] && note "removing symbolic link $1" && rm "$1"
+        [ ! "$1" -ef "$2" ] || return 0
+        if [ -h "$1" ]; then
+            note "removing symbolic link $1"
+            rm "$1" || die 'failed to remove symbolic link'
+        fi
         if [ -s "$1" ]; then
             backup "$1" || die "$1 already exists"
         fi
     fi
 
-    ln "$2" "$1" || die "couldn't hardlink $1"
+    ln "$2" "$1" || die "failed to hardlink $1"
 }
 
 softlink_nix() {
+    : "${1:?missing arugment}"
+    : "${2:?missing arugment}"
     if [ -e "$1" ]; then
         if [ -h "$1" ]; then
-            [ "$(readlink "$1")" = "$2" ] && return
+            [ "$(readlink "$1")" != "$2" ] || return 0
             note "removing symbolic link $1"
-            rm "$1"
+            rm "$1" || die 'failed to remove symbolic link'
         else
             die "$1 already exists and is not a symbolic link"
         fi
     fi
 
-    ln -s "$2" "$1" || die "couldn't symlink $1"
+    ln -s "$2" "$1" || die "failed to symlink $1"
 }
 
 list_files() {
@@ -62,11 +70,10 @@ list_files() {
 }
 
 softlink_pseudo() {
+    : "${1:?missing arugment}"
+    : "${2:?missing arugment}"
     [ -d "$2" ] || die "$1 is not a directory to softlink"
-
-    if [ ! -d "$1" ]; then
-        mkdir "$1" || die "couldn't mkdir $1"
-    fi
+    [ -d "$1" ] || mkdir "$1" || die "failed to mkdir $1"
 
     list_files "$2" | while read -r f; do
         local d1="$1/$f"
@@ -75,27 +82,27 @@ softlink_pseudo() {
         if [ -d "$d2" ]; then
             if [ "$d1" != ".vim/bundle" ]; then # buggy on Windows
                 [ "${VERBOSE:-0}" -lt 1 ] || warn $'\e[34m / \e[0m' "$d1 $d2"
-                softlink_pseudo "$d1" "$d2"
+                softlink_pseudo "$d1" "$d2" || exit $?
             fi
         elif [ -f "$d2" ]; then
             [ "${VERBOSE:-0}" -lt 1 ] || warn $'\e[34m * \e[0m' "$d1"
-            hardlink "$d1" "$d2"
+            hardlink "$d1" "$d2" || exit $?
         else
             die "i don't know how to pseudo-symlink $d2"
         fi
-
     done || exit $?
 }
 
 find_new_files() {
+    : "${1:?missing arugment}"
     list_files "$1" | while read -r f; do
         local d1="$1/$f"
         local d2="$2/$f"
-        [ "$d1" = ".vim/.netrwhist" ] && continue
-        [ "$d1" = ".vim/backup" ] && continue
-        [ "$d1" = ".vim/bundle" ] && continue
-        [ "$d1" = ".vim/swp" ] && continue
-        [ "$d1" = ".vim/undo" ] && continue
+        [ "$d1" != ".vim/.netrwhist" ] || continue
+        [ "$d1" != ".vim/backup" ] || continue
+        [ "$d1" != ".vim/bundle" ] || continue
+        [ "$d1" != ".vim/swp" ] || continue
+        [ "$d1" != ".vim/undo" ] || continue
         if [ -d "$d2" ]; then
             find_new_files "$d1" "$d2"
         elif [ ! "$d1" -ef "$d2" ]; then
@@ -140,7 +147,7 @@ done
 # ensure that .bashrc gets executed
 if [ ! -e .bash_profile ] || ! grep -qF .bashrc .bash_profile; then
     echo >> .bash_profile
-    echo '[ -f ~/.bashrc ] && . ~/.bashrc' >> .bash_profile
+    echo '[ ! -f ~/.bashrc ] || . ~/.bashrc' >> .bash_profile
 fi
 
 is_empty() {
@@ -157,7 +164,7 @@ is_empty() {
 for d in Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
     [ -d "$d" ] || continue
     if is_empty "$d"; then
-        rm -r "$d"
+        rm -r "$d" # doesn't really matter if it fails
     else
         note "not removing $d because it contains files"
     fi

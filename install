@@ -20,16 +20,6 @@ die() {
     exit 1
 }
 
-dotless() {
-    local f="$1" ind len
-    ind="$(expr index "$f" .)"
-    if [ "$ind" -gt 0 ]; then
-        REPLY="$(expr substr "$f" 2 "${#f}")"
-    else
-        REPLY="$1"
-    fi
-}
-
 backup() {
     note "backing up $1"
     mkdir -p "${backup_dir:?backup_dir unset}/$(dirname "$1")"
@@ -137,15 +127,11 @@ backup_dir="$rc/backup-$(date -u '+%s')"
 
 for f in .bashrc .zshrc .-shrc .prezto-compinit .ls_colors \
   .vimrc .inputrc .Xresources .screenrc .tmux.conf; do
-    dotless "$f"
-    r="$rc/home/$REPLY"
-    hardlink "$f" "$r"
+    hardlink "$f" "$rc/home/${f#.}"
 done
 
 for d in sh .vim .mpv; do
-    dotless "$d"
-    r="$rc/$REPLY"
-    softlink "$d" "$r"
+    softlink "$d" "$rc/${d#.}"
 done
 
 # ensure that .bashrc gets executed

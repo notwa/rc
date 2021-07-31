@@ -22,7 +22,7 @@ die() {
 }
 
 backup() {
-    : "${1:?missing arugment}"
+    : "${1:?missing argument}"
     note "backing up $1"
     mkdir -p "${backup_dir:?backup_dir unset}/$(dirname "$1")"
     [ ! -e "$backup_dir/$1" ] || die "backup already exists"
@@ -30,8 +30,8 @@ backup() {
 }
 
 hardlink() {
-    : "${1:?missing arugment}"
-    : "${2:?missing arugment}"
+    : "${1:?missing argument}"
+    : "${2:?missing argument}"
     if [ -e "$1" ]; then
         [ ! "$1" -ef "$2" ] || return 0
         if [ -h "$1" ]; then
@@ -47,8 +47,8 @@ hardlink() {
 }
 
 softlink_nix() {
-    : "${1:?missing arugment}"
-    : "${2:?missing arugment}"
+    : "${1:?missing argument}"
+    : "${2:?missing argument}"
     if [ -e "$1" ]; then
         if [ -h "$1" ]; then
             [ "$(readlink "$1")" != "$2" ] || return 0
@@ -70,8 +70,8 @@ list_files() {
 }
 
 softlink_pseudo() {
-    : "${1:?missing arugment}"
-    : "${2:?missing arugment}"
+    : "${1:?missing argument}"
+    : "${2:?missing argument}"
     [ -d "$2" ] || die "$1 is not a directory to softlink"
     [ -d "$1" ] || mkdir "$1" || die "failed to mkdir $1"
 
@@ -94,7 +94,7 @@ softlink_pseudo() {
 }
 
 find_new_files() {
-    : "${1:?missing arugment}"
+    : "${1:?missing argument}"
     list_files "$1" | while read -r f; do
         local d1="$1/$f"
         local d2="$2/$f"

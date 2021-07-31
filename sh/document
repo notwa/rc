@@ -119,7 +119,7 @@ document1() {
     document2 .-shrc || return $?
 }
 
-document() { ### @ document
+document() { ### @-
     ### generate a markdown file out of docstrings in shell scripts.
     ### **TODO:** describe. i have a rough outline written in my scrap file.
 

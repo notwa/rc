@@ -4,6 +4,7 @@
 
 VERBOSE=1
 
+NAME="$0"
 [ -n "$ZSH_VERSION" -o -n "$BASH" ] || VERBOSE=0 # no colors for you
 
 note() {
@@ -16,7 +17,7 @@ warn() {
 }
 
 die() {
-    warn "$@"
+    warn "$NAME:" "$@"
     exit 1
 }
 
@@ -118,12 +119,14 @@ softlink() {
     fi
 }
 
-which readlink >/dev/null || exit 1 # sanity check
+which readlink >/dev/null || die 'failed sanity check (check your $PATH)'
 
-rc="$(readlink -f "$(dirname "$0")" )"
-cd "$HOME" || exit 1
+rc="$(readlink -f "$(dirname "$NAME")" )"
+[ -d "$rc" ] || die 'failed to determine rc directory'
+cd "${HOME:?HOME variable empty or unset}" || die 'failed to change directory'
 
 backup_dir="$rc/backup-$(date -u '+%s')"
+[ ! -d "$backup_dir" ] || die 'backup directory already exists'
 
 for f in .bashrc .zshrc .-shrc .prezto-compinit .ls_colors \
   .vimrc .inputrc .Xresources .screenrc .tmux.conf; do

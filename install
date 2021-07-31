@@ -95,6 +95,7 @@ softlink_pseudo() {
 
 find_new_files() {
     : "${1:?missing argument}"
+    : "${2:?missing argument}"
     list_files "$1" | while read -r f; do
         local d1="$1/$f"
         local d2="$2/$f"

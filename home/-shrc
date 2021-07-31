@@ -1,5 +1,5 @@
 #!/usr/bin/env false
-# for zsh, bash, and dash.
+# for ash, dash, bash, and zsh.
 [ -n "$ZSH_VERSION" -o -n "$BASH" ] && FANCY=1 || FANCY=0
 
 # {{{1 utilities
@@ -132,6 +132,7 @@ alias gb='git --no-pager branch' ### @- display the current git branch.
 # being specific {{{2
 
 [ -e "$HOME/python3" ] && alias py="~/python3" || alias py="python3"
+alias ash="busybox ash"
 alias pip="maybesudo -H pip3"
 alias revend='objcopy -I binary -O binary --reverse-bytes=4' ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # this script is compatible with following shells:
-# dash, bash, zsh
+# ash, dash, bash, zsh
 
 VERBOSE="${VERBOSE:-1}"
 

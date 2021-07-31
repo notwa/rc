@@ -2,6 +2,7 @@
 # NO_ZSH
 # NO_BASH
 # YES_DASH
+# YES_ASH
 # okay, so this probably does run with zsh and bash, but why bother?
 
 # NOTE: a lot of boilerplate code is pulled from the pure sh bible:
@@ -15,13 +16,13 @@ document2() {
     [ "$e" != document ] || return 0 # doesn't play nicely yet, so skip it
     while IFS= read -r line; do
         : $((c+=1))
-        # we only care about lines with our docstring marker on them:
+        # we only care about lines with our docstring marker in them:
         case "$line" in *'###'*) :;; *) continue;; esac
 
         # split by the marker:
         local code="${line%%###*}" docs="${line#*###}"
-        code="${code#${code%%[![:space:]]*}}" # ltrim
-        docs="${docs#${docs%%[![:space:]]*}}" # ltrim
+        code="${code#${code%%[! ]*}}" # ltrim
+        docs="${docs#${docs%%[! ]*}}" # ltrim
 
         local s=' ' n='' # using a space to signify unset
 
@@ -36,7 +37,7 @@ document2() {
                 n="${s%%[!a-zA-Z0-9_-]*}" # substr that word
             done
             s="${docs#@-}" # substr the stuff after the hyphen
-            s="${s#${s%%[![:space:]]*}}" # ltrim
+            s="${s#${s%%[! ]*}}" # ltrim
             ;;
 
         @*-*)
@@ -45,19 +46,19 @@ document2() {
             s="${docs#*-}"
 
             n="${n#@}" # substr the stuff after the at
-            n="${n#${n%%[![:space:]]*}}" # ltrim
-            n="${n%${n##*[![:space:]]}}" # rtrim
+            n="${n#${n%%[! ]*}}" # ltrim
+            n="${n%${n##*[! ]}}" # rtrim
 
-            s="${s#${s%%[![:space:]]*}}" # ltrim
+            s="${s#${s%%[! ]*}}" # ltrim
             ;;
 
         @*)
-            n="${docs#@}"
-            n="${n#${n%%[![:space:]]*}}" # ltrim
+            n="${docs#@}" # substr the stuff after the at
+            n="${n#${n%%[! ]*}}" # ltrim
             ;;
 
         *)
-            s="${docs#${docs%%[![:space:]]*}}" # ltrim
+            s="${docs#${docs%%[! ]*}}" # ltrim
             ;;
         esac
 

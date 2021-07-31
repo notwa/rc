@@ -3,7 +3,7 @@
 # NO_BASH
 # NO_DASH
 
-cutv() {
+cutv() { ### @-
     [ $# -le 4 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     local nel="${1?missing length parameter}"
     local f="${2?missing file parameter}"

@@ -3,7 +3,7 @@
 # YES_BASH
 # YES_DASH
 
-ff() {
+ff() { ### @-
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     find "${1:-.}" -type f | fzy
 }

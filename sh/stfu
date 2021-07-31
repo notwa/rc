@@ -4,7 +4,7 @@
 #. ~/sh/echo2 # FIXME
 #. ~/sh/note # FIXME
 
-stfu() {
+stfu() { ### @-
     # NOTE: don't use stfu for handling sensitive data or commands!
     #       use it for 7zip.
     [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }

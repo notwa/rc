@@ -3,7 +3,7 @@
 # YES_BASH
 # YES_DASH
 
-similar() {
+similar() { ### @-
     [ $# -eq 0 ] || { printf "%s\n" "$0: does not take arguments" >&2; return 1; }
     awk '
     {

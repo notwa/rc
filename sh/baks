@@ -7,7 +7,7 @@
 #. ~/sh/note # FIXME: don't do this?
 : $((SOURCING-=1))
 
-baks() { # backup, timestamped
+baks() { ### @-
     local ret=0
     for fp; do
         local now="$(date -u '+%y-%m-%d_%H-%M-%S')"

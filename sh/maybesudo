@@ -3,7 +3,7 @@
 # YES_BASH
 # YES_DASH
 
-maybesudo_() {
+maybesudo_() { ### @-
     local name
     local env_cleanup=0
     while getopts :AEHKPSVbhiklnsvC:U:g:p:r:t:u: name; do

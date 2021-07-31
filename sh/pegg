@@ -5,7 +5,7 @@
 
 # TODO: source pippy here? this may affect dash compatibility.
 
-pegg() {
+pegg() { ### @-
     [ $# -ge 2 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     pippy "https://github.com/$1/$2/tarball/${3:-master}#egg=$2"
 }

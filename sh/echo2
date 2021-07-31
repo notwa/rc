@@ -3,8 +3,8 @@
 # YES_BASH
 # YES_DASH
 
-echo2() {
-    local IFS=" "
+echo2() { ### @-
+    local IFS=' '
     printf "%s\n" "$*" >&2
 }
 

@@ -5,7 +5,7 @@
 
 # wat - a better and recursive which/whence
 # via: https://leahneukirchen.org/dotfiles/tools.html
-wat() {
+wat() { ### @-
     ( # constrain unalias
     for cmd; do
         if (( $+aliases[$cmd] )); then

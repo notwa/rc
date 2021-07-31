@@ -3,7 +3,7 @@
 # YES_BASH
 # YES_DASH
 
-explore() {
+explore() { ### @-
     [ -n "$MSYSTEM" ] || { printf "%s\n" "$0: only for MSYS2" >&2; return 1; }
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     explorer "$(cygpath -w "${1:-.}")"

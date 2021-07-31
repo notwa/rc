@@ -4,7 +4,7 @@
 #. ~/sh/maybesudo
 #. ~/sh/has
 
-pippy() {
+pippy() { ### @-
     local sudo="$(has sudo || echo maybesudo_)"
     "$sudo" py -m pip install --upgrade --upgrade-strategy only-if-needed "$@"
 }

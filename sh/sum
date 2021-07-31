@@ -3,7 +3,7 @@
 # YES_BASH
 # YES_DASH
 
-sum() {
+sum() { ### @-
     local sum=0
     for i; do
         : $((sum+=i))

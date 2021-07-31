@@ -2,7 +2,7 @@
 # this script is compatible with following shells:
 # dash, bash, zsh
 
-VERBOSE=1
+VERBOSE="${VERBOSE:-1}"
 
 NAME="$0"
 [ -n "$ZSH_VERSION" -o -n "$BASH" ] || VERBOSE=0 # no colors for you
@@ -81,11 +81,11 @@ softlink_pseudo() {
 
         if [ -d "$d2" ]; then
             if [ "$d1" != ".vim/bundle" ]; then # buggy on Windows
-                [ "${VERBOSE:-0}" -lt 1 ] || warn $'\e[34m / \e[0m' "$d1 $d2"
+                [ "$VERBOSE" -lt 1 ] || warn $'\e[34m / \e[0m' "$d1 $d2"
                 softlink_pseudo "$d1" "$d2" || exit $?
             fi
         elif [ -f "$d2" ]; then
-            [ "${VERBOSE:-0}" -lt 1 ] || warn $'\e[34m * \e[0m' "$d1"
+            [ "$VERBOSE" -lt 1 ] || warn $'\e[34m * \e[0m' "$d1"
             hardlink "$d1" "$d2" || exit $?
         else
             die "i don't know how to pseudo-symlink $d2"
@@ -106,7 +106,7 @@ find_new_files() {
         if [ -d "$d2" ]; then
             find_new_files "$d1" "$d2"
         elif [ ! "$d1" -ef "$d2" ]; then
-            if [ "${VERBOSE:-0}" -lt 1 ]; then
+            if [ "$VERBOSE" -lt 1 ]; then
                 warn " + $d1"
             else
                 #warn "new destination file. consider manually moving it:"

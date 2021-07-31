@@ -5,7 +5,18 @@
 
 # dash compatibility is not fully tested, but it's probably okay.
 
-now() {
+now() { ### @-
+    ### print a date-time (UTC) in a sortable format.
+    ### this takes a date or file as an argument,
+    ### else it defaults to the current time.
+    ### ```
+    ### $ now
+    ### 2019-05-27_35083906
+    ### $ now ~/sh/monitor
+    ### 2017-03-14_82387259
+    ### $ now '@1234567890'
+    ### 2009-02-13_84690000
+    ### ```
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     local dt
     local fmt='+%F_%T_%N'

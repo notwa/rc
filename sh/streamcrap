@@ -54,7 +54,8 @@ fi
 
 unset _nn
 
-mpv_watch() {
+mpv_watch() { ### @-
+    ### watch something in mpv with a bunch of extra audio filtering crap.
     pushd ~/play >/dev/null
     local url="$1"; shift
     mpv \
@@ -65,7 +66,8 @@ mpv_watch() {
     popd >/dev/null
 }
 
-mpv_stream() {
+mpv_stream() { ### @-
+    ### watch a stream in mpv with a bunch of extra audio filtering crap.
     pushd ~/play >/dev/null
     local url="$1"; shift
     if [ -n "$ZSH_VERSION" ]; then
@@ -77,12 +79,18 @@ mpv_stream() {
     popd >/dev/null
 }
 
-twitch() {
+twitch() { ### @-
+    ### watch a twitch stream in mpv with a bunch of extra audio filtering crap.
     local user="$1"; shift
     mpv_stream "http://twitch.tv/$user" "$@"
 }
 
-yt() {
+yt() { ### @-
+    ### watch a youtube video in mpv with a bunch of extra audio filtering crap.
+    ### this can be given a full URL or just a video ID.
+    ### remaining arguments are passed to mpv.
+    ###
+    ### there exist several variants for more specific use cases.
     local vid="$1"; shift
     if [[ ! -e "$vid" && "$(expr substr "$vid" 1 4)" != "http" ]]; then
         vid="ytdl://$vid"
@@ -90,26 +98,31 @@ yt() {
     mpv_watch "$vid" "$@"
 }
 
-ytg() {
+ytg() { ### @-
+    ### watch a youtube video. like `yt`, but with a preference for different formats.
     local vid="$1"; shift
     yt "$vid" --ytdl-format=22/95/300/best "$@"
 }
 
-ytll() {
+ytll() { ### @-
+    ### watch a stream on youtube in mpv, etcetera etcetera.
+    ### this is the low latency version that does not support seeking.
     youtube-dl -q -f best "$1" -o - | mpv_stream - --no-ytdl
 }
 
-ytgll() {
+ytgll() { ### @-
+    ### watch a stream on youtube in mpv. like `ytll`, but with a preference for different formats.
     youtube-dl -q -f 22/95/300/best "$1" -o - | mpv_stream - --no-ytdl
 }
 
-ai() {
-    # hai domo
+ai() { # @-
+    # hai domo!
     yt "$@" --slang=en --sub-font='Tekton Pro' --sub-bold=yes \
       --sub-font-size=60 --sub-border-color='#DD6180' --sub-margin-y=52
 }
 
-asmr() {
+asmr() { # @-
+    # for your aural pleasure.
     _M_PROCESS="acompressor=threshold=0.001:ratio=1.33:attack=900:release=6000:makeup=6:knee=8:mix=0.9,alimiter" \
       yt "$@" --volume=90 --ytdl-format=251/300/best
 }

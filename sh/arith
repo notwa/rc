@@ -6,7 +6,8 @@
 # though technically compatible with other shells,
 # extra functionality is through zsh's extended arithmetic functions.
 
-arith() {
+arith() { ### @-
+    ### perform arithmetic using the shell and display the result.
 #   <<<"$(($@))"
     printf "%s\n" "$(($@))"
 }

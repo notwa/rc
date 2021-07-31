@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
 # YES_ZSH
 
-monitor() {
+monitor() { ### @-
+    ### this is `watch` loosely reimplemented as a shell script.
     local bottom=0 strip=0 interval=2 opt=
     while getopts 'fsn:h' opt; do
         case $opt in

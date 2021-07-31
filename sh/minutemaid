@@ -1,11 +1,17 @@
 #!/usr/bin/env dash
-# crontab usage:
-#* * * * * minutemaid 9 ~/work/do_my_bidding # runs every nine minutes
 # YES_ZSH
 # YES_BASH
 # YES_DASH
 
-minutemaid() {
+minutemaid() { ### @-
+    ### return 0 if the current minute is divisible by a number.
+    ### note that a minute is relative to the seconds since the epoch, not the minute of the hour.
+    ###
+    ### ```
+    ### # crontab usage:
+    ### * * * * * minutemaid 9 ~/work/do_my_bidding # runs every nine minutes
+    ### ```
+
     local offset=0 name
     while getopts 'o:h' name; do
         case $name in

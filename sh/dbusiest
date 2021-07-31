@@ -3,7 +3,8 @@
 # NO_BASH
 # NO_DASH
 
-dbusiest() {
+dbusiest() { ### @-
+    ### display the directory with the most files in it, counted recursively.
     [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     local c d
     for d in *(FDN); do

@@ -64,13 +64,15 @@ document2() {
             if [ "$n" = "$e" ]; then
                 printf '\n### [%s](%s)\n\n' "$n" "$url" >> rc/README.md~ || return 5
             else
-                printf '\n### [%s](%s)\n\n' "$n.${f#.}" "$url" >> rc/README.md~ || return 5
+                printf '\n### [%s](%s)\n\n' "$n (${f#.})" "$url" >> rc/README.md~ || return 5
                 #printf '\n### %s\n\n* defined in [%s](%s)\n\n' "$n" "$f" "$url" >> rc/README.md~ || return 5
             fi
         fi
 
         if [ "$s" != ' ' ]; then
-            printf '%s\n' "$s" >> rc/README.md~ || return 5
+            if [ -z "$n" -o -n "$s" ]; then
+                printf '%s\n' "$s" >> rc/README.md~ || return 5
+            fi
         fi
     done < "$f" || return 4
 }

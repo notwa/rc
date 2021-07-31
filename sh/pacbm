@@ -3,7 +3,14 @@
 # YES_BASH
 # YES_DASH
 
-pacbm() {
+pacbm() { ### @-
+    ### list installed pacman packages by their filesize, and the sum, ascending. requires `expac`.
+    ###
+    ### ```
+    ### $ pacbm | head -n -1 | tail -2
+    ###   204.78M clang
+    ###   235.44M linux-firmware
+    ### ```
     expac -s '%m %n' | awk '
     {t+=$1;printf("%8.2fM %s\n",$1/(1024*1024),$2)}
     END{printf("%8.2fM\n",t/(1024*1024))}

@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
 # YES_ZSH
 
-screeny() {
+screeny() { ### @-
+    ### i don't use this anymore~
     local user="${1:?needs arg for user name}"
     shift
     home="/home/$user"

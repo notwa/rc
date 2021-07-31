@@ -3,7 +3,9 @@
 # YES_BASH
 # YES_DASH
 
-tpad() {
+tpad() { ### @-
+    ### add a 1px transparent border around an image to prevent twitter from mangling it into a jpg.
+    ### sadly, this trick doesn't work anymore.
     for f; do
         gm convert -bordercolor "#000000FF" -border 1x1 "$f" "${f%.png}.tt.png"
     done

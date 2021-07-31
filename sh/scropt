@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 # YES_ZSH
 
-: $((SOURCING+=1))
+#: $((SOURCING+=1))
 #. ~/sh/now # FIXME: don't do this?
-: $((SOURCING-=1))
+#: $((SOURCING-=1))
 
-scropt() {
+scropt() { ### @-
+    ### run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
+    ###
+    ### `$ ~/sh/sc $(~/sh/scropt -s -d0.5)`
     local now=$(now)
     [ $? -eq 0 ] || return $?
     local fn="$HOME/play/$now.png"

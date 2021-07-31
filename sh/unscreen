@@ -3,7 +3,8 @@
 # NO_BASH
 # NO_DASH
 
-unscreen() {
+unscreen() { ### @-
+    ### i don't use this anymore~
     local pids="$(screen -ls | fgrep "$1" | cut -d. -f1)"
     for pid in $=pids; do
         local ppid="$(ps h --ppid "$pid" -o pid)"

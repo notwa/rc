@@ -5,7 +5,7 @@
 # {{{1 utilities
 
 if [ -z "$ZSH_VERSION" ]; then
-    has() { # hardcode this function from ~/sh/has for convenience
+    has() { ### @- hardcoded here for convenience.
         which "$1" >/dev/null 2>&1 && which "$1"
     }
 fi
@@ -21,7 +21,8 @@ else
     alias maybesudo="maybesudo_ " # allows aliases within the alias
 fi
 
-ADDPATH() {
+ADDPATH() { ### @ ADDPATH
+    ### append a directory to `$PATH` if it isn't already present.
     new="$(readlink -f "$1")"
     if [ ! -d "$new" ]; then
         echo -E "ADDPATH: path doesn't exist: $1" >&2
@@ -109,38 +110,38 @@ alias lr="lr -G"
 
 export LESS='-SRQ'
 alias db="dropbox_uploader"
-alias fils="du -bahd1"
-alias lsa="ls -A --group-directories-first"
-alias perlu='perl -Mopen=locale -Mutf8'
-alias rgn="rg --no-ignore"
-alias cms="cryptominisat5 --verb 0"
-alias curls="curl -sS"
+alias fils="du -bahd1" ### @- (GNU du) display human-friendly filesizes for the files in a directory.
+alias lsa="ls -A --group-directories-first" ### @- (GNU ls) list files with directories and dotfiles ordered first.
+alias perlu='perl -Mopen=locale -Mutf8' ### @- invoke perl expecting files with UTF-8 encoding.
+alias rgn="rg --no-ignore" ### @- invoke ripgrep without respecting `.gitignore` files.
+alias cms="cryptominisat5 --verb 0" ### @- invoke cryptominisat5 with less noise.
+alias curls="curl -sS" ### @- invoke curl with less noise.
 
 # git {{{2
 
-alias get="git clone --single-branch --depth 1"
-alias gs='git status' # rip ghostscript
-alias gd='git diff -U2'
-alias gds='git --no-pager diff --stat'
-alias gl='git log --oneline'
-alias glo='git log --graph --decorate --pretty=oneline --abbrev-commit --all'
-alias g1='git log --pretty=oneline --abbrev-commit --color=always | head -1'
-alias gr='git remote -v'
-alias gb='git --no-pager branch'
+alias get="git clone --single-branch --depth 1" ### @- retrieve the most recent files from the default branch of a git repository, and not much else.
+alias gs='git status' ### @- invoke git's status subcommand.
+alias gd='git diff -U2' ### @- invoke git's diff subcommand with fewer lines of context.
+alias gds='git --no-pager diff --stat' ### @- display difference stats from git.
+alias gl='git log --oneline' ### @- invoke git's log subcommand with a single line per commit.
+alias glo='git log --graph --decorate --pretty=oneline --abbrev-commit --all' ### @- navigate git's commit tree succinctly.
+alias g1='git log --pretty=oneline --abbrev-commit --color=always | head -1' ### @- display the most recent git commit.
+alias gr='git remote -v' ### @- display remote git repositories verbosely.
+alias gb='git --no-pager branch' ### @- display the current git branch.
 
 # being specific {{{2
 
 [ -e "$HOME/python3" ] && alias py="~/python3" || alias py="python3"
 alias pip="maybesudo -H pip3"
-alias revend='objcopy -I binary -O binary --reverse-bytes=4'
+alias revend='objcopy -I binary -O binary --reverse-bytes=4' ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
-alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r'
-alias aligntabs="column -t -s$'\t'"
-alias crawla='ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl'
-alias crawlz='ssh crawl@crawl.develz.org -i ~/.ssh/crawl'
+alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r' ### @- invoke rsync suitably for creating virtually indistinguishable copies of files.
+alias aligntabs="column -t -s$'\t'" ### @- align tab-delimited fields in stdin.
+alias crawla='ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl' ### @- play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
+alias crawlz='ssh crawl@crawl.develz.org -i ~/.ssh/crawl' ### @- play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
 alias ll="lol" # workaround for a strange issue with bash
-lol() {
+lol() { ### @ ll - list files verbosely, fancily, ordered, but not recursively.
     { lr -1lshGG -o tev -t 'name~~".*"||type==d' "$@" \
      && lr -1lshGG -o tev -t 'name!~~".*"&&type!=d' "$@" \
      || ls -lAX --group-directories-first --color=force "$@"; } | less
@@ -148,28 +149,31 @@ lol() {
 
 # providing extra functionality {{{2
 
-alias diff="git diff --color=auto --no-ext-diff --no-index --no-prefix"
-alias gc="git column --mode=dense --padding=2"
-alias counts='find . | wc -l'
-alias exts="find -type f | grep -o '\\.[^/.]*$' | sort | uniq -c | sort -n"
-alias nocom='grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)"'
-alias sortip="sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n"
-alias jrep='grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+"'
-alias bomb='uconv -f utf-8 -t utf-8 --add-signature'
-alias cleanse='tr -cd "\11\12\15\40-\176"'
-alias rot13='tr "A-Za-z0-9" "N-ZA-Mn-za-m5-90-4"'
-alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\'
-alias double='awk "{print;print}"'
-alias join2='paste -d" " - -'
-alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r'"'"
-alias picky='{ pacman -Qgq base base-devel xorg xorg-drivers xfce4 | double; pacman -Qeq; } | sort | uniq -u'
-alias unused='{ pacman -Qtq; pacman -Qeq | double; } | sort | uniq -u'
-alias makepkgf='makepkg -Af --skipchecksums --skippgpcheck'
-alias rakef='rake && gem build *.gemspec && gem install *.gem'
+alias diff="git diff --color=auto --no-ext-diff --no-index --no-prefix" ### @- use git's diff subcommand for general diffing.
+alias gc="git column --mode=dense --padding=2" ### @- columnize text by using git's column subcommand.
+alias counts='find . | wc -l' ### @- count files in the current directory, including files found recursively.
+alias exts="find -type f | grep -o '\\.[^/.]*$' | sort | uniq -c | sort -n" ### @- count and sort file extensions in the current directory, including files found recursively.
+alias nocom='grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)"' ### @- strip single-line C-like and shell-like comments.
+alias sortip="sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n" ### @- sort numerically by IPv4 segments.
+alias jrep='grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+"' ### @- extract strings comprised of basic ASCII or Japanese codepoints.
+alias bomb='uconv -f utf-8 -t utf-8 --add-signature' ### @- add a Byte-Order Mark to a file.
+alias cleanse='tr -cd "\11\12\15\40-\176"' ### @- strip unprintable and non-ASCII characters.
+alias rot13='tr "A-Za-z0-9" "N-ZA-Mn-za-m5-90-4"' ### @- rot13 with numbers rotated as well.
+alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\' ### @- join paragraphs into one line each.
+alias double='awk "{print;print}"' ### @- print every line twice. <br/> print every line twice.
+alias join2='paste -d" " - -' ### @- join every other line.
+alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r'"'" ### @- convert katakana codepoints to their equivalent hiragana.
+### useful for translating [debug text from ancient games.](https://tcrf.net/)
+alias picky='{ pacman -Qgq base base-devel xorg xorg-drivers xfce4 | double; pacman -Qeq; } | sort | uniq -u' ### @- TODO
+alias unused='{ pacman -Qtq; pacman -Qeq | double; } | sort | uniq -u' ### @- TODO
+alias makepkgf='makepkg -Af --skipchecksums --skippgpcheck' ### @- make the freakin' package!
+alias rakef='rake && gem build *.gemspec && gem install *.gem' ### @- make the freakin' gem!
 
-eashare() {
-    # NOTE: this only works on MSYS2 for now.
-    # NOTE: i lied, this doesn't work anymore. idk
+eashare() { ### @- upload a file and copy its URL to the clipboard.
+    ###
+    ### **NOTE:** this only works on MSYS2 for now.
+    ###
+    ### **NOTE:** i lied, this doesn't work at all.
     local dest="${1##*/}"
     eaput "$1" || return 1
     printf "%s" "$_REMOTE_DOMAIN/$_REMOTE_DIR/$dest" >> /dev/clipboard

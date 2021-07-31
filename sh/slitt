@@ -1,10 +1,11 @@
 #!/usr/bin/env dash
-# this version of slit uses tabs for input/output field separators.
 # YES_ZSH
 # YES_BASH
 # YES_DASH
 
-slitt() {
+slitt() { ### @-
+    ### view specific columns of text.
+    ### this version of `slit` uses tabs for its field separators.
     [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     #echo "$@" | awk '{for(i=1;i<NF;i++)printf"$%s,",$(i);print"$"$NF}'
     local fields="$(printf ',$%s' $@ | cut -b2-)"

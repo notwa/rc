@@ -6,7 +6,8 @@
 # though technically compatible with other shells,
 # extra functionality is through zsh's extended arithmetic functions.
 
-hex() {
+hex() { ### @-
+    ### perform arithmetic using the shell and display the result as an unsigned 32-bit integer in hexadecimal.
     printf "%08X\n" "$(($@))"
 }
 

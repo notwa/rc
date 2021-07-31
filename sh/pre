@@ -3,7 +3,10 @@
 # YES_BASH
 # YES_DASH
 
-pre() {
+pre() { ### @-
+    ### dump all the `#define`s that `$CC $CPPFLAGS $CFLAGS $LDFLAGS` would result in.
+    ###
+    ### **TODO:** restore examples.
     if [ -n "${ZSH_VERSION:-}" ]; then
         ${CC:-gcc} -dM -E - $=CPPFLAGS $=CFLAGS $=LDFLAGS < /dev/null
     else

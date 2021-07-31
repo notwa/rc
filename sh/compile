@@ -4,7 +4,7 @@
 # NO_DASH
 
 # I'll just leave this here...
-__setup_clang_ubuntu() {
+__setup_clang_ubuntu() { ### @-
     local site="http://apt.llvm.org"
     local name="$(lsb_release -c | cut -f2)"
     local version=10 # NOTE: no longer decimal-based
@@ -26,7 +26,20 @@ deb $site/$name/ llvm-toolchain-$name-$version main\n\
     echo update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-$version $priority
 }
 
-compile() {
+compile() { ### @-
+    ### compile single-file C and C++ programs, messily.
+    ###
+    ### supports gcc and clang on \*nix, and mingw64 gcc, msvc clang,
+    ### and regular msvc on Windows. tested on x86\_64 and on ARMv7 as well.
+    ### does not support MacOS, maybe someday…
+    ###
+    ### defaults to gnu11 and gnu++1z as C and C++ standards respectively.
+    ### defaults to clang, gcc, and msvc in that order.
+    ###
+    ### `compile` attempts to guess the most sane switches for any program, so that compilation may reduce to:
+    ###
+    ### **TODO:** restore examples.
+
     # FIXME: compile gcc portrend.c -lsdl
     # this causes mayhem!
 

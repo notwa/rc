@@ -3,7 +3,14 @@
 # YES_BASH
 # NO_DASH
 
-pause() {
+pause() { ### @-
+    ### pause — the companion script of `confirm`.
+    ###
+    ### ```
+    ### $ pause
+    ### Press any key to continue
+    ### $ 
+    ### ```
     [ -n "${ZSH_VERSION:-}" ] \
       && read -sk '?Press any key to continue
 '     || read -n1 -u 1 -sp 'Press any key to continue

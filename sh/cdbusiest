@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
 # YES_ZSH
 
-cdbusiest() {
+cdbusiest() { ### @-
+    ### cd to the directory with the most files in it, counted recursively.
     dbusiest | read -r c d
     [ -z $c ] && return 1
     printf "%s\n" "$c $d"

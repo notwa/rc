@@ -3,7 +3,14 @@
 # NO_BASH
 # NO_DASH
 
-e() {
+e() { ### @-
+    ### wrap around `$EDITOR` to run it as root if necessary.
+    ### this still needs some work to detect root-owned directories.
+    ###
+    ### ```
+    ### $ e /etc/sudoers
+    ### [sudo] password for notwa: 
+    ### ```
     local editor=(${=EDITOR})
     local running=0
 

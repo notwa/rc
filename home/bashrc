@@ -46,5 +46,4 @@ ADDPATH "$HOME/sh"
 . ~/.sh-bash
 : $((SOURCING-=1))
 
-# TODO: respect initctl like in .zshrc.
-alias reload='cd; exec bash'
+alias reload='cd; exec bash' ### @- **TODO:** respect initctl like in `.zshrc`.

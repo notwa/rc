@@ -3,8 +3,12 @@
 # YES_BASH
 # YES_DASH
 
-wipe() {
-    # TODO: rename because wipe(1) already exists.
+wipe() { ### @-
+    ### clear the screen and its scrollback, then print a high-contrast horizontal line.
+    ### using this, you'll know with absolute certainty that you're looking at the top of your history,
+    ### and that your terminal's scrollback didn't cap out and eat text.
+    ###
+    ### **TODO:** rename because wipe(1) already exists.
     [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     clear
     clear # twice because mintty is weird

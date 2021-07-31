@@ -3,7 +3,13 @@
 # YES_BASH
 # YES_DASH
 
-randir() {
+randir() { ### @-
+    ### display a random directory in the current working directory.
+    ###
+    ### ```
+    ### $ randir
+    ### ./sh
+    ### ```
     find -maxdepth 1 -type d \( -path '/root' -prune -o -print \) | tail -n+2 | shuf | head -n1
 }
 

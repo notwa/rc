@@ -6,7 +6,8 @@
 
 # TODO: actually test that this works with dash.
 
-function disf() {
+function disf() { ### @-
+    ### disassemble a single function from an unstripped executable, unreliably.
     [ $# -le 2 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     local exe="${1:?first argument should be an unstripped executable}"
     local symbol="${2:?second argument should be a function name}"

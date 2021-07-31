@@ -3,7 +3,16 @@
 # YES_BASH
 # YES_DASH
 
-ify() {
+ify() { ### @-
+    ### pipe one command through another, so you can still pass arguments to the former.
+    ###
+    ### this is mainly useful for aliases. 99% of the time you'll use this with `less`.
+    ###
+    ### ```
+    ### $ alias ll="ify less ls -ACX --group-directories-first --color=force"
+    ### $ ll /etc
+    ### ```
+
     [ $# -ge 2 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     local ex="$1"
     shift

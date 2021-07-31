@@ -3,7 +3,8 @@
 # YES_BASH
 # YES_DASH
 
-trunc() {
+trunc() { ### @-
+    ### truncate text to fit within your terminal using the unicode character `…`.
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     COLUMNS=${COLUMNS:-$(tput cols)}
     awk -vL=${1:-$COLUMNS} '{e=length>L?"…":"";print substr($0,0,L-(e?1:0)) e}'

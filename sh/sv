@@ -3,7 +3,17 @@
 # YES_BASH
 # YES_DASH
 
-sv() {
+sv() { ### @-
+    ### collect the lastmost value of every key.
+    ### the field separator can be given as its sole argument.
+    ###
+    ### ```
+    ### echo "this=that\nthem=those\nthis=cat" | sv =
+    ### this=cat
+    ### them=those
+    ### ```
+    ###
+    ### **TODO:** add multi-file grep example.
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     awk "-F${1:- }" '
     NF>1{f[$1]=substr($0,length($1)+1+length(FS))}END{for(k in f)print k FS f[k]}

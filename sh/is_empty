@@ -3,7 +3,8 @@
 # YES_BASH
 # NO_DASH
 
-is_empty() {
+is_empty() { ### @-
+    ### return 0 if the directory given by argument is empty.
     while read -r f; do
         [ ! -d "$f" ] && [ -s "$f" ] && return 1
     done < <(find ${1:-.})

@@ -14,39 +14,39 @@ cd && curl -L https://github.com/notwa/rc/archive/master.tar.gz | tar zx && mv r
 
 ## shell functions
 
-### [arith](/home/sh/arith#L9)
+### [arith](/sh/arith#L9)
 
 perform arithmetic using the shell and display the result.
 
-### [aur](/home/sh/aur#L7)
+### [aur](/sh/aur#L7)
 
 download, edit, make, and install packages from the
 [AUR.](https://aur.archlinux.org/)
 it's a little broken.
 
-### [autosync](/home/sh/autosync#L8)
+### [autosync](/sh/autosync#L8)
 
 combine `inotifywait` and `rsync`.
 this is sometimes nicer than `ssh`-ing into a server and running `vim` remotely.
 
-### [cdbusiest](/home/sh/cdbusiest#L4)
+### [cdbusiest](/sh/cdbusiest#L4)
 
 cd to the directory with the most files in it, counted recursively.
 
-### [colors](/home/sh/colors#L6)
+### [colors](/sh/colors#L6)
 
 print out all the foreground and background terminal color combinations.
 excluding boilerplate, this script is a mere a 76-characters long!
 
-### [compandy](/home/sh/compandy#L5)
+### [compandy](/sh/compandy#L5)
 
 generate compand arguments for ffmpeg audio filters.
 this is kinda pointless now that acompressor is wildly supported.
 
-### [__setup_clang_ubuntu (sh/compile)](/home/sh/compile#L7)
+### [__setup_clang_ubuntu (sh/compile)](/sh/compile#L7)
 
 
-### [compile](/home/sh/compile#L29)
+### [compile](/sh/compile#L29)
 
 compile single-file C and C++ programs, messily.
 
@@ -61,7 +61,7 @@ defaults to clang, gcc, and msvc in that order.
 
 **TODO:** restore examples.
 
-### [confirm](/home/sh/confirm#L6)
+### [confirm](/sh/confirm#L6)
 
 display a simple yes-or-no prompt and return 0-or-1 respectively.
 
@@ -74,7 +74,7 @@ Continue? [y/N] n
 nay
 ```
 
-### [days](/home/sh/days#L6)
+### [days](/sh/days#L6)
 
 compute days since a given date.
 
@@ -83,21 +83,21 @@ $ days 'January 1 1970'
 18838
 ```
 
-### [dbusiest](/home/sh/dbusiest#L6)
+### [dbusiest](/sh/dbusiest#L6)
 
 display the directory with the most files in it, counted recursively.
 
-### [dfu](/home/sh/dfu#L6)
+### [dfu](/sh/dfu#L6)
 
 pretty-print `df` in GiB.
 
 **TODO:** restore examples.
 
-### [disf](/home/sh/disf#L9)
+### [disf](/sh/disf#L9)
 
 disassemble a single function from an unstripped executable, unreliably.
 
-### [e](/home/sh/e#L6)
+### [e](/sh/e#L6)
 
 wrap around `$EDITOR` to run it as root if necessary.
 this still needs some work to detect root-owned directories.
@@ -107,17 +107,17 @@ $ e /etc/sudoers
 [sudo] password for notwa: 
 ```
 
-### [has](/home/sh/has#L6)
+### [has](/sh/has#L6)
 
 print the result of `which` if the program is found, else simply return 1.
 
 `export CC="$(has clang || has clang-3.8 || has gcc)"`
 
-### [hex](/home/sh/hex#L9)
+### [hex](/sh/hex#L9)
 
 perform arithmetic using the shell and display the result as an unsigned 32-bit integer in hexadecimal.
 
-### [ify](/home/sh/ify#L6)
+### [ify](/sh/ify#L6)
 
 pipe one command through another, so you can still pass arguments to the former.
 
@@ -128,15 +128,15 @@ $ alias ll="ify less ls -ACX --group-directories-first --color=force"
 $ ll /etc
 ```
 
-### [is_empty](/home/sh/is_empty#L6)
+### [is_empty](/sh/is_empty#L6)
 
 return 0 if the directory given by argument is empty.
 
-### [isup](/home/sh/isup#L8)
+### [isup](/sh/isup#L8)
 
 return 0 if a given website returns a 2xx HTTP code.
 
-### [minutemaid](/home/sh/minutemaid#L6)
+### [minutemaid](/sh/minutemaid#L6)
 
 return 0 if the current minute is divisible by a number.
 note that a minute is relative to the seconds since the epoch, not the minute of the hour.
@@ -146,15 +146,15 @@ note that a minute is relative to the seconds since the epoch, not the minute of
 * * * * * minutemaid 9 ~/work/do_my_bidding # runs every nine minutes
 ```
 
-### [monitor](/home/sh/monitor#L4)
+### [monitor](/sh/monitor#L4)
 
 this is `watch` loosely reimplemented as a shell script.
 
-### [noccom](/home/sh/noccom#L10)
+### [noccom](/sh/noccom#L10)
 
 strip C-like comments; both multi-line and single-line.
 
-### [now](/home/sh/now#L8)
+### [now](/sh/now#L8)
 
 print a date-time (UTC) in a sortable format.
 this takes a date or file as an argument,
@@ -168,7 +168,7 @@ $ now '@1234567890'
 2009-02-13_84690000
 ```
 
-### [pacbm](/home/sh/pacbm#L6)
+### [pacbm](/sh/pacbm#L6)
 
 list installed pacman packages by their filesize, and the sum, ascending. requires `expac`.
 
@@ -178,7 +178,7 @@ $ pacbm | head -n -1 | tail -2
 235.44M linux-firmware
 ```
 
-### [pause](/home/sh/pause#L6)
+### [pause](/sh/pause#L6)
 
 pause — the companion script of `confirm`.
 
@@ -188,13 +188,13 @@ Press any key to continue
 $ 
 ```
 
-### [pre](/home/sh/pre#L6)
+### [pre](/sh/pre#L6)
 
 dump all the `#define`s that `$CC $CPPFLAGS $CFLAGS $LDFLAGS` would result in.
 
 **TODO:** restore examples.
 
-### [randir](/home/sh/randir#L6)
+### [randir](/sh/randir#L6)
 
 display a random directory in the current working directory.
 
@@ -203,60 +203,60 @@ $ randir
 ./sh
 ```
 
-### [rs](/home/sh/rs#L4)
+### [rs](/sh/rs#L4)
 
 record screen. does not record audio.
 currently only works on Windows (gdigrab).
 i'm sure there's something equivalent for Linux.
 
-### [sc](/home/sh/sc#L40)
+### [sc](/sh/sc#L40)
 
 upload given files to a webserver and return a direct link for sharing them.
 you'll want to tweak this if you use it yourself.
 this contains some extra logic for screenshots created by `scropt`.
 
-### [scramble](/home/sh/scramble#L6)
+### [scramble](/sh/scramble#L6)
 
 scrambles text in a predictable way using regex.
 
 sacbremls ttex in a pdrceailtbe way unsig reegx.
 
-### [screeny](/home/sh/screeny#L4)
+### [screeny](/sh/screeny#L4)
 
 i don't use this anymore~
 
-### [scropt](/home/sh/scropt#L8)
+### [scropt](/sh/scropt#L8)
 
 run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
 
 `$ ~/sh/sc $(~/sh/scropt -s -d0.5)`
 
-### [slit](/home/sh/slit#L6)
+### [slit](/sh/slit#L6)
 
 view specific columns of text.
 
-### [slitt](/home/sh/slitt#L6)
+### [slitt](/sh/slitt#L6)
 
 view specific columns of text.
 this version of `slit` uses tabs for its field separators.
 
-### [sram](/home/sh/sram#L4)
+### [sram](/sh/sram#L4)
 
 convert between a couple saveram formats for N64 emulators.
 
-### [mpv_watch (sh/streamcrap)](/home/sh/streamcrap#L57)
+### [mpv_watch (sh/streamcrap)](/sh/streamcrap#L57)
 
 watch something in mpv with a bunch of extra audio filtering crap.
 
-### [mpv_stream (sh/streamcrap)](/home/sh/streamcrap#L69)
+### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L69)
 
 watch a stream in mpv with a bunch of extra audio filtering crap.
 
-### [twitch (sh/streamcrap)](/home/sh/streamcrap#L82)
+### [twitch (sh/streamcrap)](/sh/streamcrap#L82)
 
 watch a twitch stream in mpv with a bunch of extra audio filtering crap.
 
-### [yt (sh/streamcrap)](/home/sh/streamcrap#L88)
+### [yt (sh/streamcrap)](/sh/streamcrap#L88)
 
 watch a youtube video in mpv with a bunch of extra audio filtering crap.
 this can be given a full URL or just a video ID.
@@ -264,20 +264,20 @@ remaining arguments are passed to mpv.
 
 there exist several variants for more specific use cases.
 
-### [ytg (sh/streamcrap)](/home/sh/streamcrap#L101)
+### [ytg (sh/streamcrap)](/sh/streamcrap#L101)
 
 watch a youtube video. like `yt`, but with a preference for different formats.
 
-### [ytll (sh/streamcrap)](/home/sh/streamcrap#L107)
+### [ytll (sh/streamcrap)](/sh/streamcrap#L107)
 
 watch a stream on youtube in mpv, etcetera etcetera.
 this is the low latency version that does not support seeking.
 
-### [ytgll (sh/streamcrap)](/home/sh/streamcrap#L113)
+### [ytgll (sh/streamcrap)](/sh/streamcrap#L113)
 
 watch a stream on youtube in mpv. like `ytll`, but with a preference for different formats.
 
-### [sv](/home/sh/sv#L6)
+### [sv](/sh/sv#L6)
 
 collect the lastmost value of every key.
 the field separator can be given as its sole argument.
@@ -290,20 +290,20 @@ them=those
 
 **TODO:** add multi-file grep example.
 
-### [tpad](/home/sh/tpad#L6)
+### [tpad](/sh/tpad#L6)
 
 add a 1px transparent border around an image to prevent twitter from mangling it into a jpg.
 sadly, this trick doesn't work anymore.
 
-### [trunc](/home/sh/trunc#L6)
+### [trunc](/sh/trunc#L6)
 
 truncate text to fit within your terminal using the unicode character `…`.
 
-### [unscreen](/home/sh/unscreen#L6)
+### [unscreen](/sh/unscreen#L6)
 
 i don't use this anymore~
 
-### [wipe](/home/sh/wipe#L6)
+### [wipe](/sh/wipe#L6)
 
 clear the screen and its scrollback, then print a high-contrast horizontal line.
 using this, you'll know with absolute certainty that you're looking at the top of your history,

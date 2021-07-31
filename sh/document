@@ -60,7 +60,7 @@ document2() {
 
         if [ -n "$n" ]; then
             local url
-            [ "$url" != "${url#sh/}" ] && url="/sh/$f#L$c" || url="/home/${f#.}#L$c"
+            [ "$f" != "${f#sh/}" ] && url="/sh/${f#sh/}#L$c" || url="/home/${f#.}#L$c"
             if [ "$n" = "$e" ]; then
                 printf '\n### [%s](%s)\n\n' "$n" "$url" >> rc/README.md~ || return 5
             else

@@ -4,8 +4,11 @@
 # YES_DASH
 
 minutemaid() { ### @-
-    ### return 0 if the current minute is divisible by a number.
-    ### note that a minute is relative to the seconds since the epoch, not the minute of the hour.
+    ### return 0 and/or execute a command if the current minute
+    ### is divisible by a given number. note that a minute is
+    ### relative to the seconds since the epoch, not the minute of the hour.
+    ### this ensures that commands will run roughly every N minutes,
+    ### regardless of the minute hand on the clock.
     ###
     ### ```
     ### # crontab usage:

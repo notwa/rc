@@ -9,6 +9,7 @@
 arith() { ### @-
     ### perform arithmetic using the shell and display the result.
     ### see also [`hex`](#hex) and [`bin`](#bin).
+    ### this example requires zsh:
     ###
     ### ```
     ### % db=6

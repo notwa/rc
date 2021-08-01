@@ -6,6 +6,8 @@
 maybesudo_() { ### @-
     ### mimic certain features of `sudo` for systems without it installed.
     ### as it stands, this mostly just handles some environment variables.
+    ###
+    ### try this: `maybesudo_ -u "$USER" printenv`
     local name
     local env_cleanup=0
     while getopts :AEHKPSVbhiklnsvC:U:g:p:r:t:u: name; do

@@ -6,7 +6,9 @@
 has() { ### @-
     ### print the result of `which` if the program is found, else simply return 1.
     ###
-    ### `export CC="$(has clang || has clang-3.8 || has gcc)"`
+    ### ```
+    ### export CC="$(has clang || has clang-3.8 || has gcc)"
+    ### ```
     if [ -n "$ZSH_VERSION" ]; then
         whence -p "$1"
     else

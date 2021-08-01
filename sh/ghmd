@@ -12,6 +12,10 @@ ghmd() { ### @-
     ###
     ### this script utilizes the CSS provided at
     ### [sindresorhus/github-markdown-css.](https://github.com/sindresorhus/github-markdown-css)
+    ###
+    ### ```
+    ### ~/sh/ghmd < ~/rc/README.md > ~/rc/README.html
+    ### ```
     printf '%s' '<!DOCTYPE html><html><head><meta charset="utf-8"><link ' \
       'href="https://eaguru.guru/t/github-markdown.css" ' \
       'media="all" rel="stylesheet" type="text/css"/></head><body ' \

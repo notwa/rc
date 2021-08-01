@@ -5,7 +5,9 @@ monitor() { ### @-
     ### this is [watch(1)](https://www.man7.org/linux/man-pages/man1/watch.1.html)
     ### loosely reimplemented as a shell script.
     ###
-    ### `usage: monitor [-fs] [-n {period}] {command} [{args...}]`
+    ### ```
+    ### usage: monitor [-fs] [-n {period}] {command} [{args...}]
+    ### ```
     local bottom=0 strip=0 interval=2 opt=
     while getopts 'fsn:h' opt; do
         case $opt in

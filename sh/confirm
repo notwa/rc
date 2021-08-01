@@ -14,6 +14,18 @@
 ### Continue? [y/N] n
 ### nay
 ### ```
+###
+### a real world example:
+###
+### ```
+### % g1 && confirm && git commit -a --amend --no-edit
+### daf84e3 document a ton of stuff
+### Continue? [y/N] y
+### [master 92bdf76] document a ton of stuff
+###  Date: Sun Aug 1 09:27:25 2021 -0700
+###  20 files changed, 406 insertions(+), 29 deletions(-)
+### ```
+
 if [ -n "$ZSH_VERSION" ]; then
     confirm() {
         [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }

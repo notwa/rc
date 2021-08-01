@@ -14,6 +14,20 @@ cd && curl -L https://github.com/notwa/rc/archive/master.tar.gz | tar zx && mv r
 
 ## shell functions
 
+### [argc](/sh/argc#L7)
+
+```sh
+# usage:
+
+myfunc() {
+# use one of the following:
+argc -eq N "$0" "$@" || return
+argc -le N "$0" "$@" || return
+argc -ge N "$0" "$@" || return
+# where N is an integer between 0 and 9.
+}
+```
+
 ### [arith](/sh/arith#L9)
 
 perform arithmetic using the shell and display the result.
@@ -28,6 +42,18 @@ it's a little broken.
 
 combine `inotifywait` and `rsync`.
 this is sometimes nicer than `ssh`-ing into a server and running `vim` remotely.
+
+### [bak](/sh/bak#L6)
+
+
+### [baknow](/sh/baknow#L4)
+
+
+### [baks](/sh/baks#L11)
+
+
+### [bin](/sh/bin#L6)
+
 
 ### [cdbusiest](/sh/cdbusiest#L4)
 
@@ -74,9 +100,15 @@ Continue? [y/N] n
 nay
 ```
 
+### [countdiff](/sh/countdiff#L6)
+
+
+### [cutv](/sh/cutv#L6)
+
+
 ### [days](/sh/days#L6)
 
-compute days since a given date.
+compute the number of days since a given date.
 
 ```
 $ days 'January 1 1970'
@@ -97,6 +129,12 @@ pretty-print `df` in GiB.
 
 disassemble a single function from an unstripped executable, unreliably.
 
+### [document](/sh/document#L135)
+
+generate a markdown file out of docstrings in shell scripts.
+
+**TODO:** describe. i have a rough outline written in my scrap file.
+
 ### [e](/sh/e#L6)
 
 wrap around `$EDITOR` to run it as root if necessary.
@@ -106,6 +144,45 @@ this still needs some work to detect root-owned directories.
 $ e /etc/sudoers
 [sudo] password for notwa: 
 ```
+
+### [eahead (sh/ea)](/sh/ea#L11)
+
+
+### [eaget (sh/ea)](/sh/ea#L15)
+
+
+### [eaput (sh/ea)](/sh/ea#L19)
+
+
+### [eamove (sh/ea)](/sh/ea#L23)
+
+
+### [eacopy (sh/ea)](/sh/ea#L29)
+
+
+### [eadelete (sh/ea)](/sh/ea#L35)
+
+
+### [eamv (sh/ea)](/sh/ea#L39)
+
+
+### [eacp (sh/ea)](/sh/ea#L40)
+
+
+### [earm (sh/ea)](/sh/ea#L41)
+
+
+### [echo2](/sh/echo2#L6)
+
+
+### [explore](/sh/explore#L6)
+
+
+### [ff](/sh/ff#L6)
+
+
+### [ghmd](/sh/ghmd#L9)
+
 
 ### [has](/sh/has#L6)
 
@@ -136,6 +213,9 @@ return 0 if the directory given by argument is empty.
 
 return 0 if a given website returns a 2xx HTTP code.
 
+### [maybesudo_ (sh/maybesudo)](/sh/maybesudo#L6)
+
+
 ### [minutemaid](/sh/minutemaid#L6)
 
 return 0 if the current minute is divisible by a number.
@@ -153,6 +233,9 @@ this is `watch` loosely reimplemented as a shell script.
 ### [noccom](/sh/noccom#L10)
 
 strip C-like comments; both multi-line and single-line.
+
+### [note](/sh/note#L6)
+
 
 ### [now](/sh/now#L8)
 
@@ -188,11 +271,20 @@ Press any key to continue
 $ 
 ```
 
+### [pegg](/sh/pegg#L8)
+
+
+### [pippy](/sh/pippy#L7)
+
+
 ### [pre](/sh/pre#L6)
 
 dump all the `#define`s that `$CC $CPPFLAGS $CFLAGS $LDFLAGS` would result in.
 
 **TODO:** restore examples.
+
+### [psbm](/sh/psbm#L6)
+
 
 ### [randir](/sh/randir#L6)
 
@@ -202,6 +294,9 @@ display a random directory in the current working directory.
 $ randir
 ./sh
 ```
+
+### [refresh](/sh/refresh#L6)
+
 
 ### [rs](/sh/rs#L4)
 
@@ -231,6 +326,9 @@ run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
 
 `$ ~/sh/sc $(~/sh/scropt -s -d0.5)`
 
+### [similar](/sh/similar#L6)
+
+
 ### [slit](/sh/slit#L6)
 
 view specific columns of text.
@@ -244,19 +342,26 @@ this version of `slit` uses tabs for its field separators.
 
 convert between a couple saveram formats for N64 emulators.
 
-### [mpv_watch (sh/streamcrap)](/sh/streamcrap#L57)
+### [stfu](/sh/stfu#L7)
+
+
+### [mpvs (sh/streamcrap)](/sh/streamcrap#L6)
+
+invoke mpv with some extra flags suited for streamed sources.
+
+### [mpv_watch (sh/streamcrap)](/sh/streamcrap#L66)
 
 watch something in mpv with a bunch of extra audio filtering crap.
 
-### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L69)
+### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L78)
 
 watch a stream in mpv with a bunch of extra audio filtering crap.
 
-### [twitch (sh/streamcrap)](/sh/streamcrap#L82)
+### [twitch (sh/streamcrap)](/sh/streamcrap#L87)
 
 watch a twitch stream in mpv with a bunch of extra audio filtering crap.
 
-### [yt (sh/streamcrap)](/sh/streamcrap#L88)
+### [yt (sh/streamcrap)](/sh/streamcrap#L94)
 
 watch a youtube video in mpv with a bunch of extra audio filtering crap.
 this can be given a full URL or just a video ID.
@@ -264,18 +369,21 @@ remaining arguments are passed to mpv.
 
 there exist several variants for more specific use cases.
 
-### [ytg (sh/streamcrap)](/sh/streamcrap#L101)
+### [ytg (sh/streamcrap)](/sh/streamcrap#L106)
 
 watch a youtube video. like `yt`, but with a preference for different formats.
 
-### [ytll (sh/streamcrap)](/sh/streamcrap#L107)
+### [ytll (sh/streamcrap)](/sh/streamcrap#L113)
 
 watch a stream on youtube in mpv, etcetera etcetera.
 this is the low latency version that does not support seeking.
 
-### [ytgll (sh/streamcrap)](/sh/streamcrap#L113)
+### [ytgll (sh/streamcrap)](/sh/streamcrap#L120)
 
 watch a stream on youtube in mpv. like `ytll`, but with a preference for different formats.
+
+### [sum](/sh/sum#L6)
+
 
 ### [sv](/sh/sv#L6)
 
@@ -295,6 +403,9 @@ them=those
 add a 1px transparent border around an image to prevent twitter from mangling it into a jpg.
 sadly, this trick doesn't work anymore.
 
+### [trash](/sh/trash#L6)
+
+
 ### [trunc](/sh/trunc#L6)
 
 truncate text to fit within your terminal using the unicode character `…`.
@@ -302,6 +413,9 @@ truncate text to fit within your terminal using the unicode character `…`.
 ### [unscreen](/sh/unscreen#L6)
 
 i don't use this anymore~
+
+### [wat](/sh/wat#L8)
+
 
 ### [wipe](/sh/wipe#L6)
 
@@ -434,104 +548,104 @@ display remote git repositories verbosely.
 
 display the current git branch.
 
-### [revend (-shrc)](/home/-shrc#L136)
+### [revend (-shrc)](/home/-shrc#L137)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (-shrc)](/home/-shrc#L138)
+### [clone (-shrc)](/home/-shrc#L139)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (-shrc)](/home/-shrc#L139)
+### [aligntabs (-shrc)](/home/-shrc#L140)
 
 align tab-delimited fields in stdin.
 
-### [crawla (-shrc)](/home/-shrc#L140)
+### [crawla (-shrc)](/home/-shrc#L141)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (-shrc)](/home/-shrc#L141)
+### [crawlz (-shrc)](/home/-shrc#L142)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [ll (-shrc)](/home/-shrc#L144)
+### [ll (-shrc)](/home/-shrc#L145)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [diff (-shrc)](/home/-shrc#L152)
+### [diff (-shrc)](/home/-shrc#L153)
 
 use git's diff subcommand for general diffing.
 
-### [gc (-shrc)](/home/-shrc#L153)
+### [gc (-shrc)](/home/-shrc#L154)
 
 columnize text by using git's column subcommand.
 
-### [counts (-shrc)](/home/-shrc#L154)
+### [counts (-shrc)](/home/-shrc#L155)
 
 count files in the current directory, including files found recursively.
 
-### [exts (-shrc)](/home/-shrc#L155)
+### [exts (-shrc)](/home/-shrc#L156)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (-shrc)](/home/-shrc#L156)
+### [nocom (-shrc)](/home/-shrc#L157)
 
 strip single-line C-like and shell-like comments.
 
-### [sortip (-shrc)](/home/-shrc#L157)
+### [sortip (-shrc)](/home/-shrc#L158)
 
 sort numerically by IPv4 segments.
 
-### [jrep (-shrc)](/home/-shrc#L158)
+### [jrep (-shrc)](/home/-shrc#L159)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (-shrc)](/home/-shrc#L159)
+### [bomb (-shrc)](/home/-shrc#L160)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (-shrc)](/home/-shrc#L160)
+### [cleanse (-shrc)](/home/-shrc#L161)
 
 strip unprintable and non-ASCII characters.
 
-### [rot13 (-shrc)](/home/-shrc#L161)
+### [rot13 (-shrc)](/home/-shrc#L162)
 
 rot13 with numbers rotated as well.
 
-### [unwrap (-shrc)](/home/-shrc#L162)
+### [unwrap (-shrc)](/home/-shrc#L163)
 
 join paragraphs into one line each.
 
-### [double (-shrc)](/home/-shrc#L163)
+### [double (-shrc)](/home/-shrc#L164)
 
 print every line twice. <br/> print every line twice.
 
-### [join2 (-shrc)](/home/-shrc#L164)
+### [join2 (-shrc)](/home/-shrc#L165)
 
 join every other line.
 
-### [katagana (-shrc)](/home/-shrc#L165)
+### [katagana (-shrc)](/home/-shrc#L166)
 
 convert katakana codepoints to their equivalent hiragana.
 useful for translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (-shrc)](/home/-shrc#L167)
+### [picky (-shrc)](/home/-shrc#L168)
 
 TODO
 
-### [unused (-shrc)](/home/-shrc#L168)
+### [unused (-shrc)](/home/-shrc#L169)
 
 TODO
 
-### [makepkgf (-shrc)](/home/-shrc#L169)
+### [makepkgf (-shrc)](/home/-shrc#L170)
 
 make the freakin' package!
 
-### [rakef (-shrc)](/home/-shrc#L170)
+### [rakef (-shrc)](/home/-shrc#L171)
 
 make the freakin' gem!
 
-### [eashare (-shrc)](/home/-shrc#L172)
+### [eashare (-shrc)](/home/-shrc#L173)
 
 upload a file and copy its URL to the clipboard.
 

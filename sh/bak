@@ -8,21 +8,22 @@ bak() { ### @-
     ### this calls itself recursively to avoid clobbering existing backups.
     ###
     ### ```
-    ### % touch -d '2001-12-25 16:30:00' butts
-    ### % bak butts
-    ### % touch butts
-    ### % bak butts
-    ### % ls -l
+    ### $ touch -d '2001-12-25 16:30:00' butts
+    ### $ bak butts
+    ### $ touch butts
+    ### $ bak butts
+    ### $ ls -l
     ### total 0
-    ### -rw-r--r-- 1 notwa None 0 Aug  1 07:56 butts
-    ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.bak
+    ### -rw-r--r-- 1 notwa None 0 Aug  1 08:02 butts
+    ### -rw-r--r-- 1 notwa None 0 Aug  1 08:02 butts.bak
     ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.bak.bak
     ### ```
     [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     local ret=0
+    local f
     for f; do
         if [ -e "$f.bak" ]; then
-            bak "$f.bak" || ret=1
+            bak "$f.bak" || { ret=1; continue; }
         fi
         cp -p "$f" "$f.bak" || ret=1
     done

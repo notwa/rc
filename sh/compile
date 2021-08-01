@@ -58,8 +58,6 @@ compile() { ### @-
     ###
     ### `compile` attempts to guess the most sane switches for any program, so that compilation may reduce to:
     ###
-    ### **TODO:** restore examples.
-    ###
     ### ```sh
     ### # debug build
     ### compile rd.c

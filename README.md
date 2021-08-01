@@ -20,11 +20,11 @@ cd && curl -L https://github.com/notwa/rc/archive/master.tar.gz | tar zx && mv r
 # usage:
 
 myfunc() {
-# use one of the following:
-argc -eq N "$0" "$@" || return
-argc -le N "$0" "$@" || return
-argc -ge N "$0" "$@" || return
-# where N is an integer between 0 and 9.
+    # use one of the following:
+    argc -eq N "$0" "$@" || return
+    argc -le N "$0" "$@" || return
+    argc -ge N "$0" "$@" || return
+    # where N is an integer between 0 and 9.
 }
 ```
 
@@ -257,8 +257,8 @@ list installed pacman packages by their filesize, and the sum, ascending. requir
 
 ```
 $ pacbm | head -n -1 | tail -2
-204.78M clang
-235.44M linux-firmware
+  204.78M clang
+  235.44M linux-firmware
 ```
 
 ### [pause](/sh/pause#L6)
@@ -427,51 +427,51 @@ and that your terminal's scrollback didn't cap out and eat text.
 
 ## miscellaneous
 
-### [dirprev (zshrc)](/home/zshrc#L71)
+### [dirprev (zshrc)](/home/zshrc#L70)
 
 rotate and change to the previous directory in the directory stack
 without consuming the prompt.
 
-### [dirnext (zshrc)](/home/zshrc#L78)
+### [dirnext (zshrc)](/home/zshrc#L77)
 
 rotate and change to the next directory in the directory stack
 without consuming the prompt.
 
-### [dirup (zshrc)](/home/zshrc#L85)
+### [dirup (zshrc)](/home/zshrc#L84)
 
 change to the parent directory of the current working directory
 without consuming the prompt.
 
-### [dirview (zshrc)](/home/zshrc#L92)
+### [dirview (zshrc)](/home/zshrc#L91)
 
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L166)
+### [OMFG (zshrc)](/home/zshrc#L165)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L167)
+### [STFU (zshrc)](/home/zshrc#L166)
 
 silence stderr.
 
-### [WHOA (zshrc)](/home/zshrc#L168)
+### [WHOA (zshrc)](/home/zshrc#L167)
 
 expand to several C/C++ flags to ease development.
 
-### [WELP (zshrc)](/home/zshrc#L169)
+### [WELP (zshrc)](/home/zshrc#L168)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [pl (zshrc)](/home/zshrc#L173)
+### [pl (zshrc)](/home/zshrc#L172)
 
 print each argument on its own line.
 
-### [tw (zshrc)](/home/zshrc#L176)
+### [tw (zshrc)](/home/zshrc#L175)
 
 invoke `twitch` as a job with both stdout and stderr silenced.
 
-### [reload (zshrc)](/home/zshrc#L220)
+### [reload (zshrc)](/home/zshrc#L219)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.

@@ -8,6 +8,10 @@ aur() { ### @-
     ### download, edit, make, and install packages from the
     ### [AUR.](https://aur.archlinux.org/)
     ### it's a little broken.
+    ###
+    ### ```
+    ### $ aur -eyoI cmdpack-uips applyppf
+    ### ```
     trap 'exit 1' SIGINT SIGTERM
 
     local bd="${BUILDDIR:-$PWD}"

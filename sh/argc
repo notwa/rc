@@ -1,0 +1,81 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+argc() { ### @-
+    ### ```sh
+    ### # usage:
+    ###
+    ### myfunc() {
+    ###     argc X "$0" "$@" || return;
+    ###     #    ^-- replace X with one of the following:
+    ###     # * N to expect an *exact* (==) number of arguments,
+    ###     # * +N to expect *at least* (>=) some number of arguments,
+    ###     # * -N to expect *at most* (<=) some number of arguments,
+    ###     # where N is an integer between 0 and 9.
+    ### }
+    ### ```
+
+    if [ $# -lt 2 ] || [ -z "$1" ] || [ -z "$2" ]; then
+        printf 'usage: %s (N|+N|-N) "$0" "$@" || return\n' "$0" >&2
+        return 2
+    fi
+
+    local want="$1"; shift
+    local zero="$1"; shift
+    local err=''
+
+    case "$want" in
+    # i realize hardcoding each case like this *looks* terrible,
+    # but consider: there's only thirty cases we need to handle.
+    # plus, i can write a specific error message for each.
+
+    0) [ $# -eq 0 ] || err='expected no arguments, got';;
+    1) [ $# -eq 1 ] || err='expected exactly one argument, got';;
+    2) [ $# -eq 2 ] || err='expected exactly two arguments, got';;
+    3) [ $# -eq 3 ] || err='expected exactly three arguments, got';;
+    4) [ $# -eq 4 ] || err='expected exactly four arguments, got';;
+    5) [ $# -eq 5 ] || err='expected exactly five arguments, got';;
+    6) [ $# -eq 6 ] || err='expected exactly six arguments, got';;
+    7) [ $# -eq 7 ] || err='expected exactly seven arguments, got';;
+    8) [ $# -eq 8 ] || err='expected exactly eight arguments, got';;
+    9) [ $# -eq 9 ] || err='expected exactly nine arguments, got';;
+
+    +0) :;; # anything goes
+    +1) [ $# -ge 1 ] || err='expected at least one argument, got';;
+    +2) [ $# -ge 2 ] || err='expected at least two arguments, got';;
+    +3) [ $# -ge 3 ] || err='expected at least three arguments, got';;
+    +4) [ $# -ge 4 ] || err='expected at least four arguments, got';;
+    +5) [ $# -ge 5 ] || err='expected at least five arguments, got';;
+    +6) [ $# -ge 6 ] || err='expected at least six arguments, got';;
+    +7) [ $# -ge 7 ] || err='expected at least seven arguments, got';;
+    +8) [ $# -ge 8 ] || err='expected at least eight arguments, got';;
+    +9) [ $# -ge 9 ] || err='expected at least nine arguments, got';;
+
+    -0) [ $# -le 0 ] || err='expected no arguments, got';;
+    -1) [ $# -le 1 ] || err='expected at most one argument, got';;
+    -2) [ $# -le 2 ] || err='expected at most two arguments, got';;
+    -3) [ $# -le 3 ] || err='expected at most three arguments, got';;
+    -4) [ $# -le 4 ] || err='expected at most four arguments, got';;
+    -5) [ $# -le 5 ] || err='expected at most five arguments, got';;
+    -6) [ $# -le 6 ] || err='expected at most six arguments, got';;
+    -7) [ $# -le 7 ] || err='expected at most seven arguments, got';;
+    -8) [ $# -le 8 ] || err='expected at most eight arguments, got';;
+    -9) [ $# -le 9 ] || err='expected at most nine arguments, got';;
+
+    *)
+        printf 'usage: %s (N|+N|-N) "$0" "$@" || return\n' "$0" >&2
+        return 2;;
+    esac
+
+    if [ -n "$err" ]; then
+        printf '%s: %s %s\n' "$zero" "$err" "$#" >&2
+        return 1
+    fi
+
+    return 0
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || argc "$@"

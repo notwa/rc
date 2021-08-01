@@ -34,16 +34,16 @@ earphones() {
     _M_PROCESS="lowpass=8000:p=1,$_M_KILL,alimiter=level_out=0.707"
 }
 
-if [[ "$_nn" == spectre ]]; then
+if [ "$_nn" = spectre ]; then
     _M_PROCESS="$_M_KILL,alimiter=level_out=0.7071"
 fi
-if [[ "$_nn" == neobanshee ]]; then
+if [ "$_nn" = neobanshee ]; then
     speakers() {
         _M_PROCESS="highpass=311,$_M_KILL,$_M_NEO,alimiter=level_in=2"
     }
     speakers
 fi
-if [[ "$_nn" == banshee ]]; then
+if [ "$_nn" = banshee ]; then
     getladspa crap_eq_const_T420
     _M_SPEAKERS="$REPLY"
     speakers() {
@@ -91,9 +91,7 @@ yt() { ### @-
     ###
     ### there exist several variants for more specific use cases.
     local vid="$1"; shift
-    if [[ ! -e "$vid" && "$(expr substr "$vid" 1 4)" != "http" ]]; then
-        vid="ytdl://$vid"
-    fi
+    [ -e "$vid" ] || [ "$vid" != "${vid#http}" ] || vid="ytdl://$vid"
     mpv_watch "$vid" "$@"
 }
 

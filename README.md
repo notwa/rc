@@ -706,6 +706,21 @@ and that your terminal's scrollback didn't cap out and eat text.
 
 **TODO:** rename because wipe(1) already exists.
 
+### [xxp](/sh/xxp#L6)
+
+act like `xxd -p`, but nicely formatted.
+
+**TODO:** support `-r` (reverse) argument.
+
+```
+$ xxd -p ~/rc/install | head -n2
+23212f7573722f62696e2f656e762073680a232074686973207363726970
+7420697320636f6d70617469626c65207769746820666f6c6c6f77696e67
+$ xxp ~/rc/install | head -n2
+23 21 2F 75 73 72 2F 62 69 6E 2F 65 6E 76 20 73
+68 0A 23 20 74 68 69 73 20 73 63 72 69 70 74 20
+```
+
 ## miscellaneous
 
 ### [dirprev (zshrc)](/home/zshrc#L70)

@@ -3,12 +3,32 @@
 # NO_BASH
 # NO_DASH
 
-# I'll just leave this here...
-__setup_clang_ubuntu() { ### @-
+setup_clang_ubuntu() { ### @-
+    ### print (but don't execute) the commands necessary to install
+    ### a fairly recent version of clang on ubuntu-based distros.
+    ###
+    ### ```sh
+    ### $ setup_clang_ubuntu bionic
+    ### wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+    ### echo -n "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main
+    ### # deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic main
+    ### # 12
+    ### deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
+    ### # deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
+    ### " > /etc/apt/sources.list.d/llvm-toolchain-bionic.list
+    ### apt-get update
+    ### apt-get install clang-12
+    ### apt-get install lld-12
+    ### update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 1200
+    ### update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 1200
+    ### update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-12 1200
+    ### ```
+
     local site="http://apt.llvm.org"
-    local name="$(lsb_release -c | cut -f2)"
-    local version=10 # NOTE: no longer decimal-based
+    local name="$1"
+    local version=12 # NOTE: no longer decimal-based
     local priority=$(( version * 100 ))
+    [ -n "$name" ] || name="$(lsb_release -c | cut -f2)"
     # TODO: use https? this is sketchy
     echo wget -O - "$site/llvm-snapshot.gpg.key" \| apt-key add -
     echo echo -n \""\

@@ -8,6 +8,13 @@
 
 arith() { ### @-
     ### perform arithmetic using the shell and display the result.
+    ### see also [`hex`](#hex) and [`bin`](#bin).
+    ###
+    ### ```
+    ### % db=6
+    ### % noglob arith 10**(db/20.)
+    ### 1.9952623149688795
+    ### ```
 #   <<<"$(($@))"
     printf "%s\n" "$(($@))"
 }

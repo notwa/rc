@@ -7,7 +7,14 @@
 # extra functionality is through zsh's extended arithmetic functions.
 
 hex() { ### @-
-    ### perform arithmetic using the shell and display the result as an unsigned 32-bit integer in hexadecimal.
+    ### perform arithmetic using the shell and display the result as
+    ### an unsigned 32-bit integer in hexadecimal.
+    ### see also [`arith`](#arith) and [`bin`](#bin).
+    ###
+    ### ```
+    ### $ hex 0x221EA8-0x212020
+    ### 0000FE88
+    ### ```
     printf "%08X\n" "$(($@))"
 }
 

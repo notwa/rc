@@ -1,0 +1,72 @@
+#!/usr/bin/env dash
+
+NAME="$0"
+
+note() {
+    local IFS=" "
+    printf "%s\n" "$*"
+}
+
+warn() {
+    note "$@" >&2
+}
+
+die() {
+    warn "$NAME:" "$@"
+    #cleanup
+    exit 1
+}
+
+cleanup() {
+    :
+    #[ ! -e temp.tar.gz ] || rm temp.tar.gz || die failed
+    #[ ! -d temp ] || rm -r temp || die failed
+}
+
+backup() {
+    if [ -e "$1" ]; then
+        backup "${1}~" || die 'failed to backup file' "$1"
+    fi
+    mv "$1" "${1}~" || die 'failed to backup file' "$1"
+}
+
+rc="$(readlink -f "$(dirname "$NAME")" )"
+[ -d "$rc" ] || die 'failed to determine rc directory'
+cd "$rc" || die 'failed to change directory'
+
+if ! which git >/dev/null 2>&1; then
+    # git unavailable. just document everything as it is.
+
+    [ "$1" != commit ] || die 'git not found'
+    dash ./sh/document || die 'failed to generate documentation'
+
+else
+    # git available. document the most recent commit, without pending changes.
+
+    [ ! -e temp.tar.gz ] || backup temp.tar.gz || die 'failed to backup existing temp archive'
+    git archive --prefix=temp/ HEAD -o temp.tar.gz || die 'failed to create git archive'
+
+    [ ! -e temp ] || backup temp || die 'failed to backup existing temp directory'
+    tar -zxf temp.tar.gz || die 'failed to unarchive temp archive'
+
+    #( cd temp; HOME="$rc/temp" dash ./install )
+    ln temp/home/zshrc temp/.zshrc || die 'failed to copy files'
+    ln temp/home/-shrc temp/.-shrc || die 'failed to copy files'
+    ln temp/home/bashrc temp/.bashrc || die 'failed to copy files'
+
+    # note that we use the latest version instead of the one from the archive.
+    cp -p README.md temp/README.md || die 'failed to copy existing readme'
+    # note that we use the latest version instead of the one from the archive.
+    dash ./sh/document temp || die 'failed to generate documentation'
+
+    #[ ! -e README.md ] || backup README.md || die 'failed to backup existing readme'
+    mv temp/README.md~ README.md~ || die 'failed to move generated readme'
+
+    rm temp.tar.gz || die 'failed to clean up temp archive'
+    rm -r temp || die 'failed to clean up temp directory'
+
+    if [ "$1" = commit ]; then
+        mv README.md~ README.md || die 'failed to overwrite readme'
+        git commit README.md -m 'regenerate readme' || die 'failed to commit'
+    fi
+fi

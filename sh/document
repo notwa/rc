@@ -69,18 +69,18 @@ document2() {
             [ "$f" != "${f#sh/}" ] && url="/sh/${f#sh/}#L$c" || url="/home/${f#.}#L$c"
             if [ "$n" = "$e" ]; then
                 # function name matches the filename.
-                printf '\n%s [%s](%s)\n\n' "$d" "$n" "$url" >> rc/README.md~ || return 5
+                printf '\n%s [%s](%s)\n\n' "$d" "$n" "$url" || return 5
             else
                 # this file contains some other function, so include the filename.
-                printf '\n%s [%s](%s)\n\n' "$d" "$n (${f#.})" "$url" >> rc/README.md~ || return 5
-                #printf '\n%s %s\n\n* defined in [%s](%s)\n\n' "%d" "$n" "$f" "$url" >> rc/README.md~ || return 5
+                printf '\n%s [%s](%s)\n\n' "$d" "$n (${f#.})" "$url" || return 5
+                #printf '\n%s %s\n\n* defined in [%s](%s)\n\n' "%d" "$n" "$f" "$url" || return 5
             fi
         fi
 
         if [ "$s" != ' ' ]; then # don't bother unless it was set to something
             if [ -z "$n" -o -n "$s" ]; then # might only be a name, check that
                 # just pass the remaining comment through:
-                printf '%s\n' "$s" >> rc/README.md~ || return 5
+                printf '%s\n' "$s" || return 5
             fi
         fi
     done < "$f" || return 4
@@ -88,37 +88,48 @@ document2() {
 
 document1() {
     # NOTE: in the future, it'd be nice to support arbitary files through arguments.
-    [ $# -le 0 ] || return 1
+
+    local in_='rc/README.md'
+    local out='rc/README.md~'
+    if [ $# -eq 0 ]; then
+        cd || return 2
+        [ -d rc ] || return 3 # sanity check
+    elif [ $# -eq 1 ]; then
+        in_='README.md'
+        out='README.md~'
+        cd "$1" || return 2
+    else
+        return 1
+    fi
 
     # sanity check:
-    cd || return 2
-    [ -d rc ] && [ -d sh ] && [ -f .zshrc ] && [ -f .-shrc ] && [ -f .bashrc ] || return 3
+    [ -d sh ] && [ -f .zshrc ] && [ -f .-shrc ] && [ -f .bashrc ] || return 3
 
     # create new output file (with a tilde as not to overwrite just yet):
-    : > rc/README.md~ || return 4
+    : > "$out" || return 4
 
     local line
 
-    if [ -f rc/README.md ]; then
+    if [ -f "$in_" ]; then
         # copy existing lines up to (and including) the "DOCUMENT" marker:
         while IFS= read -r line; do
-            printf '%s\n' "$line" >> rc/README.md~ || return 5
+            printf '%s\n' "$line" >> "$out" || return 5
             case "$line" in *DOCUMENT*) break;; esac
-        done < rc/README.md || return 4
+        done < "$in_" || return 4
     fi
 
     # first section:
-    printf '\n## %s\n' 'shell functions' >> rc/README.md~ || return 5
+    printf '\n## %s\n' 'shell functions' >> "$out" || return 5
     for f in sh/*; do
         [ -e "$f" ] || continue # make sure glob went through
-        document2 "$f" || return $?
+        document2 "$f" >> "$out" || return $?
     done
 
     # second section:
-    printf '\n## %s\n' 'miscellaneous' >> rc/README.md~ || return 5
-    document2 .zshrc || return $?
-    document2 .bashrc || return $?
-    document2 .-shrc || return $?
+    printf '\n## %s\n' 'miscellaneous' >> "$out" || return 5
+    document2 .zshrc >> "$out" || return $?
+    document2 .bashrc >> "$out" || return $?
+    document2 .-shrc >> "$out" || return $?
 }
 
 document() { ### @-

@@ -4,6 +4,20 @@
 # YES_DASH
 
 bak() { ### @-
+    ### backup files by copying each and appending ".bak" to their names.
+    ### this calls itself recursively to avoid clobbering existing backups.
+    ###
+    ### ```
+    ### % touch -d '2001-12-25 16:30:00' butts
+    ### % bak butts
+    ### % touch butts
+    ### % bak butts
+    ### % ls -l
+    ### total 0
+    ### -rw-r--r-- 1 notwa None 0 Aug  1 07:56 butts
+    ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.bak
+    ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.bak.bak
+    ### ```
     [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     local ret=0
     for f; do

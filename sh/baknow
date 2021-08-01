@@ -2,6 +2,20 @@
 # YES_ZSH
 
 baknow() { ### @-
+    ### backup a single file by appending its timestamp given by [`now`.](#now)
+    ###
+    ### ```
+    ### $ touch -d '2001-12-25 16:30:00' butts
+    ### $ baknow butts
+    ### $ baknow butts
+    ### cp: overwrite 'butts.2001-12-26_01800000.bak'? n
+    ### $ ls -l
+    ### total 0
+    ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts
+    ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.2001-12-26_01800000.bak
+    ### ```
+    ###
+    ### **TODO:** support multiple files at once.
     cp -ip "${1:?missing file argument}" "$1.$(now "$1").bak"
 }
 

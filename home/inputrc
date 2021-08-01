@@ -4,3 +4,4 @@
 "\e[1;5D": backward-word
 set show-all-if-ambiguous on
 set completion-ignore-case on
+set bell-style none

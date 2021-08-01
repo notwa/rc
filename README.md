@@ -33,6 +33,7 @@ myfunc() {
 
 perform arithmetic using the shell and display the result.
 see also [`hex`](#hex) and [`bin`](#bin).
+this example requires zsh:
 
 ```
 % db=6
@@ -57,7 +58,7 @@ this is sometimes nicer than `ssh`-ing into a server and running `vim` remotely.
 
 ### [bak](/sh/bak#L6)
 
-backup files by copying each and appending ".bak" to their names.
+backup files by creating copies and appending ".bak" to their names.
 this calls itself recursively to avoid clobbering existing backups.
 
 ```
@@ -213,6 +214,17 @@ Continue? [y/N] n
 nay
 ```
 
+a real world example:
+
+```
+% g1 && confirm && git commit -a --amend --no-edit
+daf84e3 document a ton of stuff
+Continue? [y/N] y
+[master 92bdf76] document a ton of stuff
+ Date: Sun Aug 1 09:27:25 2021 -0700
+ 20 files changed, 406 insertions(+), 29 deletions(-)
+```
+
 ### [countdiff](/sh/countdiff#L6)
 
 count the number of lines changed between two files.
@@ -336,11 +348,17 @@ note that this uses GitHub's API, so it requires internet connectivity.
 this script utilizes the CSS provided at
 [sindresorhus/github-markdown-css.](https://github.com/sindresorhus/github-markdown-css)
 
+```
+~/sh/ghmd < ~/rc/README.md > ~/rc/README.html
+```
+
 ### [has](/sh/has#L6)
 
 print the result of `which` if the program is found, else simply return 1.
 
-`export CC="$(has clang || has clang-3.8 || has gcc)"`
+```
+export CC="$(has clang || has clang-3.8 || has gcc)"
+```
 
 ### [hex](/sh/hex#L9)
 
@@ -377,10 +395,15 @@ return 0 if a given website returns a 2xx HTTP code.
 mimic certain features of `sudo` for systems without it installed.
 as it stands, this mostly just handles some environment variables.
 
+try this: `maybesudo_ -u "$USER" printenv`
+
 ### [minutemaid](/sh/minutemaid#L6)
 
-return 0 if the current minute is divisible by a number.
-note that a minute is relative to the seconds since the epoch, not the minute of the hour.
+return 0 and/or execute a command if the current minute
+is divisible by a given number. note that a minute is
+relative to the seconds since the epoch, not the minute of the hour.
+this ensures that commands will run roughly every N minutes,
+regardless of the minute hand on the clock.
 
 ```
 # crontab usage:
@@ -392,7 +415,9 @@ note that a minute is relative to the seconds since the epoch, not the minute of
 this is [watch(1)](https://www.man7.org/linux/man-pages/man1/watch.1.html)
 loosely reimplemented as a shell script.
 
-`usage: monitor [-fs] [-n {period}] {command} [{args...}]`
+```
+usage: monitor [-fs] [-n {period}] {command} [{args...}]
+```
 
 ### [noccom](/sh/noccom#L10)
 

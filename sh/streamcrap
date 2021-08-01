@@ -3,8 +3,13 @@
 # YES_ZSH
 # YES_BASH
 
-MPV_STREAM_FLAGS="--quiet --loop-playlist=no --no-resume-playback --no-sub \
---no-initial-audio-sync --mc=0.02 --autosync=30"
+mpvs() { ### @- invoke mpv with some extra flags suited for streamed sources.
+    mpv --quiet \
+      --loop-playlist=no --no-resume-playback \
+      --no-sub \
+      --no-initial-audio-sync --mc=0.02 --autosync=30 \
+      "$@"
+}
 
 # Q: Why are these variables prefixed with _M_?
 # A: I don't remember. :shobon:
@@ -19,6 +24,7 @@ _M_LESS_INSANE="$_M_PRE_EMPH,acompressor=threshold=0.0020:ratio=1.41:attack=1000
 _M_NEO="equalizer=700:o:1.3:-5,equalizer=1200:o:1.3:-3,equalizer=1090:o:0.5:-5,equalizer=970:o:1.2:-10,equalizer=4100:o:0.3:-6"
 
 getladspa() {
+    [ $# -eq 1 ] || { printf "%s\n" "$0: expected exactly one argument" >&2; return 1; }
     REPLY=volume
     if [ -e "/usr/lib/ladspa/${1}.so" ]; then
         REPLY="ladspa=f=${1}:p=${1}"
@@ -31,6 +37,7 @@ _M_LEVEL="$REPLY"
 _nn="$(uname -n | tr A-Z a-z)"
 
 earphones() {
+    [ $# -eq 0 ] || { printf "%s\n" "$0: unexpected arguments" >&2; return 1; }
     _M_PROCESS="lowpass=8000:p=1,$_M_KILL,alimiter=level_out=0.707"
 }
 
@@ -39,6 +46,7 @@ if [ "$_nn" = spectre ]; then
 fi
 if [ "$_nn" = neobanshee ]; then
     speakers() {
+        [ $# -eq 0 ] || { printf "%s\n" "$0: unexpected arguments" >&2; return 1; }
         _M_PROCESS="highpass=311,$_M_KILL,$_M_NEO,alimiter=level_in=2"
     }
     speakers
@@ -47,6 +55,7 @@ if [ "$_nn" = banshee ]; then
     getladspa crap_eq_const_T420
     _M_SPEAKERS="$REPLY"
     speakers() {
+        [ $# -eq 0 ] || { printf "%s\n" "$0: unexpected arguments" >&2; return 1; }
         _M_PROCESS="$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5"
     }
     speakers
@@ -56,6 +65,7 @@ unset _nn
 
 mpv_watch() { ### @-
     ### watch something in mpv with a bunch of extra audio filtering crap.
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     pushd ~/play >/dev/null
     local url="$1"; shift
     mpv \
@@ -67,19 +77,16 @@ mpv_watch() { ### @-
 
 mpv_stream() { ### @-
     ### watch a stream in mpv with a bunch of extra audio filtering crap.
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     pushd ~/play >/dev/null
     local url="$1"; shift
-    if [ -n "$ZSH_VERSION" ]; then
-        # zsh syntax
-        mpv $=MPV_STREAM_FLAGS --af=lavfi="[$_M_PROCESS]" "$@" "$url"
-    else
-        mpv $MPV_STREAM_FLAGS --af=lavfi="[$_M_PROCESS]" "$@" "$url"
-    fi
+    mpvs --af=lavfi="[$_M_PROCESS]" "$@" "$url"
     popd >/dev/null
 }
 
 twitch() { ### @-
     ### watch a twitch stream in mpv with a bunch of extra audio filtering crap.
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     local user="$1"; shift
     mpv_stream "http://twitch.tv/$user" "$@"
 }
@@ -90,6 +97,7 @@ yt() { ### @-
     ### remaining arguments are passed to mpv.
     ###
     ### there exist several variants for more specific use cases.
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     local vid="$1"; shift
     [ -e "$vid" ] || [ "$vid" != "${vid#http}" ] || vid="ytdl://$vid"
     mpv_watch "$vid" "$@"
@@ -97,6 +105,7 @@ yt() { ### @-
 
 ytg() { ### @-
     ### watch a youtube video. like `yt`, but with a preference for different formats.
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     local vid="$1"; shift
     yt "$vid" --ytdl-format=22/95/300/best "$@"
 }
@@ -104,22 +113,26 @@ ytg() { ### @-
 ytll() { ### @-
     ### watch a stream on youtube in mpv, etcetera etcetera.
     ### this is the low latency version that does not support seeking.
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     youtube-dl -q -f best "$1" -o - | mpv_stream - --no-ytdl
 }
 
 ytgll() { ### @-
     ### watch a stream on youtube in mpv. like `ytll`, but with a preference for different formats.
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     youtube-dl -q -f 22/95/300/best "$1" -o - | mpv_stream - --no-ytdl
 }
 
 ai() { # @-
     # hai domo!
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     yt "$@" --slang=en --sub-font='Tekton Pro' --sub-bold=yes \
       --sub-font-size=60 --sub-border-color='#DD6180' --sub-margin-y=52
 }
 
 asmr() { # @-
     # for your aural pleasure.
+    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     _M_PROCESS="acompressor=threshold=0.001:ratio=1.33:attack=900:release=6000:makeup=6:knee=8:mix=0.9,alimiter" \
       yt "$@" --volume=90 --ytdl-format=251/300/best
 }

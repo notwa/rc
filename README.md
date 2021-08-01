@@ -673,8 +673,8 @@ sadly, this trick doesn't work anymore.
 output a given number of bytes from `/dev/random`.
 
 ```
-$ trash 10 | hexdump -e '15 1 "%02X " 1 1 "%02X\n"'
-CB 72 31 A1 BB F0 EC 9F 6E BE
+$ trash 10 | xxp
+3A A5 4F C7 6D 89 E7 D7 F7 0C
 ```
 
 ### [trunc](/sh/trunc#L6)

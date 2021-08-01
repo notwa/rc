@@ -16,8 +16,9 @@ cd && curl -L https://github.com/notwa/rc/archive/master.tar.gz | tar zx && mv r
 
 ### [argc](/sh/argc#L7)
 
+validate the number of arguments in a function.
 ```sh
-# usage:
+# usage: myfunc() { argc -(eq|le|ge) [0-9] "$0" "$@" || return; }
 
 myfunc() {
     # use one of the following:
@@ -31,12 +32,23 @@ myfunc() {
 ### [arith](/sh/arith#L9)
 
 perform arithmetic using the shell and display the result.
+see also [`hex`](#hex) and [`bin`](#bin).
+
+```
+% db=6
+% noglob arith 10**(db/20.)
+1.9952623149688795
+```
 
 ### [aur](/sh/aur#L7)
 
 download, edit, make, and install packages from the
 [AUR.](https://aur.archlinux.org/)
 it's a little broken.
+
+```
+$ aur -eyoI cmdpack-uips applyppf
+```
 
 ### [autosync](/sh/autosync#L8)
 
@@ -45,34 +57,113 @@ this is sometimes nicer than `ssh`-ing into a server and running `vim` remotely.
 
 ### [bak](/sh/bak#L6)
 
+backup files by copying each and appending ".bak" to their names.
+this calls itself recursively to avoid clobbering existing backups.
+
+```
+$ touch -d '2001-12-25 16:30:00' butts
+$ bak butts
+$ touch butts
+$ bak butts
+$ ls -l
+total 0
+-rw-r--r-- 1 notwa None 0 Aug  1 08:02 butts
+-rw-r--r-- 1 notwa None 0 Aug  1 08:02 butts.bak
+-rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.bak.bak
+```
 
 ### [baknow](/sh/baknow#L4)
 
+backup a single file by appending its timestamp given by [`now`.](#now)
+
+```
+$ touch -d '2001-12-25 16:30:00' butts
+$ baknow butts
+$ baknow butts
+cp: overwrite 'butts.2001-12-26_01800000.bak'? n
+$ ls -l
+total 0
+-rw-r--r-- 1 notwa None 0 Dec 25  2001 butts
+-rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.2001-12-26_01800000.bak
+```
+
+**TODO:** support multiple files at once.
 
 ### [baks](/sh/baks#L11)
 
+backup files by copying each and appending *the current* date-time,
+irrespective of when the files were modified or created.
 
-### [bin](/sh/bin#L6)
+```
+$ touch -d '2001-12-25 16:30:00' butts
+$ baks butts
+$ baks butts
+$ ls -l
+total 0
+-rw-r--r-- 1 notwa None 0 Dec 25  2001 butts
+-rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.21-08-01_14-54-07.bak
+-rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.21-08-01_14-54-09.bak
+```
 
+### [bin](/sh/bin#L9)
+
+perform arithmetic using the shell and display the result as
+an unsigned 8-bit integer in binary.
+see also [`arith`](#arith) and [`hex`](#hex).
+
+```
+$ bin 123
+01111011
+```
 
 ### [cdbusiest](/sh/cdbusiest#L4)
 
 cd to the directory with the most files in it, counted recursively.
 
+```
+$ cd
+$ cdbusiest
+152364 src
+$ pwd
+/home/notwa/src
+```
+
 ### [colors](/sh/colors#L6)
 
-print out all the foreground and background terminal color combinations.
+display all combinations of foreground and background terminal colors.
+this only includes the basic 16-color palette.
 excluding boilerplate, this script is a mere a 76-characters long!
+
+![terminal colors](https://eaguru.guru/t/terminal-colors.png)
 
 ### [compandy](/sh/compandy#L5)
 
 generate compand arguments for ffmpeg audio filters.
 this is kinda pointless now that acompressor is wildly supported.
 
-### [__setup_clang_ubuntu (sh/compile)](/sh/compile#L7)
+### [setup_clang_ubuntu (sh/compile)](/sh/compile#L6)
 
+print (but don't execute) the commands necessary to install
+a fairly recent version of clang on ubuntu-based distros.
 
-### [compile](/sh/compile#L29)
+```sh
+$ setup_clang_ubuntu bionic
+wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+echo -n "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main
+# deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic main
+# 12
+deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
+# deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
+" > /etc/apt/sources.list.d/llvm-toolchain-bionic.list
+apt-get update
+apt-get install clang-12
+apt-get install lld-12
+update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 1200
+update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 1200
+update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-12 1200
+```
+
+### [compile](/sh/compile#L49)
 
 compile single-file C and C++ programs, messily.
 
@@ -85,7 +176,29 @@ defaults to clang, gcc, and msvc in that order.
 
 `compile` attempts to guess the most sane switches for any program, so that compilation may reduce to:
 
-**TODO:** restore examples.
+```sh
+# debug build
+compile rd.c
+compile debug rd.c
+# debug build with warning/error flags defined in .-shrc
+# (requires .zshrc for global alias expansion)
+compile WHOA rd.c
+# likewise for C++
+compile WHOA WELP rd.cc
+compile WHOA WELP rd.cpp
+# "derelease" build (release build with debug information)
+compile derelease WHOA rd.c
+# release build (with symbols stripped)
+compile release WHOA rd.c
+# hardened build (only useful on *nix)
+compile hardened WHOA rd.c
+# specifying compiler
+compile gcc WHOA rd.c
+compile msvc WHOA rd.c
+compile release clang WHOA rd.c
+# compile and execute (FIXME: writing to /tmp is a security concern)
+compile derelease rd.c && /tmp/rd
+```
 
 ### [confirm](/sh/confirm#L6)
 
@@ -102,9 +215,18 @@ nay
 
 ### [countdiff](/sh/countdiff#L6)
 
+count the number of lines changed between two files.
+
+**TODO:** don't use git for this. also, use patience algorithm.
+
+```
+$ countdiff README-old.md README.md
+739
+```
 
 ### [cutv](/sh/cutv#L6)
 
+(WIP) create a short clip of a long video file.
 
 ### [days](/sh/days#L6)
 
@@ -117,13 +239,27 @@ $ days 'January 1 1970'
 
 ### [dbusiest](/sh/dbusiest#L6)
 
-display the directory with the most files in it, counted recursively.
+list directories ordered descending by the number of files in them,
+counted recursively. see also [`cdbusiest`.](#cdbusiest)
+
+```
+$ cd
+$ dbusiest | head -n3
+152364 src
+46518 work
+20903 play
+```
 
 ### [dfu](/sh/dfu#L6)
 
 pretty-print `df` in GiB.
 
-**TODO:** restore examples.
+```
+$ dfu
+Filesystem              Used     Max    Left    Misc
+/dev                    0.00    0.46    0.46    0.00
+/                      17.20   23.22    6.01    1.27
+```
 
 ### [disf](/sh/disf#L9)
 
@@ -174,15 +310,31 @@ $ e /etc/sudoers
 
 ### [echo2](/sh/echo2#L6)
 
+print arguments joined by spaces to stderr without parsing anything.
+
+```
+$ echo -e 'this\nthat' those
+this
+that those
+$ echo2 -e 'this\nthat' those
+-e this\nthat those
+```
 
 ### [explore](/sh/explore#L6)
 
+open a single directory in `explorer.exe`, defaulting to `$PWD`.
 
 ### [ff](/sh/ff#L6)
 
+select a file from a given or current directory using `fzy`.
 
 ### [ghmd](/sh/ghmd#L9)
 
+convert a markdown file to HTML in the style of GitHub.
+note that this uses GitHub's API, so it requires internet connectivity.
+
+this script utilizes the CSS provided at
+[sindresorhus/github-markdown-css.](https://github.com/sindresorhus/github-markdown-css)
 
 ### [has](/sh/has#L6)
 
@@ -192,7 +344,14 @@ print the result of `which` if the program is found, else simply return 1.
 
 ### [hex](/sh/hex#L9)
 
-perform arithmetic using the shell and display the result as an unsigned 32-bit integer in hexadecimal.
+perform arithmetic using the shell and display the result as
+an unsigned 32-bit integer in hexadecimal.
+see also [`arith`](#arith) and [`bin`](#bin).
+
+```
+$ hex 0x221EA8-0x212020
+0000FE88
+```
 
 ### [ify](/sh/ify#L6)
 
@@ -215,6 +374,8 @@ return 0 if a given website returns a 2xx HTTP code.
 
 ### [maybesudo_ (sh/maybesudo)](/sh/maybesudo#L6)
 
+mimic certain features of `sudo` for systems without it installed.
+as it stands, this mostly just handles some environment variables.
 
 ### [minutemaid](/sh/minutemaid#L6)
 
@@ -228,7 +389,10 @@ note that a minute is relative to the seconds since the epoch, not the minute of
 
 ### [monitor](/sh/monitor#L4)
 
-this is `watch` loosely reimplemented as a shell script.
+this is [watch(1)](https://www.man7.org/linux/man-pages/man1/watch.1.html)
+loosely reimplemented as a shell script.
+
+`usage: monitor [-fs] [-n {period}] {command} [{args...}]`
 
 ### [noccom](/sh/noccom#L10)
 
@@ -236,6 +400,7 @@ strip C-like comments; both multi-line and single-line.
 
 ### [note](/sh/note#L6)
 
+act like [`echo2`,](#echo2) but use a bright color to stand out more.
 
 ### [now](/sh/now#L8)
 
@@ -253,7 +418,8 @@ $ now '@1234567890'
 
 ### [pacbm](/sh/pacbm#L6)
 
-list installed pacman packages by their filesize, and the sum, ascending. requires `expac`.
+display and order installed pacman packages by their filesize ascending,
+and their sum. requires `expac`.
 
 ```
 $ pacbm | head -n -1 | tail -2
@@ -263,7 +429,7 @@ $ pacbm | head -n -1 | tail -2
 
 ### [pause](/sh/pause#L6)
 
-pause — the companion script of `confirm`.
+pause — the companion script of [`confirm`.](#confirm)
 
 ```
 $ pause
@@ -273,18 +439,49 @@ $
 
 ### [pegg](/sh/pegg#L8)
 
+download and (pip) install a Python "egg" from a project on GitHub,
+defaulting to the master branch. this uses [`pippy`](#pippy) internally.
+
+```sh
+# install the development version of https://github.com/rthalley/dnspython
+$ pegg rthalley dnspython
+# or instead install the latest stable version (as of writing)
+$ pegg rthalley dnspython 3933b49
+```
 
 ### [pippy](/sh/pippy#L7)
 
+install Python packages using pip,
+but only update their dependencies as required.
+this uses [`maybesudo`](#maybesudo_-shmaybesudo) internally.
 
 ### [pre](/sh/pre#L6)
 
 dump all the `#define`s that `$CC $CPPFLAGS $CFLAGS $LDFLAGS` would result in.
 
-**TODO:** restore examples.
+```
+$ pre | shuf | head -n10
+#define __GNUC_MINOR__ 3
+#define __SIZEOF_LONG__ 4
+#define __UINT_LEAST16_TYPE__ short unsigned int
+#define __ORDER_BIG_ENDIAN__ 4321
+#define __SIZEOF_FLOAT__ 4
+#define __INTMAX_MAX__ 0x7fffffffffffffffLL
+#define __INT64_C(c) c ## LL
+#define __UINT16_MAX__ 0xffff
+#define __DEC64_MANT_DIG__ 16
+#define __DBL_HAS_INFINITY__ 1
+```
 
 ### [psbm](/sh/psbm#L6)
 
+display and order processes by their memory usage ascending, and their sum.
+
+```
+$ psbm | head -n -1 | tail -2
+  185.08M    1163 chromium
+  199.95M    1060 chromium
+```
 
 ### [randir](/sh/randir#L6)
 
@@ -297,6 +494,7 @@ $ randir
 
 ### [refresh](/sh/refresh#L6)
 
+invoke `hash -r`.
 
 ### [rs](/sh/rs#L4)
 
@@ -328,6 +526,7 @@ run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
 
 ### [similar](/sh/similar#L6)
 
+highlight adjacent lines up to the first inequivalent character.
 
 ### [slit](/sh/slit#L6)
 
@@ -344,6 +543,45 @@ convert between a couple saveram formats for N64 emulators.
 
 ### [stfu](/sh/stfu#L7)
 
+invoke a command, silencing stdout and stderr *unless* the command fails.
+
+**NOTE:** don't use `stfu` for handling sensitive data or commands!
+use it for 7zip.
+
+```
+$ touch butts
+$ stfu 7z a butts.7z butts
+$ stfu 7z a butts.7z asses
+command failed with exit status 1:
+7z a butts.7z asses
+
+$ tail -n 20 /tmp/stfu/out_1627834220
+Solid = -
+Blocks = 0
+
+Scanning the drive:
+0 files, 0 bytes
+
+Updating archive: butts.7z
+
+Keep old data in archive: 1 file, 0 bytes
+Add new data to archive: 0 files, 0 bytes
+
+
+Files read from disk: 0
+Archive size: 82 bytes (1 KiB)
+
+Scan WARNINGS for files and folders:
+
+asses : The system cannot find the file specified.
+----------------
+Scan WARNINGS: 1
+
+$ tail -n 20 /tmp/stfu/err_1627834220
+
+WARNING: The system cannot find the file specified.
+asses
+```
 
 ### [mpvs (sh/streamcrap)](/sh/streamcrap#L6)
 
@@ -384,19 +622,44 @@ watch a stream on youtube in mpv. like `ytll`, but with a preference for differe
 
 ### [sum](/sh/sum#L6)
 
+compute the summation of its arguments without forking processes.
+this relies on the shell's built-in arithmetic operators.
+
+```
+$ sum 1 2 3
+6
+```
+
+**TODO:** consider renaming because sum(1) already exists.
 
 ### [sv](/sh/sv#L6)
 
 collect the lastmost value of every key.
-the field separator can be given as its sole argument.
+the field separator can be given as its sole argument,
+it defaults to a single space otherwise.
 
 ```
-echo "this=that\nthem=those\nthis=cat" | sv =
-this=cat
-them=those
+$ echo "alpha=first\nbeta=second\nalpha=third" | sv =
+alpha=third
+beta=second
 ```
 
-**TODO:** add multi-file grep example.
+this next example uses `sv` to only print the lastmost line
+matching a pattern in each file. in other words, it uses
+the filename printed by grep as the key in its key-value pairs.
+
+```
+$ cd ~/play/hash && grep -r 'ing$' . | sv :
+./dic_win32.txt:WriteProfileString
+./cracklib-small.txt:zoning
+./english-words.txt:zooming
+./usernames-125k.txt:flats_gaming
+./cain.txt:zoografting
+./pokemon.txt:Fletchling
+./pokemon8.txt:Fletchling
+```
+
+**TODO:** rename because busybox(1) sv already exists.
 
 ### [tpad](/sh/tpad#L6)
 
@@ -405,10 +668,23 @@ sadly, this trick doesn't work anymore.
 
 ### [trash](/sh/trash#L6)
 
+output a given number of bytes from `/dev/random`.
+
+```
+$ trash 10 | hexdump -e '15 1 "%02X " 1 1 "%02X\n"'
+CB 72 31 A1 BB F0 EC 9F 6E BE
+```
 
 ### [trunc](/sh/trunc#L6)
 
 truncate text to fit within your terminal using the unicode character `…`.
+
+```
+$ echo $COLUMNS
+84
+$ seq 1 100 | tr '\n' ' ' | trunc
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31…
+```
 
 ### [unscreen](/sh/unscreen#L6)
 
@@ -416,6 +692,9 @@ i don't use this anymore~
 
 ### [wat](/sh/wat#L8)
 
+wat — a better and recursive which/whence. for zsh only.
+
+written by [leah2.](https://leahneukirchen.org/)
 
 ### [wipe](/sh/wipe#L6)
 

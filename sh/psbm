@@ -4,6 +4,13 @@
 # YES_DASH
 
 psbm() { ### @-
+    ### display and order processes by their memory usage ascending, and their sum.
+    ###
+    ### ```
+    ### $ psbm | head -n -1 | tail -2
+    ###   185.08M    1163 chromium
+    ###   199.95M    1060 chromium
+    ### ```
     [ -z "$MSYSTEM" ] || { printf "%s\n" "$0: unsupported on MSYS2" >&2; return 1; }
     ps axco rss,pid,command | awk '
     NR>1&&$1>0{t+=$1;printf("%8.2fM %7d %s\n",$1/1024,$2,$3)}

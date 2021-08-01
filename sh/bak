@@ -4,7 +4,7 @@
 # YES_DASH
 
 bak() { ### @-
-    ### backup files by copying each and appending ".bak" to their names.
+    ### backup files by creating copies and appending ".bak" to their names.
     ### this calls itself recursively to avoid clobbering existing backups.
     ###
     ### ```

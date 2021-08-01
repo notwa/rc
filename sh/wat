@@ -6,6 +6,9 @@
 # wat - a better and recursive which/whence
 # via: https://leahneukirchen.org/dotfiles/tools.html
 wat() { ### @-
+    ### wat — a better and recursive which/whence. for zsh only.
+    ###
+    ### written by [leah2.](https://leahneukirchen.org/)
     ( # constrain unalias
     for cmd; do
         if (( $+aliases[$cmd] )); then

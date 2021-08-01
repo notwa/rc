@@ -5,6 +5,9 @@
 #. ~/sh/has
 
 pippy() { ### @-
+    ### install Python packages using pip,
+    ### but only update their dependencies as required.
+    ### this uses [`maybesudo`](#maybesudo_-shmaybesudo) internally.
     local sudo="$(has sudo || echo maybesudo_)"
     "$sudo" py -m pip install --upgrade --upgrade-strategy only-if-needed "$@"
 }

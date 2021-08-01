@@ -4,7 +4,8 @@
 # YES_DASH
 
 pacbm() { ### @-
-    ### list installed pacman packages by their filesize, and the sum, ascending. requires `expac`.
+    ### display and order installed pacman packages by their filesize ascending,
+    ### and their sum. requires `expac`.
     ###
     ### ```
     ### $ pacbm | head -n -1 | tail -2

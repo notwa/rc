@@ -4,6 +4,7 @@
 # YES_DASH
 
 note() { ### @-
+    ### act like [`echo2`,](#echo2) but use a bright color to stand out more.
     local IFS=" "
     printf "\033[1m%s\033[0m\n" "$*" >&2
 }

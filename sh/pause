@@ -4,7 +4,7 @@
 # NO_DASH
 
 pause() { ### @-
-    ### pause — the companion script of `confirm`.
+    ### pause — the companion script of [`confirm`.](#confirm)
     ###
     ### ```
     ### $ pause

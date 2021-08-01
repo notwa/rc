@@ -5,8 +5,46 @@
 #. ~/sh/note # FIXME
 
 stfu() { ### @-
-    # NOTE: don't use stfu for handling sensitive data or commands!
-    #       use it for 7zip.
+    ### invoke a command, silencing stdout and stderr *unless* the command fails.
+    ###
+    ### **NOTE:** don't use `stfu` for handling sensitive data or commands!
+    ### use it for 7zip.
+    ###
+    ### ```
+    ### $ touch butts
+    ### $ stfu 7z a butts.7z butts
+    ### $ stfu 7z a butts.7z asses
+    ### command failed with exit status 1:
+    ### 7z a butts.7z asses
+    ###
+    ### $ tail -n 20 /tmp/stfu/out_1627834220
+    ### Solid = -
+    ### Blocks = 0
+    ###
+    ### Scanning the drive:
+    ### 0 files, 0 bytes
+    ###
+    ### Updating archive: butts.7z
+    ###
+    ### Keep old data in archive: 1 file, 0 bytes
+    ### Add new data to archive: 0 files, 0 bytes
+    ###
+    ###
+    ### Files read from disk: 0
+    ### Archive size: 82 bytes (1 KiB)
+    ###
+    ### Scan WARNINGS for files and folders:
+    ###
+    ### asses : The system cannot find the file specified.
+    ### ----------------
+    ### Scan WARNINGS: 1
+    ###
+    ### $ tail -n 20 /tmp/stfu/err_1627834220
+    ###
+    ### WARNING: The system cannot find the file specified.
+    ### asses
+    ### ```
+
     [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     local temp="${TMP:-/tmp}/stfu"
 

@@ -4,6 +4,12 @@
 # YES_DASH
 
 trash() { ### @-
+    ### output a given number of bytes from `/dev/random`.
+    ###
+    ### ```
+    ### $ trash 10 | hexdump -e '15 1 "%02X " 1 1 "%02X\n"'
+    ### CB 72 31 A1 BB F0 EC 9F 6E BE
+    ### ```
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     dd status=none if=/dev/random bs=1 count="${1:?missing count argument}"
 }

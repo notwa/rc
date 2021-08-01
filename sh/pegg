@@ -6,6 +6,15 @@
 # TODO: source pippy here? this may affect dash compatibility.
 
 pegg() { ### @-
+    ### download and (pip) install a Python "egg" from a project on GitHub,
+    ### defaulting to the master branch. this uses [`pippy`](#pippy) internally.
+    ###
+    ### ```sh
+    ### # install the development version of https://github.com/rthalley/dnspython
+    ### $ pegg rthalley dnspython
+    ### # or instead install the latest stable version (as of writing)
+    ### $ pegg rthalley dnspython 3933b49
+    ### ```
     [ $# -ge 2 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     pippy "https://github.com/$1/$2/tarball/${3:-master}#egg=$2"
 }

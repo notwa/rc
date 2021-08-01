@@ -4,6 +4,8 @@
 # YES_DASH
 
 maybesudo_() { ### @-
+    ### mimic certain features of `sudo` for systems without it installed.
+    ### as it stands, this mostly just handles some environment variables.
     local name
     local env_cleanup=0
     while getopts :AEHKPSVbhiklnsvC:U:g:p:r:t:u: name; do

@@ -4,6 +4,15 @@
 # YES_DASH
 
 countdiff() { ### @-
+    ### count the number of lines changed between two files.
+    ###
+    ### **TODO:** don't use git for this. also, use patience algorithm.
+    ###
+    ### ```
+    ### $ countdiff README-old.md README.md
+    ### 739
+    ### ```
+
     [ $# -gt 1 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     [ $# -le 2 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     git --no-pager diff --stat --no-color --no-index "$1" "$2" \

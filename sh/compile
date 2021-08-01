@@ -59,6 +59,30 @@ compile() { ### @-
     ### `compile` attempts to guess the most sane switches for any program, so that compilation may reduce to:
     ###
     ### **TODO:** restore examples.
+    ###
+    ### ```sh
+    ### # debug build
+    ### compile rd.c
+    ### compile debug rd.c
+    ### # debug build with warning/error flags defined in .-shrc
+    ### # (requires .zshrc for global alias expansion)
+    ### compile WHOA rd.c
+    ### # likewise for C++
+    ### compile WHOA WELP rd.cc
+    ### compile WHOA WELP rd.cpp
+    ### # "derelease" build (release build with debug information)
+    ### compile derelease WHOA rd.c
+    ### # release build (with symbols stripped)
+    ### compile release WHOA rd.c
+    ### # hardened build (only useful on *nix)
+    ### compile hardened WHOA rd.c
+    ### # specifying compiler
+    ### compile gcc WHOA rd.c
+    ### compile msvc WHOA rd.c
+    ### compile release clang WHOA rd.c
+    ### # compile and execute (FIXME: writing to /tmp is a security concern)
+    ### compile derelease rd.c && /tmp/rd
+    ### ```
 
     # FIXME: compile gcc portrend.c -lsdl
     # this causes mayhem!

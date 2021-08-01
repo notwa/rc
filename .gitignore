@@ -10,3 +10,7 @@ vim/bundle/*
 *.swp
 *.swo
 backup-*
+README.html
+temp
+tmp
+*~

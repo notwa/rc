@@ -4,7 +4,16 @@
 # NO_DASH
 
 dbusiest() { ### @-
-    ### display the directory with the most files in it, counted recursively.
+    ### list directories ordered descending by the number of files in them,
+    ### counted recursively. see also [`cdbusiest`.](#cdbusiest)
+    ###
+    ### ```
+    ### $ cd
+    ### $ dbusiest | head -n3
+    ### 152364 src
+    ### 46518 work
+    ### 20903 play
+    ### ```
     [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     local c d
     for d in *(FDN); do

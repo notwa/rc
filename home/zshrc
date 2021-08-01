@@ -49,15 +49,14 @@ zmodload zsh/mathfunc
 function {
     local a b
 
-    [ -s ~/.sh.sha1 ] && read -r b < ~/.sh.sha1
+    [ -s ~/.sh.sha1 ] && read -r b _ < ~/.sh.sha1
     ( cd ~/sh \
       && print -l '#!/usr/bin/env false' '[ "${SOURCING:-0}" -gt 0 ] || exit 1' '' \
       | cat - $(grep -lF 'YES_ZSH' *(.)) \
       | tee ~/.sh \
     ) | sha1sum - \
-      | cut -d' ' -f1 \
       | tee ~/.sh.sha1 \
-      | read -r a
+      | read -r a _
 
     [ "$a" = "$b" ] && touch ~/.sh.zwc || zrecompile -p ~/.sh
 }

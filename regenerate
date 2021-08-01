@@ -24,7 +24,7 @@ cleanup() {
 }
 
 backup() {
-    if [ -e "$1" ]; then
+    if [ -e "${1}~" ]; then
         backup "${1}~" || die 'failed to backup file' "$1"
     fi
     mv "$1" "${1}~" || die 'failed to backup file' "$1"

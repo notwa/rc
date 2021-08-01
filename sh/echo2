@@ -4,6 +4,15 @@
 # YES_DASH
 
 echo2() { ### @-
+    ### print arguments joined by spaces to stderr without parsing anything.
+    ###
+    ### ```
+    ### $ echo -e 'this\nthat' those
+    ### this
+    ### that those
+    ### $ echo2 -e 'this\nthat' those
+    ### -e this\nthat those
+    ### ```
     local IFS=' '
     printf "%s\n" "$*" >&2
 }

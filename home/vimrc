@@ -108,6 +108,8 @@ if has('wildignore')
     set wildignore+=*.h5,*.npz
 endif
 
+let $PATH .= ':'.$HOME.'/sh'          " allow direct invocation of shell funcs
+
 " autocmd {{{1
 
 fu! TabEight()

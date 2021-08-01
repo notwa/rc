@@ -23,7 +23,7 @@ document2() {
         # split by the marker:
         local code="${line%%$d*}" docs="${line#*$d}"
         code="${code#${code%%[! ]*}}" # ltrim
-        docs="${docs#${docs%%[! ]*}}" # ltrim
+        docs="${docs# }" # ltrim a single space
 
         local s=' ' n='' # using a space to signify unset
 
@@ -59,7 +59,7 @@ document2() {
             ;;
 
         *)
-            s="${docs#${docs%%[! ]*}}" # ltrim
+            s="$docs" # leave whitespace intact
             ;;
         esac
 

@@ -3,7 +3,7 @@
 # YES_ZSH
 # YES_BASH
 
-MPV_STREAM_FLAGS="--quiet --autofit=1280x720 --loop-playlist=no --no-resume-playback --no-sub \
+MPV_STREAM_FLAGS="--quiet --loop-playlist=no --no-resume-playback --no-sub \
 --no-initial-audio-sync --mc=0.02 --autosync=30"
 
 # Q: Why are these variables prefixed with _M_?
@@ -59,7 +59,6 @@ mpv_watch() { ### @-
     pushd ~/play >/dev/null
     local url="$1"; shift
     mpv \
-      --force-window=yes \
       --af=lavfi="[$_M_PROCESS]" \
       --ytdl-format='[width<=1280]/best' \
       "$@" -- "$url"

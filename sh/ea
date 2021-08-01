@@ -1,43 +1,49 @@
-#!/usr/bin/env false
+#!/usr/bin/env sh
 # remote file access (http file-sharing shenanigans)
 # YES_ZSH
 # YES_BASH
 # YES_DASH
 
-_REMOTE_DOMAIN="https://eaguru.guru"
-_REMOTE_DIR="t"
-_REMOTE_AUTH="auth"
+ea() { ### @- **TODO:** document.
+    local cmd="${1:?missing subcommand}"; shift
+    case "$cmd" in
+    head)
+        local trg="$_REMOTE_DOMAIN/$_REMOTE_DIR/${1:?missing target}"
+        curl -s -I "$trg"
+        return;;
 
-eahead() { ### @-
-    curl -s -I "$_REMOTE_DOMAIN/$_REMOTE_DIR/$1"
+    get)
+        local trg="$_REMOTE_DOMAIN/$_REMOTE_DIR/${1:?missing target}"
+        curl -R "$trg" -o "${2:-$1}"
+        return;;
+
+    put)
+        local src="${1:?missing source}"
+        local dst="$_REMOTE_DOMAIN/$_REMOTE_AUTH/"
+        curl -g -n -T "$src" "$dst"
+        return;;
+
+    move)
+        local src="$_REMOTE_DOMAIN/$_REMOTE_AUTH/${1:?missing source}"
+        local dst="$_REMOTE_DOMAIN/$_REMOTE_DIR/${2:?missing destination}"
+        curl -n -X MOVE -H "Destination: $dst" "$src"
+        return;;
+
+    copy)
+        local src="$_REMOTE_DOMAIN/$_REMOTE_AUTH/${1:?missing source}"
+        local dst="$_REMOTE_DOMAIN/$_REMOTE_DIR/${2:?missing destination}"
+        curl -n -X COPY -H "Destination: $dst" "$src"
+        return;;
+
+    delete)
+        local trg="$_REMOTE_DOMAIN/$_REMOTE_AUTH/${1:?missing target}"
+        curl -f -n -X DELETE "$trg"
+        return;;
+
+    *)
+        printf 'unknown subcommand: %s\n' "$1" >&2
+        return 2;;
+    esac
 }
 
-eaget() { ### @-
-    curl -R "$_REMOTE_DOMAIN/$_REMOTE_DIR/$1" -o "${2:-$1}"
-}
-
-eaput() { ### @-
-    curl -g -n -T "$1" "$_REMOTE_DOMAIN/$_REMOTE_AUTH/"
-}
-
-eamove() { ### @-
-    local src="$_REMOTE_DOMAIN/$_REMOTE_AUTH/$1"
-    local dst="$_REMOTE_DOMAIN/$_REMOTE_DIR/$2"
-    curl -n -X MOVE -H "Destination: $dst" "$src"
-}
-
-eacopy() { ### @-
-    local src="$_REMOTE_DOMAIN/$_REMOTE_AUTH/$1"
-    local dst="$_REMOTE_DOMAIN/$_REMOTE_DIR/$2"
-    curl -n -X COPY -H "Destination: $dst" "$src"
-}
-
-eadelete() { ### @-
-    curl -n -X DELETE "$_REMOTE_DOMAIN/$_REMOTE_AUTH/$1"
-}
-
-alias eamv=eamove ### @-
-alias eacp=eacopy ### @-
-alias earm=eadelete ### @-
-
-# TODO: write "ea" interface with subcommands for each action, invoke it.
+[ "${SOURCING:-0}" -gt 0 ] || ea "$@"

@@ -9,68 +9,49 @@ argc() { ### @-
     ### # usage:
     ###
     ### myfunc() {
-    ###     argc X "$0" "$@" || return;
-    ###     #    ^-- replace X with one of the following:
-    ###     # * N to expect an *exact* (==) number of arguments,
-    ###     # * +N to expect *at least* (>=) some number of arguments,
-    ###     # * -N to expect *at most* (<=) some number of arguments,
+    ###     # use one of the following:
+    ###     argc -eq N "$0" "$@" || return
+    ###     argc -le N "$0" "$@" || return
+    ###     argc -ge N "$0" "$@" || return
     ###     # where N is an integer between 0 and 9.
     ### }
     ### ```
 
-    if [ $# -lt 2 ] || [ -z "$1" ] || [ -z "$2" ]; then
-        printf 'usage: %s (N|+N|-N) "$0" "$@" || return\n' "$0" >&2
+#   local usage='usage: myfunc() { %s -(eq|lt|gt|le|ge) [0-9] "$0" "$@" || return; }\n'
+    local usage='usage: myfunc() { %s -(eq|le|ge) [0-9] "$0" "$@" || return; }\n'
+
+    # note that $zero can be empty, but must be set.
+    if [ $# -lt 3 ] || [ -z "$1" ] || [ -z "$2" ] || [ "${3+x}" != x ]; then
+        printf "$usage" argc >&2
         return 2
     fi
 
+    local cond="$1"; shift
     local want="$1"; shift
     local zero="$1"; shift
-    local err=''
+    local many='' plural=''
+    [ "$want" = 1 ] || plural='s'
 
-    case "$want" in
-    # i realize hardcoding each case like this *looks* terrible,
-    # but consider: there's only thirty cases we need to handle.
-    # plus, i can write a specific error message for each.
-
-    0) [ $# -eq 0 ] || err='expected no arguments, got';;
-    1) [ $# -eq 1 ] || err='expected exactly one argument, got';;
-    2) [ $# -eq 2 ] || err='expected exactly two arguments, got';;
-    3) [ $# -eq 3 ] || err='expected exactly three arguments, got';;
-    4) [ $# -eq 4 ] || err='expected exactly four arguments, got';;
-    5) [ $# -eq 5 ] || err='expected exactly five arguments, got';;
-    6) [ $# -eq 6 ] || err='expected exactly six arguments, got';;
-    7) [ $# -eq 7 ] || err='expected exactly seven arguments, got';;
-    8) [ $# -eq 8 ] || err='expected exactly eight arguments, got';;
-    9) [ $# -eq 9 ] || err='expected exactly nine arguments, got';;
-
-    +0) :;; # anything goes
-    +1) [ $# -ge 1 ] || err='expected at least one argument, got';;
-    +2) [ $# -ge 2 ] || err='expected at least two arguments, got';;
-    +3) [ $# -ge 3 ] || err='expected at least three arguments, got';;
-    +4) [ $# -ge 4 ] || err='expected at least four arguments, got';;
-    +5) [ $# -ge 5 ] || err='expected at least five arguments, got';;
-    +6) [ $# -ge 6 ] || err='expected at least six arguments, got';;
-    +7) [ $# -ge 7 ] || err='expected at least seven arguments, got';;
-    +8) [ $# -ge 8 ] || err='expected at least eight arguments, got';;
-    +9) [ $# -ge 9 ] || err='expected at least nine arguments, got';;
-
-    -0) [ $# -le 0 ] || err='expected no arguments, got';;
-    -1) [ $# -le 1 ] || err='expected at most one argument, got';;
-    -2) [ $# -le 2 ] || err='expected at most two arguments, got';;
-    -3) [ $# -le 3 ] || err='expected at most three arguments, got';;
-    -4) [ $# -le 4 ] || err='expected at most four arguments, got';;
-    -5) [ $# -le 5 ] || err='expected at most five arguments, got';;
-    -6) [ $# -le 6 ] || err='expected at most six arguments, got';;
-    -7) [ $# -le 7 ] || err='expected at most seven arguments, got';;
-    -8) [ $# -le 8 ] || err='expected at most eight arguments, got';;
-    -9) [ $# -le 9 ] || err='expected at most nine arguments, got';;
-
+    case "$cond" in
+    '-eq') many='exactly';;
+#   '-lt') many='fewer than';;
+#   '-gt') many='more than';;
+    '-le') many='at most';;
+    '-ge') many='at least';;
     *)
-        printf 'usage: %s (N|+N|-N) "$0" "$@" || return\n' "$0" >&2
+        printf "$usage" argc >&2
         return 2;;
     esac
 
-    if [ -n "$err" ]; then
+    case "$want" in
+    [0-9]) :;; # no error, continue.
+    *)
+        printf "$usage" argc >&2
+        return 2;;
+    esac
+
+    if [ ! $# "$cond" "$want" ]; then
+        local err="expected $many $want argument$plural, got"
         printf '%s: %s %s\n' "$zero" "$err" "$#" >&2
         return 1
     fi

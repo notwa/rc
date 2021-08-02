@@ -97,6 +97,9 @@ yt() { ### @-
     ### remaining arguments are passed to mpv.
     ###
     ### there exist several variants for more specific use cases.
+    ###
+    ### **NOTE:** there also exists a yt(1) program provided by
+    ### the *python3-yt* package that i don't use.
     argc -ge 1 "$0" "$@" || return
     local vid="$1"; shift
     [ -e "$vid" ] || [ "$vid" != "${vid#http}" ] || vid="ytdl://$vid"

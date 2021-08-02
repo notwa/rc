@@ -4,7 +4,8 @@
 # NO_DASH
 
 unscreen() { ### @-
-    ### i don't use this anymore~
+    ### handle closing of screens — this works alongside [`screeny`](#screeny).
+    ### these days, i typically use tmux instead.
     local pids="$(screen -ls | fgrep "$1" | cut -d. -f1)"
     for pid in $=pids; do
         local ppid="$(ps h --ppid "$pid" -o pid)"

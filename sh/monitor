@@ -8,6 +8,9 @@ monitor() { ### @-
     ### ```
     ### usage: monitor [-fs] [-n {period}] {command} [{args...}]
     ### ```
+    ###
+    ### **NOTE:** there also exists monitor(1) programs provided by
+    ### the *389-ds-base* and *dmucs* packages that i don't use.
     local bottom=0 strip=0 interval=2 opt=
     while getopts 'fsn:h' opt; do
         case $opt in

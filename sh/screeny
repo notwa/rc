@@ -2,7 +2,8 @@
 # YES_ZSH
 
 screeny() { ### @-
-    ### i don't use this anymore~
+    ### handle GNU screens.
+    ### these days, i typically use tmux instead.
     local user="${1:?needs arg for user name}"
     shift
     home="/home/$user"

@@ -5,6 +5,9 @@
 
 note() { ### @-
     ### act like [`echo2`,](#echo2) but use a bright color to stand out more.
+    ###
+    ### **NOTE:** there also exists a [note(1)](https://www.daemon.de/projects/note/)
+    ### program provided by the *note* package that i don't use.
     local IFS=" "
     printf "\033[1m%s\033[0m\n" "$*" >&2
 }

@@ -5,6 +5,8 @@ rs() { ### @-
     ### record screen. does not record audio.
     ### currently only works on Windows (gdigrab).
     ### i'm sure there's something equivalent for Linux.
+    ###
+    ### **TODO:** consider renaming because rs(1) already exists.
     set -e
 
     local o_overwrite= o_rate=30 o_duration=0

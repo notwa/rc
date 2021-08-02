@@ -10,6 +10,9 @@ rot13() { ### @-
     ### $ rot13 <<< abc123
     ### nop678
     ### ```
+    ###
+    ### **NOTE:** there also exists rot13(1) programs provided by
+    ### the *bsdgames* and *hxtools* packages that i don't use.
     tr -- A-Za-z0-9 N-ZA-Mn-za-m5-90-4
 }
 

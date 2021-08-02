@@ -41,6 +41,8 @@ sc() { ### @-
     ### upload given files to a webserver and return a direct link for sharing them.
     ### you'll want to tweak this if you use it yourself.
     ### this contains some extra logic for screenshots created by `scropt`.
+    ###
+    ### **TODO:** consider renaming because sc(1) already exists.
     if [ -n "${ZSH_VERSION:-}" ]; then
         # syntax is too different to bother tbh
         echo "please run with bash"

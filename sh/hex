@@ -15,6 +15,9 @@ hex() { ### @-
     ### $ hex 0x221EA8-0x212020
     ### 0000FE88
     ### ```
+    ###
+    ### **NOTE:** there also exists a hex(1) program provided by
+    ### the *basez* package that i don't use.
     printf "%08X\n" "$(($@))"
 }
 

@@ -5,6 +5,13 @@
 
 isup() { ### @-
     ### return 0 if a given website returns a 2xx HTTP code.
+    ###
+    ### ```
+    ### $ isup google.com && echo yay || echo nay
+    ### yay
+    ### $ isup fdhafdslkjgfjs.com && echo yay || echo nay
+    ### nay
+    ### ```
     local c="$(curl -sLI -w '%{http_code}' -o /dev/null "$1")"
     [ -z "${c#2[0-9][0-9]}" ]
 }

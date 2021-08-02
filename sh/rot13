@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+
+rot13() { ### @-
+    ### rot13 with numbers rotated as well.
+    ###
+    ### ```
+    ### $ rot13 <<< abc123
+    ### nop678
+    ### ```
+    tr -- A-Za-z0-9 N-ZA-Mn-za-m5-90-4
+}
+
+[ "${SOURCING:-0}" -gt 0 ] || rot13 "$@"

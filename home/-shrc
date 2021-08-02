@@ -173,7 +173,6 @@ alias sortip="sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n" ### @- sort numerically
 alias jrep='grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+"' ### @- extract strings comprised of basic ASCII or Japanese codepoints.
 alias bomb='uconv -f utf-8 -t utf-8 --add-signature' ### @- add a Byte-Order Mark to a file.
 alias cleanse='tr -cd "\11\12\15\40-\176"' ### @- strip unprintable and non-ASCII characters.
-alias rot13='tr "A-Za-z0-9" "N-ZA-Mn-za-m5-90-4"' ### @- rot13 with numbers rotated as well.
 alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\' ### @- join paragraphs into one line each.
 alias double='awk "{print;print}"' ### @- print every line twice. <br/> print every line twice.
 alias join2='paste -d" " - -' ### @- join every other line.

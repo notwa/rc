@@ -315,7 +315,8 @@ open a single directory in `explorer.exe`, defaulting to `$PWD`.
 
 ### [ff](/sh/ff#L6)
 
-select a file from a given or current directory using `fzy`.
+select a file from a given or current directory using
+[`fzy`.](https://github.com/jhawthorn/fzy)
 
 ### [ghmd](/sh/ghmd#L9)
 
@@ -348,6 +349,9 @@ $ hex 0x221EA8-0x212020
 0000FE88
 ```
 
+**NOTE:** there also exists a hex(1) program provided by
+the *basez* package that i don't use.
+
 ### [ify](/sh/ify#L6)
 
 pipe one command through another, so you can still pass arguments to the former.
@@ -363,9 +367,16 @@ $ ll /etc
 
 return 0 if the directory given by argument is empty.
 
-### [isup](/sh/isup#L8)
+### [isup](/sh/isup#L6)
 
 return 0 if a given website returns a 2xx HTTP code.
+
+```
+$ isup google.com && echo yay || echo nay
+yay
+$ isup fdhafdslkjgfjs.com && echo yay || echo nay
+nay
+```
 
 ### [maybesudo_ (sh/maybesudo)](/sh/maybesudo#L6)
 
@@ -396,6 +407,9 @@ loosely reimplemented as a shell script.
 usage: monitor [-fs] [-n {period}] {command} [{args...}]
 ```
 
+**NOTE:** there also exists monitor(1) programs provided by
+the *389-ds-base* and *dmucs* packages that i don't use.
+
 ### [noccom](/sh/noccom#L10)
 
 strip C-like comments; both multi-line and single-line.
@@ -403,6 +417,9 @@ strip C-like comments; both multi-line and single-line.
 ### [note](/sh/note#L6)
 
 act like [`echo2`,](#echo2) but use a bright color to stand out more.
+
+**NOTE:** there also exists a [note(1)](https://www.daemon.de/projects/note/)
+program provided by the *note* package that i don't use.
 
 ### [now](/sh/now#L8)
 
@@ -498,11 +515,25 @@ $ randir
 
 invoke `hash -r`.
 
+### [rot13](/sh/rot13#L6)
+
+rot13 with numbers rotated as well.
+
+```
+$ rot13 <<< abc123
+nop678
+```
+
+**NOTE:** there also exists rot13(1) programs provided by
+the *bsdgames* and *hxtools* packages that i don't use.
+
 ### [rs](/sh/rs#L4)
 
 record screen. does not record audio.
 currently only works on Windows (gdigrab).
 i'm sure there's something equivalent for Linux.
+
+**TODO:** consider renaming because rs(1) already exists.
 
 ### [sc](/sh/sc#L40)
 
@@ -510,21 +541,28 @@ upload given files to a webserver and return a direct link for sharing them.
 you'll want to tweak this if you use it yourself.
 this contains some extra logic for screenshots created by `scropt`.
 
+**TODO:** consider renaming because sc(1) already exists.
+
 ### [scramble](/sh/scramble#L6)
 
 scrambles text in a predictable way using regex.
 
 sacbremls ttex in a pdrceailtbe way unsig reegx.
 
+**TODO:** consider renaming because scramble(1) already exists.
+
 ### [screeny](/sh/screeny#L4)
 
-i don't use this anymore~
+handle GNU screens.
+these days, i typically use tmux instead.
 
 ### [scropt](/sh/scropt#L8)
 
 run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
 
-`$ ~/sh/sc $(~/sh/scropt -s -d0.5)`
+```
+$ ~/sh/sc $(~/sh/scropt -s -d0.5)
+```
 
 ### [similar](/sh/similar#L6)
 
@@ -609,16 +647,19 @@ remaining arguments are passed to mpv.
 
 there exist several variants for more specific use cases.
 
-### [ytg (sh/streamcrap)](/sh/streamcrap#L106)
+**NOTE:** there also exists a yt(1) program provided by
+the *python3-yt* package that i don't use.
+
+### [ytg (sh/streamcrap)](/sh/streamcrap#L109)
 
 watch a youtube video. like `yt`, but with a preference for different formats.
 
-### [ytll (sh/streamcrap)](/sh/streamcrap#L113)
+### [ytll (sh/streamcrap)](/sh/streamcrap#L116)
 
 watch a stream on youtube in mpv, etcetera etcetera.
 this is the low latency version that does not support seeking.
 
-### [ytgll (sh/streamcrap)](/sh/streamcrap#L120)
+### [ytgll (sh/streamcrap)](/sh/streamcrap#L123)
 
 watch a stream on youtube in mpv. like `ytll`, but with a preference for different formats.
 
@@ -690,7 +731,8 @@ $ seq 1 100 | tr '\n' ' ' | trunc
 
 ### [unscreen](/sh/unscreen#L6)
 
-i don't use this anymore~
+handle closing of screens — this works alongside [`screeny`](#screeny).
+these days, i typically use tmux instead.
 
 ### [wat](/sh/wat#L8)
 
@@ -816,168 +858,174 @@ retrieve the most recent files from the default branch of a git repository, and 
 
 invoke git's status subcommand.
 
-### [gd (-shrc)](/home/-shrc#L128)
+**TODO:** consider renaming because gs(1) already exists.
+
+### [gd (-shrc)](/home/-shrc#L130)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [gds (-shrc)](/home/-shrc#L129)
+### [gds (-shrc)](/home/-shrc#L131)
 
 display difference stats from git.
 
-### [gl (-shrc)](/home/-shrc#L130)
+### [gl (-shrc)](/home/-shrc#L132)
 
 invoke git's log subcommand with a single line per commit.
 
-### [glo (-shrc)](/home/-shrc#L131)
+### [glo (-shrc)](/home/-shrc#L133)
 
 navigate git's commit tree succinctly.
 
-### [g1 (-shrc)](/home/-shrc#L132)
+### [g1 (-shrc)](/home/-shrc#L134)
 
 display the most recent git commit.
 
-### [gr (-shrc)](/home/-shrc#L133)
+### [gr (-shrc)](/home/-shrc#L135)
 
 display remote git repositories verbosely.
 
-### [gb (-shrc)](/home/-shrc#L134)
+### [gb (-shrc)](/home/-shrc#L136)
 
 display the current git branch.
 
-### [revend (-shrc)](/home/-shrc#L141)
+**NOTE:** there also exists a gb(1) program provided by
+the *gb* package that i don't use.
+
+### [revend (-shrc)](/home/-shrc#L146)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (-shrc)](/home/-shrc#L143)
+### [clone (-shrc)](/home/-shrc#L148)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (-shrc)](/home/-shrc#L144)
+### [aligntabs (-shrc)](/home/-shrc#L149)
 
 align tab-delimited fields in stdin.
 
-### [crawla (-shrc)](/home/-shrc#L145)
+### [crawla (-shrc)](/home/-shrc#L150)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (-shrc)](/home/-shrc#L146)
+### [crawlz (-shrc)](/home/-shrc#L151)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [eahead (-shrc)](/home/-shrc#L148)
+### [eahead (-shrc)](/home/-shrc#L153)
 
 deprecated name for [`ea head`.](#ea)
 
-### [eaget (-shrc)](/home/-shrc#L149)
+### [eaget (-shrc)](/home/-shrc#L154)
 
 deprecated name for [`ea get`.](#ea)
 
-### [eaput (-shrc)](/home/-shrc#L150)
+### [eaput (-shrc)](/home/-shrc#L155)
 
 deprecated name for [`ea put`.](#ea)
 
-### [eamove (-shrc)](/home/-shrc#L151)
+### [eamove (-shrc)](/home/-shrc#L156)
 
 deprecated name for [`ea move`.](#ea)
 
-### [eacopy (-shrc)](/home/-shrc#L152)
+### [eacopy (-shrc)](/home/-shrc#L157)
 
 deprecated name for [`ea copy`.](#ea)
 
-### [eadelete (-shrc)](/home/-shrc#L153)
+### [eadelete (-shrc)](/home/-shrc#L158)
 
 deprecated name for [`ea delete`.](#ea)
 
-### [eamv (-shrc)](/home/-shrc#L154)
+### [eamv (-shrc)](/home/-shrc#L159)
 
 invoke [`ea move`.](#ea)
 
-### [eacp (-shrc)](/home/-shrc#L155)
+### [eacp (-shrc)](/home/-shrc#L160)
 
 invoke [`ea copy`.](#ea)
 
-### [earm (-shrc)](/home/-shrc#L156)
+### [earm (-shrc)](/home/-shrc#L161)
 
 invoke [`ea delete`.](#ea)
 
-### [ll (-shrc)](/home/-shrc#L159)
+### [ll (-shrc)](/home/-shrc#L164)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [diff (-shrc)](/home/-shrc#L167)
+### [diff (-shrc)](/home/-shrc#L172)
 
 use git's diff subcommand for general diffing.
 
-### [gc (-shrc)](/home/-shrc#L168)
+### [gc (-shrc)](/home/-shrc#L173)
 
 columnize text by using git's column subcommand.
 
-### [counts (-shrc)](/home/-shrc#L169)
+**TODO:** consider renaming because gc(1) already exists.
+
+### [counts (-shrc)](/home/-shrc#L176)
 
 count files in the current directory, including files found recursively.
 
-### [exts (-shrc)](/home/-shrc#L170)
+### [exts (-shrc)](/home/-shrc#L177)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (-shrc)](/home/-shrc#L171)
+### [nocom (-shrc)](/home/-shrc#L178)
 
 strip single-line C-like and shell-like comments.
 
-### [sortip (-shrc)](/home/-shrc#L172)
+### [sortip (-shrc)](/home/-shrc#L179)
 
 sort numerically by IPv4 segments.
 
-### [jrep (-shrc)](/home/-shrc#L173)
+### [jrep (-shrc)](/home/-shrc#L180)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (-shrc)](/home/-shrc#L174)
+### [bomb (-shrc)](/home/-shrc#L181)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (-shrc)](/home/-shrc#L175)
+### [cleanse (-shrc)](/home/-shrc#L182)
 
 strip unprintable and non-ASCII characters.
 
-### [rot13 (-shrc)](/home/-shrc#L176)
-
-rot13 with numbers rotated as well.
-
-### [unwrap (-shrc)](/home/-shrc#L177)
+### [unwrap (-shrc)](/home/-shrc#L183)
 
 join paragraphs into one line each.
 
-### [double (-shrc)](/home/-shrc#L178)
+### [double (-shrc)](/home/-shrc#L184)
 
 print every line twice. <br/> print every line twice.
 
-### [join2 (-shrc)](/home/-shrc#L179)
+**NOTE:** there also exists a double(1) program provided by
+the *plotutils* package that i don't use.
+
+### [join2 (-shrc)](/home/-shrc#L188)
 
 join every other line.
 
-### [katagana (-shrc)](/home/-shrc#L180)
+### [katagana (-shrc)](/home/-shrc#L189)
 
 convert katakana codepoints to their equivalent hiragana.
 useful for translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (-shrc)](/home/-shrc#L182)
+### [picky (-shrc)](/home/-shrc#L191)
 
 TODO
 
-### [unused (-shrc)](/home/-shrc#L183)
+### [unused (-shrc)](/home/-shrc#L192)
 
 TODO
 
-### [makepkgf (-shrc)](/home/-shrc#L184)
+### [makepkgf (-shrc)](/home/-shrc#L193)
 
 make the freakin' package!
 
-### [rakef (-shrc)](/home/-shrc#L185)
+### [rakef (-shrc)](/home/-shrc#L194)
 
 make the freakin' gem!
 
-### [eashare (-shrc)](/home/-shrc#L187)
+### [eashare (-shrc)](/home/-shrc#L196)
 
 upload a file and copy its URL to the clipboard.
 

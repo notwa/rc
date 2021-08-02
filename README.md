@@ -90,7 +90,7 @@ total 0
 
 **TODO:** support multiple files at once.
 
-### [baks](/sh/baks#L11)
+### [baks](/sh/baks#L7)
 
 backup files by copying each and appending *the current* date-time,
 irrespective of when the files were modified or created.
@@ -492,6 +492,11 @@ $ pre | shuf | head -n10
 #define __DBL_HAS_INFINITY__ 1
 ```
 
+### [preload](/sh/preload#L3)
+
+handle dependencies within the [`~/sh/`](/sh) directory.
+this function contains more comments than code, so you should read it.
+
 ### [psbm](/sh/psbm#L6)
 
 display and order processes by their memory usage ascending, and their sum.
@@ -535,7 +540,7 @@ i'm sure there's something equivalent for Linux.
 
 **TODO:** consider renaming because rs(1) already exists.
 
-### [sc](/sh/sc#L40)
+### [sc](/sh/sc#L36)
 
 upload given files to a webserver and return a direct link for sharing them.
 you'll want to tweak this if you use it yourself.
@@ -556,7 +561,7 @@ sacbremls ttex in a pdrceailtbe way unsig reegx.
 handle GNU screens.
 these days, i typically use tmux instead.
 
-### [scropt](/sh/scropt#L8)
+### [scropt](/sh/scropt#L4)
 
 run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
 
@@ -581,7 +586,7 @@ this version of `slit` uses tabs for its field separators.
 
 convert between a couple saveram formats for N64 emulators.
 
-### [stfu](/sh/stfu#L7)
+### [stfu](/sh/stfu#L4)
 
 invoke a command, silencing stdout and stderr *unless* the command fails.
 
@@ -765,56 +770,64 @@ $ xxp ~/rc/install | head -n2
 
 ## miscellaneous
 
-### [dirprev (zshrc)](/home/zshrc#L70)
+### [dummy (zshrc)](/home/zshrc#L64)
+
+return 0, ignoring arguments.
+
+### [dirprev (zshrc)](/home/zshrc#L71)
 
 rotate and change to the previous directory in the directory stack
 without consuming the prompt.
 
-### [dirnext (zshrc)](/home/zshrc#L77)
+### [dirnext (zshrc)](/home/zshrc#L78)
 
 rotate and change to the next directory in the directory stack
 without consuming the prompt.
 
-### [dirup (zshrc)](/home/zshrc#L84)
+### [dirup (zshrc)](/home/zshrc#L85)
 
 change to the parent directory of the current working directory
 without consuming the prompt.
 
-### [dirview (zshrc)](/home/zshrc#L91)
+### [dirview (zshrc)](/home/zshrc#L92)
 
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L165)
+### [OMFG (zshrc)](/home/zshrc#L166)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L166)
+### [STFU (zshrc)](/home/zshrc#L167)
 
 silence stderr.
 
-### [WHOA (zshrc)](/home/zshrc#L167)
+### [WHOA (zshrc)](/home/zshrc#L168)
 
 expand to several C/C++ flags to ease development.
 
-### [WELP (zshrc)](/home/zshrc#L168)
+### [WELP (zshrc)](/home/zshrc#L169)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [pl (zshrc)](/home/zshrc#L172)
+### [pl (zshrc)](/home/zshrc#L173)
 
 print each argument on its own line.
 
-### [tw (zshrc)](/home/zshrc#L175)
+### [tw (zshrc)](/home/zshrc#L176)
 
 invoke `twitch` as a job with both stdout and stderr silenced.
 
-### [reload (zshrc)](/home/zshrc#L219)
+### [reload (zshrc)](/home/zshrc#L220)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [reload (bashrc)](/home/bashrc#L49)
+### [dummy (bashrc)](/home/bashrc#L45)
+
+return 0, ignoring arguments.
+
+### [reload (bashrc)](/home/bashrc#L50)
 
 **TODO:** respect initctl like in `.zshrc`.
 

@@ -43,7 +43,30 @@ stfu() { ### @-
     ### ```
     [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
 
-    local temp="${TMP:-/tmp}/stfu"
+    local dirty=0 temp="$STFU_DIR"
+    if [ -z "$temp" ]; then
+        temp="$(mktemp -dt stfu.XXXXXXXXXX)"
+        [ $? -eq 0 ] || { printf "%s\n" "$0: failed create temporary directory" >&2; return 1; }
+        dirty=1
+    fi
+
+    # NOTE: this stat command will not work on BSD-likes,
+    #       but it will work with GNU coreutils and busybox.
+    local perms="$(stat -c '%a' "$temp")"
+    local realtemp="$(readlink -f "$temp")"
+    [ -z "$MSYSTEM" ] || perms=700 # MSYS2 is insecure, oh well.
+    if [ -d "$temp" ] && [ "$realtemp" = "$temp" ] && [ "$perms" = 700 ]; then
+        if [ $dirty -ne 0 ]; then
+            export STFU_DIR="$temp"
+        fi
+    else
+        if [ -n "$STFU_DIR" ]; then
+            printf "%s\n" "$0: invalid temporary directory, please unset STFU_DIR" >&2;
+        else
+            printf "%s\n" "$0: something went horribly wrong, maybe you can tell?" "$perms" "$realtemp"
+        fi
+        return 1
+    fi
 
     local time="$(date -u '+%s')"
     [ $? -eq 0 ] || { printf "%s\n" "$0: failed to get current time" >&2; return 1; }
@@ -53,6 +76,8 @@ stfu() { ### @-
     while [ -e "$temp/out_$time" -o -e "$temp/err_$time" ]; do time=$((time+1)); done
     local out="$temp/out_$time"
     local err="$temp/err_$time"
+
+    touch "$out" && touch "$err" || { printf "%s\n" "$0: failed to create temp files" >&2; return 1; }
 
     #local out="$(mktemp -t -p "$temp" out_XXXXXX)"
     #[ $? -eq 0 ] || { printf "%s\n" "$0: failed to create temp file" >&2; return 1; }

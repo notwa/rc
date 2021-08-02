@@ -152,6 +152,10 @@ if has('autocmd')
         au BufRead,BufNewFile *.pde setlocal ft=processing
     augroup END
 
+    augroup insanity
+        autocmd FileType netrw setl bufhidden=wipe
+    augroup END
+
     augroup nocomment
         au!
         au FileType * setlocal fo-=c fo-=r fo-=o
@@ -211,7 +215,10 @@ endf
 com! -nargs=+ Inn call Inn(<q-args>)
 
 Inn <F5>    :w<cr>
+Inn <F6>    :Next<cr>
+Inn <F7>    :next<cr>
 Inn <F8>    :e<cr>
+Inn <F9>    @@
 Inn <F10>   :bd<cr>
 Inn <c-F5>  :w!<cr>
 Inn <c-F8>  :e!<cr>
@@ -296,6 +303,8 @@ try
 catch /E185/
     colorscheme desert
 endtry
+
+let g:netrw_fastbrowse = 0            " so THAT'S what's been causing me agony
 
 " ctrlp {{{1
 

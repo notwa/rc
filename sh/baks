@@ -32,6 +32,6 @@ baks() { ### @-
     return $ret
 }
 
-preload() { local preload='set -- $@'; while [ $# -gt 0 ]; do . ~/sh/$1 || exit 2; shift; done; }
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
 eval ${preload:-preload} note
 [ -n "${preload+-}" ] || baks "$@"

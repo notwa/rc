@@ -41,7 +41,7 @@ stfu() { ### @-
     ### WARNING: The system cannot find the file specified.
     ### asses
     ### ```
-    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
+    argc -ge 1 "$0" "$@" || return
 
     local dirty=0 temp="$STFU_DIR"
     if [ -z "$temp" ]; then
@@ -99,6 +99,6 @@ stfu() { ### @-
     return $ret
 }
 
-preload() { local preload='set -- $@'; while [ $# -gt 0 ]; do . ~/sh/$1 || exit 2; shift; done; }
-eval ${preload:-preload} echo2 note
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} argc echo2 note
 [ -n "${preload+-}" ] || stfu "$@"

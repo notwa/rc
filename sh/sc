@@ -62,6 +62,6 @@ sc() { ### @-
     return 0
 }
 
-preload() { local preload='set -- $@'; while [ $# -gt 0 ]; do . ~/sh/$1 || exit 2; shift; done; }
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
 eval ${preload:-preload} ea
 [ -n "${preload+-}" ] || sc "$@"

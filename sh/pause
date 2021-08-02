@@ -17,4 +17,4 @@ pause() { ### @-
 '
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || pause "$@"
+[ -n "${preload+-}" ] || pause "$@"

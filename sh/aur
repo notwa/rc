@@ -136,4 +136,4 @@ aur() { ### @-
     [ "$fail" -eq 0 ] && return 0 || return 1
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || aur "$@"
+[ -n "${preload+-}" ] || aur "$@"

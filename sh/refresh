@@ -7,4 +7,4 @@ refresh() { ### @- invoke `hash -r`.
     hash -r
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || refresh "$@"
+[ -n "${preload+-}" ] || refresh "$@"

@@ -59,4 +59,4 @@ argc() { ### @- validate the number of arguments in a function.
     return 0
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || argc "$@"
+[ -n "${preload+-}" ] || argc "$@"

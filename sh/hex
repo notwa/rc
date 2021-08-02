@@ -21,4 +21,4 @@ hex() { ### @-
     printf "%08X\n" "$(($@))"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || hex "$@"
+[ -n "${preload+-}" ] || hex "$@"

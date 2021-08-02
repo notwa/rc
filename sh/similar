@@ -20,4 +20,4 @@ similar() { ### @-
     }'
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || similar "$@"
+[ -n "${preload+-}" ] || similar "$@"

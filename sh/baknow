@@ -19,4 +19,4 @@ baknow() { ### @-
     cp -ip "${1:?missing file argument}" "$1.$(now "$1").bak"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || baknow "$@"
+[ -n "${preload+-}" ] || baknow "$@"

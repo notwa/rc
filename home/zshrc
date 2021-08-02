@@ -51,7 +51,7 @@ function {
 
     [ -s ~/.sh.sha1 ] && read -r b _ < ~/.sh.sha1
     ( cd ~/sh \
-      && print -l '#!/usr/bin/env false' '[ "${SOURCING:-0}" -gt 0 ] || exit 1' '' \
+      && print -l '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' '' \
       | cat - $(grep -lF 'YES_ZSH' *(.)) \
       | tee ~/.sh \
     ) | sha1sum - \
@@ -61,9 +61,10 @@ function {
     [ "$a" = "$b" ] && touch ~/.sh.zwc || zrecompile -p ~/.sh
 }
 
-: $((SOURCING+=1))
+dummy() { :; } ### @- return 0, ignoring arguments.
+preload=dummy
 . ~/.sh
-: $((SOURCING-=1))
+unset preload
 
 local fuzzy=`has fzy || print`
 

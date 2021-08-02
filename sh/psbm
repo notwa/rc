@@ -18,4 +18,4 @@ psbm() { ### @-
     ' | sort -n
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || psbm "$@"
+[ -n "${preload+-}" ] || psbm "$@"

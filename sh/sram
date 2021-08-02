@@ -49,4 +49,4 @@ sram() { ### @-
     revend "$out"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || sram "$@"
+[ -n "${preload+-}" ] || sram "$@"

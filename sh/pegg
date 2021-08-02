@@ -19,4 +19,4 @@ pegg() { ### @-
     pippy "https://github.com/$1/$2/tarball/${3:-master}#egg=$2"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || pegg "$@"
+[ -n "${preload+-}" ] || pegg "$@"

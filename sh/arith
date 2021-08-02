@@ -20,4 +20,4 @@ arith() { ### @-
     printf "%s\n" "$(($@))"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || arith "$@"
+[ -n "${preload+-}" ] || arith "$@"

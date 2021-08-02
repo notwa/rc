@@ -1,9 +1,6 @@
 #!/usr/bin/env sh
 # YES_ZSH
 
-#. ~/sh/echo2 # FIXME
-#. ~/sh/note # FIXME
-
 stfu() { ### @-
     ### invoke a command, silencing stdout and stderr *unless* the command fails.
     ###
@@ -44,8 +41,8 @@ stfu() { ### @-
     ### WARNING: The system cannot find the file specified.
     ### asses
     ### ```
-
     [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
+
     local temp="${TMP:-/tmp}/stfu"
 
     local time="$(date -u '+%s')"
@@ -77,4 +74,6 @@ stfu() { ### @-
     return $ret
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || stfu "$@"
+preload() { local preload='set -- $@'; while [ $# -gt 0 ]; do . ~/sh/$1 || exit 2; shift; done; }
+eval ${preload:-preload} echo2 note
+[ -n "${preload+-}" ] || stfu "$@"

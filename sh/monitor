@@ -47,4 +47,4 @@ monitor() { ### @-
     done
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || monitor "$@"
+[ -n "${preload+-}" ] || monitor "$@"

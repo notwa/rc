@@ -136,4 +136,4 @@ maybesudo_() { ### @-
     # don't put any code here or you'll clobber $?.
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || maybesudo_ "$@"
+[ -n "${preload+-}" ] || maybesudo_ "$@"

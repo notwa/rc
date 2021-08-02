@@ -12,4 +12,4 @@ slit() { ### @-
     #awk "{ print ${(j:,:):-\$${^@}} }"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || slit "$@"
+[ -n "${preload+-}" ] || slit "$@"

@@ -37,13 +37,14 @@ ADDPATH "$HOME/sh"
 
 (
     cd ~/sh \
-      && printf "%s\n" '#!/usr/bin/env false' '[ "${SOURCING:-0}" -gt 0 ] || exit 1' '' \
+      && printf "%s\n" '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' '' \
       | cat - $(grep -lF 'YES_BASH' $(find ~/sh -maxdepth 1 -type f)) \
       > ~/.sh-bash
 )
 
-: $((SOURCING+=1))
+dummy() { :; } ### @- return 0, ignoring arguments.
+preload=dummy
 . ~/.sh-bash
-: $((SOURCING-=1))
+unset preload
 
 alias reload='cd; exec bash' ### @- **TODO:** respect initctl like in `.zshrc`.

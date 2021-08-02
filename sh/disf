@@ -6,7 +6,7 @@
 
 # TODO: actually test that this works with dash.
 
-function disf() { ### @-
+disf() { ### @-
     ### disassemble a single function from an unstripped executable, unreliably.
     [ $# -le 2 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     local exe="${1:?first argument should be an unstripped executable}"
@@ -15,4 +15,4 @@ function disf() { ### @-
     objdump -d -C --no-show-raw-insn "$exe" | sed '/<'"$symbol"'>:/,/^$/!d;//d'
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || disf "$@"
+[ -n "${preload+-}" ] || disf "$@"

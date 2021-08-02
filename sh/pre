@@ -26,4 +26,4 @@ pre() { ### @-
     fi
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || pre "$@"
+[ -n "${preload+-}" ] || pre "$@"

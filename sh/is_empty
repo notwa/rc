@@ -13,4 +13,4 @@ is_empty() { ### @-
     return 0
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || is_empty "$@"
+[ -n "${preload+-}" ] || is_empty "$@"

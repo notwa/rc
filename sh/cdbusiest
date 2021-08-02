@@ -17,4 +17,4 @@ cdbusiest() { ### @-
     cd $d
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || cdbusiest "$@"
+[ -n "${preload+-}" ] || cdbusiest "$@"

@@ -17,4 +17,4 @@ echo2() { ### @-
     printf "%s\n" "$*" >&2
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || echo2 "$@"
+[ -n "${preload+-}" ] || echo2 "$@"

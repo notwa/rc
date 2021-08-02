@@ -4,10 +4,6 @@
 # YES_BASH
 # YES_DASH
 
-#: $((SOURCING+=1))
-#. ~/sh/note # FIXME: don't do this?
-#: $((SOURCING-=1))
-
 baks() { ### @-
     ### backup files by copying each and appending *the current* date-time,
     ### irrespective of when the files were modified or created.
@@ -36,4 +32,6 @@ baks() { ### @-
     return $ret
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || baks "$@"
+preload() { local preload='set -- $@'; while [ $# -gt 0 ]; do . ~/sh/$1 || exit 2; shift; done; }
+eval ${preload:-preload} note
+[ -n "${preload+-}" ] || baks "$@"

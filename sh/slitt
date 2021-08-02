@@ -15,4 +15,4 @@ slitt() { ### @-
     #awk "BEGIN { FS=\"\\t\"; OFS=\"\\t\" } { print ${(j:,:):-\$${^@}} }"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || slitt "$@"
+[ -n "${preload+-}" ] || slitt "$@"

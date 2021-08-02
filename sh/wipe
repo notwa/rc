@@ -21,4 +21,4 @@ wipe() { ### @-
     echo $'\033[0m\n' | tr -d '$'
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || wipe "$@"
+[ -n "${preload+-}" ] || wipe "$@"

@@ -72,4 +72,4 @@ rs() { ### @-
         $o_overwrite "$extless.enc.$ext"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || rs "$@"
+[ -n "${preload+-}" ] || rs "$@"

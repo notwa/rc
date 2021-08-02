@@ -20,4 +20,4 @@ bin() { ### @-
     printf "%08X\n" "$a"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || bin "$@"
+[ -n "${preload+-}" ] || bin "$@"

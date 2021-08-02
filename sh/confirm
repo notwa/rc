@@ -45,4 +45,4 @@ else
     }
 fi
 
-[ "${SOURCING:-0}" -gt 0 ] || confirm "$@"
+[ -n "${preload+-}" ] || confirm "$@"

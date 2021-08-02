@@ -40,4 +40,4 @@ minutemaid() { ### @-
     fi
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || minutemaid "$@"
+[ -n "${preload+-}" ] || minutemaid "$@"

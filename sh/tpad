@@ -11,4 +11,4 @@ tpad() { ### @-
     done
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || tpad "$@"
+[ -n "${preload+-}" ] || tpad "$@"

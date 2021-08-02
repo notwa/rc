@@ -27,4 +27,4 @@ cutv() { ### @-
     # -maxrate 9600k -bufsize 12000k -vcodec libx264 -preset medium -crf 22 -vf scale=1280:720
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || cutv "$@"
+[ -n "${preload+-}" ] || cutv "$@"

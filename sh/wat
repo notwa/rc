@@ -37,4 +37,4 @@ wat() { ### @-
     )
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || wat "$@"
+[ -n "${preload+-}" ] || wat "$@"

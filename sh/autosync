@@ -17,4 +17,4 @@ autosync() { ### @-
     done
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || autosync "$@"
+[ -n "${preload+-}" ] || autosync "$@"

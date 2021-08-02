@@ -24,4 +24,4 @@ dbusiest() { ### @-
     [ -z $d ] && return 1
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || dbusiest
+[ -n "${preload+-}" ] || dbusiest "$@"

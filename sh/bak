@@ -30,4 +30,4 @@ bak() { ### @-
     return $ret
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || bak "$@"
+[ -n "${preload+-}" ] || bak "$@"

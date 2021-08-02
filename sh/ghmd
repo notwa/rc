@@ -28,4 +28,4 @@ ghmd() { ### @-
     return $ret
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || ghmd "$@"
+[ -n "${preload+-}" ] || ghmd "$@"

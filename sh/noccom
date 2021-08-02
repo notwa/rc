@@ -53,4 +53,4 @@ EOF
     perl ~/opt/local/bin/noccom "$@"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || noccom "$@"
+[ -n "${preload+-}" ] || noccom "$@"

@@ -20,4 +20,4 @@ sum() { ### @-
     echo "$sum"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || sum "$@"
+[ -n "${preload+-}" ] || sum "$@"

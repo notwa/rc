@@ -53,4 +53,4 @@ now() { ### @-
     echo "${F}_${ms}"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || now "$@"
+[ -n "${preload+-}" ] || now "$@"

@@ -19,4 +19,4 @@ countdiff() { ### @-
     | awk '/changed/{print $4+$6;a=1}END{if(!a)print 0}'
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || countdiff "$@"
+[ -n "${preload+-}" ] || countdiff "$@"

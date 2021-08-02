@@ -20,4 +20,4 @@ xxp() { ### @-
     hexdump -e '15 1 "%02X " 1 1 " %02X\n"' -- "$@"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || xxp "$@"
+[ -n "${preload+-}" ] || xxp "$@"

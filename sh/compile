@@ -359,4 +359,4 @@ compile() { ### @-
     $compiler $std ${final_flags[@]} $file ${libraries[@]} ${warnings[@]} $outflag $out
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || compile "$@"
+[ -n "${preload+-}" ] || compile "$@"

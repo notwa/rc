@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 # YES_ZSH
 
-#: $((SOURCING+=1))
-#. ~/sh/now # FIXME: don't do this?
-#: $((SOURCING-=1))
-
 scropt() { ### @-
     ### run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
     ###
@@ -18,4 +14,6 @@ scropt() { ### @-
     [ $? -eq 0 ] && echo "$fn" || return $?
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || scropt "$@"
+preload() { local preload='set -- $@'; while [ $# -gt 0 ]; do . ~/sh/$1 || exit 2; shift; done; }
+eval ${preload:-preload} now
+[ -n "${preload+-}" ] || scropt "$@"

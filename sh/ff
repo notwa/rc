@@ -10,4 +10,4 @@ ff() { ### @-
     find "${1:-.}" -type f | fzy
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || ff "$@"
+[ -n "${preload+-}" ] || ff "$@"

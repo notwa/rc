@@ -16,4 +16,4 @@ has() { ### @-
     fi
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || has "$@"
+[ -n "${preload+-}" ] || has "$@"

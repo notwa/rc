@@ -14,4 +14,4 @@ unscreen() { ### @-
     return 0
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || unscreen "$@"
+[ -n "${preload+-}" ] || unscreen "$@"

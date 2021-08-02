@@ -46,4 +46,4 @@ ea() { ### @- **TODO:** document.
     esac
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || ea "$@"
+[ -n "${preload+-}" ] || ea "$@"

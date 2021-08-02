@@ -17,4 +17,4 @@ screeny() { ### @-
     return 0
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || screeny "$@"
+[ -n "${preload+-}" ] || screeny "$@"

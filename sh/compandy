@@ -22,4 +22,4 @@ compandy() { ### @-
       $atk $atk $rel $rel $thresh $thresh $end $knee $gain $start $delay
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || compandy "$@"
+[ -n "${preload+-}" ] || compandy "$@"

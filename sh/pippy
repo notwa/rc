@@ -12,4 +12,4 @@ pippy() { ### @-
     "$sudo" py -m pip install --upgrade --upgrade-strategy only-if-needed "$@"
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || pippy "$@"
+[ -n "${preload+-}" ] || pippy "$@"

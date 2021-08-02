@@ -164,4 +164,4 @@ document() { ### @-
     esac
 }
 
-[ "${SOURCING:-0}" -gt 0 ] || document "$@"
+[ -n "${preload+-}" ] || document "$@"

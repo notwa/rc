@@ -1,0 +1,90 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+shcom() { ### @-
+    ### comment out text from stdin and wrap it in a markdown blockquote
+    ### for docstrings. this contains some extra logic for
+    ### handling already-commented and already-quoted text.
+    ### this allows `shcom` to be used with vim's visual selections
+    ### to update existing code examples.
+    ###
+    ### as a simple example, `echo hey | shcom` produces, verbatim:
+    ###
+    ### ```
+    ### hey
+    ### ```
+    [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    local delim="#""#""#" block='```'
+    local ret=0 opened=0 closed=0 seen_open=0 seen_close=0 left='' right=''
+
+    while IFS= read -r line; do
+
+        case "$line" in
+        *"$delim"*)
+            left="${line%%$delim*}"
+            right="${line#*$delim}"
+            left="${left#${left%%[! ]*}}" # ltrim
+            [ -z "$left" ] || { printf 'error: ignoring text before %s delimiter\n' "$delim" >&2; ret=1; }
+            right="${right# }" # ltrim one space
+            ;;
+
+        *)
+            left=''
+            right="$line"
+            ;;
+        esac
+
+        case "$right" in
+        @-*|@*-*|@*)
+            printf 'warning: passing through "at" line %s\n' "$delim" >&2
+            printf '%s\n' "$line"
+            continue;;
+        esac
+
+        if [ -z "$right" ]; then
+            if [ $opened != 0 ]; then
+                printf '    %s\n' "$delim"
+            fi
+            continue
+        fi
+
+        line="$right"
+
+        case "$line" in
+        *"$block"*)
+            left="${line%%$block*}"
+            right="${line#*$block}"
+            [ -z "$left" ] || { printf 'error: ignoring text before %s delimiter\n' "$block" >&2; ret=1; }
+            [ "${#right}" = 0 ] || printf 'warning: text after %s delimiter\n' "$block" >&2
+            if [ $seen_open = 0 ]; then
+                seen_open=1
+            elif [ $seen_close = 0 ]; then
+                seen_close=1
+            else
+                printf 'error: block quote already opened and closed\n' >&2
+                ret=1
+            fi
+            ;;
+
+        *)
+            if [ $opened = 0 ]; then
+                printf '    %s ```\n' "$delim"
+                opened=1
+            fi
+            printf '    %s %s\n' "$delim" "$line"
+            ;;
+        esac
+
+    done
+
+    if [ $opened != 0 ] && [ $closed = 0 ]; then
+        printf '    %s %s\n' "$delim" "$block"
+    fi
+
+    return $ret
+}
+
+[ -n "${preload+-}" ] || shcom "$@"

@@ -569,6 +569,20 @@ run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
 $ ~/sh/sc $(~/sh/scropt -s -d0.5)
 ```
 
+### [shcom](/sh/shcom#L7)
+
+comment out text from stdin and wrap it in a markdown blockquote
+for docstrings. this contains some extra logic for
+handling already-commented and already-quoted text.
+this allows `shcom` to be used with vim's visual selections
+to update existing code examples.
+
+as a simple example, `echo hey | shcom` produces, verbatim:
+
+```
+hey
+```
+
 ### [similar](/sh/similar#L6)
 
 highlight adjacent lines up to the first inequivalent character.
@@ -586,46 +600,37 @@ this version of `slit` uses tabs for its field separators.
 
 convert between a couple saveram formats for N64 emulators.
 
-### [stfu](/sh/stfu#L4)
+### [stfu](/sh/stfu#L7)
 
 invoke a command, silencing stdout and stderr *unless* the command fails.
 
 **NOTE:** don't use `stfu` for handling sensitive data or commands!
 use it for 7zip.
 
+note that the tail commands in the example below are from `stfu` itself;
+they are echoed to reveal the temp paths for any further investigation.
+
 ```
 $ touch butts
+$ STFU_TAIL=5
 $ stfu 7z a butts.7z butts
 $ stfu 7z a butts.7z asses
 command failed with exit status 1:
 7z a butts.7z asses
 
-$ tail -n 20 /tmp/stfu/out_1627834220
-Solid = -
-Blocks = 0
-
-Scanning the drive:
-0 files, 0 bytes
-
-Updating archive: butts.7z
-
-Keep old data in archive: 1 file, 0 bytes
-Add new data to archive: 0 files, 0 bytes
-
-
-Files read from disk: 0
-Archive size: 82 bytes (1 KiB)
-
+$ tail -n 5 /tmp/stfu.CoJ0vmJsqA/out_1627942118
 Scan WARNINGS for files and folders:
 
 asses : The system cannot find the file specified.
 ----------------
 Scan WARNINGS: 1
 
-$ tail -n 20 /tmp/stfu/err_1627834220
+$ tail -n 5 /tmp/stfu.CoJ0vmJsqA/err_1627942118
 
 WARNING: The system cannot find the file specified.
 asses
+
+
 ```
 
 ### [mpvs (sh/streamcrap)](/sh/streamcrap#L6)

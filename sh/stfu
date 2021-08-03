@@ -7,39 +7,30 @@ stfu() { ### @-
     ### **NOTE:** don't use `stfu` for handling sensitive data or commands!
     ### use it for 7zip.
     ###
+    ### note that the tail commands in the example below are from `stfu` itself;
+    ### they are echoed to reveal the temp paths for any further investigation.
+    ###
     ### ```
     ### $ touch butts
+    ### $ STFU_TAIL=5
     ### $ stfu 7z a butts.7z butts
     ### $ stfu 7z a butts.7z asses
     ### command failed with exit status 1:
     ### 7z a butts.7z asses
     ###
-    ### $ tail -n 20 /tmp/stfu/out_1627834220
-    ### Solid = -
-    ### Blocks = 0
-    ###
-    ### Scanning the drive:
-    ### 0 files, 0 bytes
-    ###
-    ### Updating archive: butts.7z
-    ###
-    ### Keep old data in archive: 1 file, 0 bytes
-    ### Add new data to archive: 0 files, 0 bytes
-    ###
-    ###
-    ### Files read from disk: 0
-    ### Archive size: 82 bytes (1 KiB)
-    ###
+    ### $ tail -n 5 /tmp/stfu.CoJ0vmJsqA/out_1627942118
     ### Scan WARNINGS for files and folders:
     ###
     ### asses : The system cannot find the file specified.
     ### ----------------
     ### Scan WARNINGS: 1
     ###
-    ### $ tail -n 20 /tmp/stfu/err_1627834220
+    ### $ tail -n 5 /tmp/stfu.CoJ0vmJsqA/err_1627942118
     ###
     ### WARNING: The system cannot find the file specified.
     ### asses
+    ###
+    ###
     ### ```
     argc -ge 1 "$0" "$@" || return
 
@@ -55,15 +46,16 @@ stfu() { ### @-
     local perms="$(stat -c '%a' "$temp")"
     local realtemp="$(readlink -f "$temp")"
     [ -z "$MSYSTEM" ] || perms=700 # MSYS2 is insecure, oh well.
+
     if [ -d "$temp" ] && [ "$realtemp" = "$temp" ] && [ "$perms" = 700 ]; then
         if [ $dirty -ne 0 ]; then
             export STFU_DIR="$temp"
         fi
     else
         if [ -n "$STFU_DIR" ]; then
-            printf "%s\n" "$0: invalid temporary directory, please unset STFU_DIR" >&2;
+            printf "%s\n" "$0: invalid temporary directory, please unset STFU_DIR" >&2
         else
-            printf "%s\n" "$0: something went horribly wrong, maybe you can tell?" "$perms" "$realtemp"
+            printf "%s\n" "$0: something went horribly wrong, maybe you can tell?" "$perms" "$realtemp" >&2
         fi
         return 1
     fi
@@ -84,17 +76,17 @@ stfu() { ### @-
     #local err="$(mktemp -t -p "$temp" err_XXXXXX)"
     #[ $? -eq 0 ] || { printf "%s\n" "$0: failed to create temp file" >&2; return 1; }
 
-    local ret=0
+    local ret=0 tail="${STFU_TAIL:-20}"
     "$@" > "$out" 2> "$err" || ret=$?
     if [ $ret -ne 0 ]; then
         printf "command failed with exit status %s:\n" $ret >&2
         echo2 "$@"
         echo2
-        note '$ tail -n 20' "$out"
-        tail -n 20 "$out" >&2
+        note '$ tail -n' "$tail" "$out"
+        tail -n "$tail" "$out" >&2
         echo2
-        note '$ tail -n 20' "$err"
-        tail -n 20 "$err" >&2
+        note '$ tail -n' "$tail" "$err"
+        tail -n "$tail" "$err" >&2
     fi
     return $ret
 }

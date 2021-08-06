@@ -14,9 +14,10 @@ document2() {
     # NOTE: since the marker corresponds to a <h3> in markdown, it's used there too.
     local e="${f#sh/}" # function name to expect
     local f="$1" # file
+    local o=1 # when one, previous line was a one-liner (@- token).
     [ "$f" != "$e" ] || e="" # only expect function names for stuff in sh/
     while IFS= read -r line; do
-        : $((c+=1))
+        : $((c+=1)) $((o+=1))
         # we only care about lines with our docstring marker in them:
         case "$line" in *"$d"*) :;; *) continue;; esac
 
@@ -39,6 +40,8 @@ document2() {
             done
             s="${docs#@-}" # substr the stuff after the hyphen
             s="${s#${s%%[! ]*}}" # ltrim
+
+            [ -z "$s" ] || o=0
             ;;
 
         @*-*)
@@ -51,6 +54,8 @@ document2() {
             n="${n%${n##*[! ]}}" # rtrim
 
             s="${s#${s%%[! ]*}}" # ltrim
+
+            [ -z "$s" ] || o=0
             ;;
 
         @*)
@@ -80,6 +85,10 @@ document2() {
         if [ "$s" != ' ' ]; then # don't bother unless it was set to something
             if [ -z "$n" -o -n "$s" ]; then # might only be a name, check that
                 # just pass the remaining comment through:
+                if [ $o = 1 ]; then
+                    # ensure one-liners are their in their own paragraph.
+                    printf '\n' || return 5
+                fi
                 printf '%s\n' "$s" || return 5
             fi
         fi

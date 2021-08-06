@@ -21,7 +21,7 @@ else
     alias maybesudo="maybesudo_ " # allows aliases within the alias
 fi
 
-ADDPATH() { ### @ ADDPATH
+ADDPATH() { ### @-
     ### append a directory to `$PATH` if it isn't already present.
     new="$(readlink -f "$1")"
     if [ ! -d "$new" ]; then
@@ -125,7 +125,6 @@ alias curls="curl -sS" ### @- invoke curl with less noise.
 
 alias get="git clone --single-branch --depth 1" ### @- retrieve the most recent files from the default branch of a git repository, and not much else.
 alias gs='git status' ### @- invoke git's status subcommand.
-###
 ### **TODO:** consider renaming because gs(1) already exists.
 alias gd='git diff -U2' ### @- invoke git's diff subcommand with fewer lines of context.
 alias gds='git --no-pager diff --stat' ### @- display difference stats from git.
@@ -134,7 +133,6 @@ alias glo='git log --graph --decorate --pretty=oneline --abbrev-commit --all' ##
 alias g1='git log --pretty=oneline --abbrev-commit --color=always | head -1' ### @- display the most recent git commit.
 alias gr='git remote -v' ### @- display remote git repositories verbosely.
 alias gb='git --no-pager branch' ### @- display the current git branch.
-###
 ### **NOTE:** there also exists a gb(1) program provided by
 ### the *gb* package that i don't use.
 
@@ -171,7 +169,6 @@ lol() { ### @ ll - list files verbosely, fancily, ordered, but not recursively.
 
 alias diff="git diff --color=auto --no-ext-diff --no-index --no-prefix" ### @- use git's diff subcommand for general diffing.
 alias gc="git column --mode=dense --padding=2" ### @- columnize text by using git's column subcommand.
-###
 ### **TODO:** consider renaming because gc(1) already exists.
 alias counts='find . | wc -l' ### @- count files in the current directory, including files found recursively.
 alias exts="find -type f | grep -o '\\.[^/.]*$' | sort | uniq -c | sort -n" ### @- count and sort file extensions in the current directory, including files found recursively.
@@ -182,7 +179,6 @@ alias bomb='uconv -f utf-8 -t utf-8 --add-signature' ### @- add a Byte-Order Mar
 alias cleanse='tr -cd "\11\12\15\40-\176"' ### @- strip unprintable and non-ASCII characters.
 alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\' ### @- join paragraphs into one line each.
 alias double='awk "{print;print}"' ### @- print every line twice. <br/> print every line twice.
-###
 ### **NOTE:** there also exists a double(1) program provided by
 ### the *plotutils* package that i don't use.
 alias join2='paste -d" " - -' ### @- join every other line.
@@ -194,11 +190,10 @@ alias makepkgf='makepkg -Af --skipchecksums --skippgpcheck' ### @- make the frea
 alias rakef='rake && gem build *.gemspec && gem install *.gem' ### @- make the freakin' gem!
 
 eashare() { ### @- upload a file and copy its URL to the clipboard.
-    ###
     ### **NOTE:** this only works on MSYS2 for now.
     ###
     ### **NOTE:** i lied, this doesn't work at all.
     local dest="${1##*/}"
-    eaput "$1" || return 1
+    eaput "$1" || return
     printf "%s" "$_REMOTE_DOMAIN/$_REMOTE_DIR/$dest" >> /dev/clipboard
 }

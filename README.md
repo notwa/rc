@@ -8,6 +8,13 @@ quick install for random boxes:
 cd && curl -L https://github.com/notwa/rc/archive/master.tar.gz | tar zx && mv rc-master rc && rc/install
 ```
 
+the following shells are taken into consideration, ordered from most to least compatible:
+
+* zsh
+* bash
+* dash
+* ash (busybox)
+
 **NOTE:** everything below this line is overwritten and automatically [regenerated.](/regenerate)
 
 <!-- DOCUMENT -->

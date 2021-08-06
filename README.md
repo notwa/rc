@@ -24,6 +24,7 @@ the following shells are taken into consideration, ordered from most to least co
 ### [argc](/sh/argc#L7)
 
 validate the number of arguments in a function.
+
 ```sh
 # usage: myfunc() { argc -(eq|le|ge) [0-9] "$0" "$@" || return; }
 
@@ -284,7 +285,7 @@ Filesystem              Used     Max    Left    Misc
 
 disassemble a single function from an unstripped executable, unreliably.
 
-### [document](/sh/document#L135)
+### [document](/sh/document#L144)
 
 generate a markdown file out of docstrings in shell scripts.
 
@@ -502,6 +503,7 @@ $ pre | shuf | head -n10
 ### [preload](/sh/preload#L3)
 
 handle dependencies within the [`~/sh/`](/sh) directory.
+
 this function contains more comments than code, so you should read it.
 
 ### [psbm](/sh/psbm#L6)
@@ -885,172 +887,173 @@ invoke git's status subcommand.
 
 **TODO:** consider renaming because gs(1) already exists.
 
-### [gd (-shrc)](/home/-shrc#L130)
+### [gd (-shrc)](/home/-shrc#L129)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [gds (-shrc)](/home/-shrc#L131)
+### [gds (-shrc)](/home/-shrc#L130)
 
 display difference stats from git.
 
-### [gl (-shrc)](/home/-shrc#L132)
+### [gl (-shrc)](/home/-shrc#L131)
 
 invoke git's log subcommand with a single line per commit.
 
-### [glo (-shrc)](/home/-shrc#L133)
+### [glo (-shrc)](/home/-shrc#L132)
 
 navigate git's commit tree succinctly.
 
-### [g1 (-shrc)](/home/-shrc#L134)
+### [g1 (-shrc)](/home/-shrc#L133)
 
 display the most recent git commit.
 
-### [gr (-shrc)](/home/-shrc#L135)
+### [gr (-shrc)](/home/-shrc#L134)
 
 display remote git repositories verbosely.
 
-### [gb (-shrc)](/home/-shrc#L136)
+### [gb (-shrc)](/home/-shrc#L135)
 
 display the current git branch.
 
 **NOTE:** there also exists a gb(1) program provided by
 the *gb* package that i don't use.
 
-### [revend (-shrc)](/home/-shrc#L146)
+### [revend (-shrc)](/home/-shrc#L144)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (-shrc)](/home/-shrc#L148)
+### [clone (-shrc)](/home/-shrc#L146)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (-shrc)](/home/-shrc#L149)
+### [aligntabs (-shrc)](/home/-shrc#L147)
 
 align tab-delimited fields in stdin.
 
-### [crawla (-shrc)](/home/-shrc#L150)
+### [crawla (-shrc)](/home/-shrc#L148)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (-shrc)](/home/-shrc#L151)
+### [crawlz (-shrc)](/home/-shrc#L149)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [eahead (-shrc)](/home/-shrc#L153)
+### [eahead (-shrc)](/home/-shrc#L151)
 
 deprecated name for [`ea head`.](#ea)
 
-### [eaget (-shrc)](/home/-shrc#L154)
+### [eaget (-shrc)](/home/-shrc#L152)
 
 deprecated name for [`ea get`.](#ea)
 
-### [eaput (-shrc)](/home/-shrc#L155)
+### [eaput (-shrc)](/home/-shrc#L153)
 
 deprecated name for [`ea put`.](#ea)
 
-### [eamove (-shrc)](/home/-shrc#L156)
+### [eamove (-shrc)](/home/-shrc#L154)
 
 deprecated name for [`ea move`.](#ea)
 
-### [eacopy (-shrc)](/home/-shrc#L157)
+### [eacopy (-shrc)](/home/-shrc#L155)
 
 deprecated name for [`ea copy`.](#ea)
 
-### [eadelete (-shrc)](/home/-shrc#L158)
+### [eadelete (-shrc)](/home/-shrc#L156)
 
 deprecated name for [`ea delete`.](#ea)
 
-### [eamv (-shrc)](/home/-shrc#L159)
+### [eamv (-shrc)](/home/-shrc#L157)
 
 invoke [`ea move`.](#ea)
 
-### [eacp (-shrc)](/home/-shrc#L160)
+### [eacp (-shrc)](/home/-shrc#L158)
 
 invoke [`ea copy`.](#ea)
 
-### [earm (-shrc)](/home/-shrc#L161)
+### [earm (-shrc)](/home/-shrc#L159)
 
 invoke [`ea delete`.](#ea)
 
-### [ll (-shrc)](/home/-shrc#L164)
+### [ll (-shrc)](/home/-shrc#L162)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [diff (-shrc)](/home/-shrc#L172)
+### [diff (-shrc)](/home/-shrc#L170)
 
 use git's diff subcommand for general diffing.
 
-### [gc (-shrc)](/home/-shrc#L173)
+### [gc (-shrc)](/home/-shrc#L171)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (-shrc)](/home/-shrc#L176)
+### [counts (-shrc)](/home/-shrc#L173)
 
 count files in the current directory, including files found recursively.
 
-### [exts (-shrc)](/home/-shrc#L177)
+### [exts (-shrc)](/home/-shrc#L174)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (-shrc)](/home/-shrc#L178)
+### [nocom (-shrc)](/home/-shrc#L175)
 
 strip single-line C-like and shell-like comments.
 
-### [sortip (-shrc)](/home/-shrc#L179)
+### [sortip (-shrc)](/home/-shrc#L176)
 
 sort numerically by IPv4 segments.
 
-### [jrep (-shrc)](/home/-shrc#L180)
+### [jrep (-shrc)](/home/-shrc#L177)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (-shrc)](/home/-shrc#L181)
+### [bomb (-shrc)](/home/-shrc#L178)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (-shrc)](/home/-shrc#L182)
+### [cleanse (-shrc)](/home/-shrc#L179)
 
 strip unprintable and non-ASCII characters.
 
-### [unwrap (-shrc)](/home/-shrc#L183)
+### [unwrap (-shrc)](/home/-shrc#L180)
 
 join paragraphs into one line each.
 
-### [double (-shrc)](/home/-shrc#L184)
+### [double (-shrc)](/home/-shrc#L181)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [join2 (-shrc)](/home/-shrc#L188)
+### [join2 (-shrc)](/home/-shrc#L184)
 
 join every other line.
 
-### [katagana (-shrc)](/home/-shrc#L189)
+### [katagana (-shrc)](/home/-shrc#L185)
 
 convert katakana codepoints to their equivalent hiragana.
+
 useful for translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (-shrc)](/home/-shrc#L191)
+### [picky (-shrc)](/home/-shrc#L187)
 
 TODO
 
-### [unused (-shrc)](/home/-shrc#L192)
+### [unused (-shrc)](/home/-shrc#L188)
 
 TODO
 
-### [makepkgf (-shrc)](/home/-shrc#L193)
+### [makepkgf (-shrc)](/home/-shrc#L189)
 
 make the freakin' package!
 
-### [rakef (-shrc)](/home/-shrc#L194)
+### [rakef (-shrc)](/home/-shrc#L190)
 
 make the freakin' gem!
 
-### [eashare (-shrc)](/home/-shrc#L196)
+### [eashare (-shrc)](/home/-shrc#L192)
 
 upload a file and copy its URL to the clipboard.
 

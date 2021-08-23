@@ -81,9 +81,9 @@ total 0
 -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.bak.bak
 ```
 
-### [baknow](/sh/baknow#L4)
+### [baknow](/sh/baknow#L7)
 
-backup a single file by appending its timestamp given by [`now`.](#now)
+backup files by appending their timestamps given by [`now`.](#now)
 
 ```
 $ touch -d '2001-12-25 16:30:00' butts
@@ -95,8 +95,6 @@ total 0
 -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts
 -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.2001-12-26_01800000.bak
 ```
-
-**TODO:** support multiple files at once.
 
 ### [baks](/sh/baks#L7)
 
@@ -605,6 +603,10 @@ view specific columns of text.
 view specific columns of text.
 this version of `slit` uses tabs for its field separators.
 
+### [sortip](/sh/sortip#L7)
+
+sort lines numerically by IPv4 segments.
+
 ### [sram](/sh/sram#L4)
 
 convert between a couple saveram formats for N64 emulators.
@@ -1000,60 +1002,56 @@ count and sort file extensions in the current directory, including files found r
 
 strip single-line C-like and shell-like comments.
 
-### [sortip (-shrc)](/home/-shrc#L176)
-
-sort numerically by IPv4 segments.
-
-### [jrep (-shrc)](/home/-shrc#L177)
+### [jrep (-shrc)](/home/-shrc#L176)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (-shrc)](/home/-shrc#L178)
+### [bomb (-shrc)](/home/-shrc#L177)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (-shrc)](/home/-shrc#L179)
+### [cleanse (-shrc)](/home/-shrc#L178)
 
 strip unprintable and non-ASCII characters.
 
-### [unwrap (-shrc)](/home/-shrc#L180)
+### [unwrap (-shrc)](/home/-shrc#L179)
 
 join paragraphs into one line each.
 
-### [double (-shrc)](/home/-shrc#L181)
+### [double (-shrc)](/home/-shrc#L180)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [join2 (-shrc)](/home/-shrc#L184)
+### [join2 (-shrc)](/home/-shrc#L183)
 
 join every other line.
 
-### [katagana (-shrc)](/home/-shrc#L185)
+### [katagana (-shrc)](/home/-shrc#L184)
 
 convert katakana codepoints to their equivalent hiragana.
 
 useful for translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (-shrc)](/home/-shrc#L187)
+### [picky (-shrc)](/home/-shrc#L186)
 
 TODO
 
-### [unused (-shrc)](/home/-shrc#L188)
+### [unused (-shrc)](/home/-shrc#L187)
 
 TODO
 
-### [makepkgf (-shrc)](/home/-shrc#L189)
+### [makepkgf (-shrc)](/home/-shrc#L188)
 
 make the freakin' package!
 
-### [rakef (-shrc)](/home/-shrc#L190)
+### [rakef (-shrc)](/home/-shrc#L189)
 
 make the freakin' gem!
 
-### [eashare (-shrc)](/home/-shrc#L192)
+### [eashare (-shrc)](/home/-shrc#L191)
 
 upload a file and copy its URL to the clipboard.
 

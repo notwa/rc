@@ -80,7 +80,7 @@ mpv_stream() { ### @-
     argc -ge 1 "$0" "$@" || return
     pushd ~/play >/dev/null
     local url="$1"; shift
-    mpvs --af=lavfi="[$_M_PROCESS]" "$@" "$url"
+    mpvs --af=lavfi="[$_M_PROCESS]" "$@" -- "$url"
     popd >/dev/null
 }
 

@@ -1,9 +1,10 @@
 #!/usr/bin/env sh
 # YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
 
-baknow() { ### @-
-    ### backup a single file by appending its timestamp given by [`now`.](#now)
-    ###
+baknow() { ### @- backup files by appending their timestamps given by [`now`.](#now)
     ### ```
     ### $ touch -d '2001-12-25 16:30:00' butts
     ### $ baknow butts
@@ -14,9 +15,14 @@ baknow() { ### @-
     ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts
     ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.2001-12-26_01800000.bak
     ### ```
-    ###
-    ### **TODO:** support multiple files at once.
-    cp -ip "${1:?missing file argument}" "$1.$(now "$1").bak"
+    argc -ge 1 "$0" "$@" || return
+    local ret=0
+    for f; do
+        cp -ip "$f" "$f.$(now "$f").bak" || ret=1
+    done
+    return $ret
 }
 
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} argc now
 [ -n "${preload+-}" ] || baknow "$@"

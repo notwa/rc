@@ -23,6 +23,9 @@ fi
 
 ADDPATH() { ### @-
     ### append a directory to `$PATH` if it isn't already present.
+    if [ "$1" != "${1#[A-Z]:\\}" ]; then
+        set -- "$(cygpath -u "$1")"
+    fi
     new="$(readlink -f "$1")"
     if [ ! -d "$new" ]; then
         echo -E "ADDPATH: path doesn't exist: $1" >&2

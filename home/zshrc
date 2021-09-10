@@ -49,6 +49,8 @@ zmodload zsh/mathfunc
 function {
     local a b
 
+    # combine everything matching "YES_ZSH" in ~/sh/ into ~/.sh,
+    # but only recompile the output if the sha1sum has changed.
     [ -s ~/.sh.sha1 ] && read -r b _ < ~/.sh.sha1
     ( cd ~/sh \
       && print -l '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' '' \

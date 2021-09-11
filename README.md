@@ -786,64 +786,64 @@ $ xxp ~/rc/install | head -n2
 
 ## miscellaneous
 
-### [dummy (zshrc)](/home/zshrc#L64)
+### [dummy (zshrc)](/home/zshrc#L66)
 
 return 0, ignoring arguments.
 
-### [dirprev (zshrc)](/home/zshrc#L71)
+### [dirprev (zshrc)](/home/zshrc#L73)
 
 rotate and change to the previous directory in the directory stack
 without consuming the prompt.
 
-### [dirnext (zshrc)](/home/zshrc#L78)
+### [dirnext (zshrc)](/home/zshrc#L80)
 
 rotate and change to the next directory in the directory stack
 without consuming the prompt.
 
-### [dirup (zshrc)](/home/zshrc#L85)
+### [dirup (zshrc)](/home/zshrc#L87)
 
 change to the parent directory of the current working directory
 without consuming the prompt.
 
-### [dirview (zshrc)](/home/zshrc#L92)
+### [dirview (zshrc)](/home/zshrc#L94)
 
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L166)
+### [OMFG (zshrc)](/home/zshrc#L168)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L167)
+### [STFU (zshrc)](/home/zshrc#L169)
 
 silence stderr.
 
-### [WHOA (zshrc)](/home/zshrc#L168)
+### [WHOA (zshrc)](/home/zshrc#L170)
 
 expand to several C/C++ flags to ease development.
 
-### [WELP (zshrc)](/home/zshrc#L169)
+### [WELP (zshrc)](/home/zshrc#L171)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [pl (zshrc)](/home/zshrc#L173)
+### [pl (zshrc)](/home/zshrc#L175)
 
 print each argument on its own line.
 
-### [tw (zshrc)](/home/zshrc#L176)
+### [tw (zshrc)](/home/zshrc#L178)
 
 invoke `twitch` as a job with both stdout and stderr silenced.
 
-### [reload (zshrc)](/home/zshrc#L220)
+### [reload (zshrc)](/home/zshrc#L222)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L45)
+### [dummy (bashrc)](/home/bashrc#L47)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L50)
+### [reload (bashrc)](/home/bashrc#L52)
 
 **TODO:** respect initctl like in `.zshrc`.
 
@@ -855,203 +855,203 @@ hardcoded here for convenience.
 
 append a directory to `$PATH` if it isn't already present.
 
-### [fils (-shrc)](/home/-shrc#L117)
+### [fils (-shrc)](/home/-shrc#L120)
 
 (GNU du) display human-friendly filesizes for the files in a directory.
 
-### [lsa (-shrc)](/home/-shrc#L118)
+### [lsa (-shrc)](/home/-shrc#L121)
 
 (GNU ls) list files with directories and dotfiles ordered first.
 
-### [perlu (-shrc)](/home/-shrc#L119)
+### [perlu (-shrc)](/home/-shrc#L122)
 
 invoke perl expecting files with UTF-8 encoding.
 
-### [rgn (-shrc)](/home/-shrc#L120)
+### [rgn (-shrc)](/home/-shrc#L123)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [cms (-shrc)](/home/-shrc#L121)
+### [cms (-shrc)](/home/-shrc#L124)
 
 invoke cryptominisat5 with less noise.
 
-### [curls (-shrc)](/home/-shrc#L122)
+### [curls (-shrc)](/home/-shrc#L125)
 
 invoke curl with less noise.
 
-### [get (-shrc)](/home/-shrc#L126)
+### [get (-shrc)](/home/-shrc#L129)
 
 retrieve the most recent files from the default branch of a git repository, and not much else.
 
-### [gs (-shrc)](/home/-shrc#L127)
+### [gs (-shrc)](/home/-shrc#L130)
 
 invoke git's status subcommand.
 
 **TODO:** consider renaming because gs(1) already exists.
 
-### [gd (-shrc)](/home/-shrc#L129)
+### [gd (-shrc)](/home/-shrc#L132)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [gds (-shrc)](/home/-shrc#L130)
+### [gds (-shrc)](/home/-shrc#L133)
 
 display difference stats from git.
 
-### [gl (-shrc)](/home/-shrc#L131)
+### [gl (-shrc)](/home/-shrc#L134)
 
 invoke git's log subcommand with a single line per commit.
 
-### [glo (-shrc)](/home/-shrc#L132)
+### [glo (-shrc)](/home/-shrc#L135)
 
 navigate git's commit tree succinctly.
 
-### [g1 (-shrc)](/home/-shrc#L133)
+### [g1 (-shrc)](/home/-shrc#L136)
 
 display the most recent git commit.
 
-### [gr (-shrc)](/home/-shrc#L134)
+### [gr (-shrc)](/home/-shrc#L137)
 
 display remote git repositories verbosely.
 
-### [gb (-shrc)](/home/-shrc#L135)
+### [gb (-shrc)](/home/-shrc#L138)
 
 display the current git branch.
 
 **NOTE:** there also exists a gb(1) program provided by
 the *gb* package that i don't use.
 
-### [revend (-shrc)](/home/-shrc#L144)
+### [revend (-shrc)](/home/-shrc#L147)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (-shrc)](/home/-shrc#L146)
+### [clone (-shrc)](/home/-shrc#L149)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (-shrc)](/home/-shrc#L147)
+### [aligntabs (-shrc)](/home/-shrc#L150)
 
 align tab-delimited fields in stdin.
 
-### [crawla (-shrc)](/home/-shrc#L148)
+### [crawla (-shrc)](/home/-shrc#L151)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (-shrc)](/home/-shrc#L149)
+### [crawlz (-shrc)](/home/-shrc#L152)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [eahead (-shrc)](/home/-shrc#L151)
+### [eahead (-shrc)](/home/-shrc#L154)
 
 deprecated name for [`ea head`.](#ea)
 
-### [eaget (-shrc)](/home/-shrc#L152)
+### [eaget (-shrc)](/home/-shrc#L155)
 
 deprecated name for [`ea get`.](#ea)
 
-### [eaput (-shrc)](/home/-shrc#L153)
+### [eaput (-shrc)](/home/-shrc#L156)
 
 deprecated name for [`ea put`.](#ea)
 
-### [eamove (-shrc)](/home/-shrc#L154)
+### [eamove (-shrc)](/home/-shrc#L157)
 
 deprecated name for [`ea move`.](#ea)
 
-### [eacopy (-shrc)](/home/-shrc#L155)
+### [eacopy (-shrc)](/home/-shrc#L158)
 
 deprecated name for [`ea copy`.](#ea)
 
-### [eadelete (-shrc)](/home/-shrc#L156)
+### [eadelete (-shrc)](/home/-shrc#L159)
 
 deprecated name for [`ea delete`.](#ea)
 
-### [eamv (-shrc)](/home/-shrc#L157)
+### [eamv (-shrc)](/home/-shrc#L160)
 
 invoke [`ea move`.](#ea)
 
-### [eacp (-shrc)](/home/-shrc#L158)
+### [eacp (-shrc)](/home/-shrc#L161)
 
 invoke [`ea copy`.](#ea)
 
-### [earm (-shrc)](/home/-shrc#L159)
+### [earm (-shrc)](/home/-shrc#L162)
 
 invoke [`ea delete`.](#ea)
 
-### [ll (-shrc)](/home/-shrc#L162)
+### [ll (-shrc)](/home/-shrc#L165)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [diff (-shrc)](/home/-shrc#L170)
+### [diff (-shrc)](/home/-shrc#L173)
 
 use git's diff subcommand for general diffing.
 
-### [gc (-shrc)](/home/-shrc#L171)
+### [gc (-shrc)](/home/-shrc#L174)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (-shrc)](/home/-shrc#L173)
+### [counts (-shrc)](/home/-shrc#L176)
 
 count files in the current directory, including files found recursively.
 
-### [exts (-shrc)](/home/-shrc#L174)
+### [exts (-shrc)](/home/-shrc#L177)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (-shrc)](/home/-shrc#L175)
+### [nocom (-shrc)](/home/-shrc#L178)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (-shrc)](/home/-shrc#L176)
+### [jrep (-shrc)](/home/-shrc#L179)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (-shrc)](/home/-shrc#L177)
+### [bomb (-shrc)](/home/-shrc#L180)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (-shrc)](/home/-shrc#L178)
+### [cleanse (-shrc)](/home/-shrc#L181)
 
 strip unprintable and non-ASCII characters.
 
-### [unwrap (-shrc)](/home/-shrc#L179)
+### [unwrap (-shrc)](/home/-shrc#L182)
 
 join paragraphs into one line each.
 
-### [double (-shrc)](/home/-shrc#L180)
+### [double (-shrc)](/home/-shrc#L183)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [join2 (-shrc)](/home/-shrc#L183)
+### [join2 (-shrc)](/home/-shrc#L186)
 
 join every other line.
 
-### [katagana (-shrc)](/home/-shrc#L184)
+### [katagana (-shrc)](/home/-shrc#L187)
 
 convert katakana codepoints to their equivalent hiragana.
 
 useful for translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (-shrc)](/home/-shrc#L186)
+### [picky (-shrc)](/home/-shrc#L189)
 
 TODO
 
-### [unused (-shrc)](/home/-shrc#L187)
+### [unused (-shrc)](/home/-shrc#L190)
 
 TODO
 
-### [makepkgf (-shrc)](/home/-shrc#L188)
+### [makepkgf (-shrc)](/home/-shrc#L191)
 
 make the freakin' package!
 
-### [rakef (-shrc)](/home/-shrc#L189)
+### [rakef (-shrc)](/home/-shrc#L192)
 
 make the freakin' gem!
 
-### [eashare (-shrc)](/home/-shrc#L191)
+### [eashare (-shrc)](/home/-shrc#L194)
 
 upload a file and copy its URL to the clipboard.
 

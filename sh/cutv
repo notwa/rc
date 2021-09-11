@@ -14,7 +14,7 @@ cutv() { ### @-
     ffmpeg -hide_banner -i "$f" 2>&1 \
       | grep Duration \
       | grep -Eo '[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9]' | awk -F: '{print (($1*60+$2)*60+$3)+$4/100}' | read len
-    [ "$len" -gt 0 ] || return 1
+    [ "$((len>0))" -eq 1 ] || return 1
     echo "$g"
     ffmpeg \
       -hide_banner -loglevel warning -stats -stats_period 5 \
@@ -27,4 +27,6 @@ cutv() { ### @-
     # -maxrate 9600k -bufsize 12000k -vcodec libx264 -preset medium -crf 22 -vf scale=1280:720
 }
 
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} argc
 [ -n "${preload+-}" ] || cutv "$@"

@@ -441,6 +441,29 @@ $ now '@1234567890'
 2009-02-13_84690000
 ```
 
+### [oxo](/sh/oxo#L17)
+
+upload files (or stdin) to [0x0.st.](https://0x0.st)
+this script exits with the number of failed uploads; up to 255 at once.
+file retention period (30 to 365 days) is only computed for arguments.
+directories are skipped. please review the terms of service
+[on the website](https://0x0.st) before uploading files.
+
+```
+$ echo test | oxo
+https://0x0.st/sj2.txt
+oxo: successfully uploaded 1 file
+$ oxo ~/play/{hey,you,fake,empty}
+https://0x0.st/-3rz.txt
+oxo: exprires in 365 days: /home/notwa/play/hey
+https://0x0.st/-3ri.txt
+oxo: exprires in 365 days: /home/notwa/play/you
+oxo: no such file: /home/notwa/play/fake
+oxo: skipping empty file: /home/notwa/play/empty
+oxo: successfully uploaded 2 files
+oxo: failed to upload 2 files
+```
+
 ### [pacbm](/sh/pacbm#L6)
 
 display and order installed pacman packages by their filesize ascending,

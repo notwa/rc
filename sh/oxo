@@ -63,6 +63,12 @@ oxo() { ### @-
             else
                 local kib="$(du -k "$f" | cut -f1)"
 
+                if [ "$kib" -gt 524288 ]; then
+                    : $((fails+=1))
+                    printf "$bad" "oxo: file too large: $f" >&2
+                    continue
+                fi
+
                 # compute retention using (fixed point) integers only.
                 # retention = (365 - 30) * ([file size] / [512 MiB] - 1)**3 + 30
                 local a=$(( kib/16+1 ))

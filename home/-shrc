@@ -57,8 +57,6 @@ umask 022
 
 ADDPATH "$HOME/opt/local/bin"
 [ -n "$MSYSTEM" ] && ADDPATH "/c/path"
-[ -n "$MSYSTEM" ] && ADDPATH "/c/Program Files/7-Zip-Zstandard" 2>/dev/null
-[ -n "$MSYSTEM" ] && ADDPATH ~win"/Desktop/_programs/rakudo-2021.06/bin" 2>/dev/null
 
 export _REMOTE_DOMAIN="https://eaguru.guru"
 export _REMOTE_DIR="t"

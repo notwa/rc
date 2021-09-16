@@ -261,3 +261,4 @@ for x in ai arith curl fc find ftp hex history let locate rsync scp sftp tw twit
 unset x
 
 . ~/.prezto-compinit
+[ -e ~/.lol ] && . ~/.lol || touch ~/.lol

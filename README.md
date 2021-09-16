@@ -455,9 +455,9 @@ https://0x0.st/sj2.txt
 oxo: successfully uploaded 1 file
 $ oxo ~/play/{hey,you,fake,empty}
 https://0x0.st/-3rz.txt
-oxo: exprires in 365 days: /home/notwa/play/hey
+oxo: expires in 365 days: /home/notwa/play/hey
 https://0x0.st/-3ri.txt
-oxo: exprires in 365 days: /home/notwa/play/you
+oxo: expires in 365 days: /home/notwa/play/you
 oxo: no such file: /home/notwa/play/fake
 oxo: skipping empty file: /home/notwa/play/empty
 oxo: successfully uploaded 2 files
@@ -878,203 +878,203 @@ hardcoded here for convenience.
 
 append a directory to `$PATH` if it isn't already present.
 
-### [fils (-shrc)](/home/-shrc#L120)
+### [fils (-shrc)](/home/-shrc#L118)
 
 (GNU du) display human-friendly filesizes for the files in a directory.
 
-### [lsa (-shrc)](/home/-shrc#L121)
+### [lsa (-shrc)](/home/-shrc#L119)
 
 (GNU ls) list files with directories and dotfiles ordered first.
 
-### [perlu (-shrc)](/home/-shrc#L122)
+### [perlu (-shrc)](/home/-shrc#L120)
 
 invoke perl expecting files with UTF-8 encoding.
 
-### [rgn (-shrc)](/home/-shrc#L123)
+### [rgn (-shrc)](/home/-shrc#L121)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [cms (-shrc)](/home/-shrc#L124)
+### [cms (-shrc)](/home/-shrc#L122)
 
 invoke cryptominisat5 with less noise.
 
-### [curls (-shrc)](/home/-shrc#L125)
+### [curls (-shrc)](/home/-shrc#L123)
 
 invoke curl with less noise.
 
-### [get (-shrc)](/home/-shrc#L129)
+### [get (-shrc)](/home/-shrc#L127)
 
 retrieve the most recent files from the default branch of a git repository, and not much else.
 
-### [gs (-shrc)](/home/-shrc#L130)
+### [gs (-shrc)](/home/-shrc#L128)
 
 invoke git's status subcommand.
 
 **TODO:** consider renaming because gs(1) already exists.
 
-### [gd (-shrc)](/home/-shrc#L132)
+### [gd (-shrc)](/home/-shrc#L130)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [gds (-shrc)](/home/-shrc#L133)
+### [gds (-shrc)](/home/-shrc#L131)
 
 display difference stats from git.
 
-### [gl (-shrc)](/home/-shrc#L134)
+### [gl (-shrc)](/home/-shrc#L132)
 
 invoke git's log subcommand with a single line per commit.
 
-### [glo (-shrc)](/home/-shrc#L135)
+### [glo (-shrc)](/home/-shrc#L133)
 
 navigate git's commit tree succinctly.
 
-### [g1 (-shrc)](/home/-shrc#L136)
+### [g1 (-shrc)](/home/-shrc#L134)
 
 display the most recent git commit.
 
-### [gr (-shrc)](/home/-shrc#L137)
+### [gr (-shrc)](/home/-shrc#L135)
 
 display remote git repositories verbosely.
 
-### [gb (-shrc)](/home/-shrc#L138)
+### [gb (-shrc)](/home/-shrc#L136)
 
 display the current git branch.
 
 **NOTE:** there also exists a gb(1) program provided by
 the *gb* package that i don't use.
 
-### [revend (-shrc)](/home/-shrc#L147)
+### [revend (-shrc)](/home/-shrc#L145)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (-shrc)](/home/-shrc#L149)
+### [clone (-shrc)](/home/-shrc#L147)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (-shrc)](/home/-shrc#L150)
+### [aligntabs (-shrc)](/home/-shrc#L148)
 
 align tab-delimited fields in stdin.
 
-### [crawla (-shrc)](/home/-shrc#L151)
+### [crawla (-shrc)](/home/-shrc#L149)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (-shrc)](/home/-shrc#L152)
+### [crawlz (-shrc)](/home/-shrc#L150)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [eahead (-shrc)](/home/-shrc#L154)
+### [eahead (-shrc)](/home/-shrc#L152)
 
 deprecated name for [`ea head`.](#ea)
 
-### [eaget (-shrc)](/home/-shrc#L155)
+### [eaget (-shrc)](/home/-shrc#L153)
 
 deprecated name for [`ea get`.](#ea)
 
-### [eaput (-shrc)](/home/-shrc#L156)
+### [eaput (-shrc)](/home/-shrc#L154)
 
 deprecated name for [`ea put`.](#ea)
 
-### [eamove (-shrc)](/home/-shrc#L157)
+### [eamove (-shrc)](/home/-shrc#L155)
 
 deprecated name for [`ea move`.](#ea)
 
-### [eacopy (-shrc)](/home/-shrc#L158)
+### [eacopy (-shrc)](/home/-shrc#L156)
 
 deprecated name for [`ea copy`.](#ea)
 
-### [eadelete (-shrc)](/home/-shrc#L159)
+### [eadelete (-shrc)](/home/-shrc#L157)
 
 deprecated name for [`ea delete`.](#ea)
 
-### [eamv (-shrc)](/home/-shrc#L160)
+### [eamv (-shrc)](/home/-shrc#L158)
 
 invoke [`ea move`.](#ea)
 
-### [eacp (-shrc)](/home/-shrc#L161)
+### [eacp (-shrc)](/home/-shrc#L159)
 
 invoke [`ea copy`.](#ea)
 
-### [earm (-shrc)](/home/-shrc#L162)
+### [earm (-shrc)](/home/-shrc#L160)
 
 invoke [`ea delete`.](#ea)
 
-### [ll (-shrc)](/home/-shrc#L165)
+### [ll (-shrc)](/home/-shrc#L163)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [diff (-shrc)](/home/-shrc#L173)
+### [diff (-shrc)](/home/-shrc#L171)
 
 use git's diff subcommand for general diffing.
 
-### [gc (-shrc)](/home/-shrc#L174)
+### [gc (-shrc)](/home/-shrc#L172)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (-shrc)](/home/-shrc#L176)
+### [counts (-shrc)](/home/-shrc#L174)
 
 count files in the current directory, including files found recursively.
 
-### [exts (-shrc)](/home/-shrc#L177)
+### [exts (-shrc)](/home/-shrc#L175)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (-shrc)](/home/-shrc#L178)
+### [nocom (-shrc)](/home/-shrc#L176)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (-shrc)](/home/-shrc#L179)
+### [jrep (-shrc)](/home/-shrc#L177)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (-shrc)](/home/-shrc#L180)
+### [bomb (-shrc)](/home/-shrc#L178)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (-shrc)](/home/-shrc#L181)
+### [cleanse (-shrc)](/home/-shrc#L179)
 
 strip unprintable and non-ASCII characters.
 
-### [unwrap (-shrc)](/home/-shrc#L182)
+### [unwrap (-shrc)](/home/-shrc#L180)
 
 join paragraphs into one line each.
 
-### [double (-shrc)](/home/-shrc#L183)
+### [double (-shrc)](/home/-shrc#L181)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [join2 (-shrc)](/home/-shrc#L186)
+### [join2 (-shrc)](/home/-shrc#L184)
 
 join every other line.
 
-### [katagana (-shrc)](/home/-shrc#L187)
+### [katagana (-shrc)](/home/-shrc#L185)
 
 convert katakana codepoints to their equivalent hiragana.
 
 useful for translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (-shrc)](/home/-shrc#L189)
+### [picky (-shrc)](/home/-shrc#L187)
 
 TODO
 
-### [unused (-shrc)](/home/-shrc#L190)
+### [unused (-shrc)](/home/-shrc#L188)
 
 TODO
 
-### [makepkgf (-shrc)](/home/-shrc#L191)
+### [makepkgf (-shrc)](/home/-shrc#L189)
 
 make the freakin' package!
 
-### [rakef (-shrc)](/home/-shrc#L192)
+### [rakef (-shrc)](/home/-shrc#L190)
 
 make the freakin' gem!
 
-### [eashare (-shrc)](/home/-shrc#L194)
+### [eashare (-shrc)](/home/-shrc#L192)
 
 upload a file and copy its URL to the clipboard.
 

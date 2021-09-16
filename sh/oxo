@@ -49,48 +49,48 @@ oxo() { ### @-
     elif [ $# -gt 255 ]; then
         printf "$err" "oxo: too many arguments (max: 255)" >&2
         return 255
-    else
-        for f; do
-            if [ ! -e "$f" ]; then
-                printf "$bad" "oxo: no such file: $f" >&2
-                : $((fails+=1))
-            elif [ -d "$f" ]; then
-                printf "$bad" "oxo: skipping directory: $f" >&2
-                : $((fails+=1))
-            elif [ ! -s "$f" ]; then
-                printf "$bad" "oxo: skipping empty file: $f" >&2
-                : $((fails+=1))
-            else
-                local kib="$(du -k "$f" | cut -f1)"
-
-                if [ "$kib" -gt 524288 ]; then
-                    : $((fails+=1))
-                    printf "$bad" "oxo: file too large: $f" >&2
-                    continue
-                fi
-
-                # compute retention using (fixed point) integers only.
-                # retention = (365 - 30) * ([file size] / [512 MiB] - 1)**3 + 30
-                local a=$(( kib/16+1 ))
-                local b=$(( (kib+64)/128-12288 ))
-                local c=$(( a*a/16384 ))
-                local d=$(( b*c/8192+3*kib/16+1-32768 ))
-                local r=$(( (d*-335+16384)/32768+30 ))
-
-                if ! cp -p "$f" /tmp/0x0; then
-                    : $((fails+=1))
-                    printf "$bad" "oxo: failed to copy file: $f" >&2
-                elif ! curl -F'file=@/tmp/0x0' https://0x0.st; then
-                    : $((fails+=1))
-                    printf "$bad" "oxo: failed to upload file: $f" >&2
-                else
-                    : $((succs+=1))
-                    printf "$look" "oxo: expires in $r days: $f" >&2
-                fi
-                #rm -f /tmp/0x0
-            fi
-        done
     fi
+
+    for f; do
+        if [ ! -e "$f" ]; then
+            : $((fails+=1))
+            printf "$bad" "oxo: no such file: $f" >&2
+        elif [ -d "$f" ]; then
+            : $((fails+=1))
+            printf "$bad" "oxo: skipping directory: $f" >&2
+        elif [ ! -s "$f" ]; then
+            : $((fails+=1))
+            printf "$bad" "oxo: skipping empty file: $f" >&2
+        else
+            local kib="$(du -k "$f" | cut -f1)"
+
+            if [ "$kib" -gt 524288 ]; then
+                : $((fails+=1))
+                printf "$bad" "oxo: file too large: $f" >&2
+                continue
+            fi
+
+            # compute retention using (fixed point) integers only.
+            # retention = (365 - 30) * ([file size] / [512 MiB] - 1)**3 + 30
+            local a=$(( kib/16+1 ))
+            local b=$(( (kib+64)/128-12288 ))
+            local c=$(( a*a/16384 ))
+            local d=$(( b*c/8192+3*kib/16+1-32768 ))
+            local r=$(( (d*-335+16384)/32768+30 ))
+
+            if ! cp -p "$f" /tmp/0x0; then
+                : $((fails+=1))
+                printf "$bad" "oxo: failed to copy file: $f" >&2
+            elif ! curl -F'file=@/tmp/0x0' https://0x0.st; then
+                : $((fails+=1))
+                printf "$bad" "oxo: failed to upload file: $f" >&2
+            else
+                : $((succs+=1))
+                printf "$look" "oxo: expires in $r days: $f" >&2
+            fi
+            #rm -f /tmp/0x0
+        fi
+    done
 
     if [ $succs -gt 0 ]; then
         [ $fails -eq 0 ] && fmt="$look" || fmt="$warn"

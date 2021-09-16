@@ -27,9 +27,9 @@ oxo() { ### @-
     ### oxo: successfully uploaded 1 file
     ### $ oxo ~/play/{hey,you,fake,empty}
     ### https://0x0.st/-3rz.txt
-    ### oxo: exprires in 365 days: /home/notwa/play/hey
+    ### oxo: expires in 365 days: /home/notwa/play/hey
     ### https://0x0.st/-3ri.txt
-    ### oxo: exprires in 365 days: /home/notwa/play/you
+    ### oxo: expires in 365 days: /home/notwa/play/you
     ### oxo: no such file: /home/notwa/play/fake
     ### oxo: skipping empty file: /home/notwa/play/empty
     ### oxo: successfully uploaded 2 files
@@ -79,7 +79,7 @@ oxo() { ### @-
                     printf "$bad" "oxo: failed to upload file: $f" >&2
                 else
                     : $((succs+=1))
-                    printf "$look" "oxo: exprires in $r days: $f" >&2
+                    printf "$look" "oxo: expires in $r days: $f" >&2
                 fi
                 #rm -f /tmp/0x0
             fi

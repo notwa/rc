@@ -71,7 +71,7 @@ oxo() { ### @-
             fi
 
             # compute retention using (fixed point) integers only.
-            # retention = (365 - 30) * ([file size] / [512 MiB] - 1)**3 + 30
+            # retention = 30 - (365 - 30) * ([file size] / [512 MiB] - 1)**3
             local a=$(( kib/16+1 ))
             local b=$(( (kib+64)/128-12288 ))
             local c=$(( a*a/16384 ))

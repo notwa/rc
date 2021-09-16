@@ -47,7 +47,7 @@ oxo() { ### @-
     if [ $# -eq 0 ]; then
         curl -F'file=@-' https://0x0.st && : $((succs+=1)) || : $((fails+=1))
     elif [ $# -gt 255 ]; then
-        printf '\033[1;31m%s\n' "oxo: too many arguments (max: 255)" >&2
+        printf "$err" "oxo: too many arguments (max: 255)" >&2
         return 255
     else
         for f; do

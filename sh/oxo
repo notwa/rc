@@ -99,14 +99,12 @@ oxo() { ### @-
         fi
     done
 
-    local fails=$((total-hits))
-
     if [ $hits -gt 0 ]; then
-        [ $fails -eq 0 ] && fmt="$look" || fmt="$warn"
         [ $hits -eq 1 ] && s= || s=s
-        printf "$fmt" "oxo: successfully uploaded $hits file$s" >&2
+        printf "$look" "oxo: successfully uploaded $hits file$s" >&2
     fi
 
+    local fails=$((total-hits))
     if [ $fails -gt 0 ]; then
         [ $fails -eq 1 ] && s= || s=s
         printf "$err" "oxo: failed to upload $fails file$s" >&2

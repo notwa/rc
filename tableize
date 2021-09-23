@@ -1,0 +1,89 @@
+#!/usr/bin/env dash
+
+# TODO: keep track of which scripts require GNU versions of utilities,
+#       as opposed of plain ol' busybox. test all the awk scripts, etc.
+
+tableize() {
+    local name="$1"
+    local rc="$2"
+    [ -n "$rc" ] || rc="$(readlink -f "$(dirname "$name")" )"
+    [ -d "$rc" ] || { printf "%s: %s\n" "$0" 'failed to determine rc directory' >&2; }
+    cd "$rc" || { printf "%s: %s\n" "$0" 'failed to change directory' >&2; }
+
+    # the script column has to be stupid wide because names are repeated twice for anchors.
+    # column lengths: 45, 10, 4, 4, 4, 4
+    printf '%s\n' '| script                                        | preference | zsh  | bash | dash | ash  |'
+    printf '%s\n' '| --------------------------------------------- | ---------- | ---- | ---- | ---- | ---- |'
+
+    local f=
+    for f in sh/*; do
+        [ ! -d "$f" ] || continue # do not recurse or anything
+        [ -f "$f" ] || continue # probably failed to glob
+
+        local fn="${f##*/}"
+        local i=0 zsh= bash= dash= ash= pref=
+        while IFS= read -r line; do
+            : $((i+=1))
+            [ $i -le 10 ] || break # act like head -n10
+
+            #printf '%s\n' "$i: $line"
+            local code="$line"
+            code="${code#${code%%[! ]*}}" # ltrim
+            local decom="$code"
+            #decom="${decom#${decom%%[!#]*}}" # ltrim #s
+            decom="${decom#\#}"
+            [ "$code" != "$decom" ] || continue # only care about comments
+            decom="${decom#${decom%%[! ]*}}" # ltrim
+            decom="${decom%${decom##*[! ]}}" # rtrim
+
+            case "$decom" in
+                YES_ZSH) zsh=yes;;
+                YES_BASH) bash=yes;;
+                YES_DASH) dash=yes;;
+                YES_ASH) ash=yes;;
+                NO_ZSH) zsh=no;;
+                NO_BASH) bash=no;;
+                NO_DASH) dash=no;;
+                NO_ASH) ash=no;;
+                '!/bin/sh') pref=sh;;
+                '!/usr/bin/env ash') pref=ash;;
+                '!/usr/bin/env bash') pref=bash;;
+                '!/usr/bin/env dash') pref=dash;;
+                '!/usr/bin/env false') pref=false;;
+                '!/usr/bin/env sh') pref=sh;;
+                '!/usr/bin/env zsh') pref=zsh;;
+                '!/usr/bin/sh') pref=sh;;
+                #*) printf '\033[1mno match:\033[0m [%s]\n' "$decom";;
+            esac
+        done < "$f"
+
+        #printf '%s' "script $fn has a preference for $pref and support for" >&2
+        #[ "$zsh" != yes ] || printf ' %s' zsh >&2
+        #[ "$bash" != yes ] || printf ' %s' bash >&2
+        #[ "$dash" != yes ] || printf ' %s' dash >&2
+        #[ "$ash" != yes ] || printf ' %s' ash >&2
+        #printf '\n' >&2
+
+        local yay='✔️'  # yay='y'
+        local nay='⭕' # nay='✖️'  # nay='n'
+        local huh='❔' # huh='?'
+
+        # TODO: escape underscores in filenames.
+        printf '| [%s](#%s) ' "$fn" "$fn"
+        printf "%$(( 40 - 2 * ${#fn} ))s" '' # funky way to pad the rest of the column
+        [ "$pref" != false ] || pref='**false**'
+        [ "$pref" != sh ] || pref='*sh*'
+        [ -n "$pref" ] && printf '| %10s ' "$pref" || printf '| %9s%s ' '' "$huh"
+        local t=
+        for t in "$zsh" "$bash" "$dash" "$ash"; do
+            local w="$huh"
+            [ "$t" != yes ] || w="$yay"
+            [ "$t" != no ] || w="$nay"
+            # can't use '%4s' here because printf gets confused by UTF-8.
+            printf '| %s    ' "$w"
+        done
+        printf '|\n'
+    done
+}
+
+tableize "$0" "$@"

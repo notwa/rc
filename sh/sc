@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# NO_ZSH
+# YES_BASH
+# NO_DASH
+# NO_ASH
 
 sc_shorten() {
     REPLY="${1:2:2}${1:5:2}${1:8:2}${1:11:12}"
@@ -16,7 +20,7 @@ copy_scr() {
     local r='20\d\d-\d\d-\d\d_\d\d\d\d\d\d\d\d.(png|jpg)'
     grep -Pq "$r" <<<"$short" || return 1
 
-    eaput "$fn" "$short"
+    ea put "$fn" "$short"
     sc_shorten "$short"
     uri_encode "$REPLY"
     REPLY="$_REMOTE_DOMAIN/s/$REPLY"
@@ -27,7 +31,7 @@ copy_tmp() {
     local fn="$1"
     local short="$(basename "$fn")"
 
-    eaput "$fn" "$short"
+    ea put "$fn" "$short"
     uri_encode "$short"
     REPLY="$_REMOTE_DOMAIN/t/$REPLY"
     return 0

@@ -2,6 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
 
 bak() { ### @-
     ### backup files by creating copies and appending ".bak" to their names.
@@ -20,7 +21,7 @@ bak() { ### @-
     ### ```
     [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     local ret=0
-    local f
+    local f=
     for f; do
         if [ -e "$f.bak" ]; then
             bak "$f.bak" || { ret=1; continue; }

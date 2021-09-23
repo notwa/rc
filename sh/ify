@@ -2,6 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
 
 ify() { ### @-
     ### pipe one command through another, so you can still pass arguments to the former.

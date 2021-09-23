@@ -2,6 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
 
 tpad() { ### @-
     ### add a 1px transparent border around an image to prevent twitter from mangling it into a jpg.

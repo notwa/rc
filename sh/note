@@ -2,6 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
 
 note() { ### @-
     ### act like [`echo2`,](#echo2) but use a bright color to stand out more.

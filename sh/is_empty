@@ -2,6 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # NO_DASH
+# NO_ASH
 
 is_empty() { ### @-
     ### return 0 if the directory given by argument is empty.

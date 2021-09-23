@@ -1,15 +1,17 @@
 #!/usr/bin/env sh
 # YES_ZSH
-
-#. ~/sh/maybesudo
-#. ~/sh/has
+# YES_BASH
+# YES_DASH
+# YES_ASH
 
 pippy() { ### @-
     ### install Python packages using pip,
     ### but only update their dependencies as required.
     ### this uses [`maybesudo`](#maybesudo_-shmaybesudo) internally.
     local sudo="$(has sudo || echo maybesudo_)"
-    "$sudo" py -m pip install --upgrade --upgrade-strategy only-if-needed "$@"
+    "$sudo" python3 -m pip install --upgrade --upgrade-strategy only-if-needed "$@"
 }
 
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} has maybesudo
 [ -n "${preload+-}" ] || pippy "$@"

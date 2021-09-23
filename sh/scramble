@@ -2,6 +2,9 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
+
+# does not work with busybox sed (yet?)
 
 scramble() { ### @-
     ### scrambles text in a predictable way using regex.

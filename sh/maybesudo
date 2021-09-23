@@ -2,6 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
 
 maybesudo_() { ### @-
     ### mimic certain features of `sudo` for systems without it installed.

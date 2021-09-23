@@ -2,9 +2,8 @@
 # disassembles a function given its symbolic name.
 # YES_ZSH
 # YES_BASH
-# YES_DASH
 
-# TODO: actually test that this works with dash.
+# does not work with busybox sed (yet?)
 
 disf() { ### @-
     ### disassemble a single function from an unstripped executable, unreliably.

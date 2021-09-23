@@ -2,8 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
-
-# dash compatibility is not fully tested, but it's probably okay.
+# YES_ASH
 
 now() { ### @-
     ### print a date-time (UTC) in a sortable format.
@@ -18,8 +17,8 @@ now() { ### @-
     ### 2009-02-13_84690000
     ### ```
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
-    local dt
-    local fmt='+%F_%T_%N'
+
+    local dt= fmt='+%F_%T_%N'
     if [ -z "$1" ]; then
         dt="$(date -u "$fmt")"
     elif [ -e "$1" ]; then
@@ -28,12 +27,12 @@ now() { ### @-
         dt="$(date -u -d "$1" "$fmt")"
     fi
 
-    local F T N
+    local F= T= N=
     F=${dt%%_*}
     T=${dt#*_}
     T=${T%_*}
     N=${dt##*_}
-    local H M S
+    local H= M= S=
     H=${T%%:*}
     M=${T#*:}
     M=${M%:*}
@@ -47,8 +46,8 @@ now() { ### @-
     M=${M#0*}
     S=${S#0*}
 
-    local ms
-    ms=$(((H*60*60+M*60+S)*1000+N/1000000))
+    local ms=
+    ms=$(( (H*60*60+M*60+S)*1000+N/1000000 ))
     ms=$(printf '%08i' $ms)
     echo "${F}_${ms}"
 }

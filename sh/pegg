@@ -2,8 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
-
-# TODO: source pippy here? this may affect dash compatibility.
+# YES_ASH
 
 pegg() { ### @-
     ### download and (pip) install a Python "egg" from a project on GitHub,
@@ -19,4 +18,6 @@ pegg() { ### @-
     pippy "https://github.com/$1/$2/tarball/${3:-master}#egg=$2"
 }
 
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} pippy
 [ -n "${preload+-}" ] || pegg "$@"

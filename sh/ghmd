@@ -5,6 +5,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
 
 ghmd() { ### @-
     ### convert a markdown file to HTML in the style of GitHub.

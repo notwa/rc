@@ -2,6 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
 
 wipe() { ### @-
     ### clear the screen and its scrollback, then print a high-contrast horizontal line.
@@ -12,13 +13,13 @@ wipe() { ### @-
     [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     clear
     clear # twice because mintty is weird
-    echo $'\033[30m\033[107m' | tr -d '$'
+    printf '\033[30m\033[107m\n'
     if [ -n "${ZSH_VERSION:-}" ]; then
         printf '*%.0s' {1..$COLUMNS}
     else
         tput cols | awk '{for(i=0;i<$0;i++)printf "*"}'
     fi
-    echo $'\033[0m\n' | tr -d '$'
+    printf '\033[0m\n\n'
 }
 
 [ -n "${preload+-}" ] || wipe "$@"

@@ -3,6 +3,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
 
 ea() { ### @- **TODO:** document.
     local cmd="${1:?missing subcommand}"; shift

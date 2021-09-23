@@ -2,6 +2,9 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
+
+# does not work with busybox awk (yet?)
 
 similar() { ### @-
     ### highlight adjacent lines up to the first inequivalent character.

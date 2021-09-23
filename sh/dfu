@@ -2,6 +2,9 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
+
+# works with busybox awk.
 
 dfu() { ### @-
     ### pretty-print `df` in GiB.

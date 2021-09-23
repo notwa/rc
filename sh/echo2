@@ -2,6 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
 
 echo2() { ### @-
     ### print arguments joined by spaces to stderr without parsing anything.

@@ -2,6 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # NO_DASH
+# NO_ASH
 
 whoa=(
     -Wall

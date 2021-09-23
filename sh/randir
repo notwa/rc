@@ -2,6 +2,9 @@
 # YES_ZSH
 # YES_BASH
 # YES_DASH
+# YES_ASH
+
+# works with busybox.
 
 randir() { ### @-
     ### display a random directory in the current working directory.

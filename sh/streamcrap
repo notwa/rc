@@ -72,10 +72,19 @@ mpv_watch() { ### @-
     argc -ge 1 "$0" "$@" || return
     pushd ~/play >/dev/null
     local url="$1"; shift
-    mpv \
-      --af=lavfi="[$_M_PROCESS]" \
-      --ytdl-format='[width<=1280]/best' \
-      "$@" -- "$url"
+    # checking for redundant flags might itself be redundant, but i want to be sure.
+    local seen=0
+    for a; do [ "$a" = "${a#--ytdl-format=}" ] || seen=1 done
+    if [ $seen -eq 0 ]; then
+        mpv \
+          --af=lavfi="[$_M_PROCESS]" \
+          --ytdl-format='[width<=1280]/best' \
+          "$@" -- "$url"
+    else
+        mpv \
+          --af=lavfi="[$_M_PROCESS]" \
+          "$@" -- "$url"
+    fi
     popd >/dev/null
 }
 

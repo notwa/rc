@@ -143,7 +143,6 @@ alias gb='git --no-pager branch' ### @- display the current git branch.
 alias ash="busybox ash"
 alias pip="maybesudo -H pip3"
 alias revend='objcopy -I binary -O binary --reverse-bytes=4' ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
-alias aur="BUILDDIR=$HOME/src $HOME/sh/aur -jj"
 alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r' ### @- invoke rsync suitably for creating virtually indistinguishable copies of files.
 alias aligntabs="column -t -s$'\t'" ### @- align tab-delimited fields in stdin.
 alias crawla='ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl' ### @- play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.

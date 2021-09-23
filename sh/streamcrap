@@ -74,7 +74,7 @@ mpv_watch() { ### @-
     local url="$1"; shift
     # checking for redundant flags might itself be redundant, but i want to be sure.
     local seen=0
-    for a; do [ "$a" = "${a#--ytdl-format=}" ] || seen=1 done
+    for a; do [ "$a" = "${a#--ytdl-format=}" ] || seen=1; done
     if [ $seen -eq 0 ]; then
         mpv \
           --af=lavfi="[$_M_PROCESS]" \

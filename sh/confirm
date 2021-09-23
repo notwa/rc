@@ -2,6 +2,7 @@
 # YES_ZSH
 # YES_BASH
 # NO_DASH
+# NO_ASH
 
 ### @ confirm
 ### display a simple yes-or-no prompt and return 0-or-1 respectively.

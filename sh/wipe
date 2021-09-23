@@ -4,6 +4,8 @@
 # YES_DASH
 # YES_ASH
 
+# works with busybox awk.
+
 wipe() { ### @-
     ### clear the screen and its scrollback, then print a high-contrast horizontal line.
     ### using this, you'll know with absolute certainty that you're looking at the top of your history,

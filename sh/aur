@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # http://aur.sh with massive feature creep
-# YES_ZSH
-
-# TODO: check compatibility with bash and dash.
+# NO_ZSH
+# YES_BASH
+# NO_DASH
+# NO_ASH
 
 aur() { ### @-
     ### download, edit, make, and install packages from the
@@ -136,4 +137,6 @@ aur() { ### @-
     [ "$fail" -eq 0 ] && return 0 || return 1
 }
 
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} confirm
 [ -n "${preload+-}" ] || aur "$@"

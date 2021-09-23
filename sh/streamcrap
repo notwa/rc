@@ -22,6 +22,7 @@ _M_MULTI2="volume=10,mcompand=0.256\,5.12 9 -90/-90\,-46/-46\,0/-18.9\,20/0 62.9
 _M_INSANE="$_M_PRE_EMPH,acompressor=threshold=0.001:ratio=2:attack=1000:release=9000:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.002:ratio=2:attack=320:release=2880:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.004:ratio=2:attack=100:release=900:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.008:ratio=2:attack=32:release=288:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.016:ratio=2:attack=10:release=90:makeup=3:knee=6:mix=0.5,$_M_POST_EMPH,alimiter"
 _M_LESS_INSANE="$_M_PRE_EMPH,acompressor=threshold=0.0020:ratio=1.41:attack=1000:release=9000:makeup=2.2:knee=6:mix=0.6,acompressor=threshold=0.0028:ratio=1.41:attack=320:release=2880:makeup=2.2:knee=6:mix=0.6,acompressor=threshold=0.0040:ratio=1.41:attack=100:release=900:makeup=2.2:knee=6:mix=0.6,acompressor=threshold=0.0057:ratio=1.41:attack=32:release=288:makeup=2.2:knee=6:mix=0.6,acompressor=threshold=0.0080:ratio=1.41:attack=10:release=90:makeup=2.2:knee=6:mix=0.6,$_M_POST_EMPH,alimiter=level_in=2.2:level_out=0.45"
 _M_NEO="equalizer=700:o:1.3:-5,equalizer=1200:o:1.3:-3,equalizer=1090:o:0.5:-5,equalizer=970:o:1.2:-10,equalizer=4100:o:0.3:-6"
+_M_DANNY="$_M_PRE_EMPH,alimiter,dynaudnorm=f=400:g=5:p=1:m=32:r=0.1:c=1:s=9:t=0.0003,$_M_POST_EMPH,alimiter=level_in=2.6:level_out=0.91"
 
 getladspa() {
     argc -eq 1 "$0" "$@" || return
@@ -34,37 +35,41 @@ getladspa() {
 getladspa crap_level
 _M_LEVEL="$REPLY"
 
-_nn="$(uname -n | tr A-Z a-z)"
-
 earphones() {
     argc -eq 0 "$0" "$@" || return
     _M_PROCESS="lowpass=8000:p=1,$_M_KILL,alimiter=level_out=0.707"
 }
 
-if [ "$_nn" = spectre ]; then
-    _M_PROCESS="$_M_KILL,alimiter=level_out=0.7071"
-fi
-if [ "$_nn" = neobanshee ]; then
-    speakers() {
-        argc -eq 0 "$0" "$@" || return
-        _M_PROCESS="highpass=311,$_M_KILL,$_M_NEO,alimiter=level_in=2"
-    }
-    speakers
-fi
-if [ "$_nn" = banshee ]; then
-    getladspa crap_eq_const_T420
-    _M_SPEAKERS="$REPLY"
-    speakers() {
-        argc -eq 0 "$0" "$@" || return
-        _M_PROCESS="$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5"
-    }
-    speakers
-fi
+case "$(uname -n | tr A-Z a-z)" in
+    spectre)
+        _M_PROCESS="$_M_DANNY,alimiter=level_out=0.7071"
+        ;;
 
-unset _nn
+    neobanshee)
+        speakers() {
+            argc -eq 0 "$0" "$@" || return
+            _M_PROCESS="highpass=311,$_M_KILL,$_M_NEO,alimiter=level_in=2"
+        }
+        speakers
+        ;;
+
+    banshee)
+        getladspa crap_eq_const_T420
+        _M_SPEAKERS="$REPLY"
+        speakers() {
+            argc -eq 0 "$0" "$@" || return
+            _M_PROCESS="$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5"
+        }
+        speakers
+        ;;
+
+    *)
+        _M_PROCESS="alimiter"
+        ;;
+esac
 
 mpv_watch() { ### @-
-    ### watch something in mpv with a bunch of extra audio filtering crap.
+    ### play some media in mpv with a bunch of unnecessary filters.
     argc -ge 1 "$0" "$@" || return
     pushd ~/play >/dev/null
     local url="$1"; shift
@@ -76,7 +81,7 @@ mpv_watch() { ### @-
 }
 
 mpv_stream() { ### @-
-    ### watch a stream in mpv with a bunch of extra audio filtering crap.
+    ### watch a stream in mpv with a bunch of unnecessary filters.
     argc -ge 1 "$0" "$@" || return
     pushd ~/play >/dev/null
     local url="$1"; shift
@@ -85,17 +90,16 @@ mpv_stream() { ### @-
 }
 
 twitch() { ### @-
-    ### watch a twitch stream in mpv with a bunch of extra audio filtering crap.
+    ### watch a twitch stream in mpv with a bunch of unnecessary filters.
     argc -ge 1 "$0" "$@" || return
     local user="$1"; shift
     mpv_stream "http://twitch.tv/$user" "$@"
 }
 
 yt() { ### @-
-    ### watch a youtube video in mpv with a bunch of extra audio filtering crap.
+    ### watch a youtube video in mpv with a bunch of unnecessary filters.
     ### this can be given a full URL or just a video ID.
     ### remaining arguments are passed to mpv.
-    ###
     ### there exist several variants for more specific use cases.
     ###
     ### **NOTE:** there also exists a yt(1) program provided by
@@ -114,14 +118,14 @@ ytg() { ### @-
 }
 
 ytll() { ### @-
-    ### watch a stream on youtube in mpv, etcetera etcetera.
+    ### watch a stream from youtube in mpv, etcetera etcetera.
     ### this is the low latency version that does not support seeking.
     argc -ge 1 "$0" "$@" || return
     youtube-dl -q -f best "$1" -o - | mpv_stream - --no-ytdl
 }
 
 ytgll() { ### @-
-    ### watch a stream on youtube in mpv. like `ytll`, but with a preference for different formats.
+    ### watch a stream from youtube in mpv. like `ytll`, but with a preference for different formats.
     argc -ge 1 "$0" "$@" || return
     youtube-dl -q -f 22/95/300/best "$1" -o - | mpv_stream - --no-ytdl
 }

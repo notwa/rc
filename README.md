@@ -51,7 +51,7 @@ this example requires zsh:
 1.9952623149688795
 ```
 
-### [aur](/sh/aur#L7)
+### [aur](/sh/aur#L8)
 
 download, edit, make, and install packages from the
 [AUR.](https://aur.archlinux.org/)
@@ -209,7 +209,7 @@ compile release clang WHOA rd.c
 compile derelease rd.c && /tmp/rd
 ```
 
-### [confirm](/sh/confirm#L6)
+### [confirm](/sh/confirm#L7)
 
 display a simple yes-or-no prompt and return 0-or-1 respectively.
 
@@ -233,7 +233,7 @@ Continue? [y/N] y
  20 files changed, 406 insertions(+), 29 deletions(-)
 ```
 
-### [countdiff](/sh/countdiff#L6)
+### [countdiff](/sh/countdiff#L9)
 
 count the number of lines changed between two files.
 
@@ -321,7 +321,7 @@ $ echo2 -e 'this\nthat' those
 
 open a single directory in `explorer.exe`, defaulting to `$PWD`.
 
-### [ff](/sh/ff#L6)
+### [ff](/sh/ff#L7)
 
 select a file from a given or current directory using
 [`fzy`.](https://github.com/jhawthorn/fzy)
@@ -632,7 +632,7 @@ this version of `slit` uses tabs for its field separators.
 
 sort lines numerically by IPv4 segments.
 
-### [sram](/sh/sram#L4)
+### [sram](/sh/sram#L7)
 
 convert between a couple saveram formats for N64 emulators.
 
@@ -785,7 +785,7 @@ wat — a better and recursive which/whence. for zsh only.
 
 written by [leah2.](https://leahneukirchen.org/)
 
-### [wipe](/sh/wipe#L7)
+### [wipe](/sh/wipe#L9)
 
 clear the screen and its scrollback, then print a high-contrast horizontal line.
 using this, you'll know with absolute certainty that you're looking at the top of your history,
@@ -1093,7 +1093,7 @@ upload a file and copy its URL to the clipboard.
 | [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arrays](#arrays)                             |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |
-| [aur](#aur)                                   |       bash | ✔️    | ❔    | ❔    | ❔    |
+| [aur](#aur)                                   |       bash | ⭕    | ✔️    | ⭕    | ⭕    |
 | [autosync](#autosync)                         |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [bak](#bak)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [baknow](#baknow)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1103,8 +1103,8 @@ upload a file and copy its URL to the clipboard.
 | [colors](#colors)                             |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
 | [compandy](#compandy)                         |          ❔ | ✔️    | ❔    | ❔    | ❔    |
 | [compile](#compile)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [confirm](#confirm)                           |       bash | ✔️    | ✔️    | ⭕    | ❔    |
-| [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [confirm](#confirm)                           |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
+| [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [cutv](#cutv)                                 |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [dbusiest](#dbusiest)                         |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
@@ -1116,7 +1116,7 @@ upload a file and copy its URL to the clipboard.
 | [echo2](#echo2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [fasd](#fasd)                                 |       *sh* | ❔    | ❔    | ❔    | ❔    |
-| [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ghmd](#ghmd)                                 |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
 | [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1152,7 +1152,7 @@ upload a file and copy its URL to the clipboard.
 | [slit](#slit)                                 |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [slitt](#slitt)                               |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sortip](#sortip)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [sram](#sram)                                 |        zsh | ✔️    | ❔    | ❔    | ❔    |
+| [sram](#sram)                                 |        zsh | ✔️    | ✔️    | ⭕    | ⭕    |
 | [stfu](#stfu)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [streamcrap](#streamcrap)                     |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |
 | [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

@@ -107,7 +107,7 @@ dirview() { ### @-
     precmd
 }
 
-for x (dirprev dirnext dirup dirview) zle -N $x
+for x (dummy dirprev dirnext dirup dirview) zle -N $x
 
 bindkey -e # emacs-style keybinds
 
@@ -128,37 +128,46 @@ bindkey '^[[1;3C' dirnext # alt+right
 bindkey '^[[1;3A' dirup # alt+up
 bindkey '^[[1;3B' dirview # alt+down
 bindkey -s '^[s' '^Asudo ^E' # alt+s
+bindkey '^[[1~' beginning-of-line # home
+bindkey '^[[4~' end-of-line # end
+bindkey '^[[Z' reverse-menu-complete # shift+tab
 
-bindkey -s '^[[6;2~' '\a' # shift+PgDn, do nothing, already at bottom (tmux)
-
-# these binds were meant to prevent erroneous inputs from
-# inputting anything, but they don't work for some reason:
-#bindkey -s '^[[3;5~' '\a' # ctrl+del
-#bindkey -s '^[[5;5~' '\a' # ctrl+PgUp
-#bindkey -s '^[[6;5~' '\a' # ctrl+PgDn
-#bindkey -s '^[[5;6~' '\a' # ctrl+shift+PgUp
-#bindkey -s '^[[6;6~' '\a' # ctrl+shift+PgDn
-#bindkey -s '^[[2;3~' '\a' # alt+ins
-#bindkey -s '^[[3;3~' '\a' # alt+del
-#bindkey -s '^[[5;3~' '\a' # alt+PgUp
-#bindkey -s '^[[6;3~' '\a' # alt+PgDn
-#bindkey -s '^[[1;6q' '\a' # ctrl+shift+1
-#bindkey -s '^[[1;6s' '\a' # ctrl+shift+3
-#bindkey -s '^[[1;6t' '\a' # ctrl+shift+4
-#bindkey -s '^[[1;6u' '\a' # ctrl+shift+5
-#bindkey -s '^[[1;6w' '\a' # ctrl+shift+7
-#bindkey -s '^[[1;6x' '\a' # ctrl+shift+8
-#bindkey -s '^[[1;6y' '\a' # ctrl+shift+9
-#bindkey -s '^[[1;6l' '\a' # ctrl+shift+comma
-#bindkey -s '^[[1;6n' '\a' # ctrl+shift+period
-#bindkey -s '^[[1;7A' '\a' # ctrl+alt+arrow
-#bindkey -s '^[[1;7B' '\a' # ctrl+alt+arrow
-#bindkey -s '^[[1;7C' '\a' # ctrl+alt+arrow
-#bindkey -s '^[[1;7D' '\a' # ctrl+alt+arrow
-#bindkey -s '^[[1;8A' '\a' # ctrl+alt+shift+arrow
-#bindkey -s '^[[1;8B' '\a' # ctrl+alt+shift+arrow
-#bindkey -s '^[[1;8C' '\a' # ctrl+alt+shift+arrow
-#bindkey -s '^[[1;8D' '\a' # ctrl+alt+shift+arrow
+# prevent erroneous inputs from inputting anything.
+bindkey '^[[3;5~' dummy # ctrl+del
+bindkey '^[[5;5~' dummy # ctrl+PgUp
+bindkey '^[[6;5~' dummy # ctrl+PgDn
+bindkey '^[[5;6~' dummy # ctrl+shift+PgUp
+bindkey '^[[6;6~' dummy # ctrl+shift+PgDn
+bindkey '^[[1;2F' dummy # shift+del
+bindkey '^[[1;2F' dummy # shift+end, do nothing, already at bottom (tmux)
+bindkey '^[[6;2~' dummy # shift+PgDn, do nothing, already at bottom (tmux)
+bindkey '^[[2;3~' dummy # alt+ins
+bindkey '^[[3;3~' dummy # alt+del
+bindkey '^[[5;3~' dummy # alt+PgUp
+bindkey '^[[6;3~' dummy # alt+PgDn
+bindkey '^[[2;4~' dummy # alt+shift+ins
+bindkey '^[[3;4~' dummy # alt+shift+del
+bindkey '^[[1;4H' dummy # alt+shift+home
+bindkey '^[[1;4F' dummy # alt+shift+end
+bindkey '^[[5;4~' dummy # alt+shift+PgUp
+bindkey '^[[6;4~' dummy # alt+shift+PgDn
+bindkey '^[[1;6q' dummy # ctrl+shift+1
+bindkey '^[[1;6s' dummy # ctrl+shift+3
+bindkey '^[[1;6t' dummy # ctrl+shift+4
+bindkey '^[[1;6u' dummy # ctrl+shift+5
+bindkey '^[[1;6w' dummy # ctrl+shift+7
+bindkey '^[[1;6x' dummy # ctrl+shift+8
+bindkey '^[[1;6y' dummy # ctrl+shift+9
+bindkey '^[[1;6l' dummy # ctrl+shift+comma
+bindkey '^[[1;6n' dummy # ctrl+shift+period
+bindkey '^[[1;7A' dummy # ctrl+alt+arrow
+bindkey '^[[1;7B' dummy # ctrl+alt+arrow
+bindkey '^[[1;7C' dummy # ctrl+alt+arrow
+bindkey '^[[1;7D' dummy # ctrl+alt+arrow
+bindkey '^[[1;8A' dummy # ctrl+alt+shift+arrow
+bindkey '^[[1;8B' dummy # ctrl+alt+shift+arrow
+bindkey '^[[1;8C' dummy # ctrl+alt+shift+arrow
+bindkey '^[[1;8D' dummy # ctrl+alt+shift+arrow
 
 zle -N edit-command-line # new widget of the same function name
 bindkey '^Xe' edit-command-line # ctrl+x -> e

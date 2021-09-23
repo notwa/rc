@@ -15,6 +15,8 @@ the following shells are taken into consideration, ordered from most to least co
 * dash
 * ash (busybox)
 
+refer to the [compatibility table](#compatibility) for specifics.
+
 **NOTE:** everything below this line is overwritten and automatically [regenerated.](/regenerate)
 
 <!-- DOCUMENT -->
@@ -1081,3 +1083,86 @@ upload a file and copy its URL to the clipboard.
 **NOTE:** this only works on MSYS2 for now.
 
 **NOTE:** i lied, this doesn't work at all.
+
+## compatibility
+
+| script                                        | preference | zsh  | bash | dash | ash  |
+| --------------------------------------------- | ---------- | ---- | ---- | ---- | ---- |
+| [_lsarchive](#_lsarchive)                     |          ❔ | ❔    | ❔    | ❔    | ❔    |
+| [_unarchive](#_unarchive)                     |          ❔ | ❔    | ❔    | ❔    | ❔    |
+| [archive](#archive)                           |        zsh | ❔    | ❔    | ❔    | ❔    |
+| [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ❔    |
+| [arrays](#arrays)                             |  **false** | ✔️    | ✔️    | ⭕    | ❔    |
+| [aur](#aur)                                   |       bash | ✔️    | ❔    | ❔    | ❔    |
+| [autosync](#autosync)                         |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
+| [bak](#bak)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [baknow](#baknow)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [baks](#baks)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ❔    |
+| [cdbusiest](#cdbusiest)                       |        zsh | ✔️    | ❔    | ❔    | ❔    |
+| [colors](#colors)                             |       bash | ✔️    | ✔️    | ⭕    | ❔    |
+| [compandy](#compandy)                         |          ❔ | ✔️    | ❔    | ❔    | ❔    |
+| [compile](#compile)                           |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
+| [confirm](#confirm)                           |       bash | ✔️    | ✔️    | ⭕    | ❔    |
+| [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [cutv](#cutv)                                 |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
+| [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [dbusiest](#dbusiest)                         |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
+| [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [disf](#disf)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [document](#document)                         |       dash | ⭕    | ⭕    | ✔️    | ✔️    |
+| [e](#e)                                       |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
+| [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [echo2](#echo2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [fasd](#fasd)                                 |       *sh* | ❔    | ❔    | ❔    | ❔    |
+| [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [ghmd](#ghmd)                                 |        zsh | ✔️    | ✔️    | ✔️    | ❔    |
+| [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ❔    |
+| [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [is_empty](#is_empty)                         |       bash | ✔️    | ✔️    | ⭕    | ❔    |
+| [isup](#isup)                                 |          ❔ | ✔️    | ✔️    | ✔️    | ❔    |
+| [lsarchive](#lsarchive)                       |          ❔ | ❔    | ❔    | ❔    | ❔    |
+| [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ❔    |
+| [monitor](#monitor)                           |        zsh | ✔️    | ❔    | ❔    | ❔    |
+| [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [oxo](#oxo)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [pacman-list-disowned](#pacman-list-disowned) |          ❔ | ❔    | ❔    | ❔    | ❔    |
+| [pause](#pause)                               |       bash | ✔️    | ✔️    | ⭕    | ❔    |
+| [pegg](#pegg)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [pippy](#pippy)                               |       *sh* | ✔️    | ❔    | ❔    | ❔    |
+| [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [preload](#preload)                           |  **false** | ❔    | ❔    | ❔    | ❔    |
+| [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [randir](#randir)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [refresh](#refresh)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [rs](#rs)                                     |        zsh | ✔️    | ❔    | ❔    | ❔    |
+| [sc](#sc)                                     |       bash | ❔    | ❔    | ❔    | ❔    |
+| [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [screeny](#screeny)                           |        zsh | ✔️    | ❔    | ❔    | ❔    |
+| [scropt](#scropt)                             |       bash | ✔️    | ❔    | ❔    | ❔    |
+| [shcom](#shcom)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [similar](#similar)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [slit](#slit)                                 |       dash | ✔️    | ✔️    | ✔️    | ❔    |
+| [slitt](#slitt)                               |       dash | ✔️    | ✔️    | ✔️    | ❔    |
+| [sortip](#sortip)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [sram](#sram)                                 |        zsh | ✔️    | ❔    | ❔    | ❔    |
+| [stfu](#stfu)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [streamcrap](#streamcrap)                     |  **false** | ✔️    | ✔️    | ❔    | ❔    |
+| [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [sv](#sv)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [tpad](#tpad)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [trunc](#trunc)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [unarchive](#unarchive)                       |          ❔ | ❔    | ❔    | ❔    | ❔    |
+| [unscreen](#unscreen)                         |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
+| [wat](#wat)                                   |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
+| [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |

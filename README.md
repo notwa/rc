@@ -39,7 +39,7 @@ myfunc() {
 }
 ```
 
-### [arith](/sh/arith#L9)
+### [arith](/sh/arith#L10)
 
 perform arithmetic using the shell and display the result.
 see also [`hex`](#hex) and [`bin`](#bin).
@@ -61,12 +61,12 @@ it's a little broken.
 $ aur -eyoI cmdpack-uips applyppf
 ```
 
-### [autosync](/sh/autosync#L8)
+### [autosync](/sh/autosync#L9)
 
 combine `inotifywait` and `rsync`.
 this is sometimes nicer than `ssh`-ing into a server and running `vim` remotely.
 
-### [bak](/sh/bak#L6)
+### [bak](/sh/bak#L7)
 
 backup files by creating copies and appending ".bak" to their names.
 this calls itself recursively to avoid clobbering existing backups.
@@ -98,7 +98,7 @@ total 0
 -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.2001-12-26_01800000.bak
 ```
 
-### [baks](/sh/baks#L7)
+### [baks](/sh/baks#L8)
 
 backup files by copying each and appending *the current* date-time,
 irrespective of when the files were modified or created.
@@ -114,7 +114,7 @@ total 0
 -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.21-08-01_14-54-09.bak
 ```
 
-### [bin](/sh/bin#L9)
+### [bin](/sh/bin#L10)
 
 perform arithmetic using the shell and display the result as
 an unsigned 8-bit integer in binary.
@@ -125,7 +125,7 @@ $ bin 123
 01111011
 ```
 
-### [cdbusiest](/sh/cdbusiest#L4)
+### [cdbusiest](/sh/cdbusiest#L7)
 
 cd to the directory with the most files in it, counted recursively.
 
@@ -137,7 +137,7 @@ $ pwd
 /home/notwa/src
 ```
 
-### [colors](/sh/colors#L6)
+### [colors](/sh/colors#L7)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
@@ -150,7 +150,7 @@ excluding boilerplate, this script is a mere a 76-characters long!
 generate compand arguments for ffmpeg audio filters.
 this is kinda pointless now that acompressor is wildly supported.
 
-### [setup_clang_ubuntu (sh/compile)](/sh/compile#L6)
+### [setup_clang_ubuntu (sh/compile)](/sh/compile#L7)
 
 print (but don't execute) the commands necessary to install
 a fairly recent version of clang on ubuntu-based distros.
@@ -172,7 +172,7 @@ update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 1200
 update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-12 1200
 ```
 
-### [compile](/sh/compile#L49)
+### [compile](/sh/compile#L50)
 
 compile single-file C and C++ programs, messily.
 
@@ -244,11 +244,11 @@ $ countdiff README-old.md README.md
 739
 ```
 
-### [cutv](/sh/cutv#L6)
+### [cutv](/sh/cutv#L7)
 
 (WIP) create a short clip of a long video file.
 
-### [days](/sh/days#L6)
+### [days](/sh/days#L7)
 
 compute the number of days since a given date.
 
@@ -257,7 +257,7 @@ $ days 'January 1 1970'
 18838
 ```
 
-### [dbusiest](/sh/dbusiest#L6)
+### [dbusiest](/sh/dbusiest#L7)
 
 list directories ordered descending by the number of files in them,
 counted recursively. see also [`cdbusiest`.](#cdbusiest)
@@ -270,7 +270,7 @@ $ dbusiest | head -n3
 20903 play
 ```
 
-### [dfu](/sh/dfu#L6)
+### [dfu](/sh/dfu#L9)
 
 pretty-print `df` in GiB.
 
@@ -281,7 +281,7 @@ Filesystem              Used     Max    Left    Misc
 /                      17.20   23.22    6.01    1.27
 ```
 
-### [disf](/sh/disf#L9)
+### [disf](/sh/disf#L8)
 
 disassemble a single function from an unstripped executable, unreliably.
 
@@ -291,7 +291,7 @@ generate a markdown file out of docstrings in shell scripts.
 
 **TODO:** describe. i have a rough outline written in my scrap file.
 
-### [e](/sh/e#L6)
+### [e](/sh/e#L7)
 
 wrap around `$EDITOR` to run it as root if necessary.
 this still needs some work to detect root-owned directories.
@@ -301,11 +301,11 @@ $ e /etc/sudoers
 [sudo] password for notwa: 
 ```
 
-### [ea](/sh/ea#L7)
+### [ea](/sh/ea#L8)
 
 **TODO:** document.
 
-### [echo2](/sh/echo2#L6)
+### [echo2](/sh/echo2#L7)
 
 print arguments joined by spaces to stderr without parsing anything.
 
@@ -317,7 +317,7 @@ $ echo2 -e 'this\nthat' those
 -e this\nthat those
 ```
 
-### [explore](/sh/explore#L6)
+### [explore](/sh/explore#L7)
 
 open a single directory in `explorer.exe`, defaulting to `$PWD`.
 
@@ -326,7 +326,7 @@ open a single directory in `explorer.exe`, defaulting to `$PWD`.
 select a file from a given or current directory using
 [`fzy`.](https://github.com/jhawthorn/fzy)
 
-### [ghmd](/sh/ghmd#L9)
+### [ghmd](/sh/ghmd#L10)
 
 convert a markdown file to HTML in the style of GitHub.
 note that this uses GitHub's API, so it requires internet connectivity.
@@ -338,7 +338,7 @@ this script utilizes the CSS provided at
 ~/sh/ghmd < ~/rc/README.md > ~/rc/README.html
 ```
 
-### [has](/sh/has#L6)
+### [has](/sh/has#L7)
 
 print the result of `which` if the program is found, else simply return 1.
 
@@ -346,7 +346,7 @@ print the result of `which` if the program is found, else simply return 1.
 export CC="$(has clang || has clang-3.8 || has gcc)"
 ```
 
-### [hex](/sh/hex#L9)
+### [hex](/sh/hex#L10)
 
 perform arithmetic using the shell and display the result as
 an unsigned 32-bit integer in hexadecimal.
@@ -360,7 +360,7 @@ $ hex 0x221EA8-0x212020
 **NOTE:** there also exists a hex(1) program provided by
 the *basez* package that i don't use.
 
-### [ify](/sh/ify#L6)
+### [ify](/sh/ify#L7)
 
 pipe one command through another, so you can still pass arguments to the former.
 
@@ -371,11 +371,11 @@ $ alias ll="ify less ls -ACX --group-directories-first --color=force"
 $ ll /etc
 ```
 
-### [is_empty](/sh/is_empty#L6)
+### [is_empty](/sh/is_empty#L7)
 
 return 0 if the directory given by argument is empty.
 
-### [isup](/sh/isup#L6)
+### [isup](/sh/isup#L7)
 
 return 0 if a given website returns a 2xx HTTP code.
 
@@ -386,14 +386,14 @@ $ isup fdhafdslkjgfjs.com && echo yay || echo nay
 nay
 ```
 
-### [maybesudo_ (sh/maybesudo)](/sh/maybesudo#L6)
+### [maybesudo_ (sh/maybesudo)](/sh/maybesudo#L7)
 
 mimic certain features of `sudo` for systems without it installed.
 as it stands, this mostly just handles some environment variables.
 
 try this: `maybesudo_ -u "$USER" printenv`
 
-### [minutemaid](/sh/minutemaid#L6)
+### [minutemaid](/sh/minutemaid#L7)
 
 return 0 and/or execute a command if the current minute
 is divisible by a given number. note that a minute is
@@ -406,7 +406,7 @@ regardless of the minute hand on the clock.
 * * * * * minutemaid 9 ~/work/do_my_bidding # runs every nine minutes
 ```
 
-### [monitor](/sh/monitor#L4)
+### [monitor](/sh/monitor#L7)
 
 this is [watch(1)](https://www.man7.org/linux/man-pages/man1/watch.1.html)
 loosely reimplemented as a shell script.
@@ -418,18 +418,18 @@ usage: monitor [-fs] [-n {period}] {command} [{args...}]
 **NOTE:** there also exists monitor(1) programs provided by
 the *389-ds-base* and *dmucs* packages that i don't use.
 
-### [noccom](/sh/noccom#L10)
+### [noccom](/sh/noccom#L9)
 
 strip C-like comments; both multi-line and single-line.
 
-### [note](/sh/note#L6)
+### [note](/sh/note#L7)
 
 act like [`echo2`,](#echo2) but use a bright color to stand out more.
 
 **NOTE:** there also exists a [note(1)](https://www.daemon.de/projects/note/)
 program provided by the *note* package that i don't use.
 
-### [now](/sh/now#L8)
+### [now](/sh/now#L7)
 
 print a date-time (UTC) in a sortable format.
 this takes a date or file as an argument,
@@ -466,7 +466,7 @@ oxo: successfully uploaded 2 files
 oxo: failed to upload 2 files
 ```
 
-### [pacbm](/sh/pacbm#L6)
+### [pacbm](/sh/pacbm#L9)
 
 display and order installed pacman packages by their filesize ascending,
 and their sum. requires `expac`.
@@ -477,7 +477,7 @@ $ pacbm | head -n -1 | tail -2
   235.44M linux-firmware
 ```
 
-### [pause](/sh/pause#L6)
+### [pause](/sh/pause#L7)
 
 pause — the companion script of [`confirm`.](#confirm)
 
@@ -487,7 +487,7 @@ Press any key to continue
 $ 
 ```
 
-### [pegg](/sh/pegg#L8)
+### [pegg](/sh/pegg#L7)
 
 download and (pip) install a Python "egg" from a project on GitHub,
 defaulting to the master branch. this uses [`pippy`](#pippy) internally.
@@ -505,7 +505,7 @@ install Python packages using pip,
 but only update their dependencies as required.
 this uses [`maybesudo`](#maybesudo_-shmaybesudo) internally.
 
-### [pre](/sh/pre#L6)
+### [pre](/sh/pre#L7)
 
 dump all the `#define`s that `$CC $CPPFLAGS $CFLAGS $LDFLAGS` would result in.
 
@@ -529,7 +529,7 @@ handle dependencies within the [`~/sh/`](/sh) directory.
 
 this function contains more comments than code, so you should read it.
 
-### [psbm](/sh/psbm#L6)
+### [psbm](/sh/psbm#L7)
 
 display and order processes by their memory usage ascending, and their sum.
 
@@ -539,7 +539,7 @@ $ psbm | head -n -1 | tail -2
   199.95M    1060 chromium
 ```
 
-### [randir](/sh/randir#L6)
+### [randir](/sh/randir#L9)
 
 display a random directory in the current working directory.
 
@@ -548,11 +548,11 @@ $ randir
 ./sh
 ```
 
-### [refresh](/sh/refresh#L6)
+### [refresh](/sh/refresh#L7)
 
 invoke `hash -r`.
 
-### [rot13](/sh/rot13#L6)
+### [rot13](/sh/rot13#L9)
 
 rot13 with numbers rotated as well.
 
@@ -564,7 +564,7 @@ nop678
 **NOTE:** there also exists rot13(1) programs provided by
 the *bsdgames* and *hxtools* packages that i don't use.
 
-### [rs](/sh/rs#L4)
+### [rs](/sh/rs#L7)
 
 record screen. does not record audio.
 currently only works on Windows (gdigrab).
@@ -572,7 +572,7 @@ i'm sure there's something equivalent for Linux.
 
 **TODO:** consider renaming because rs(1) already exists.
 
-### [sc](/sh/sc#L36)
+### [sc](/sh/sc#L40)
 
 upload given files to a webserver and return a direct link for sharing them.
 you'll want to tweak this if you use it yourself.
@@ -580,7 +580,7 @@ this contains some extra logic for screenshots created by `scropt`.
 
 **TODO:** consider renaming because sc(1) already exists.
 
-### [scramble](/sh/scramble#L6)
+### [scramble](/sh/scramble#L9)
 
 scrambles text in a predictable way using regex.
 
@@ -588,7 +588,7 @@ sacbremls ttex in a pdrceailtbe way unsig reegx.
 
 **TODO:** consider renaming because scramble(1) already exists.
 
-### [screeny](/sh/screeny#L4)
+### [screeny](/sh/screeny#L7)
 
 handle GNU screens.
 these days, i typically use tmux instead.
@@ -615,15 +615,15 @@ as a simple example, `echo hey | shcom` produces, verbatim:
 hey
 ```
 
-### [similar](/sh/similar#L6)
+### [similar](/sh/similar#L9)
 
 highlight adjacent lines up to the first inequivalent character.
 
-### [slit](/sh/slit#L6)
+### [slit](/sh/slit#L9)
 
 view specific columns of text.
 
-### [slitt](/sh/slitt#L6)
+### [slitt](/sh/slitt#L9)
 
 view specific columns of text.
 this version of `slit` uses tabs for its field separators.
@@ -669,47 +669,46 @@ asses
 
 ```
 
-### [mpvs (sh/streamcrap)](/sh/streamcrap#L6)
+### [mpvs (sh/streamcrap)](/sh/streamcrap#L8)
 
 invoke mpv with some extra flags suited for streamed sources.
 
-### [mpv_watch (sh/streamcrap)](/sh/streamcrap#L66)
+### [mpv_watch (sh/streamcrap)](/sh/streamcrap#L70)
 
-watch something in mpv with a bunch of extra audio filtering crap.
+play some media in mpv with a bunch of unnecessary filters.
 
-### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L78)
+### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L91)
 
-watch a stream in mpv with a bunch of extra audio filtering crap.
+watch a stream in mpv with a bunch of unnecessary filters.
 
-### [twitch (sh/streamcrap)](/sh/streamcrap#L87)
+### [twitch (sh/streamcrap)](/sh/streamcrap#L100)
 
-watch a twitch stream in mpv with a bunch of extra audio filtering crap.
+watch a twitch stream in mpv with a bunch of unnecessary filters.
 
-### [yt (sh/streamcrap)](/sh/streamcrap#L94)
+### [yt (sh/streamcrap)](/sh/streamcrap#L107)
 
-watch a youtube video in mpv with a bunch of extra audio filtering crap.
+watch a youtube video in mpv with a bunch of unnecessary filters.
 this can be given a full URL or just a video ID.
 remaining arguments are passed to mpv.
-
 there exist several variants for more specific use cases.
 
 **NOTE:** there also exists a yt(1) program provided by
 the *python3-yt* package that i don't use.
 
-### [ytg (sh/streamcrap)](/sh/streamcrap#L109)
+### [ytg (sh/streamcrap)](/sh/streamcrap#L121)
 
 watch a youtube video. like `yt`, but with a preference for different formats.
 
-### [ytll (sh/streamcrap)](/sh/streamcrap#L116)
+### [ytll (sh/streamcrap)](/sh/streamcrap#L128)
 
-watch a stream on youtube in mpv, etcetera etcetera.
+watch a stream from youtube in mpv, etcetera etcetera.
 this is the low latency version that does not support seeking.
 
-### [ytgll (sh/streamcrap)](/sh/streamcrap#L123)
+### [ytgll (sh/streamcrap)](/sh/streamcrap#L135)
 
-watch a stream on youtube in mpv. like `ytll`, but with a preference for different formats.
+watch a stream from youtube in mpv. like `ytll`, but with a preference for different formats.
 
-### [sum](/sh/sum#L6)
+### [sum](/sh/sum#L7)
 
 compute the summation of its arguments without forking processes.
 this relies on the shell's built-in arithmetic operators.
@@ -721,7 +720,7 @@ $ sum 1 2 3
 
 **TODO:** consider renaming because sum(1) already exists.
 
-### [sv](/sh/sv#L6)
+### [sv](/sh/sv#L9)
 
 collect the lastmost value of every key.
 the field separator can be given as its sole argument,
@@ -750,12 +749,12 @@ $ cd ~/play/hash && grep -r 'ing$' . | sv :
 
 **TODO:** rename because busybox(1) sv already exists.
 
-### [tpad](/sh/tpad#L6)
+### [tpad](/sh/tpad#L7)
 
 add a 1px transparent border around an image to prevent twitter from mangling it into a jpg.
 sadly, this trick doesn't work anymore.
 
-### [trash](/sh/trash#L6)
+### [trash](/sh/trash#L7)
 
 output a given number of bytes from `/dev/random`.
 
@@ -764,7 +763,7 @@ $ trash 10 | xxp
 3A A5 4F C7 6D 89 E7 D7 F7 0C
 ```
 
-### [trunc](/sh/trunc#L6)
+### [trunc](/sh/trunc#L9)
 
 truncate text to fit within your terminal using the unicode character `…`.
 
@@ -775,18 +774,18 @@ $ seq 1 100 | tr '\n' ' ' | trunc
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31…
 ```
 
-### [unscreen](/sh/unscreen#L6)
+### [unscreen](/sh/unscreen#L7)
 
 handle closing of screens — this works alongside [`screeny`](#screeny).
 these days, i typically use tmux instead.
 
-### [wat](/sh/wat#L8)
+### [wat](/sh/wat#L9)
 
 wat — a better and recursive which/whence. for zsh only.
 
 written by [leah2.](https://leahneukirchen.org/)
 
-### [wipe](/sh/wipe#L6)
+### [wipe](/sh/wipe#L7)
 
 clear the screen and its scrollback, then print a high-contrast horizontal line.
 using this, you'll know with absolute certainty that you're looking at the top of your history,
@@ -794,7 +793,7 @@ and that your terminal's scrollback didn't cap out and eat text.
 
 **TODO:** rename because wipe(1) already exists.
 
-### [xxp](/sh/xxp#L6)
+### [xxp](/sh/xxp#L7)
 
 act like `xxd -p`, but nicely formatted.
 
@@ -811,55 +810,55 @@ $ xxp ~/rc/install | head -n2
 
 ## miscellaneous
 
-### [dummy (zshrc)](/home/zshrc#L66)
+### [dummy (zshrc)](/home/zshrc#L67)
 
 return 0, ignoring arguments.
 
-### [dirprev (zshrc)](/home/zshrc#L73)
+### [dirprev (zshrc)](/home/zshrc#L74)
 
 rotate and change to the previous directory in the directory stack
 without consuming the prompt.
 
-### [dirnext (zshrc)](/home/zshrc#L80)
+### [dirnext (zshrc)](/home/zshrc#L81)
 
 rotate and change to the next directory in the directory stack
 without consuming the prompt.
 
-### [dirup (zshrc)](/home/zshrc#L87)
+### [dirup (zshrc)](/home/zshrc#L88)
 
 change to the parent directory of the current working directory
 without consuming the prompt.
 
-### [dirview (zshrc)](/home/zshrc#L94)
+### [dirview (zshrc)](/home/zshrc#L95)
 
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L168)
+### [OMFG (zshrc)](/home/zshrc#L177)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L169)
+### [STFU (zshrc)](/home/zshrc#L178)
 
 silence stderr.
 
-### [WHOA (zshrc)](/home/zshrc#L170)
+### [WHOA (zshrc)](/home/zshrc#L179)
 
 expand to several C/C++ flags to ease development.
 
-### [WELP (zshrc)](/home/zshrc#L171)
+### [WELP (zshrc)](/home/zshrc#L180)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [pl (zshrc)](/home/zshrc#L175)
+### [pl (zshrc)](/home/zshrc#L184)
 
 print each argument on its own line.
 
-### [tw (zshrc)](/home/zshrc#L178)
+### [tw (zshrc)](/home/zshrc#L187)
 
 invoke `twitch` as a job with both stdout and stderr silenced.
 
-### [reload (zshrc)](/home/zshrc#L222)
+### [reload (zshrc)](/home/zshrc#L231)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
@@ -1092,77 +1091,77 @@ upload a file and copy its URL to the clipboard.
 | [_unarchive](#_unarchive)                     |          ❔ | ❔    | ❔    | ❔    | ❔    |
 | [archive](#archive)                           |        zsh | ❔    | ❔    | ❔    | ❔    |
 | [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ❔    |
-| [arrays](#arrays)                             |  **false** | ✔️    | ✔️    | ⭕    | ❔    |
+| [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
+| [arrays](#arrays)                             |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |
 | [aur](#aur)                                   |       bash | ✔️    | ❔    | ❔    | ❔    |
-| [autosync](#autosync)                         |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
-| [bak](#bak)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [autosync](#autosync)                         |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [bak](#bak)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [baknow](#baknow)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [baks](#baks)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ❔    |
-| [cdbusiest](#cdbusiest)                       |        zsh | ✔️    | ❔    | ❔    | ❔    |
-| [colors](#colors)                             |       bash | ✔️    | ✔️    | ⭕    | ❔    |
+| [baks](#baks)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
+| [cdbusiest](#cdbusiest)                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [colors](#colors)                             |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
 | [compandy](#compandy)                         |          ❔ | ✔️    | ❔    | ❔    | ❔    |
-| [compile](#compile)                           |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
+| [compile](#compile)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [confirm](#confirm)                           |       bash | ✔️    | ✔️    | ⭕    | ❔    |
 | [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [cutv](#cutv)                                 |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
-| [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [dbusiest](#dbusiest)                         |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
-| [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [disf](#disf)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [cutv](#cutv)                                 |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [dbusiest](#dbusiest)                         |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [disf](#disf)                                 |       *sh* | ✔️    | ✔️    | ❔    | ❔    |
 | [document](#document)                         |       dash | ⭕    | ⭕    | ✔️    | ✔️    |
-| [e](#e)                                       |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
-| [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [echo2](#echo2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [e](#e)                                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [echo2](#echo2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [fasd](#fasd)                                 |       *sh* | ❔    | ❔    | ❔    | ❔    |
 | [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [ghmd](#ghmd)                                 |        zsh | ✔️    | ✔️    | ✔️    | ❔    |
-| [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ❔    |
-| [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [is_empty](#is_empty)                         |       bash | ✔️    | ✔️    | ⭕    | ❔    |
-| [isup](#isup)                                 |          ❔ | ✔️    | ✔️    | ✔️    | ❔    |
+| [ghmd](#ghmd)                                 |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
+| [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
+| [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [is_empty](#is_empty)                         |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
+| [isup](#isup)                                 |          ❔ | ✔️    | ✔️    | ✔️    | ✔️    |
 | [lsarchive](#lsarchive)                       |          ❔ | ❔    | ❔    | ❔    | ❔    |
-| [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ❔    |
-| [monitor](#monitor)                           |        zsh | ✔️    | ❔    | ❔    | ❔    |
-| [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
+| [monitor](#monitor)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [oxo](#oxo)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pacman-list-disowned](#pacman-list-disowned) |          ❔ | ❔    | ❔    | ❔    | ❔    |
-| [pause](#pause)                               |       bash | ✔️    | ✔️    | ⭕    | ❔    |
-| [pegg](#pegg)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [pippy](#pippy)                               |       *sh* | ✔️    | ❔    | ❔    | ❔    |
-| [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [pause](#pause)                               |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
+| [pegg](#pegg)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [pippy](#pippy)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [preload](#preload)                           |  **false** | ❔    | ❔    | ❔    | ❔    |
-| [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [randir](#randir)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [refresh](#refresh)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [rs](#rs)                                     |        zsh | ✔️    | ❔    | ❔    | ❔    |
-| [sc](#sc)                                     |       bash | ❔    | ❔    | ❔    | ❔    |
-| [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [screeny](#screeny)                           |        zsh | ✔️    | ❔    | ❔    | ❔    |
+| [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [randir](#randir)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [refresh](#refresh)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [rs](#rs)                                     |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [sc](#sc)                                     |       bash | ⭕    | ✔️    | ⭕    | ⭕    |
+| [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [screeny](#screeny)                           |        zsh | ✔️    | ✔️    | ⭕    | ⭕    |
 | [scropt](#scropt)                             |       bash | ✔️    | ❔    | ❔    | ❔    |
 | [shcom](#shcom)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [similar](#similar)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [slit](#slit)                                 |       dash | ✔️    | ✔️    | ✔️    | ❔    |
-| [slitt](#slitt)                               |       dash | ✔️    | ✔️    | ✔️    | ❔    |
+| [similar](#similar)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [slit](#slit)                                 |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
+| [slitt](#slitt)                               |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sortip](#sortip)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sram](#sram)                                 |        zsh | ✔️    | ❔    | ❔    | ❔    |
 | [stfu](#stfu)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [streamcrap](#streamcrap)                     |  **false** | ✔️    | ✔️    | ❔    | ❔    |
-| [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [sv](#sv)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [tpad](#tpad)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [trunc](#trunc)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [streamcrap](#streamcrap)                     |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |
+| [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [sv](#sv)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [tpad](#tpad)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [trunc](#trunc)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [unarchive](#unarchive)                       |          ❔ | ❔    | ❔    | ❔    | ❔    |
-| [unscreen](#unscreen)                         |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
-| [wat](#wat)                                   |        zsh | ✔️    | ⭕    | ⭕    | ❔    |
-| [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
-| [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    |
+| [unscreen](#unscreen)                         |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [wat](#wat)                                   |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

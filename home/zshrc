@@ -23,6 +23,7 @@ setopt extended_glob            # required for various scripts in this file and 
 setopt hist_expire_dups_first   # sharing/appending will result in dups
 setopt hist_ignore_dups         # don't push lines identical to the previous
 setopt hist_ignore_space        # don't push lines beginning with spaces
+setopt hist_reduce_blanks       # trim superfluous spaces
 setopt ksh_typeset              # treat `local x=$(cmd)` and `local x="$(cmd)"` the same
 setopt no_beep
 setopt no_match                 # error on bad tab-complete
@@ -119,8 +120,6 @@ bindkey '^[[B' history-beginning-search-forward-end # down
 bindkey '^[OA' history-beginning-search-backward-end # up
 bindkey '^[OB' history-beginning-search-forward-end # down
 
-bindkey '^[[3~' delete-char # del
-
 bindkey '^[[1;5D' emacs-backward-word # ctrl+left
 bindkey '^[[1;5C' emacs-forward-word # ctrl+right
 bindkey '^[[1;3D' dirprev # alt+left
@@ -128,6 +127,7 @@ bindkey '^[[1;3C' dirnext # alt+right
 bindkey '^[[1;3A' dirup # alt+up
 bindkey '^[[1;3B' dirview # alt+down
 bindkey -s '^[s' '^Asudo ^E' # alt+s
+bindkey '^[[3~' delete-char # del
 bindkey '^[[1~' beginning-of-line # home
 bindkey '^[[4~' end-of-line # end
 bindkey '^[[Z' reverse-menu-complete # shift+tab

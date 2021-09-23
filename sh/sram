@@ -1,26 +1,25 @@
 #!/usr/bin/env zsh
 # YES_ZSH
+# YES_BASH
+# NO_DASH
+# NO_ASH
 
 sram() { ### @-
     ### convert between a couple saveram formats for N64 emulators.
-    die() {
-        echo -E "$@">&2
-        exit 1
-    }
 
-    crop() {
+    sram_crop() {
         tail -n +$((($1)/16+1))
     }
 
-    revend() {
+    sram_revend() {
         objcopy -I binary -O binary --reverse-bytes=4 "$@"
     }
 
-    dump() {
+    sram_dump() {
         xxd -ps -c 16 "$@"
     }
 
-    zeros() {
+    sram_zeros() {
         # one row (16) of zeros
         yes "00000000000000000000000000000000" | head -n $1
     }
@@ -29,24 +28,24 @@ sram() { ### @-
     in="$2"
     out="$3"
 
-    if [[ "$game" == "mm" ]]; then
+    if [ "$game" = "mm" ]; then
         headsize=$((0x20800))
-    elif [[ "$game" == "oot" ]]; then
+    elif [ "$game" = "oot" ]; then
         headsize=$((0x40800))
     else
         echo "Unknown game." >&2
         return 1
     fi
 
-    [ -e "$2" ] || die "input save does not exist"
+    [ -e "$2" ] || { echo -E "input save does not exist" >&2; return 1; }
 
-    if [[ "${in##*.}" == "SaveRAM" ]] then
-        dump "$in" | crop $headsize | dump -r > "$out"
+    if [ "${in##*.}" = "SaveRAM" ]; then
+        sram_dump "$in" | sram_crop $headsize | sram_dump -r > "$out"
     else
-        cat <(zeros $(($headsize/16))) <(dump "$in") | dump -r > "$out"
+        cat <(sram_zeros $(($headsize/16))) <(sram_dump "$in") | sram_dump -r > "$out"
     fi
 
-    revend "$out"
+    sram_revend "$out"
 }
 
 [ -n "${preload+-}" ] || sram "$@"

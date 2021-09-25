@@ -948,134 +948,134 @@ the *gb* package that i don't use.
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (-shrc)](/home/-shrc#L147)
+### [clone (-shrc)](/home/-shrc#L146)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (-shrc)](/home/-shrc#L148)
+### [aligntabs (-shrc)](/home/-shrc#L147)
 
 align tab-delimited fields in stdin.
 
-### [crawla (-shrc)](/home/-shrc#L149)
+### [crawla (-shrc)](/home/-shrc#L148)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (-shrc)](/home/-shrc#L150)
+### [crawlz (-shrc)](/home/-shrc#L149)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [eahead (-shrc)](/home/-shrc#L152)
+### [eahead (-shrc)](/home/-shrc#L151)
 
 deprecated name for [`ea head`.](#ea)
 
-### [eaget (-shrc)](/home/-shrc#L153)
+### [eaget (-shrc)](/home/-shrc#L152)
 
 deprecated name for [`ea get`.](#ea)
 
-### [eaput (-shrc)](/home/-shrc#L154)
+### [eaput (-shrc)](/home/-shrc#L153)
 
 deprecated name for [`ea put`.](#ea)
 
-### [eamove (-shrc)](/home/-shrc#L155)
+### [eamove (-shrc)](/home/-shrc#L154)
 
 deprecated name for [`ea move`.](#ea)
 
-### [eacopy (-shrc)](/home/-shrc#L156)
+### [eacopy (-shrc)](/home/-shrc#L155)
 
 deprecated name for [`ea copy`.](#ea)
 
-### [eadelete (-shrc)](/home/-shrc#L157)
+### [eadelete (-shrc)](/home/-shrc#L156)
 
 deprecated name for [`ea delete`.](#ea)
 
-### [eamv (-shrc)](/home/-shrc#L158)
+### [eamv (-shrc)](/home/-shrc#L157)
 
 invoke [`ea move`.](#ea)
 
-### [eacp (-shrc)](/home/-shrc#L159)
+### [eacp (-shrc)](/home/-shrc#L158)
 
 invoke [`ea copy`.](#ea)
 
-### [earm (-shrc)](/home/-shrc#L160)
+### [earm (-shrc)](/home/-shrc#L159)
 
 invoke [`ea delete`.](#ea)
 
-### [ll (-shrc)](/home/-shrc#L163)
+### [ll (-shrc)](/home/-shrc#L162)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [diff (-shrc)](/home/-shrc#L171)
+### [diff (-shrc)](/home/-shrc#L170)
 
 use git's diff subcommand for general diffing.
 
-### [gc (-shrc)](/home/-shrc#L172)
+### [gc (-shrc)](/home/-shrc#L171)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (-shrc)](/home/-shrc#L174)
+### [counts (-shrc)](/home/-shrc#L173)
 
 count files in the current directory, including files found recursively.
 
-### [exts (-shrc)](/home/-shrc#L175)
+### [exts (-shrc)](/home/-shrc#L174)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (-shrc)](/home/-shrc#L176)
+### [nocom (-shrc)](/home/-shrc#L175)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (-shrc)](/home/-shrc#L177)
+### [jrep (-shrc)](/home/-shrc#L176)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (-shrc)](/home/-shrc#L178)
+### [bomb (-shrc)](/home/-shrc#L177)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (-shrc)](/home/-shrc#L179)
+### [cleanse (-shrc)](/home/-shrc#L178)
 
 strip unprintable and non-ASCII characters.
 
-### [unwrap (-shrc)](/home/-shrc#L180)
+### [unwrap (-shrc)](/home/-shrc#L179)
 
 join paragraphs into one line each.
 
-### [double (-shrc)](/home/-shrc#L181)
+### [double (-shrc)](/home/-shrc#L180)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [join2 (-shrc)](/home/-shrc#L184)
+### [join2 (-shrc)](/home/-shrc#L183)
 
 join every other line.
 
-### [katagana (-shrc)](/home/-shrc#L185)
+### [katagana (-shrc)](/home/-shrc#L184)
 
 convert katakana codepoints to their equivalent hiragana.
 
 useful for translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (-shrc)](/home/-shrc#L187)
+### [picky (-shrc)](/home/-shrc#L186)
 
 TODO
 
-### [unused (-shrc)](/home/-shrc#L188)
+### [unused (-shrc)](/home/-shrc#L187)
 
 TODO
 
-### [makepkgf (-shrc)](/home/-shrc#L189)
+### [makepkgf (-shrc)](/home/-shrc#L188)
 
 make the freakin' package!
 
-### [rakef (-shrc)](/home/-shrc#L190)
+### [rakef (-shrc)](/home/-shrc#L189)
 
 make the freakin' gem!
 
-### [eashare (-shrc)](/home/-shrc#L192)
+### [eashare (-shrc)](/home/-shrc#L191)
 
 upload a file and copy its URL to the clipboard.
 
@@ -1122,7 +1122,7 @@ upload a file and copy its URL to the clipboard.
 | [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [is_empty](#is_empty)                         |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
-| [isup](#isup)                                 |          ❔ | ✔️    | ✔️    | ✔️    | ✔️    |
+| [isup](#isup)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [lsarchive](#lsarchive)                       |          ❔ | ❔    | ❔    | ❔    | ❔    |
 | [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ✔️    |

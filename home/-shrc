@@ -140,7 +140,7 @@ alias gb='git --no-pager branch' ### @- display the current git branch.
 # being specific {{{2
 
 [ -e "$HOME/python3" ] && alias py="~/python3" || alias py="python3"
-alias ash="busybox ash"
+alias ash="PS1='$ ' busybox ash"
 alias pip="maybesudo -H pip3"
 alias revend='objcopy -I binary -O binary --reverse-bytes=4' ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r' ### @- invoke rsync suitably for creating virtually indistinguishable copies of files.

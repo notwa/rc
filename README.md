@@ -225,7 +225,7 @@ nay
 a real world example:
 
 ```
-% g1 && confirm && git commit -a --amend --no-edit
+$ g1 && confirm && git commit -a --amend --no-edit
 daf84e3 document a ton of stuff
 Continue? [y/N] y
 [master 92bdf76] document a ton of stuff
@@ -1103,7 +1103,7 @@ upload a file and copy its URL to the clipboard.
 | [colors](#colors)                             |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
 | [compandy](#compandy)                         |          ❔ | ✔️    | ❔    | ❔    | ❔    |
 | [compile](#compile)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [confirm](#confirm)                           |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
+| [confirm](#confirm)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [cutv](#cutv)                                 |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1133,7 +1133,7 @@ upload a file and copy its URL to the clipboard.
 | [oxo](#oxo)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pacman-list-disowned](#pacman-list-disowned) |          ❔ | ❔    | ❔    | ❔    | ❔    |
-| [pause](#pause)                               |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
+| [pause](#pause)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pegg](#pegg)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pippy](#pippy)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

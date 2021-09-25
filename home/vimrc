@@ -60,7 +60,7 @@ if has('gui_running')
 endif
 
 if has('title') | set title | endif   " terminal title
-set history=8192                      " command lines to remember
+set history=10000                     " command lines to remember
 set number                            " lines
 set ruler                             " write out the cursor position
 set showcmd                           " show number of lines/etc. selected
@@ -131,6 +131,8 @@ endf
 " set TabFour as default
 set tabstop=8 shiftwidth=4 expandtab softtabstop=4
 
+" autocmd {{{1
+
 if has('autocmd')
     augroup tabs
         au!
@@ -140,6 +142,7 @@ if has('autocmd')
         au BufRead,BufNewFile *.bt,*.1sc call TabFour()
         au BufRead,BufNewFile *.ys call TabTwo()
         au FileType javascript,processing call TabTwo()
+        au BufRead,BufNewFile .gitconfig call TabEight()
     augroup END
 
     augroup whatever

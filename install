@@ -5,7 +5,7 @@
 VERBOSE="${VERBOSE:-1}"
 
 NAME="$0"
-[ -n "$ZSH_VERSION" -o -n "$BASH" ] || VERBOSE=0 # no colors for you
+[ -n "$ZSH_VERSION" -o -n "$BASH_VERSION" ] || VERBOSE=0 # no colors for you
 
 note() {
     local IFS=" "

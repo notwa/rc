@@ -64,7 +64,7 @@ function {
     [ "$a" = "$b" ] && touch ~/.sh.zwc || zrecompile -p ~/.sh
 }
 
-dummy() { :; } ### @- return 0, ignoring arguments.
+dummy() : ### @- return 0, ignoring arguments.
 preload=dummy
 . ~/.sh
 unset preload

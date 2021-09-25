@@ -172,6 +172,21 @@ bindkey '^[[1;8D' dummy # ctrl+alt+shift+arrow
 zle -N edit-command-line # new widget of the same function name
 bindkey '^Xe' edit-command-line # ctrl+x -> e
 
+# these drive letters are to counteract my overzealous zsh completions.
+hash -d c="/c"
+hash -d d="/d"
+[ -d /media/chibi ] && hash -d e="/media/chibi" || hash -d e="/e"
+hash -d s="/s"
+
+if [ -n "$MSYSTEM" ]; then
+    hash -d cyg=~c/cygwin/home/$USER
+    hash -d msys=~c/msys64/home/$USER
+    hash -d win=~c/Users/$USER
+    hash -d py=~win/Dropbox/py
+else
+    hash -d py=~/Dropbox/py
+fi
+
 . ~/.-shrc
 
 alias -g OMFG="1>/dev/null" ### @ OMFG - silence stdout.
@@ -180,8 +195,6 @@ alias -g WHOA='${whoa[@]}' ### @ WHOA - expand to several C/C++ flags to ease de
 alias -g WELP='${welp[@]}' ### @ WELP - expand to C++ flags to enable a C++-as-C facade.
 
 alias sc="~/sh/sc" # only runs in bash (for now), so be explicit with path
-# not in -shrc because this only makes sense with zsh:
-alias pl="print -l" ### @ pl - print each argument on its own line.
 
 # needs the "function" keyword or else zsh complains:
 function tw() { ### @-
@@ -263,11 +276,15 @@ function {
     export LS_COLORS="$lsc"
 }
 
-for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
-    alias $x="nocorrect $x"
-for x in ai arith curl fc find ftp hex history let locate rsync scp sftp tw twitch wget youtube-dl yt ytg
-    alias $x="noglob $x"
-unset x
+function {
+    local x=
+    # deprecated `for` syntax; who cares?
+    for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
+        alias $x="nocorrect $x"
+    for x in ai arith curl fc find ftp hex history let locate \
+             rsync scp sftp tw twitch wget youtube-dl yt ytg
+        alias $x="noglob $x"
+}
 
 . ~/.prezto-compinit
 [ -e ~/.lol ] && . ~/.lol || touch ~/.lol

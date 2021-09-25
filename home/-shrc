@@ -1,104 +1,60 @@
 #!/usr/bin/env false
 # for ash, dash, bash, and zsh.
-[ -n "$ZSH_VERSION" -o -n "$BASH" ] && FANCY=1 || FANCY=0
+[ -n "$ZSH_VERSION" -o -n "$BASH_VERSION" ] && FANCY=1 || FANCY=0
 
 # {{{1 utilities
 
 if [ -z "$ZSH_VERSION" ]; then
-    has() { ### @- hardcoded here for convenience.
+    has() { # hardcoded here for convenience.
         which "$1" >/dev/null 2>&1 && which "$1"
     }
 fi
 
-# not available in busybox:
-#exports() {
-#    printenv | cut -d= -f1
-#}
-
-if has sudo >/dev/null; then
-    alias maybesudo=sudo
+if which sudo >/dev/null 2>&1; then
+    maybesudo() { sudo "$@"; }
 else
-    alias maybesudo="maybesudo_ " # allows aliases within the alias
+    maybesudo() { maybesudo_ "$@"; }
 fi
 
-ADDPATH() { ### @-
-    ### append a directory to `$PATH` if it isn't already present.
+ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
     if [ "$1" != "${1#[A-Z]:\\}" ]; then
         set -- "$(cygpath -u "$1")"
     fi
-    new="$(readlink -f "$1")"
+    local new="$(readlink -f "$1")"
     if [ ! -d "$new" ]; then
-        echo -E "ADDPATH: path doesn't exist: $1" >&2
+        printf 'ADDPATH: path does not exist: %s\n' "$1" >&2
         return 1
     fi
-    echo ":$PATH:" | grep -q ":$new:" || export PATH="$PATH:$new"
+    printf '%s' ":$PATH:" | grep -Fq ":$new:" || export PATH="$PATH:$new"
 }
-
-# shortcuts {{{1
-
-if [ $FANCY -eq 1 ]; then
-    # these drive letters only help because of a bug in my zsh completions...
-    hash -d c="/c"
-    hash -d d="/d"
-    [ -d /media/chibi ] && hash -d e="/media/chibi" || hash -d e="/e"
-    hash -d s="/s"
-
-    hash -d cyg=~c"/cygwin/home/$USER"
-    hash -d msys=~c"/msys64/home/$USER"
-    hash -d win=~c"/Users/$USER"
-    hash -d mm=~c"/Program Files (x86)/mupen64plus/mm"
-    hash -d py=~win"/Dropbox/py"
-fi
 
 # {{{1 configurations
 
-# umask should be reset else pip might make faulty installations.
-umask 022
+umask 022 # umask should be reset else pip might make faulty installations.
 
 ADDPATH "$HOME/opt/local/bin"
-[ -n "$MSYSTEM" ] && ADDPATH "/c/path"
 
-export _REMOTE_DOMAIN="https://eaguru.guru"
-export _REMOTE_DIR="t"
-export _REMOTE_AUTH="auth"
-
-# for dash:
-export ENV="$HOME/.-shrc"
-
-# https://bugs.launchpad.net/ubuntu/+source/openssh/+bug/1380084
-export SSH_AUTH_SOCK=0
-
-# https://blog.packagecloud.io/eng/2017/02/21/set-environment-variable-save-thousands-of-system-calls/
-# i haven't checked if this makes any difference personally, but may as well, eh?
-export TZ=':/etc/localtime'
-
-# damnit python.
-export PYTHONIOENCODING=utf-8
-
-# cleanup in case of inherited exports
+# cleanup in case of inherited exports:
 unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY
 unset LD_LIBRARY_PATH
 
-# PuTTY over serial
-test "$TERM" = vt102 && export TERM="xterm"
-
-# Qt is stupid and thinks we're running unity so it hides the menu bar
-test "$DESKTOP_SESSION" = xfce && export QT_QPA_PLATFORMTHEME=""
-
+[ "$DESKTOP_SESSION" != xfce ] || export QT_QPA_PLATFORMTHEME="" # unhide menu bar
+#[ "$TERM" != vt102 ] || export TERM="xterm" # PuTTY over serial
 export EDITOR=vim
+export ENV="$HOME/.-shrc" # for dash
 export PAGER=less
-export VST_SDK_DIR="$HOME/src/vstsdk2.4"
-export LADSPA_PATH="/usr/lib/ladspa"
-export NQDIR="$HOME/play"
+export PYTHONIOENCODING=utf-8 # damnit python!
+export SSH_AUTH_SOCK=0 # more info: https://0x0.st/NUnw
+export TZ=':/etc/localtime' # more info: https://0x0.st/NUnv
+export _REMOTE_AUTH="auth"
+export _REMOTE_DIR="t"
+export _REMOTE_DOMAIN="https://eaguru.guru"
 
+# $LANG has been my bane whenever i forget to set it properly, so check it.
 if [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ]; then
     if [ -z "$MSYSTEM" ] || [ "$LANG" != "C.UTF-8" ]; then
-        if [ -z "$LANG" ]; then
-            echo -E "Warning: LANG is empty!" >&2
-        else
-            echo -E "Warning: LANG is $LANG" >&2
-        fi
+        printf 'Warning: LANG is %s\n' "${LANG:-empty!}" >&2
     fi
 fi
 
@@ -106,10 +62,13 @@ fi
 
 # enable colors {{{2
 
-(echo test | grep --color=auto blah >/dev/null 2>&1) && alias grep='grep --color=auto'
-(ls --color=auto >/dev/null 2>&1) && alias ls='ls --color=auto'
-alias lr="lr -G"
-#alias make="$(has colormake || has make)"
+if [ "$FANCY" -eq 1 ]; then
+    # busybox is smart enough to ignore --color flags when unsupported.
+    alias grep='nocorrect grep --color=auto'
+    alias ls='ls --color=auto'
+    alias lr="lr -G"
+    #alias make="$(has colormake || has make)"
+fi
 
 # just flags {{{2
 
@@ -139,7 +98,6 @@ alias gb='git --no-pager branch' ### @- display the current git branch.
 
 # being specific {{{2
 
-[ -e "$HOME/python3" ] && alias py="~/python3" || alias py="python3"
 alias ash="PS1='$ ' busybox ash"
 alias pip="maybesudo -H pip3"
 alias revend='objcopy -I binary -O binary --reverse-bytes=4' ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
@@ -158,7 +116,7 @@ alias eamv='ea move' ### @- invoke [`ea move`.](#ea)
 alias eacp='ea copy' ### @- invoke [`ea copy`.](#ea)
 alias earm='ea delete' ### @- invoke [`ea delete`.](#ea)
 
-alias ll="lol" # workaround for a strange issue with bash
+alias ll="lol" # workaround for a strange issue with bash (/etc/profile maybe?)
 lol() { ### @ ll - list files verbosely, fancily, ordered, but not recursively.
     { lr -1lshGG -o tev -t 'name~~".*"||type==d' "$@" \
      && lr -1lshGG -o tev -t 'name!~~".*"&&type!=d' "$@" \
@@ -188,11 +146,4 @@ alias unused='{ pacman -Qtq; pacman -Qeq | double; } | sort | uniq -u' ### @- TO
 alias makepkgf='makepkg -Af --skipchecksums --skippgpcheck' ### @- make the freakin' package!
 alias rakef='rake && gem build *.gemspec && gem install *.gem' ### @- make the freakin' gem!
 
-eashare() { ### @- upload a file and copy its URL to the clipboard.
-    ### **NOTE:** this only works on MSYS2 for now.
-    ###
-    ### **NOTE:** i lied, this doesn't work at all.
-    local dest="${1##*/}"
-    eaput "$1" || return
-    printf "%s" "$_REMOTE_DOMAIN/$_REMOTE_DIR/$dest" >> /dev/clipboard
-}
+pl() { printf '%s\n' "$@"; } ### @- print each argument on its own line.

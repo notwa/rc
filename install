@@ -5,25 +5,17 @@
 VERBOSE="${VERBOSE:-1}"
 
 NAME="$0"
-[ -n "$ZSH_VERSION" -o -n "$BASH_VERSION" ] || VERBOSE=0 # no colors for you
-
-note() {
-    local IFS=" "
-    printf "%s\n" "$*"
-}
-
-warn() {
-    note "$@" >&2
-}
 
 die() {
-    warn "$NAME:" "$@"
+    printf '%s:' "$NAME"
+    printf ' %s' "$@"
+    printf '\n'
     exit 1
-}
+} >&2
 
 backup() {
     : "${1:?missing argument}"
-    note "backing up $1"
+    printf '%s\n' "backing up $1"
     mkdir -p "${backup_dir:?backup_dir unset}/$(dirname "$1")"
     [ ! -e "$backup_dir/$1" ] || die "backup already exists"
     mv "$1" "$backup_dir/$1"
@@ -35,8 +27,8 @@ hardlink() {
     if [ -e "$1" ]; then
         [ ! "$1" -ef "$2" ] || return 0
         if [ -h "$1" ]; then
-            note "removing symbolic link $1"
-            rm "$1" || die 'failed to remove symbolic link'
+            printf '%s\n' "removing symbolic link $1"
+            rm "$1" || die "failed to remove symbolic link"
         fi
         if [ -s "$1" ]; then
             backup "$1" || die "$1 already exists"
@@ -52,8 +44,8 @@ softlink_nix() {
     if [ -e "$1" ]; then
         if [ -h "$1" ]; then
             [ "$(readlink "$1")" != "$2" ] || return 0
-            note "removing symbolic link $1"
-            rm "$1" || die 'failed to remove symbolic link'
+            printf '%s\n' "removing symbolic link $1"
+            rm "$1" || die "failed to remove symbolic link"
         else
             die "$1 already exists and is not a symbolic link"
         fi
@@ -81,11 +73,11 @@ softlink_pseudo() {
 
         if [ -d "$d2" ]; then
             if [ "$d1" != ".vim/bundle" ]; then # buggy on Windows
-                [ "$VERBOSE" -lt 1 ] || warn $'\e[34m / \e[0m' "$d1 $d2"
+                [ "$VERBOSE" -lt 1 ] || printf '\033[34m / \033[0m %s %s\n' "$d1" "$d2" >&2
                 softlink_pseudo "$d1" "$d2" || exit $?
             fi
         elif [ -f "$d2" ]; then
-            [ "$VERBOSE" -lt 1 ] || warn $'\e[34m * \e[0m' "$d1"
+            [ "$VERBOSE" -lt 1 ] || printf '\033[34m * \033[0m %s\n' "$d1" >&2
             hardlink "$d1" "$d2" || exit $?
         else
             die "i don't know how to pseudo-symlink $d2"
@@ -108,10 +100,10 @@ find_new_files() {
             find_new_files "$d1" "$d2"
         elif [ ! "$d1" -ef "$d2" ]; then
             if [ "$VERBOSE" -lt 1 ]; then
-                warn " + $d1"
+                printf ' + %s\n' "$d1" >&2
             else
-                #warn "new destination file. consider manually moving it:"
-                warn $'\e[32m + \e[0m' "$d1"
+                #printf 'new destination file. consider manually moving it:\n' >&2
+                printf '\033[32m + \033[0m %s\n' "$d1" >&2
             fi
         fi
     done
@@ -130,11 +122,11 @@ softlink() {
 which readlink >/dev/null || die 'failed sanity check (check your $PATH)'
 
 rc="$(readlink -f "$(dirname "$NAME")" )"
-[ -d "$rc" ] || die 'failed to determine rc directory'
-cd "${HOME:?HOME variable empty or unset}" || die 'failed to change directory'
+[ -d "$rc" ] || die "failed to determine rc directory"
+cd "${HOME:?HOME variable empty or unset}" || die "failed to change directory"
 
 backup_dir="$rc/backup-$(date -u '+%s')"
-[ ! -d "$backup_dir" ] || die 'backup directory already exists'
+[ ! -d "$backup_dir" ] || die "backup directory already exists"
 
 for f in .bashrc .zshrc .-shrc .prezto-compinit .ls_colors \
   .vimrc .inputrc .Xresources .screenrc .tmux.conf; do
@@ -148,7 +140,7 @@ done
 # ensure that .bashrc gets executed
 if [ ! -e .bash_profile ] || ! grep -qF .bashrc .bash_profile; then
     echo >> .bash_profile
-    echo '[ ! -f ~/.bashrc ] || . ~/.bashrc' >> .bash_profile
+    printf '%s\n' '[ ! -f ~/.bashrc ] || . ~/.bashrc' >> .bash_profile
 fi
 
 is_empty() {
@@ -167,7 +159,7 @@ for d in Desktop Documents Downloads Music Pictures Public Templates Video Video
     if is_empty "$d"; then
         rm -r "$d" # doesn't really matter if it fails
     else
-        note "not removing $d because it contains files"
+        printf '%s\n' "not removing $d because it contains files"
     fi
 done
 

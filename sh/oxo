@@ -101,13 +101,13 @@ oxo() { ### @-
 
     if [ $hits -gt 0 ]; then
         [ $hits -eq 1 ] && s= || s=s
-        printf "$look" "oxo: successfully uploaded $hits file$s" >&2
+        printf "$look" "oxo: successfully uploaded $hits/$total file$s" >&2
     fi
 
     local fails=$((total-hits))
     if [ $fails -gt 0 ]; then
         [ $fails -eq 1 ] && s= || s=s
-        printf "$err" "oxo: failed to upload $fails file$s" >&2
+        printf "$err" "oxo: failed to upload $fails/$total file$s" >&2
     fi
 
     [ ! -e /tmp/oxo ] || rm /tmp/oxo

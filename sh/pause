@@ -1,21 +1,39 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # YES_ZSH
 # YES_BASH
-# NO_DASH
-# NO_ASH
+# YES_DASH
+# YES_ASH
 
-pause() { ### @-
-    ### pause — the companion script of [`confirm`.](#confirm)
-    ###
-    ### ```
-    ### $ pause
-    ### Press any key to continue
-    ### $ 
-    ### ```
-    [ -n "${ZSH_VERSION:-}" ] \
-      && read -sk '?Press any key to continue
-'     || read -n1 -u 1 -sp 'Press any key to continue
-'
-}
+### @ pause
+### pause — the companion script of [`confirm`.](#confirm)
+###
+### ```
+### $ pause
+### Press any key to continue
+### $ 
+### ```
+
+# known inconsistencies:
+# since the fallbacks pipe stderr into stdin,
+# this will behave differently between zsh and non-zsh shells:
+# ( echo hi | pause | wc -c ) 2>/dev/null
+
+if [ -n "$ZSH_VERSION" ]; then
+    pause() {
+        read -sk $'?Press any key to continue\n'
+    }
+elif [ -n "$BASH_VERSION" ]; then
+    pause() {
+        read -n1 -sp $'Press any key to continue\n'
+    } <&2 >/dev/tty # try to ensure this is a terminal instead of a pipe
+else
+    pause() (
+        old="$(stty -g)"
+        trap 'stty "$old"' INT EXIT
+        printf 'Press any key to continue\n'
+        stty -icanon -echo
+        dd ibs=1 count=1 2>/dev/null >/dev/null
+    ) <&2 >/dev/tty # try to ensure this is a terminal instead of a pipe
+fi
 
 [ -n "${preload+-}" ] || pause "$@"

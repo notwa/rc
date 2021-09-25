@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # YES_ZSH
 # YES_BASH
-# NO_DASH
-# NO_ASH
+# YES_DASH
+# YES_ASH
 
 ### @ confirm
 ### display a simple yes-or-no prompt and return 0-or-1 respectively.
@@ -19,7 +19,7 @@
 ### a real world example:
 ###
 ### ```
-### % g1 && confirm && git commit -a --amend --no-edit
+### $ g1 && confirm && git commit -a --amend --no-edit
 ### daf84e3 document a ton of stuff
 ### Continue? [y/N] y
 ### [master 92bdf76] document a ton of stuff
@@ -27,23 +27,37 @@
 ###  20 files changed, 406 insertions(+), 29 deletions(-)
 ### ```
 
+# known inconsistencies:
+# since the fallbacks pipe stderr into stdin,
+# this will behave differently between zsh and non-zsh shells:
+# ( echo hi | confirm | wc -c ) 2>/dev/null
+
 if [ -n "$ZSH_VERSION" ]; then
     confirm() {
-        [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+        [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
         read -q '?Continue? [y/N] '
         ret=$?
-        echo
+        echo >/dev/tty
         return $ret
     }
-else
+elif [ -n "$BASH_VERSION" ]; then
     confirm() {
-        # specify stdin (1) to avoid taking input from pipes
-        [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
-        read -n1 -u 1 -p "Continue? [y/N] " c
+        [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
+        read -n1 -p "Continue? [y/N] " c
         echo
-        [ "$c" != 'y' ] && [ "$c" != 'Y' ] && return 1
-        return 0
-    }
+        [ "$c" = y ] || [ "$c" = Y ]
+    } <&2 >/dev/tty # try to ensure this is a terminal instead of a pipe
+else
+    confirm() (
+        [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
+        old="$(stty -g)"
+        trap 'stty "$old"' INT EXIT
+        printf 'Continue? [y/N] '
+        stty -icanon
+        c="$(dd ibs=1 count=1 2>/dev/null)"
+        echo
+        [ "$c" = y ] || [ "$c" = Y ]
+    ) <&2 >/dev/tty # try to ensure this is a terminal instead of a pipe
 fi
 
 [ -n "${preload+-}" ] || confirm "$@"

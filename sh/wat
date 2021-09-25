@@ -14,7 +14,7 @@ wat() { ### @-
     for cmd; do
         if (( $+aliases[$cmd] )); then
             printf '%s: aliased to %s\n' $cmd $aliases[$cmd]
-            local -a words=(${${(z)aliases[$cmd]}:#(*=*|rlwrap|noglob|command)})
+            local -a words=(${${(z)aliases[$cmd]}:#(*=*|rlwrap|nocorrect|noglob|command)})
             unalias $cmd
             if [[ $words[1] == '\'* ]]; then
                 words[1]=${words[1]#'\'}

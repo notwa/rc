@@ -64,7 +64,7 @@ fi
 
 if [ "$FANCY" -eq 1 ]; then
     # busybox is smart enough to ignore --color flags when unsupported.
-    alias grep='nocorrect grep --color=auto'
+    alias grep='grep --color=auto'
     alias ls='ls --color=auto'
     alias lr="lr -G"
     #alias make="$(has colormake || has make)"

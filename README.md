@@ -859,11 +859,11 @@ invoke `twitch` as a job with both stdout and stderr silenced.
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L47)
+### [dummy (bashrc)](/home/bashrc#L45)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L52)
+### [reload (bashrc)](/home/bashrc#L50)
 
 **TODO:** respect initctl like in `.zshrc`.
 

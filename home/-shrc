@@ -141,8 +141,8 @@ alias double='awk "{print;print}"' ### @- print every line twice. <br/> print ev
 alias join2='paste -d" " - -' ### @- join every other line.
 alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r'"'" ### @- convert katakana codepoints to their equivalent hiragana.
 ### useful for translating [debug text from ancient games.](https://tcrf.net/)
-alias picky='{ pacman -Qgq base base-devel xorg xorg-drivers xfce4 | double; pacman -Qeq; } | sort | uniq -u' ### @- TODO
-alias unused='{ pacman -Qtq; pacman -Qeq | double; } | sort | uniq -u' ### @- TODO
+alias picky='comm -23 <(pacman -Qetq | sort -u) <(pacman -Qgq base base-devel xorg xorg-drivers xfce4 mingw-w64-x86_64-toolchain 2>/dev/null | sort -u) | tr -d "\t"' ### @- TODO
+alias unused='comm -23 <(pacman -Qtq) <(pacman -Qeq) | tr -d "\t"' ### @- TODO
 alias makepkgf='makepkg -Af --skipchecksums --skippgpcheck' ### @- make the freakin' package!
 alias rakef='rake && gem build *.gemspec && gem install *.gem' ### @- make the freakin' gem!
 

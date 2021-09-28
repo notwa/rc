@@ -15,14 +15,19 @@
 
 if [ -n "$ZSH_VERSION" ]; then
     pause() {
-        read -sk $'?Press any key to continue\n'
+        [ $# -eq 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
+        local c=
+        read -sk $'?Press any key to continue\n' c
     }
 elif [ -n "$BASH_VERSION" ]; then
     pause() {
-        read -n1 -sp $'Press any key to continue\n' 2>&1
+        [ $# -eq 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
+        local c=
+        read -n1 -sp $'Press any key to continue\n' c 2>&1
     } 1<>/dev/tty <&1 # ensure this interacts with a terminal instead of a pipe
 else
     pause() (
+        [ $# -eq 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
         old="$(stty -g)"
         trap 'stty "$old"' INT EXIT
         printf 'Press any key to continue\n'

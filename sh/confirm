@@ -29,22 +29,24 @@
 
 if [ -n "$ZSH_VERSION" ]; then
     confirm() {
-        [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
-        read -q '?Continue? [y/N] '
+        [ $# -eq 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
+        local c=
+        read -q '?Continue? [y/N] ' c
         ret=$?
         echo >/dev/tty
         return $ret
     }
 elif [ -n "$BASH_VERSION" ]; then
     confirm() {
-        [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
+        [ $# -eq 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
+        local c=
         read -n1 -p "Continue? [y/N] " c 2>&1
         echo
         [ "$c" = y ] || [ "$c" = Y ]
     } 1<>/dev/tty <&1 # ensure this interacts with a terminal instead of a pipe
 else
     confirm() (
-        [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
+        [ $# -eq 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 2; }
         old="$(stty -g)"
         trap 'stty "$old"' INT EXIT
         printf 'Continue? [y/N] '

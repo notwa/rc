@@ -202,8 +202,6 @@ function tw() { ### @-
     twitch "$@" OMFG STFU &
 }
 
-local host="${(L)HOST}"
-
 function {
     # initialize prompts.
 
@@ -232,6 +230,7 @@ function {
     local good=42 # green
     local  bad=41 # red
 
+    local host="${(L)HOST}"
     [ "$host" = neobanshee ] && good=46 # cyan
     [ "$host" = spectre ]    && good=47 # white
     [ "$host" = wraith ]     && good=43 # yellow

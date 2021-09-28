@@ -230,11 +230,12 @@ function {
     local good=42 # green
     local  bad=41 # red
 
-    local host="${(L)HOST}"
-    [ "$host" = neobanshee ] && good=46 # cyan
-    [ "$host" = spectre ]    && good=47 # white
-    [ "$host" = wraith ]     && good=43 # yellow
-    [ "$host" = sabotage ]   && good=45 # magenta
+    case "${(L)HOST}" in
+    (neobanshee) good=46;; # cyan
+    (spectre)    good=47;; # white
+    (wraith)     good=43;; # yellow
+    (sabotage)   good=45;; # magenta
+    esac
 
     # NOTE: i had ${s}10${e} here before, is it still necessary?
     PROMPT="%{$reset${s}%(?.${good}.${bad})${e}${s}97${e}%}%#%{$reset%} "

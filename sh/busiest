@@ -4,16 +4,15 @@
 # NO_DASH
 # NO_ASH
 
-dbusiest() { ### @-
-    ### list directories ordered descending by the number of files in them,
-    ### counted recursively. see also [`cdbusiest`.](#cdbusiest)
+busiest() { ### @-
+    ### list directories in descending order by the number of files in them,
+    ### counted recursively.
     ###
     ### ```
-    ### $ cd
-    ### $ dbusiest | head -n3
-    ### 152364 src
-    ### 46518 work
-    ### 20903 play
+    ### $ cd && busiest | head -n3
+    ### 144181 src
+    ### 48840 work
+    ### 21042 play
     ### ```
     [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     local c d
@@ -25,4 +24,4 @@ dbusiest() { ### @-
     [ -z $d ] && return 1
 }
 
-[ -n "${preload+-}" ] || dbusiest "$@"
+[ -n "${preload+-}" ] || busiest "$@"

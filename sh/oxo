@@ -24,7 +24,7 @@ oxo() { ### @-
     ### ```
     ### $ echo test | oxo
     ### https://0x0.st/sj2.txt
-    ### oxo: successfully uploaded 1 file
+    ### oxo: successfully uploaded 1/1 file
     ### $ oxo ~/play/{hey,you,fake,empty}
     ### https://0x0.st/-3rz.txt
     ### oxo: expires in 365 days: /home/notwa/play/hey
@@ -32,8 +32,8 @@ oxo() { ### @-
     ### oxo: expires in 365 days: /home/notwa/play/you
     ### oxo: no such file: /home/notwa/play/fake
     ### oxo: skipping empty file: /home/notwa/play/empty
-    ### oxo: successfully uploaded 2 files
-    ### oxo: failed to upload 2 files
+    ### oxo: successfully uploaded 2/4 files
+    ### oxo: failed to upload 2/4 files
     ### ```
 
     local look='\033[1m%s\033[0m\n'

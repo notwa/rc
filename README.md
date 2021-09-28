@@ -125,16 +125,16 @@ $ bin 123
 01111011
 ```
 
-### [cdbusiest](/sh/cdbusiest#L7)
+### [busiest](/sh/busiest#L7)
 
-cd to the directory with the most files in it, counted recursively.
+list directories in descending order by the number of files in them,
+counted recursively.
 
 ```
-$ cd
-$ cdbusiest
-152364 src
-$ pwd
-/home/notwa/src
+$ cd && busiest | head -n3
+144181 src
+48840 work
+21042 play
 ```
 
 ### [colors](/sh/colors#L7)
@@ -144,11 +144,6 @@ this only includes the basic 16-color palette.
 excluding boilerplate, this script is a mere a 76-characters long!
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors.png)
-
-### [compandy](/sh/compandy#L5)
-
-generate compand arguments for ffmpeg audio filters.
-this is kinda pointless now that acompressor is wildly supported.
 
 ### [setup_clang_ubuntu (sh/compile)](/sh/compile#L7)
 
@@ -257,19 +252,6 @@ $ days 'January 1 1970'
 18838
 ```
 
-### [dbusiest](/sh/dbusiest#L7)
-
-list directories ordered descending by the number of files in them,
-counted recursively. see also [`cdbusiest`.](#cdbusiest)
-
-```
-$ cd
-$ dbusiest | head -n3
-152364 src
-46518 work
-20903 play
-```
-
 ### [dfu](/sh/dfu#L9)
 
 pretty-print `df` in GiB.
@@ -280,10 +262,6 @@ Filesystem              Used     Max    Left    Misc
 /dev                    0.00    0.46    0.46    0.00
 /                      17.20   23.22    6.01    1.27
 ```
-
-### [disf](/sh/disf#L8)
-
-disassemble a single function from an unstripped executable, unreliably.
 
 ### [document](/sh/document#L144)
 
@@ -454,7 +432,7 @@ directories are skipped. please review the terms of service
 ```
 $ echo test | oxo
 https://0x0.st/sj2.txt
-oxo: successfully uploaded 1 file
+oxo: successfully uploaded 1/1 file
 $ oxo ~/play/{hey,you,fake,empty}
 https://0x0.st/-3rz.txt
 oxo: expires in 365 days: /home/notwa/play/hey
@@ -462,8 +440,8 @@ https://0x0.st/-3ri.txt
 oxo: expires in 365 days: /home/notwa/play/you
 oxo: no such file: /home/notwa/play/fake
 oxo: skipping empty file: /home/notwa/play/empty
-oxo: successfully uploaded 2 files
-oxo: failed to upload 2 files
+oxo: successfully uploaded 2/4 files
+oxo: failed to upload 2/4 files
 ```
 
 ### [pacbm](/sh/pacbm#L9)
@@ -587,11 +565,6 @@ scrambles text in a predictable way using regex.
 sacbremls ttex in a pdrceailtbe way unsig reegx.
 
 **TODO:** consider renaming because scramble(1) already exists.
-
-### [screeny](/sh/screeny#L7)
-
-handle GNU screens.
-these days, i typically use tmux instead.
 
 ### [scropt](/sh/scropt#L4)
 
@@ -749,11 +722,6 @@ $ cd ~/play/hash && grep -r 'ing$' . | sv :
 
 **TODO:** rename because busybox(1) sv already exists.
 
-### [tpad](/sh/tpad#L7)
-
-add a 1px transparent border around an image to prevent twitter from mangling it into a jpg.
-sadly, this trick doesn't work anymore.
-
 ### [trash](/sh/trash#L7)
 
 output a given number of bytes from `/dev/random`.
@@ -773,11 +741,6 @@ $ echo $COLUMNS
 $ seq 1 100 | tr '\n' ' ' | trunc
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31…
 ```
-
-### [unscreen](/sh/unscreen#L7)
-
-handle closing of screens — this works alongside [`screeny`](#screeny).
-these days, i typically use tmux instead.
 
 ### [wat](/sh/wat#L9)
 
@@ -1077,7 +1040,7 @@ print each argument on its own line.
 | --------------------------------------------- | ---------- | ---- | ---- | ---- | ---- |
 | [_lsarchive](#_lsarchive)                     |          ❔ | ❔    | ❔    | ❔    | ❔    |
 | [_unarchive](#_unarchive)                     |          ❔ | ❔    | ❔    | ❔    | ❔    |
-| [archive](#archive)                           |        zsh | ❔    | ❔    | ❔    | ❔    |
+| [archive](#archive)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arrays](#arrays)                             |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |
@@ -1087,23 +1050,19 @@ print each argument on its own line.
 | [baknow](#baknow)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [baks](#baks)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
-| [cdbusiest](#cdbusiest)                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [busiest](#busiest)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [colors](#colors)                             |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
-| [compandy](#compandy)                         |          ❔ | ✔️    | ❔    | ❔    | ❔    |
 | [compile](#compile)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [confirm](#confirm)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [cutv](#cutv)                                 |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [dbusiest](#dbusiest)                         |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [disf](#disf)                                 |       *sh* | ✔️    | ✔️    | ❔    | ❔    |
 | [document](#document)                         |       dash | ⭕    | ⭕    | ✔️    | ✔️    |
 | [e](#e)                                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [echo2](#echo2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [fasd](#fasd)                                 |       *sh* | ❔    | ❔    | ❔    | ❔    |
 | [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ghmd](#ghmd)                                 |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
 | [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1111,7 +1070,7 @@ print each argument on its own line.
 | [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [is_empty](#is_empty)                         |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
 | [isup](#isup)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [lsarchive](#lsarchive)                       |          ❔ | ❔    | ❔    | ❔    | ❔    |
+| [lsarchive](#lsarchive)                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [monitor](#monitor)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
@@ -1133,7 +1092,6 @@ print each argument on its own line.
 | [rs](#rs)                                     |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [sc](#sc)                                     |       bash | ⭕    | ✔️    | ⭕    | ⭕    |
 | [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [screeny](#screeny)                           |        zsh | ✔️    | ✔️    | ⭕    | ⭕    |
 | [scropt](#scropt)                             |       bash | ✔️    | ❔    | ❔    | ❔    |
 | [shcom](#shcom)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [similar](#similar)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1145,11 +1103,9 @@ print each argument on its own line.
 | [streamcrap](#streamcrap)                     |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |
 | [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sv](#sv)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [tpad](#tpad)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [trunc](#trunc)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [unarchive](#unarchive)                       |          ❔ | ❔    | ❔    | ❔    | ❔    |
-| [unscreen](#unscreen)                         |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [unarchive](#unarchive)                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [wat](#wat)                                   |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

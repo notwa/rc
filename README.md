@@ -373,15 +373,30 @@ try this: `maybesudo_ -u "$USER" printenv`
 
 ### [minutemaid](/sh/minutemaid#L7)
 
-return 0 and/or execute a command if the current minute
-is divisible by a given number. note that a minute is
-relative to the seconds since the epoch, not the minute of the hour.
-this ensures that commands will run roughly every N minutes,
-regardless of the minute hand on the clock.
+check if the current minute is divisible by a given number,
+and optionally execute a command if it is. if a command is given,
+either execute the command and return its exit value,
+or execute nothing and return 0. if a command is omitted,
+either return 0 on the minute, or return 1.
+
+note that a "minute" is relative to the seconds since the epoch,
+not the minute of the hour. this ensures that commands will run
+roughly every N minutes, regardless of the minute hand on the clock.
+
+note that `minutemaid 1` will always return 0,
+and `minutemaid 1 command` will always execute the command,
+since every integral interval is evenly divisible by 1.
+`minutemaid 0`, and any negative interval, is an error.
 
 ```
 # crontab usage:
 * * * * * minutemaid 9 ~/work/do_my_bidding # runs every nine minutes
+# loop usage:
+until minutemaid 9; do sleep 5; done
+echo the wait is finally over; date
+# improper usage:
+while minutemaid 1; do sleep 1; done
+echo this will never happen
 ```
 
 ### [monitor](/sh/monitor#L7)

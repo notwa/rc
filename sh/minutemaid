@@ -17,7 +17,8 @@ minutemaid() { ### @-
     ###
     ### note that `minutemaid 1` will always return 0,
     ### and `minutemaid 1 command` will always execute the command,
-    ### since every integer "minute" is evenly divisible by 1.
+    ### since every integral interval is evenly divisible by 1.
+    ### `minutemaid 0`, and any negative interval, is an error.
     ###
     ### ```
     ### # crontab usage:
@@ -44,6 +45,11 @@ minutemaid() { ### @-
 
     local interval="${1:?no interval specified}"
     shift
+
+    if [ "$interval" -le 0 ]; then
+        printf "%s\n" "$0: interval must be positive" >&2
+        return 1
+    fi
 
     local sec="$(date +%s)"
     local min="$((sec/60+offset))"

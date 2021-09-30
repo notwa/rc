@@ -263,6 +263,10 @@ Filesystem              Used     Max    Left    Misc
 /                      17.20   23.22    6.01    1.27
 ```
 
+### [disowned](/sh/disowned#L7)
+
+find files in system directories that aren't associated with any pacman packages.
+
 ### [document](/sh/document#L144)
 
 generate a markdown file out of docstrings in shell scripts.
@@ -321,7 +325,7 @@ this script utilizes the CSS provided at
 print the result of `which` if the program is found, else simply return 1.
 
 ```
-export CC="$(has clang || has clang-3.8 || has gcc)"
+export SOLVER="$(has kissat || has picosat || has cadical || has minisat)"
 ```
 
 ### [hex](/sh/hex#L10)
@@ -845,207 +849,207 @@ return 0, ignoring arguments.
 
 **TODO:** respect initctl like in `.zshrc`.
 
-### [ADDPATH (-shrc)](/home/-shrc#L19)
+### [ADDPATH (-shrc)](/home/-shrc#L23)
 
 append a directory to `$PATH` if it isn't already present.
 
-### [fils (-shrc)](/home/-shrc#L77)
+### [fils (-shrc)](/home/-shrc#L81)
 
 (GNU du) display human-friendly filesizes for the files in a directory.
 
-### [lsa (-shrc)](/home/-shrc#L78)
+### [lsa (-shrc)](/home/-shrc#L82)
 
 (GNU ls) list files with directories and dotfiles ordered first.
 
-### [perlu (-shrc)](/home/-shrc#L79)
+### [perlu (-shrc)](/home/-shrc#L83)
 
 invoke perl expecting files with UTF-8 encoding.
 
-### [rgn (-shrc)](/home/-shrc#L80)
+### [rgn (-shrc)](/home/-shrc#L84)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [cms (-shrc)](/home/-shrc#L81)
+### [cms (-shrc)](/home/-shrc#L85)
 
 invoke cryptominisat5 with less noise.
 
-### [curls (-shrc)](/home/-shrc#L82)
+### [curls (-shrc)](/home/-shrc#L86)
 
 invoke curl with less noise.
 
-### [get (-shrc)](/home/-shrc#L86)
+### [get (-shrc)](/home/-shrc#L90)
 
 retrieve the most recent files from the default branch of a git repository, and not much else.
 
-### [gs (-shrc)](/home/-shrc#L87)
+### [gs (-shrc)](/home/-shrc#L91)
 
 invoke git's status subcommand.
 
 **TODO:** consider renaming because gs(1) already exists.
 
-### [gd (-shrc)](/home/-shrc#L89)
+### [gd (-shrc)](/home/-shrc#L93)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [gds (-shrc)](/home/-shrc#L90)
+### [gds (-shrc)](/home/-shrc#L94)
 
 display difference stats from git.
 
-### [gl (-shrc)](/home/-shrc#L91)
+### [gl (-shrc)](/home/-shrc#L95)
 
 invoke git's log subcommand with a single line per commit.
 
-### [glo (-shrc)](/home/-shrc#L92)
+### [glo (-shrc)](/home/-shrc#L96)
 
 navigate git's commit tree succinctly.
 
-### [g1 (-shrc)](/home/-shrc#L93)
+### [g1 (-shrc)](/home/-shrc#L97)
 
 display the most recent git commit.
 
-### [gr (-shrc)](/home/-shrc#L94)
+### [gr (-shrc)](/home/-shrc#L98)
 
 display remote git repositories verbosely.
 
-### [gb (-shrc)](/home/-shrc#L95)
+### [gb (-shrc)](/home/-shrc#L99)
 
 display the current git branch.
 
 **NOTE:** there also exists a gb(1) program provided by
 the *gb* package that i don't use.
 
-### [revend (-shrc)](/home/-shrc#L103)
+### [revend (-shrc)](/home/-shrc#L107)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (-shrc)](/home/-shrc#L104)
+### [clone (-shrc)](/home/-shrc#L108)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (-shrc)](/home/-shrc#L105)
+### [aligntabs (-shrc)](/home/-shrc#L109)
 
 align tab-delimited fields in stdin.
 
-### [crawla (-shrc)](/home/-shrc#L106)
+### [crawla (-shrc)](/home/-shrc#L110)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (-shrc)](/home/-shrc#L107)
+### [crawlz (-shrc)](/home/-shrc#L111)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [eahead (-shrc)](/home/-shrc#L109)
+### [eahead (-shrc)](/home/-shrc#L113)
 
 deprecated name for [`ea head`.](#ea)
 
-### [eaget (-shrc)](/home/-shrc#L110)
+### [eaget (-shrc)](/home/-shrc#L114)
 
 deprecated name for [`ea get`.](#ea)
 
-### [eaput (-shrc)](/home/-shrc#L111)
+### [eaput (-shrc)](/home/-shrc#L115)
 
 deprecated name for [`ea put`.](#ea)
 
-### [eamove (-shrc)](/home/-shrc#L112)
+### [eamove (-shrc)](/home/-shrc#L116)
 
 deprecated name for [`ea move`.](#ea)
 
-### [eacopy (-shrc)](/home/-shrc#L113)
+### [eacopy (-shrc)](/home/-shrc#L117)
 
 deprecated name for [`ea copy`.](#ea)
 
-### [eadelete (-shrc)](/home/-shrc#L114)
+### [eadelete (-shrc)](/home/-shrc#L118)
 
 deprecated name for [`ea delete`.](#ea)
 
-### [eamv (-shrc)](/home/-shrc#L115)
+### [eamv (-shrc)](/home/-shrc#L119)
 
 invoke [`ea move`.](#ea)
 
-### [eacp (-shrc)](/home/-shrc#L116)
+### [eacp (-shrc)](/home/-shrc#L120)
 
 invoke [`ea copy`.](#ea)
 
-### [earm (-shrc)](/home/-shrc#L117)
+### [earm (-shrc)](/home/-shrc#L121)
 
 invoke [`ea delete`.](#ea)
 
-### [ll (-shrc)](/home/-shrc#L120)
+### [ll (-shrc)](/home/-shrc#L123)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [diff (-shrc)](/home/-shrc#L128)
+### [diff (-shrc)](/home/-shrc#L132)
 
 use git's diff subcommand for general diffing.
 
-### [gc (-shrc)](/home/-shrc#L129)
+### [gc (-shrc)](/home/-shrc#L133)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (-shrc)](/home/-shrc#L131)
+### [counts (-shrc)](/home/-shrc#L135)
 
 count files in the current directory, including files found recursively.
 
-### [exts (-shrc)](/home/-shrc#L132)
+### [exts (-shrc)](/home/-shrc#L136)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (-shrc)](/home/-shrc#L133)
+### [nocom (-shrc)](/home/-shrc#L137)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (-shrc)](/home/-shrc#L134)
+### [jrep (-shrc)](/home/-shrc#L138)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (-shrc)](/home/-shrc#L135)
+### [bomb (-shrc)](/home/-shrc#L139)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (-shrc)](/home/-shrc#L136)
+### [cleanse (-shrc)](/home/-shrc#L140)
 
 strip unprintable and non-ASCII characters.
 
-### [unwrap (-shrc)](/home/-shrc#L137)
+### [unwrap (-shrc)](/home/-shrc#L141)
 
 join paragraphs into one line each.
 
-### [double (-shrc)](/home/-shrc#L138)
+### [double (-shrc)](/home/-shrc#L142)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [join2 (-shrc)](/home/-shrc#L141)
+### [join2 (-shrc)](/home/-shrc#L145)
 
 join every other line.
 
-### [katagana (-shrc)](/home/-shrc#L142)
+### [katagana (-shrc)](/home/-shrc#L146)
 
 convert katakana codepoints to their equivalent hiragana.
 
 useful for translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (-shrc)](/home/-shrc#L144)
+### [picky (-shrc)](/home/-shrc#L148)
 
 TODO
 
-### [unused (-shrc)](/home/-shrc#L145)
+### [unused (-shrc)](/home/-shrc#L149)
 
 TODO
 
-### [makepkgf (-shrc)](/home/-shrc#L146)
+### [makepkgf (-shrc)](/home/-shrc#L150)
 
 make the freakin' package!
 
-### [rakef (-shrc)](/home/-shrc#L147)
+### [rakef (-shrc)](/home/-shrc#L151)
 
 make the freakin' gem!
 
-### [pl (-shrc)](/home/-shrc#L149)
+### [pl (-shrc)](/home/-shrc#L153)
 
 print each argument on its own line.
 
@@ -1073,6 +1077,7 @@ print each argument on its own line.
 | [cutv](#cutv)                                 |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [disowned](#disowned)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [document](#document)                         |       dash | ⭕    | ⭕    | ✔️    | ✔️    |
 | [e](#e)                                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1094,7 +1099,6 @@ print each argument on its own line.
 | [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [oxo](#oxo)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [pacman-list-disowned](#pacman-list-disowned) |          ❔ | ❔    | ❔    | ❔    | ❔    |
 | [pause](#pause)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pegg](#pegg)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pippy](#pippy)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

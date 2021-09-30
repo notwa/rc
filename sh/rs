@@ -10,7 +10,6 @@ rs() { ### @-
     ### i'm sure there's something equivalent for Linux.
     ###
     ### **TODO:** consider renaming because rs(1) already exists.
-    set -e
 
     local o_overwrite= o_rate=30 o_duration=0
     local o_x=0 o_y=0 o_w=1920 o_h=1080
@@ -29,7 +28,8 @@ rs() { ### @-
         ?)  local fd=0
             [ $opt = h ] && fd=0 || fd=2
             echo -E "usage: $0 [-r framerate] [-t duration] [-o x,y] [-s w,h] [filename]" >&$fd
-            [ $opt = h ] && return 0 || return 1;;
+            [ $opt = h ]
+            return
         esac
     done
 
@@ -65,14 +65,14 @@ rs() { ### @-
         -c:v libx264 -preset superfast -crf 17 \
         -me_method 1 -partitions i4x4 -x264opts no-cabac \
         -r "$o_rate" ${duration[@]} \
-        $o_overwrite "$o_filename"
+        $o_overwrite "$o_filename" || return
 
     ffmpeg -hide_banner -loglevel warning \
         -i "$o_filename" \
         -sn -dn -metadata = -map_chapters -1 -movflags +faststart \
         -crf 22 -maxrate 3840k -bufsize 4800k \
         -c:v libx264 -pix_fmt yuv420p -profile:v high -preset slow -threads 0 \
-        $o_overwrite "$extless.enc.$ext"
+        $o_overwrite "$extless.enc.$ext" || return
 }
 
 [ -n "${preload+-}" ] || rs "$@"

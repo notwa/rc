@@ -120,12 +120,12 @@ alias eamv='ea move' ### @- invoke [`ea move`.](#ea)
 alias eacp='ea copy' ### @- invoke [`ea copy`.](#ea)
 alias earm='ea delete' ### @- invoke [`ea delete`.](#ea)
 
-alias ll="lol" # workaround for a strange issue with bash (/etc/profile maybe?)
-lol() { ### @ ll - list files verbosely, fancily, ordered, but not recursively.
-    { lr -1lshGG -o tev -t 'name~~".*"||type==d' "$@" \
-     && lr -1lshGG -o tev -t 'name!~~".*"&&type!=d' "$@" \
-     || ls -lAX --group-directories-first --color=force "$@"; } | less
-}
+### @ ll - list files verbosely, fancily, ordered, but not recursively.
+if has lr >/dev/null; then
+    alias ll='ify less lr -1lshGG -o tev'
+else
+    alias ll='ify less ls -lAX --group-directories-first --color=force'
+fi
 
 # providing extra functionality {{{2
 

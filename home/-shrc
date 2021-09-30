@@ -4,13 +4,17 @@
 
 # {{{1 utilities
 
-if [ -z "$ZSH_VERSION" ]; then
-    has() { # hardcoded here for convenience.
-        which "$1" >/dev/null 2>&1 && which "$1"
-    }
-fi
+has() ( # hardcoded here for convenience. refer to ~/sh/has for documentation.
+    if [ "${1:--}" = "${1#*[!A-Za-z_]}" ]; then
+        alias "$1"=
+        unalias "$1"
+        eval "$1() (:)"
+        unset -f "$1"
+    fi
+    which -- "$1" >/dev/null 2>&1 && which -- "$1"
+)
 
-if which sudo >/dev/null 2>&1; then
+if has sudo >/dev/null; then
     maybesudo() { sudo "$@"; }
 else
     maybesudo() { maybesudo_ "$@"; }

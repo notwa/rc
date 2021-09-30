@@ -4,17 +4,20 @@
 # YES_DASH
 # YES_ASH
 
-has() { ### @-
-    ### print the result of `which` if the program is found, else simply return 1.
-    ###
+has() ( ### @- print the result of `which` if the program is found, else simply return 1.
     ### ```
-    ### export CC="$(has clang || has clang-3.8 || has gcc)"
+    ### export SOLVER="$(has kissat || has picosat || has cadical || has minisat)"
     ### ```
-    if [ -n "$ZSH_VERSION" ]; then
-        whence -p "$1"
-    else
-        which "$1" >/dev/null 2>&1 && which "$1"
+    if [ "${1:--}" = "${1#*[!A-Za-z_]}" ]; then # valid alias name?
+        # forcefully unalias it (regardless of if it even was an alias)
+        alias "$1"=
+        unalias "$1"
+        # forcefully unset it (regardless of if it even was a function)
+        eval "$1() (:)"
+        unset -f "$1"
     fi
-}
+    which -- "$1" >/dev/null 2>&1 && which -- "$1"
+) # this uses parentheses instead of braces so that the function is always run
+#   in a subshell. otherwise, the user's aliases and functions may be overwritten.
 
 [ -n "${preload+-}" ] || has "$@"

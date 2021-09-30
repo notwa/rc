@@ -248,13 +248,12 @@ reload() { ### @-
     # to remedy this, when args are passed, invoke initctl instead.
     if [ $# -gt 0 ]; then
         "${commands[reload]:?initctl is missing}" "$@"
-        return $?
+        return # preserves $?
     fi
 
-    # this doesn't seem to help with _vim_files errors, eh.
-    # you wanna rm .zcompdump first, then exit. that's why!
-    cd ~
-    if [ $? -eq 0 ]; then
+    if cd; then
+        # this doesn't seem to help with _vim_files errors, eh.
+        # you wanna rm .zcompdump first, then exit. that's why!
         [ -f .zshrc ] && zrecompile -p .zshrc
         [ -f .prezto-compinit ] && zrecompile -p .prezto-compinit
         rm -f .zcompdump .zshrc.zwc.old .zcompdump.zwc.old

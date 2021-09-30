@@ -12,12 +12,12 @@ unarchive() {
     #   Sorin Ionescu <sorin.ionescu@gmail.com>
     #
 
-    local remove_archive
-    local success
-    local file_name
-    local file_path
-    local extract_dir
-    local _gzip_bin _bzip2_bin _xz_bin _zstd_bin
+    local remove_archive=
+    local success=
+    local file_name=
+    local file_path=
+    local extract_dir=
+    local _gzip_bin= _bzip2_bin= _xz_bin= _zstd_bin=
 
     if (( $# == 0 )); then
         cat >&2 <<EOF

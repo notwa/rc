@@ -12,7 +12,7 @@ lsarchive() {
     #   Sorin Ionescu <sorin.ionescu@gmail.com>
     #
 
-    local verbose
+    local verbose=
 
     if (( $# == 0 )); then
         cat >&2 <<EOF

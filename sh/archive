@@ -12,7 +12,7 @@ archive() {
     #   Matt Hamilton <m@tthamilton.com>
     #
 
-    local archive_name path_to_archive _gzip_bin _bzip2_bin _xz_bin _zstd_bin
+    local archive_name= path_to_archive= _gzip_bin= _bzip2_bin= _xz_bin= _zstd_bin=
 
     if (( $# < 2 )); then
         cat >&2 <<EOF

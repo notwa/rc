@@ -9,7 +9,7 @@ maybesudo_() { ### @-
     ### as it stands, this mostly just handles some environment variables.
     ###
     ### try this: `maybesudo_ -u "$USER" printenv`
-    local name
+    local name=
     local env_cleanup=0
     while getopts :AEHKPSVbhiklnsvC:U:g:p:r:t:u: name; do
         case $name in
@@ -82,8 +82,10 @@ maybesudo_() { ### @-
             # just export the bare minimum that a fairly stock sudo would.
 
             # $path is special in zsh, so call it pathy instead.
-            local colors display dpkg_colors home hostname krb5ccname \
-                ls_colors pathy ps1 ps2 user username xauthority xauthorization
+            local \
+                colors= display= dpkg_colors= home= hostname= krb5ccname= \
+                ls_colors= pathy= ps1= ps2= user= username= xauthority= \
+                xauthorization=
 
             [ -z "$COLORS" ] || colors=COLORS="$COLORS"
             [ -z "$DISPLAY" ] || display=DISPLAY="$DISPLAY"

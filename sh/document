@@ -69,7 +69,7 @@ document2() {
         esac
 
         if [ -n "$n" ]; then
-            local url
+            local url=
             # different subdirs need to be handled differently:
             [ "$f" != "${f#sh/}" ] && url="/sh/${f#sh/}#L$c" || url="/home/${f#.}#L$c"
             if [ "$n" = "$e" ]; then
@@ -117,7 +117,7 @@ document1() {
     # create new output file (with a tilde as not to overwrite just yet):
     : > "$out" || return 4
 
-    local line
+    local line=
 
     if [ -f "$in_" ]; then
         # copy existing lines up to (and including) the "DOCUMENT" marker:

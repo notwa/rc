@@ -31,7 +31,7 @@ minutemaid() { ### @-
     ### echo this will never happen
     ### ```
 
-    local offset=0 name
+    local offset=0 name=
     while getopts 'o:h' name; do
         case $name in
         o)  offset="$OPTARG";;

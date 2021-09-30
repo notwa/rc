@@ -15,7 +15,7 @@ busiest() { ### @-
     ### 21042 play
     ### ```
     [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
-    local c d
+    local c= d=
     for d in *(FDN); do
         print $(find $d 2>/dev/null | wc -l) $d
     done | sort -nr | while read c d; do

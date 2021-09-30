@@ -90,18 +90,17 @@ compile() { ### @-
     local clang="$(whence -p clang 2>/dev/null)"
     local clang_flags=() # currently just for clang-msvc
 
-    local cl
-    local vc
+    local cl= vc=
     if [ -n "$MSYSTEM" ]; then # using msys2?
         if [ -z "$clang" ]; then # don't have native clang?
             # then maybe we have clang-msvc installed.
-            local dir
+            local dir=
             printf "%s\n" "/c/Program Files/LLVM"*(On/N[1]) | read -r dir
             if [ -d "$dir" ] && [ -e "$dir/bin/clang" ]; then
                 clang="$dir/bin/clang"
 
                 # not sure if i'll need this:
-                #local clang_include
+                #local clang_include=
                 #printf "%s\n" "$dir/lib/clang/"*(On/N[1]) | read -r clang_include
                 #[ -n "$clang_include" ] || { echo "failed glob; missing clang include" >&2; return 1 }
                 #clang_flags+=(-I"$clang_include/include")
@@ -110,7 +109,7 @@ compile() { ### @-
             fi
         fi
 
-        local winkit
+        local winkit=
         printf "%s\n" "/c/Program Files (x86)/Windows Kits/"*(on/N[1]) | read -r winkit
         [ -z "$winkit" ] || printf "%s\n" "$winkit/Lib/"*(On/N[1]) | read -r winkit
 
@@ -119,9 +118,7 @@ compile() { ### @-
             :
         else
             # detect MSVC.
-            local clarch
-            local arch
-            local msvc_dig_deep
+            local clarch= arch= msvc_dig_deep=
             [ "$MSYSTEM" = MINGW64 ] && clarch="/amd64" || clarch=""
             [ "$MSYSTEM" = MINGW64 ] && arch="x64" || arch="x86"
             if [ -d "/c/Program Files (x86)/Microsoft Visual Studio" ]; then # 2017+
@@ -179,9 +176,9 @@ compile() { ### @-
     fi
 
     # set some defaults.
-    local sepples=0
-    [ -n "$clang" ] && local CC=clang || local CC=gcc
-    [ -n "$clang" ] && local CXX=clang++ || local CXX=g++
+    local sepples=0 CC= CXX=
+    [ -n "$clang" ] && CC=clang || CC=gcc
+    [ -n "$clang" ] && CXX=clang++ || CXX=g++
     local our_flags=(-I.)
 
     # guess if we're compiling C++ by the file extension.
@@ -263,10 +260,11 @@ compile() { ### @-
         fi
     fi
 
+    local gold=
     # utilize clang's vast debugging and hardening features where available.
     if [ $CC = clang ]; then
         debug_flags+=(-ftrapv)
-        [ -z "$MSYSTEM" ] && local gold=gold || local gold=lld
+        [ -z "$MSYSTEM" ] && gold=gold || gold=lld
         [ -n "$MSYSTEM" ] && our_flags+=(-fansi-escape-codes) || true
         if [ $clang_msvc -eq 1 ] || [ -z "$MSYSTEM" ]; then
             debug_flags+=(-fsanitize=undefined) # this SHOULD work with mingw,
@@ -302,9 +300,7 @@ compile() { ### @-
     # allow multiple source files (using the firstmost to determine the program name)
     # by generating a file that #includes each given file.
 
-    local final_flags=()
-    local libraries=()
-    local warnings=()
+    local final_flags=() libraries=() warnings=()
     for flag in $our_flags $flags; do
         # move -l flags to the end because gcc won't respect them otherwise.
         if [[ $flag == -l* ]]; then

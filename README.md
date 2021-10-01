@@ -415,6 +415,10 @@ usage: monitor [-fs] [-n {period}] {command} [{args...}]
 **NOTE:** there also exists monitor(1) programs provided by
 the *389-ds-base* and *dmucs* packages that i don't use.
 
+### [morecolors](/sh/morecolors#L7)
+
+print all 256 colors that are available on most terminals.
+
 ### [noccom](/sh/noccom#L9)
 
 strip C-like comments; both multi-line and single-line.
@@ -1094,6 +1098,7 @@ print each argument on its own line.
 | [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [monitor](#monitor)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [morecolors](#morecolors)                     |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
 | [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

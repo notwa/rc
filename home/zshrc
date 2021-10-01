@@ -25,12 +25,12 @@ setopt hist_ignore_dups         # don't push lines identical to the previous
 setopt hist_ignore_space        # don't push lines beginning with spaces
 setopt hist_reduce_blanks       # trim superfluous spaces
 setopt ksh_typeset              # treat `local x=$(cmd)` and `local x="$(cmd)"` the same
-setopt no_beep
+setopt menu_complete            # autoselect the first completion entry
+setopt no_beep                  # be quiet
 setopt no_match                 # error on bad tab-complete
 setopt path_dirs                # Perform path search even on command names with slashes.
 setopt rc_quotes                # 'it''s okay' becomes "it's okay"
 unsetopt flow_control           # Disable start/stop characters in shell editor.
-unsetopt menu_complete          # Do not autoselect the first completion entry.
 
 if [ "$SHLVL" -le 1 ] && [ "$TERM" = "${TERM#screen}" ] && [ "$TERM" = "${TERM#tmux}" ]; then
     if (( $+commands[tmux] )); then
@@ -288,5 +288,5 @@ function {
         alias $x="noglob ${aliases[$x][@]:-$x}"
 }
 
-. ~/.prezto-compinit
+#. ~/.prezto-compinit
 [ -e ~/.lol ] && . ~/.lol || touch ~/.lol

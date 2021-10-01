@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+decently() { ### @-
+    ### given a list of directories, update the last-modified timestamp
+    ### of each argument to that of the most recent file that it contains.
+    local arg= dir= latest= prev= ts= fails= succs=0
+    [ -n "$1" ] || { printf '%s: missing directory argument\n' decently >&2; return 1; }
+    for arg; do
+        dir="$(readlink -f "$arg")" || continue
+        [ -d "$dir" ] || { printf '%s: not a directory: %s\n' decently "$dir" >&2; continue; }
+        prev=
+        latest="$(find "$dir" -type f -print -quit)" || continue
+        while [ -n "$latest" ]; do
+            prev="$latest"
+            latest="$(find "$dir" -newer "$latest" -type f -print -quit)" || break
+        done
+        [ -e "$prev" ] || { printf '%s: no valid files found: %s\n' decently "$dir" >&2; continue; }
+        ts="$(date -u '+%s' -r "$prev")"
+        dir="${dir%/}/" # ensure dir has a trailing slash
+        printf '%s\t%s\n' "$ts" "${arg%/}/${prev#$dir}"
+        touch -c -r "$prev" "$dir" || continue
+        : $(( succs+=1 ))
+    done
+    fails=$(( $# - succs ))
+    [ $fails -le 255 ] || fails=255
+    return $fails
+}
+
+[ -n "${preload+-}" ] || decently "$@"

@@ -252,6 +252,17 @@ $ days 'January 1 1970'
 18838
 ```
 
+### [decently](/sh/decently#L9)
+
+given a list of directories, update the last-modified timestamp
+of each argument to that of the most recent file that it contains.
+
+note that *files* are found recursively, but only the
+*outermost directory* (the one specified by argument)
+has its timestamp updated. symlinks are followed.
+`.git` subdirectories are skipped over.
+the timestamps of subdirectories are ignored.
+
 ### [dfu](/sh/dfu#L9)
 
 pretty-print `df` in GiB.
@@ -1080,6 +1091,7 @@ print each argument on its own line.
 | [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [cutv](#cutv)                                 |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [decently](#decently)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [disowned](#disowned)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [document](#document)                         |       dash | ⭕    | ⭕    | ✔️    | ✔️    |

@@ -269,9 +269,12 @@ reload() { ### @-
 function {
     # initialize colors for ls.
     local lsc= line=
-    < ~/.ls_colors | tr -d $'\r' | while read -r line; do
+    while read -r line; do
+        # strip any unprintable, non-ascii characters.
+        line="${line##*[! -~]}"
+        line="${line%%[! -~]*}"
         lsc+="$line:"
-    done
+    done < ~/.ls_colors
     export LS_COLORS="$lsc"
 }
 

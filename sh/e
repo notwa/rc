@@ -35,7 +35,7 @@ e() { ### @-
         return
     fi
 
-    local f needroot=0
+    local f= needroot=0
     for f in "$@"; do
         # easy: file exists, we have write permissions
         [ -w "$f" ] && continue

@@ -9,10 +9,13 @@
 slitt() { ### @-
     ### view specific columns of text.
     ### this version of `slit` uses tabs for its field separators.
-    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
-    #echo "$@" | awk '{for(i=1;i<NF;i++)printf"$%s,",$(i);print"$"$NF}'
-    local fields="$(printf ',$%s' $@ | cut -b2-)"
-    awk "BEGIN { FS=\"\\t\"; OFS=\"\\t\" } { print $fields }"
+    [ $# -gt 0 ] \
+     || { printf '%s: too few arguments\n' "$0" >&2; return 1; }
+    for arg; do
+        [ "$arg" -ge 0 ] 2>/dev/null \
+         || { printf '%s: not a nonnegative integer: %s\n' "$0" "$arg"; return 1; };
+    done
+    awk 'BEGIN { FS="\t"; OFS="\t" }'\ "{ print $(printf ',$%s' $@ | cut -b2-) }"
 
     # via: https://github.com/sorin-ionescu/prezto/
     #awk "BEGIN { FS=\"\\t\"; OFS=\"\\t\" } { print ${(j:,:):-\$${^@}} }"

@@ -51,9 +51,9 @@ export PAGER=less
 export PYTHONIOENCODING=utf-8 # damnit python!
 export SSH_AUTH_SOCK=0 # more info: https://0x0.st/NUnw
 export TZ=':/etc/localtime' # more info: https://0x0.st/NUnv
-export _REMOTE_AUTH="auth"
-export _REMOTE_DIR="t"
-export _REMOTE_DOMAIN="https://eaguru.guru"
+export EA_AUTH="auth"
+export EA_DIR="t"
+export EA_DOMAIN="https://eaguru.guru"
 
 # $LANG has been my bane whenever i forget to set it properly, so check it.
 if [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ]; then

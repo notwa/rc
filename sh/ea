@@ -9,35 +9,35 @@ ea() { ### @- **TODO:** document.
     local cmd="${1:?missing subcommand}"; shift
     case "$cmd" in
     head)
-        local trg="$_REMOTE_DOMAIN/$_REMOTE_DIR/${1:?missing target}"
+        local trg="$EA_DOMAIN/$EA_DIR/${1:?missing target}"
         curl -s -I "$trg"
         return;;
 
     get)
-        local trg="$_REMOTE_DOMAIN/$_REMOTE_DIR/${1:?missing target}"
+        local trg="$EA_DOMAIN/$EA_DIR/${1:?missing target}"
         curl -R "$trg" -o "${2:-$1}"
         return;;
 
     put)
         local src="${1:?missing source}"
-        local dst="$_REMOTE_DOMAIN/$_REMOTE_AUTH/"
+        local dst="$EA_DOMAIN/$EA_AUTH/"
         curl -g -n -T "$src" "$dst"
         return;;
 
     move)
-        local src="$_REMOTE_DOMAIN/$_REMOTE_AUTH/${1:?missing source}"
-        local dst="$_REMOTE_DOMAIN/$_REMOTE_DIR/${2:?missing destination}"
+        local src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"
+        local dst="$EA_DOMAIN/$EA_DIR/${2:?missing destination}"
         curl -n -X MOVE -H "Destination: $dst" "$src"
         return;;
 
     copy)
-        local src="$_REMOTE_DOMAIN/$_REMOTE_AUTH/${1:?missing source}"
-        local dst="$_REMOTE_DOMAIN/$_REMOTE_DIR/${2:?missing destination}"
+        local src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"
+        local dst="$EA_DOMAIN/$EA_DIR/${2:?missing destination}"
         curl -n -X COPY -H "Destination: $dst" "$src"
         return;;
 
     delete)
-        local trg="$_REMOTE_DOMAIN/$_REMOTE_AUTH/${1:?missing target}"
+        local trg="$EA_DOMAIN/$EA_AUTH/${1:?missing target}"
         curl -f -n -X DELETE "$trg"
         return;;
 

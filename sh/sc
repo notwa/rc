@@ -23,7 +23,7 @@ copy_scr() {
     ea put "$fn" "$short"
     sc_shorten "$short"
     uri_encode "$REPLY"
-    REPLY="$_REMOTE_DOMAIN/s/$REPLY"
+    REPLY="$EA_DOMAIN/s/$REPLY"
     return 0
 }
 
@@ -33,7 +33,7 @@ copy_tmp() {
 
     ea put "$fn" "$short"
     uri_encode "$short"
-    REPLY="$_REMOTE_DOMAIN/t/$REPLY"
+    REPLY="$EA_DOMAIN/t/$REPLY"
     return 0
 }
 

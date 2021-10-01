@@ -4,19 +4,28 @@
 # YES_DASH
 # YES_ASH
 
-decently() { ### @-
+# TODO: check if this is compatible with busybox.
+
+decently() ( ### @-
     ### given a list of directories, update the last-modified timestamp
     ### of each argument to that of the most recent file that it contains.
+    ###
+    ### note that *files* are found recursively, but only the
+    ### *outermost directory* (the one specified by argument)
+    ### has its timestamp updated. symlinks are followed.
+    ### `.git` subdirectories are skipped over.
+    ### the timestamps of subdirectories are ignored.
     local arg= dir= latest= prev= ts= fails= succs=0
+    finder() { find "$dir" -type f "$@" '!' -path '*/.git/*' -print -quit; }
     [ -n "$1" ] || { printf '%s: missing directory argument\n' decently >&2; return 1; }
     for arg; do
         dir="$(readlink -f "$arg")" || continue
         [ -d "$dir" ] || { printf '%s: not a directory: %s\n' decently "$dir" >&2; continue; }
         prev=
-        latest="$(find "$dir" -type f -print -quit)" || continue
+        latest="$(finder)" || continue
         while [ -n "$latest" ]; do
             prev="$latest"
-            latest="$(find "$dir" -newer "$latest" -type f -print -quit)" || break
+            latest="$(finder -newer "$latest")" || break
         done
         [ -e "$prev" ] || { printf '%s: no valid files found: %s\n' decently "$dir" >&2; continue; }
         ts="$(date -u '+%s' -r "$prev")"
@@ -28,6 +37,6 @@ decently() { ### @-
     fails=$(( $# - succs ))
     [ $fails -le 255 ] || fails=255
     return $fails
-}
+)
 
 [ -n "${preload+-}" ] || decently "$@"

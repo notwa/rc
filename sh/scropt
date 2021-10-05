@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 # YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
 
 scropt() { ### @-
     ### run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
@@ -7,11 +10,10 @@ scropt() { ### @-
     ### ```
     ### $ ~/sh/sc $(~/sh/scropt -s -d0.5)
     ### ```
-    local now=$(now)
-    [ $? -eq 0 ] || return $?
-    local fn="$HOME/play/$now.png"
-    scrot "$fn" -e "optipng -quiet \$f" "$@"
-    [ $? -eq 0 ] && echo "$fn" || return $?
+    local now= fn=
+    now="$(now)" || return
+    fn="$HOME/play/$now.png"
+    scrot "$fn" -e 'optipng -quiet $f' "$@" && echo "$fn"
 }
 
 [ -n "${preload+-}" ] || . ~/sh/preload || exit 2

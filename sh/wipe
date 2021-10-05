@@ -3,8 +3,7 @@
 # YES_BASH
 # YES_DASH
 # YES_ASH
-
-# works with busybox awk.
+# YES_BB_AWK
 
 wipe() { ### @-
     ### clear the screen and its scrollback, then print a high-contrast horizontal line.

@@ -3,6 +3,7 @@
 # YES_BASH
 # YES_DASH
 # YES_ASH
+# YES_BB_AWK
 
 psbm() { ### @-
     ### display and order processes by their memory usage ascending, and their sum.

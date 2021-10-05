@@ -3,8 +3,7 @@
 # YES_BASH
 # YES_DASH
 # YES_ASH
-
-# works with busybox awk.
+# YES_BB_AWK
 
 similar() { ### @-
     ### highlight adjacent lines up to the first inequivalent character.

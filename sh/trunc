@@ -3,8 +3,7 @@
 # YES_BASH
 # YES_DASH
 # YES_ASH
-
-# works with busybox awk.
+# YES_BB_AWK
 
 trunc() { ### @-
     ### truncate text to fit within your terminal using the unicode character `…`.

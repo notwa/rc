@@ -8,7 +8,7 @@ ff() { ### @-
     ### select a file from a given or current directory using
     ### [`fzy`.](https://github.com/jhawthorn/fzy)
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
-    find "${1:-.}" -type f | fzy
+    find "${1:-.}" -type f | fzy -l 23
 }
 
 [ -n "${preload+-}" ] || ff "$@"

@@ -74,15 +74,15 @@ softlink_pseudo() {
         if [ -d "$d2" ]; then
             if [ "$d1" != ".vim/bundle" ]; then # buggy on Windows
                 [ "$VERBOSE" -lt 1 ] || printf '\033[34m / \033[0m %s %s\n' "$d1" "$d2" >&2
-                softlink_pseudo "$d1" "$d2" || exit $?
+                softlink_pseudo "$d1" "$d2" || exit
             fi
         elif [ -f "$d2" ]; then
             [ "$VERBOSE" -lt 1 ] || printf '\033[34m * \033[0m %s\n' "$d1" >&2
-            hardlink "$d1" "$d2" || exit $?
+            hardlink "$d1" "$d2" || exit
         else
             die "i don't know how to pseudo-symlink $d2"
         fi
-    done || exit $?
+    done || exit
 }
 
 find_new_files() {

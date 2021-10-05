@@ -131,14 +131,14 @@ document1() {
     printf '\n## %s\n' 'shell functions' >> "$out" || return 5
     for f in sh/*; do
         [ -e "$f" ] || continue # make sure glob went through
-        document2 "$f" >> "$out" || return $?
+        document2 "$f" >> "$out" || return
     done
 
     # second section:
     printf '\n## %s\n' 'miscellaneous' >> "$out" || return 5
-    document2 .zshrc >> "$out" || return $?
-    document2 .bashrc >> "$out" || return $?
-    document2 .-shrc >> "$out" || return $?
+    document2 .zshrc >> "$out" || return
+    document2 .bashrc >> "$out" || return
+    document2 .-shrc >> "$out" || return
 }
 
 document() { ### @-

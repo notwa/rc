@@ -228,7 +228,7 @@ Continue? [y/N] y
  20 files changed, 406 insertions(+), 29 deletions(-)
 ```
 
-### [countdiff](/sh/countdiff#L9)
+### [countdiff](/sh/countdiff#L8)
 
 count the number of lines changed between two files.
 
@@ -263,7 +263,7 @@ has its timestamp updated. symlinks are followed.
 `.git` subdirectories are skipped over.
 the timestamps of subdirectories are ignored.
 
-### [dfu](/sh/dfu#L9)
+### [dfu](/sh/dfu#L8)
 
 pretty-print `df` in GiB.
 
@@ -284,7 +284,7 @@ generate a markdown file out of docstrings in shell scripts.
 
 **TODO:** describe. i have a rough outline written in my scrap file.
 
-### [e](/sh/e#L7)
+### [e](/sh/e#L8)
 
 wrap around `$EDITOR` to run it as root if necessary.
 this still needs some work to detect root-owned directories.
@@ -541,7 +541,7 @@ handle dependencies within the [`~/sh/`](/sh) directory.
 
 this function contains more comments than code, so you should read it.
 
-### [psbm](/sh/psbm#L7)
+### [psbm](/sh/psbm#L8)
 
 display and order processes by their memory usage ascending, and their sum.
 
@@ -622,7 +622,7 @@ as a simple example, `echo hey | shcom` produces, verbatim:
 hey
 ```
 
-### [similar](/sh/similar#L9)
+### [similar](/sh/similar#L8)
 
 highlight adjacent lines up to the first inequivalent character.
 
@@ -727,7 +727,7 @@ $ sum 1 2 3
 
 **TODO:** consider renaming because sum(1) already exists.
 
-### [sv](/sh/sv#L9)
+### [sv](/sh/sv#L8)
 
 collect the lastmost value of every key.
 the field separator can be given as its sole argument,
@@ -765,7 +765,7 @@ $ trash 10 | xxp
 3A A5 4F C7 6D 89 E7 D7 F7 0C
 ```
 
-### [trunc](/sh/trunc#L9)
+### [trunc](/sh/trunc#L8)
 
 truncate text to fit within your terminal using the unicode character `…`.
 
@@ -782,7 +782,7 @@ wat — a better and recursive which/whence. for zsh only.
 
 written by [leah2.](https://leahneukirchen.org/)
 
-### [wipe](/sh/wipe#L9)
+### [wipe](/sh/wipe#L8)
 
 clear the screen and its scrollback, then print a high-contrast horizontal line.
 using this, you'll know with absolute certainty that you're looking at the top of your history,

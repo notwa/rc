@@ -600,7 +600,7 @@ sacbremls ttex in a pdrceailtbe way unsig reegx.
 
 **TODO:** consider renaming because scramble(1) already exists.
 
-### [scropt](/sh/scropt#L4)
+### [scropt](/sh/scropt#L7)
 
 run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
 
@@ -1100,7 +1100,8 @@ print each argument on its own line.
 | [echo2](#echo2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [ghmd](#ghmd)                                 |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
+| [ghmd](#ghmd)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [glug](#glug)                                 |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1128,7 +1129,7 @@ print each argument on its own line.
 | [rs](#rs)                                     |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [sc](#sc)                                     |       bash | ⭕    | ✔️    | ⭕    | ⭕    |
 | [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [scropt](#scropt)                             |       bash | ✔️    | ❔    | ❔    | ❔    |
+| [scropt](#scropt)                             |       bash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [shcom](#shcom)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [similar](#similar)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [slit](#slit)                                 |       dash | ✔️    | ✔️    | ✔️    | ✔️    |

@@ -45,6 +45,7 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
     err=
 
     alt_on() {
+        # globals: $alt
         printf '\033[?1049h' # alt screen on (smcup)
         alt=1
         printf '\033[?1h\033=' # no idea but less does it so it must be important (smkx)
@@ -53,24 +54,28 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
     }
 
     alt_off() {
+        # globals: $alt
         printf '\r' # move cursor to start of line (carriage return)
-        #printf '\033[K' # erase everything before the cursor (el)
+        #printf '\033[K' # erase everything after the cursor (el)
         printf '\033[?1l\033>' # no idea but less does it so it must be important (rmkx)
         printf '\033[?1049l' # alt screen off (rmcup)
         alt=0
     }
 
     glug_enter() {
+        # globals: $alt
         [ $alt = 1 ] || alt_on
     }
 
     glug_exit() {
+        # globals: $alt, $err, $ret
         [ $alt = 0 ] || alt_off
         [ -z "$err" ] || printf '%s\n' "$err" >&2
         exit $ret
     }
 
     die() {
+        # globals: $ret, $err
         ret=$?
         err="$@"
         [ $? = 0 ] && exit 1 || exit $?
@@ -86,13 +91,14 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
     } </dev/tty # ensure this interacts with a terminal instead of a pipe
 
     escape_message() {
+        # arguments: $message
         _msg=
         while _seg="${message%%\'*}"; [ "$_seg" != "$message" ]; do
             _msg="$_msg$_seg'\''"
             message="${message#*\'}"
         done
         message="$_msg$message"
-        unset _msg _new _seg
+        unset _msg _seg
     }
 
     parse_logs() {
@@ -116,6 +122,7 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
             eval "choice_$choices=$commit"
             eval "commit_$commit='$message'"
         done
+        unset _line _next
     }
 
     colorize_pathy() {
@@ -143,6 +150,7 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
             fi
             diffy="${diffy#$_seg}"
         done
+        unset _seg
     }
 
     colorize_summary() {
@@ -173,6 +181,7 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
             fi
             gds="${gds#$_seg}"
         done
+        unset _color _ins _seg
     }
 
     format_stats() {
@@ -195,6 +204,7 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
         colorize_summary
         printf '\n'
         : $((linesleft-=1))
+        unset _line
     }
 
     present_choices() {
@@ -242,6 +252,8 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
             [ $linesleft -ge 2 ] || break
         done
         if [ $linesleft -ge 1 ]; then
+            printf '\033[%s;0H' $LINES
+            linesleft=1
             printf ' \033[33m(\033[97m%s\033[33m/\033[97m%s\033[33m)\033[m ' "$selection" "$choices"
             : $((linesleft-=1))
         fi
@@ -253,7 +265,6 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
         # TODO: reset button that checks LINES and COLUMNS again.
         printf '\0338' # restore cursor to prompt position (rc)
         input="$(read_byte)" || return
-        printf '\033[K' # TODO: unnecessary?
         if [ "${input%_}" = "$input" ]; then
             # no magic underscore, something went wrong.
             return 1
@@ -267,13 +278,19 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
                 input=" ${input#$nl}"
             fi
 
-            if [ "${input#[! jkq]}" != "$input" ]; then
-                _seg="${input%%[ jkq]*}"
+            if [ "${input#[! gGjkq]}" != "$input" ]; then
+                _seg="${input%%[ gGjkq]*}"
             elif [ "${input# }" != "$input" ]; then
                 _seg=' '
                 alt_off
                 git diff "$commit~" "$commit" || exit
                 alt_on
+            elif [ "${input#g}" != "$input" ]; then
+                _seg=g
+                selection=1
+            elif [ "${input#G}" != "$input" ]; then
+                _seg=G
+                selection=$choices
             elif [ "${input#j}" != "$input" ]; then
                 _seg=j
                 [ $((selection+=1)) -le $choices ] || selection=$choices
@@ -288,6 +305,7 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
             fi
             input="${input#$_seg}"
         done
+        unset _seg
     }
 
     trap glug_exit INT EXIT && glug_enter

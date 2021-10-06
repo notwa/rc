@@ -76,7 +76,7 @@ fi
 
 # just flags {{{2
 
-export LESS='-SRQ'
+export LESS='-SRQc'
 alias db="dropbox_uploader"
 alias fils="du -bahd1" ### @- (GNU du) display human-friendly filesizes for the files in a directory.
 alias lsa="ls -A --group-directories-first" ### @- (GNU ls) list files with directories and dotfiles ordered first.

@@ -1,0 +1,311 @@
+#!/usr/bin/env dash
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+# fuck termcap, all my homies hate termcap.
+
+glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
+    [ $# = 0 ] || { printf '%s does not take arguments.\n' glug >&2; return 2; }
+
+    _here="$PWD"
+    repo="$PWD"
+    i=0
+    while ! [ -d .git ] 2>/dev/null; do
+        # no one has git repositories with directories deeper than 10 levels, right?
+        [ $((i+=1)) -lt 10 ] || { printf '%s: failed to find a .git directory\n' glug >&2; return 2; }
+        cd ..
+        repo="$PWD"
+    done
+    cd "$_here"
+
+    if [ -z "$ZSH_VERSION" ]; then
+        # TODO: is `stty size` more portable?
+        COLUMNS="${COLUMNS:-$(tput cols)}"
+        LINES="${LINES:-$(tput lines)}"
+    fi
+
+    if [ -n "$ZSH_VERSION" ] || [ -n "$BASH_VERSION" ]; then
+        esc=$'\e'
+        nl=$'\n'
+        cr=$'\r'
+    else
+        esc="$(printf '\033')"
+        # shells strip trailing newlines from captures, so work around that:
+        nl="$(printf '\nx')"; nl="${nl%x}"
+        cr="$(printf '\rx')"; cr="${cr%x}"
+    fi
+
+    limit=200 # maximum number of git commits to look back on
+    choices=0
+    selection=1
+
+    alt=0
+    ret=0
+    err=
+
+    alt_on() {
+        printf '\033[?1049h' # alt screen on (smcup)
+        alt=1
+        printf '\033[?1h\033=' # no idea but less does it so it must be important (smkx)
+        printf '\r' # move cursor to start of line (carriage return)
+        printf '\033[H' # move cursor to first line
+    }
+
+    alt_off() {
+        printf '\r' # move cursor to start of line (carriage return)
+        #printf '\033[K' # erase everything before the cursor (el)
+        printf '\033[?1l\033>' # no idea but less does it so it must be important (rmkx)
+        printf '\033[?1049l' # alt screen off (rmcup)
+        alt=0
+    }
+
+    glug_enter() {
+        [ $alt = 1 ] || alt_on
+    }
+
+    glug_exit() {
+        [ $alt = 0 ] || alt_off
+        [ -z "$err" ] || printf '%s\n' "$err" >&2
+        exit $ret
+    }
+
+    die() {
+        ret=$?
+        err="$@"
+        [ $? = 0 ] && exit 1 || exit $?
+    }
+
+    read_byte() {
+        # NOTE: run this function in a subshell, else everything will blow up.
+        old="$(stty -g)"
+        trap 'stty "$old"' INT EXIT
+        stty -icanon -echo
+        dd ibs=1 count=1 2>/dev/null
+        echo _ # append an underscore so that newlines are preserved in captures
+    } </dev/tty # ensure this interacts with a terminal instead of a pipe
+
+    escape_message() {
+        _msg=
+        while _seg="${message%%\'*}"; [ "$_seg" != "$message" ]; do
+            _msg="$_msg$_seg'\''"
+            message="${message#*\'}"
+        done
+        message="$_msg$message"
+        unset _msg _new _seg
+    }
+
+    parse_logs() {
+        # arguments: $logs (clobbered)
+        # globals: $choices
+        logs="$logs$nl" # otherwise the last entry is dropped
+        while _next="${logs#*$nl}"; [ "$logs" != "$_next" ]; do
+            _line="${logs%%$nl*}"
+            #_line="${logs%$cr}" # TODO: handle this more robustly.
+            logs="$_next"
+
+            commit="${_line%% *}"
+            [ -z "${commit##[a-f0-9]*}" ] || die "invalid commit: $commit"
+            message="${_line#* }"
+            escape_message
+
+            #printf '~%s~\n' "$_line"
+            #printf 'COMMIT="%s"; MESSAGE="%s";\n' "$commit" "$message"
+
+            : $((choices+=1))
+            eval "choice_$choices=$commit"
+            eval "commit_$commit='$message'"
+        done
+    }
+
+    colorize_pathy() {
+        # arguments: $pathy (clobbered)
+        printf '%s' "$pathy" # TODO
+    }
+
+    colorize_diffy() {
+        # arguments: $diffy (clobbered)
+        while [ -n "$diffy" ]; do
+            if [ "${diffy#[!0-9+-]}" != "$diffy" ]; then
+                _seg="${diffy%%[0-9+-]*}"
+                printf '\033[m ' # NOTE: this replaces *all* unexpected characters.
+            elif [ "${diffy#[0-9]}" != "$diffy" ]; then
+                _seg="${diffy%%[!0-9]*}"
+                printf '\033[97m%4s' "$_seg"
+            elif [ "${diffy#+}" != "$diffy" ]; then
+                _seg="${diffy%%[!+]*}"
+                printf '\033[92m%s' "$_seg"
+            elif [ "${diffy#-}" != "$diffy" ]; then
+                _seg="${diffy%%[!-]*}"
+                printf '\033[91m%s' "$_seg"
+            else
+                break # unreachable
+            fi
+            diffy="${diffy#$_seg}"
+        done
+    }
+
+    colorize_summary() {
+        # arguments: $gds (clobbered)
+        _color=33
+        [ "${gds%insertion*}" = "$gds" ]; _ins=$? # _ins=1 when insertion is found
+        while [ -n "$gds" ]; do
+            if [ "${gds#[!(),0-9+-]}" != "$gds" ]; then
+                _seg="${gds%%[(),0-9+-]*}"
+                printf '\033[%sm%s' "$_color" "$_seg"
+            elif [ "${gds#[()+-]}" != "$gds" ]; then
+                _seg="${gds%%[!()+-]*}"
+                case "$_seg" in
+                ('(+)') printf '\033[m(\033[92m+\033[m)';;
+                ('(-)') printf '\033[m(\033[91m-\033[m)';;
+                (*) printf '%s' "$_seg";;
+                esac
+            elif [ "${gds#,}" != "$gds" ]; then
+                _seg="${gds%%[!,]*}"
+                printf '\033[%sm%s' "$_color" "$_seg"
+                : $((_color-=1)) # how convenient that the color codes line up!
+                [ $_ins = 1 ] || : $((_color-=1)) # no insertions; skip to red
+            elif [ "${gds#[0-9]}" != "$gds" ]; then
+                _seg="${gds%%[!0-9]*}"
+                printf '\033[97m%s' "$_seg"
+            else
+                break # unreachable
+            fi
+            gds="${gds#$_seg}"
+        done
+    }
+
+    format_stats() {
+        # arguments: $gds (clobbered)
+        # globals: $linesleft
+        [ $linesleft -gt 1 ] || return
+        while _line="${gds%%$nl*}"; [ "$_line" != "$gds" ]; do
+            gds="${gds#*$nl}"
+            [ $linesleft -gt 1 ] || continue
+            # NOTE: assumes no filepaths contain a '|' character.
+            pathy="${_line%|*}"
+            diffy="${_line#*|}"
+            colorize_pathy
+            printf '\033[m|'
+            colorize_diffy
+            unset pathy diffy
+            printf '\033[m\n'
+            : $((linesleft-=1))
+        done
+        colorize_summary
+        printf '\n'
+        : $((linesleft-=1))
+    }
+
+    present_choices() {
+        # arguments: $selection
+        # globally influential: $choices
+        linesleft=$LINES
+        i=$((selection-2))
+        while [ $((i+=1)) -le $choices ]; do
+            if [ $i -eq 0 ]; then
+                printf '%s\n' 'welcome to glug!' # TODO: make this pretty. print cwd?
+                : $((linesleft-=1))
+                continue
+            elif [ $i -lt 0 ]; then
+                printf '\n'
+                : $((linesleft-=1))
+                continue
+            fi
+
+            eval "commit=\$choice_$i"
+            eval "message=\$commit_$commit"
+
+            if [ $i = $selection ]; then
+                #printf ' \033[95m >\033[m \033[33m%s\033[m ' "$commit"
+                printf ' \0337 \033[7m>\033[m \033[33m%s\033[m ' "$commit"
+            else
+                printf '    \033[90m%s\033[m ' "$commit"
+            fi
+
+            # TODO: truncate message as necessary.
+            printf '%s\n' "$message"
+            : $((linesleft-=1))
+
+            if [ $i = $selection ]; then
+                gds="$(git diff --stat "$commit~" "$commit")"
+                if [ $? = 0 ]; then
+                    : $((linesleft-=2)) # reserve two lines for present_choices
+                    format_stats
+                    : $((linesleft+=2)) # ...
+                else
+                    printf '  \033[91merror:\033[31m failed to run `git diff --stat`\n'
+                    : $((linesleft-=1))
+                fi
+            fi
+
+            [ $linesleft -ge 2 ] || break
+        done
+        if [ $linesleft -ge 1 ]; then
+            printf ' \033[33m(\033[97m%s\033[33m/\033[97m%s\033[33m)\033[m ' "$selection" "$choices"
+            : $((linesleft-=1))
+        fi
+        eval "commit=\$choice_$selection" # set $commit to something useful
+    }
+
+    handle_input() {
+        # TODO: handle escape codes (especially arrow keys, page up/down)
+        # TODO: reset button that checks LINES and COLUMNS again.
+        printf '\0338' # restore cursor to prompt position (rc)
+        input="$(read_byte)" || return
+        printf '\033[K' # TODO: unnecessary?
+        if [ "${input%_}" = "$input" ]; then
+            # no magic underscore, something went wrong.
+            return 1
+        else
+            input="${input%_}"
+        fi
+        while [ -n "$input" ]; do
+            # replace newlines with spaces for my own sanity.
+            # of course, this makes spaces act the same as newlines.
+            if [ "${input#$nl}" != "$input" ]; then
+                input=" ${input#$nl}"
+            fi
+
+            if [ "${input#[! jkq]}" != "$input" ]; then
+                _seg="${input%%[ jkq]*}"
+            elif [ "${input# }" != "$input" ]; then
+                _seg=' '
+                alt_off
+                git diff "$commit~" "$commit" || exit
+                alt_on
+            elif [ "${input#j}" != "$input" ]; then
+                _seg=j
+                [ $((selection+=1)) -le $choices ] || selection=$choices
+            elif [ "${input#k}" != "$input" ]; then
+                _seg=k
+                [ $((selection-=1)) -ge 1 ] || selection=1
+            elif [ "${input#q}" != "$input" ]; then
+                _seg=q
+                return 1
+            else
+                break # unreachable
+            fi
+            input="${input#$_seg}"
+        done
+    }
+
+    trap glug_exit INT EXIT && glug_enter
+
+    # TODO: invoke git with --no-config or whatever?
+    logs="$(git log --oneline -n $limit 2>&1)" || die "$logs"
+
+    parse_logs
+    [ $choices -gt 0 ] || { printf '%s: no commits\n' >&2; return 2; }
+
+    present_choices
+    while handle_input; do
+        printf '\r' # move cursor to start of line (carriage return)
+        printf '\033[H' # move cursor to first line
+        printf '\033[J' # clear the rest of the screen
+        present_choices
+    done
+
+) 1<>/dev/tty <&1 # ensure this interacts with a terminal instead of a pipe
+
+[ -n "${preload+-}" ] || glug "$@"

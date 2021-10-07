@@ -19,7 +19,7 @@ decently() ( ### @-
     finder() { find "$dir" -type f "$@" '!' -path '*/.git/*' -print -quit; }
     [ -n "$1" ] || { printf '%s: missing directory argument\n' decently >&2; return 1; }
     for arg; do
-        dir="$(readlink -f "$arg")" || continue
+        dir="$(readlink -f -- "$arg")" || continue
         [ -d "$dir" ] || { printf '%s: not a directory: %s\n' decently "$dir" >&2; continue; }
         prev=
         latest="$(finder)" || continue

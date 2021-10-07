@@ -99,6 +99,11 @@ alias gr='git remote -v' ### @- display remote git repositories verbosely.
 alias gb='git --no-pager branch' ### @- display the current git branch.
 ### **NOTE:** there also exists a gb(1) program provided by
 ### the *gb* package that i don't use.
+gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
+    local commit="${1:-HEAD}"
+    [ $# -le 1 ] || { printf '%s: %s\n' gdp "too many arguments" >&2; return 2; }
+    gd "$commit~" "$commit"
+}
 
 # being specific {{{2
 

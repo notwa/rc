@@ -6,13 +6,13 @@ SAVEHIST=99999
 TIMEFMT=$'\e[93m%*U/%*E cpu/real (%P), %MM mem:\e[36m %J\e[0m'
 DIRSTACKSIZE=24
 
-setopt always_to_end            # Move cursor to the end of a completed word.
-setopt append_history
-setopt share_history            # across sessions
+setopt always_to_end            # move cursor to end of word during completion
+setopt append_history           # share history...
+setopt share_history            # ...across sessions
 setopt auto_cd                  # exec a dir to cd
 setopt auto_list                # Automatically list choices on ambiguous completion.
 setopt auto_menu                # Show completion menu on a successive tab press.
-setopt auto_param_slash         # If completed parameter is a directory, add a trailing slash.
+setopt auto_param_slash         # add a trailing slash to directory completions
 setopt auto_pushd               # cd acts as pushd
 setopt brace_ccl                # for character ranges like {a-z}
 setopt chase_links              # cd into link resolves link
@@ -24,6 +24,8 @@ setopt hist_expire_dups_first   # sharing/appending will result in dups
 setopt hist_ignore_dups         # don't push lines identical to the previous
 setopt hist_ignore_space        # don't push lines beginning with spaces
 setopt hist_reduce_blanks       # trim superfluous spaces
+setopt hist_save_no_dups
+setopt hist_verify
 setopt ksh_typeset              # treat `local x=$(cmd)` and `local x="$(cmd)"` the same
 setopt menu_complete            # autoselect the first completion entry
 setopt no_beep                  # be quiet

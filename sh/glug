@@ -19,11 +19,21 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
     done
     cd "$_here"
 
-    if [ -z "$ZSH_VERSION" ]; then
-        # TODO: is `stty size` more portable?
-        COLUMNS="${COLUMNS:-$(tput cols)}"
-        LINES="${LINES:-$(tput lines)}"
-    fi
+    detect_size() {
+        # globals: $COLUMNS, $LINES
+        _size="$(stty size)"
+        COLUMNS="${_size#* }"
+        LINES="${_size%% *}"
+        if [ "$COLUMNS" -gt 0 ] 2>/dev/null && [ "$LINES" -gt 0 ] 2>/dev/null; then
+            : # pass
+        else
+            printf '%s: failed to determine terminal size\n' glug >&2
+            return 2
+        fi
+        unset _size
+    }
+
+    [ -n "$ZSH_VERSION" ] || detect_size
 
     if [ -n "$ZSH_VERSION" ] || [ -n "$BASH_VERSION" ]; then
         esc=$'\e'

@@ -216,6 +216,14 @@ if has('autocmd')
         au FileType * setlocal fo-=c fo-=r fo-=o
     augroup END
 
+    augroup forth
+        au!
+        " insert a newline every 64 bytes when reading
+        au! BufReadCmd blkfs,*.scr call setline('1', split(join(readfile(expand('<afile>')), ''), '\%65c\zs'))
+        " remove newlines when writing
+        au! BufWriteCmd blkfs,*.scr call writefile([join(getline('^', '$'), '')], expand('<afile>'))
+    augroup end
+
     augroup nobells                   " good lord vim you are archaic
         au!
         au GUIEnter * set vb t_vb=

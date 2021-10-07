@@ -138,7 +138,7 @@ bindkey '^[[5;5~' dummy # ctrl+PgUp
 bindkey '^[[6;5~' dummy # ctrl+PgDn
 bindkey '^[[5;6~' dummy # ctrl+shift+PgUp
 bindkey '^[[6;6~' dummy # ctrl+shift+PgDn
-bindkey '^[[1;2F' dummy # shift+del
+bindkey '^[[3;2~' dummy # shift+del
 bindkey '^[[1;2F' dummy # shift+end, do nothing, already at bottom (tmux)
 bindkey '^[[6;2~' dummy # shift+PgDn, do nothing, already at bottom (tmux)
 bindkey '^[[2;3~' dummy # alt+ins

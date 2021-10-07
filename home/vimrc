@@ -157,6 +157,30 @@ endf
 " set TabFour as default
 set tabstop=8 shiftwidth=4 expandtab softtabstop=4
 
+fu! DetectShebang()
+    " vim seems to have some rudimentary detection, but we can do better.
+    let l = getline(1)
+    let p = ''
+
+    if  l =~# '^#!/usr/bin/env -S ' | let p = get(split(l, ' '), 2)
+    elseif l =~# '^#!/usr/bin/env ' | let p = get(split(l, ' '), 1)
+    elseif l =~# '^#!/usr/bin/.'    | let p = get(split(l, '/'), 3)
+    elseif l =~# '^#!/s\?bin/.'     | let p = get(split(l, '/'), 2)
+    endif
+
+    if p ==# 'bash'    | setlocal ft=bash   | endif
+    if p ==# 'dash'    | setlocal ft=bash   | endif
+    if p ==# 'false'   | setlocal ft=bash   | endif
+    if p ==# 'lua'     | setlocal ft=lua    | endif
+    if p ==# 'perl'    | setlocal ft=perl   | endif
+    if p ==# 'perl6'   | setlocal ft=raku   | endif
+    if p ==# 'python'  | setlocal ft=python | endif
+    if p ==# 'python3' | setlocal ft=python | endif
+    if p ==# 'raku'    | setlocal ft=raku   | endif
+    if p ==# 'sh'      | setlocal ft=bash   | endif
+    if p ==# 'zsh'     | setlocal ft=zsh    | endif
+endf
+
 " autocmd {{{1
 
 if has('autocmd')
@@ -179,10 +203,12 @@ if has('autocmd')
         au BufRead,BufNewFile *.asm setlocal ft=lips
         au BufRead,BufNewFile *.nim setlocal ft=nim
         au BufRead,BufNewFile *.pde setlocal ft=processing
+        au BufRead * call DetectShebang()
     augroup END
 
     augroup insanity
-        autocmd FileType netrw setl bufhidden=wipe
+        au!
+        au FileType netrw setl bufhidden=wipe
     augroup END
 
     augroup nocomment

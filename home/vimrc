@@ -313,30 +313,33 @@ nn <bar> <c-]>
 " execute vim code in visual selection
 vmap <space> "xy:@x<cr>
 
+" open a shell (override suspend behavior that just breaks everything)
+nn <C-z> :sh<cr>
+
 " this frees up x and X for use if you like
 exec "set <s-Del>=\<Esc>[3;2~"
 Inn <s-Del> X
 
-" unfollow your leaders
 let leader="\\"
-" no-op
-nn <Leader><Leader> :<cr>
 "ino <c-\> <C-o><Leader>              " this doesn't workkkkkkkkk
-nm <Leader>i i?<Esc>r
 nm <Leader>a a?<Esc>r
-nn <Leader>p "0p
-nn <Leader>P "0P
-nn <Leader>e :e **/*
-nn <Leader>b :ls<cr>:b<space>
-nn <silent> <Leader>d :cd %:p:h<cr>:pwd<cr>
-nn <Leader>. @:
-"nn <Leader>? :exec getline(".")
+nm <Leader>i i?<Esc>r
 nn <Leader>, :Tab /,\zs<cr>
-"nn <Leader>x :system('chmod +x %') | e
-
-" via bit101
-nn <Leader>f :E<cr>
+nn <Leader>. @:
+nn <Leader><Leader> :<cr>
+nn <Leader><space> :call StripTrailingWhitespace()<cr>
+"nn <Leader>? :exec getline(".")
 nn <Leader>F :E .<cr>
+nn <Leader>P "0P
+nn <Leader>b :ls<cr>:b<space>
+nn <Leader>e :e **/*
+nn <Leader>f :E<cr>
+nn <Leader>p "0p
+"nn <Leader>x :system('chmod +x %') | e
+nn <silent> <Leader>d :cd %:p:h<cr>:pwd<cr>
+
+vn <silent> & :call GlobalReplace()<cr>
+
 
 " alias :W to :w, via https://stackoverflow.com/a/3879737
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))

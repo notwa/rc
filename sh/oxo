@@ -75,7 +75,8 @@ oxo() { ### @-
                 fi
             fi
 
-            local kib="$(du -k -- "$f" | cut -f1)"
+            local kib="$(du -k -- "$f")"
+            kib="${kib%%[!0-9]*}" # strip the path, keep the size
 
             if [ "$kib" -gt 524288 ]; then
                 printf "$bad" "oxo: file too large: $f" >&2

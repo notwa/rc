@@ -238,7 +238,7 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
             : $((linesleft-=1))
 
             if [ $i = $selection ]; then
-                gds="$(git diff --stat "$commit~" "$commit")"
+                gds="$(git diff --stat "$commit~" "$commit" --)"
                 if [ $? = 0 ]; then
                     : $((linesleft-=2)) # reserve two lines for present_choices
                     format_stats
@@ -261,6 +261,7 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
     }
 
     handle_input() {
+        # globals: $dirty
         # TODO: handle escape codes (especially arrow keys, page up/down)
         # TODO: reset button that checks LINES and COLUMNS again.
         printf '\0338' # restore cursor to prompt position (rc)
@@ -283,22 +284,28 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
             elif [ "${input# }" != "$input" ]; then
                 _seg=' '
                 alt_off
-                git diff "$commit~" "$commit" || exit
+                git diff "$commit~" "$commit" -- || exit
                 alt_on
+                dirty=1
             elif [ "${input#g}" != "$input" ]; then
                 _seg=g
+                [ $selection = 1 ] || dirty=1
                 selection=1
             elif [ "${input#G}" != "$input" ]; then
                 _seg=G
+                [ $selection = $choices ] || dirty=1
                 selection=$choices
             elif [ "${input#j}" != "$input" ]; then
                 _seg=j
+                [ $selection = $choices ] || dirty=1
                 [ $((selection+=1)) -le $choices ] || selection=$choices
             elif [ "${input#k}" != "$input" ]; then
                 _seg=k
+                [ $selection = 1 ] || dirty=1
                 [ $((selection-=1)) -ge 1 ] || selection=1
             elif [ "${input#q}" != "$input" ]; then
                 _seg=q
+                dirty=0 # stop redrawing and just get outta here
                 return 1
             else
                 break # unreachable
@@ -311,17 +318,22 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
     trap glug_exit INT EXIT && glug_enter
 
     # TODO: invoke git with --no-config or whatever?
-    logs="$(git log --oneline -n $limit 2>&1)" || die "$logs"
+    # TODO: --decorate=full, and color it.
+    logs="$(git log --oneline --first-parent -n $limit 2>&1)" || die "$logs"
 
     parse_logs
     [ $choices -gt 0 ] || { printf '%s: no commits\n' >&2; return 2; }
 
     present_choices
+    dirty=0
     while handle_input; do
-        printf '\r' # move cursor to start of line (carriage return)
-        printf '\033[H' # move cursor to first line
-        printf '\033[J' # clear the rest of the screen
-        present_choices
+        if [ $dirty = 1 ]; then
+            printf '\r' # move cursor to start of line (carriage return)
+            printf '\033[H' # move cursor to first line
+            printf '\033[J' # clear the rest of the screen
+            present_choices
+            dirty=0
+        fi
     done
 
 ) 1<>/dev/tty <&1 # ensure this interacts with a terminal instead of a pipe

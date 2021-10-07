@@ -65,7 +65,7 @@ oxo() { ### @-
             local g="$f"
 
             # restrict the filepath to simple ascii characters that curl likes.
-            if [ -n "$(printf '%s' "$f" | tr -d \''0-9A-Za-z !#$%&()*+,./;=@[]^_`{}~-')" ]; then
+            if [ "$f" != "${f#*[! -~]}" ] || [ "$f" != "${f#*[\":<>?\\|]}" ]; then
                 # copy the user's file to a temporary path and use that instead.
                 g=/tmp/oxo
                 #printf "$warn" "oxo: special characters found: $f" >&2

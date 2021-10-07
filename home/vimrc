@@ -119,7 +119,24 @@ endif
 
 let $PATH .= ':'.$HOME.'/sh'          " allow direct invocation of shell funcs
 
-" autocmd {{{1
+" fun {{{1
+
+" lifted from BurntSushi:
+fu! GlobalReplace()
+    normal! gv"ry
+    let replacement = input("Replace " . @r . " with: ")
+    if replacement != ""
+        exe "%s/" . @r . "/" . replacement . "/g"
+    endif
+endf
+
+" lifted from BurntSushi:
+fu! StripTrailingWhitespace()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endf
 
 fu! TabEight()
     setlocal tabstop=8 shiftwidth=8 noexpandtab softtabstop=0

@@ -96,7 +96,7 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
         old="$(stty -g)"
         trap 'stty "$old"' INT EXIT
         stty -icanon -echo
-        dd ibs=1 count=1 2>/dev/null
+        dd ibs=1 count=1 2>/dev/null || exit
         echo _ # append an underscore so that newlines are preserved in captures
     } </dev/tty # ensure this interacts with a terminal instead of a pipe
 

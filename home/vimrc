@@ -195,7 +195,7 @@ if has('autocmd')
         au BufRead,BufNewFile .gitconfig call TabEight()
     augroup END
 
-    augroup whatever
+    augroup filetypes
         au!
         au BufRead,BufNewFile *.lib setlocal ft=spice
         au BufRead,BufNewFile *.bt setlocal ft=c

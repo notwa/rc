@@ -584,6 +584,10 @@ i'm sure there's something equivalent for Linux.
 
 **TODO:** consider renaming because rs(1) already exists.
 
+### [running](/sh/running#L10)
+
+WIP
+
 ### [sc](/sh/sc#L40)
 
 upload given files to a webserver and return a direct link for sharing them.
@@ -1101,7 +1105,7 @@ print each argument on its own line.
 | [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [disowned](#disowned)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [document](#document)                         |       dash | ⭕    | ⭕    | ✔️    | ✔️    |
-| [e](#e)                                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [e](#e)                                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [echo2](#echo2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1133,6 +1137,7 @@ print each argument on its own line.
 | [refresh](#refresh)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [rs](#rs)                                     |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [running](#running)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sc](#sc)                                     |       bash | ⭕    | ✔️    | ⭕    | ⭕    |
 | [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [scropt](#scropt)                             |       bash | ✔️    | ✔️    | ✔️    | ✔️    |

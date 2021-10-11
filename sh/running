@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+# YES_BB_AWK
+
+# probably not compatible with busybox ps because its column 2 isn't PID.
+
+running() { ### @- WIP
+    local cmd=0 pid=0
+    local usage='usage: running {cmd|pid} ...'
+    [ $# -gt 0 ] || { printf '%s\n' "$usage" >&2; return 2; }
+    for col; do
+        case "$col" in
+        (cmd) cmd=1;;
+        (pid) pid=1;;
+        (*) printf '%s\n' "$usage" >&2; return 2;;
+        esac
+    done
+    ps -f | awk -v cmd=$cmd -v pid=$pid '
+    NR==1{
+        s=index($0,"COMMAND")
+        s=s?s:index($0,"CMD")
+    }
+    NR>1{
+        l=substr($0,s)
+        sub(" .*","",l)
+        sub(".*[/\\\\]","",l)
+        if(pid)printf "%s", $2
+        if(cmd&&pid)printf "\t"
+        if(cmd)printf "%s", l
+        printf "\n"
+    }
+    '
+}
+
+[ -n "${preload+-}" ] || running "$@"

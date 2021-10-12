@@ -42,8 +42,8 @@ e() { ### @-
         d="$f"
         while [ "${d%/*}" != "$d" ]; do
             d="${d%/*}"
-            [ -w "$d" ] && break
-            [ -e "$d" ] && { needroot=1; break; }
+            [ -w "$d/" ] && break
+            [ -e "$d/" ] && { needroot=1; break; }
         done
         [ $needroot = 1 ] && break
 

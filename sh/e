@@ -15,7 +15,7 @@ e() { ### @-
     ### ```
 
     [ -z "$ZSH_OPTIONS" ] || setopt local_options sh_word_split
-    local f= d= running= editor= needroot=0
+    local d= f= temp= running= editor= needroot=0
 
     editor="${EDITOR%% *}"
 
@@ -27,8 +27,8 @@ e() { ### @-
         fi
     done) || return
 
-    for f in "$@"; do
-        f="$(readlink -f "$f")" || continue
+    for f; do
+        temp="$(readlink -f "$f")" && f="$temp"
 
         [ -z "$MSYSTEM" ] || f="$(cygpath -u "$f")" || continue
 
@@ -42,21 +42,21 @@ e() { ### @-
         d="$f"
         while [ "${d%/*}" != "$d" ]; do
             d="${d%/*}"
-            # NOTE: this gets weird with the root directory, not sure how to handle
-            [ -e "$d" ] && [ ! -w "$d" ] && { needroot=1 && break; }
+            [ -w "$d" ] && break
+            [ -e "$d" ] && { needroot=1; break; }
         done
-        [ $needroot -eq 1 ] && break
+        [ $needroot = 1 ] && break
 
         # easy: file just doesn't exist
     done
 
-    if [ $needroot -eq 1 ] && [ -n "$MSYSTEM" ]; then
+    if [ $needroot = 1 ] && [ -n "$MSYSTEM" ]; then
         # this pretty much never happens, because permissions are so busted, but...
         printf "NOTE: you need root permissions, but this is Windows." >&2
         printf "      this probably isn't going to work." >&2
         pause
         $EDITOR "$@"
-    elif [ $needroot -eq 0 ]; then
+    elif [ $needroot = 0 ]; then
         $EDITOR "$@"
     else
         sudo -e "$@"

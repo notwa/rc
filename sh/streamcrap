@@ -75,16 +75,12 @@ mpv_watch() { ### @-
     # checking for redundant flags might itself be redundant, but i want to be sure.
     local seen=0
     for a; do [ "$a" = "${a#--ytdl-format=}" ] || seen=1; done
-    if [ $seen -eq 0 ]; then
-        mpv \
-          --af=lavfi="[$_M_PROCESS]" \
-          --ytdl-format='[width<=1280]/best' \
-          "$@" -- "$url"
-    else
-        mpv \
-          --af=lavfi="[$_M_PROCESS]" \
-          "$@" -- "$url"
-    fi
+    mpv \
+      --af=lavfi="[$_M_PROCESS]" \
+      --ytdl-format=best \
+      --ytdl-raw-options-append=compat-options=all \
+      "$@" -- "$url"
+
     popd >/dev/null
 }
 
@@ -122,7 +118,8 @@ ytg() { ### @-
     ### watch a youtube video. like `yt`, but with a preference for different formats.
     argc -ge 1 "$0" "$@" || return
     local vid="$1"; shift
-    yt "$vid" --ytdl-format=22/95/300/best "$@"
+    # --ytdl-format=22/95/300/best 
+    yt "$vid" "$@"
 }
 
 ytll() { ### @-
@@ -148,6 +145,7 @@ ai() { # @-
 asmr() { # @-
     # for your aural pleasure.
     argc -ge 1 "$0" "$@" || return
+    # --ytdl-format=251/300/best
     _M_PROCESS="acompressor=threshold=0.001:ratio=1.33:attack=900:release=6000:makeup=6:knee=8:mix=0.9,alimiter" \
-      yt "$@" --volume=90 --ytdl-format=251/300/best
+      yt "$@" --volume=90
 }

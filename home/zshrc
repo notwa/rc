@@ -57,7 +57,7 @@ function {
     [ -s ~/.sh.sha1 ] && read -r b _ < ~/.sh.sha1
     ( cd ~/sh \
       && print -l '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' '' \
-      | cat - $(grep -lF 'YES_ZSH' *(.)) \
+      | cat - $(grep -lF 'YES_ZSH' *~*.bak(.)) \
       | tee ~/.sh \
     ) | sha1sum - \
       | tee ~/.sh.sha1 \

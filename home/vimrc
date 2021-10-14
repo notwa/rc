@@ -340,6 +340,13 @@ nn <silent> <Leader>d :cd %:p:h<cr>:pwd<cr>
 
 vn <silent> & :call GlobalReplace()<cr>
 
+" TODO:
+"nn ,, :call CommentLines()<cr>
+"nn ,. :call UncommentLines()<cr>
+
+"!raku -e 'for lines() { say .chars, "\t", $_ }'
+"!raku -e 'lines.sort({ $^a.subst(/\s*\\#/) cmp $^b.subst(/\s*\\#/) }).map(&say)'
+"!raku -e 'lines.sort({ $^a.subst(/\s*\"/) cmp $^b.subst(/\s*\"/) }).map(&say)'
 
 " alias :W to :w, via https://stackoverflow.com/a/3879737
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))

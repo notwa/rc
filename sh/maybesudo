@@ -9,6 +9,7 @@ maybesudo_() { ### @-
     ### as it stands, this mostly just handles some environment variables.
     ###
     ### try this: `maybesudo_ -u "$USER" printenv`
+    # TODO: you know, awk has an ENVIRON array that might be easier to work with.
     local name=
     local env_cleanup=0
     while getopts :AEHKPSVbhiklnsvC:U:g:p:r:t:u: name; do

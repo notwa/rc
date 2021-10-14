@@ -11,6 +11,7 @@ vim/bundle/*
 vim/swp/*
 vim/undo/*
 
+*.bak
 *.html
 *.swo
 *.swp

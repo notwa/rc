@@ -1,5 +1,9 @@
 #!/usr/bin/env false
 
+# i don't want this to be automatically amalgamated,
+# but it *is* compatible with the usual 4 shells, so:
+# FAKE_COMPAT
+
 preload() { ### @- handle dependencies within the [`~/sh/`](/sh) directory.
     ### this function contains more comments than code, so you should read it.
     # all sourced files from within the preload function will instead

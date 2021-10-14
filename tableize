@@ -45,6 +45,7 @@ tableize() {
                 YES_BASH) bash=yes;;
                 YES_DASH) dash=yes;;
                 YES_ASH) ash=yes;;
+                FAKE_COMPAT) zsh=yes; bash=yes; dash=yes; ash=yes;;
                 NO_ZSH) zsh=no;;
                 NO_BASH) bash=no;;
                 NO_DASH) dash=no;;

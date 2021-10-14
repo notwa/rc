@@ -13,6 +13,7 @@ morecolors() { ### @- print all 256 colors that are available on most terminals.
         [ "$(( i+1 <= 16 ? (i+1) %  8 : ( (i+1)-16) %  6 ))" = 0 ] && printf '\e[0m\n'
         [ "$(( i+1 <= 16 ? (i+1) % 16 : ( (i+1)-16) % 36 ))" = 0 ] && printf '\e[0m\n'
     done
+    return 0
 }
 
 [ -n "${preload+-}" ] || morecolors "$@"

@@ -554,7 +554,7 @@ $ pre | shuf | head -n10
 #define __DBL_HAS_INFINITY__ 1
 ```
 
-### [preload](/sh/preload#L3)
+### [preload](/sh/preload#L7)
 
 handle dependencies within the [`~/sh/`](/sh) directory.
 
@@ -1151,7 +1151,7 @@ print each argument on its own line.
 | [pegg](#pegg)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pippy](#pippy)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [preload](#preload)                           |  **false** | ❔    | ❔    | ❔    | ❔    |
+| [preload](#preload)                           |  **false** | ✔️    | ✔️    | ✔️    | ✔️    |
 | [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [randir](#randir)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [refresh](#refresh)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

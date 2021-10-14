@@ -4,7 +4,9 @@
 # NO_DASH
 # NO_ASH
 
-lsarchive() {
+lsarchive() { ### @- list the contents of an archive file in one of many formats.
+    ### borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
+
     #
     # Lists the contents of archives.
     #

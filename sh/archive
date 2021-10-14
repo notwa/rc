@@ -4,7 +4,9 @@
 # NO_DASH
 # NO_ASH
 
-archive() {
+archive() { ### @- create an archive file in one of a few formats.
+    ### borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
+
     #
     # Creates archive file
     #

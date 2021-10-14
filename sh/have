@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+have() { ### @- print the result of `which` if the program is found, else simply return 1.
+    ### ```
+    ### export SOLVER="$(have kissat || have picosat || have cadical || have minisat)"
+    ### ```
+    if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi
+} 2>/dev/null
+
+[ -n "${preload+-}" ] || have "$@"

@@ -4,24 +4,14 @@
 
 # {{{1 utilities
 
-has() ( # hardcoded here for convenience. refer to ~/sh/has for documentation.
-    if [ "${1:-/}" = "${1#*[!A-Za-z_-]}" ]; then
-        if [ "$FANCY" = 0 ] || [ "${1:-/}" = "${1#-}" ]; then
-            alias "$1"=
-            unalias -- "$1"
-        fi
-        if [ "$FANCY" = 1 ]; then
-            eval -- "$1() (:)"
-            unset -f -- "$1"
-        elif [ "${1:-/}" = "${1#*-}" ]; then
-            eval "$1() (:)"
-            unset -f -- "$1"
-        fi
-    fi
-    which -- "$1" >/dev/null 2>&1 && which -- "$1"
-)
+have() {
+    if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi
+} 2>/dev/null
+has() {
+    have "$@"
+} >/dev/null
 
-if has sudo >/dev/null; then
+if has sudo; then
     maybesudo() { sudo "$@"; }
 else
     maybesudo() { maybesudo_ "$@"; }
@@ -78,7 +68,7 @@ if [ "$FANCY" -eq 1 ]; then
     alias grep='grep --color=auto'
     alias ls='ls --color=auto'
     alias lr="lr -G"
-    #alias make="$(has colormake || has make)"
+    #alias make="$(have colormake || have make)"
 fi
 
 # just flags {{{2
@@ -134,7 +124,7 @@ alias eacp='ea copy' ### @- invoke [`ea copy`.](#ea)
 alias earm='ea delete' ### @- invoke [`ea delete`.](#ea)
 
 ### @ ll - list files verbosely, fancily, ordered, but not recursively.
-if has lr >/dev/null; then
+if has lr; then
     alias ll='ify less lr -1lshGG -o tev'
 else
     alias ll='ify less ls -lAX --group-directories-first --color=force'

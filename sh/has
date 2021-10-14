@@ -4,34 +4,8 @@
 # YES_DASH
 # YES_ASH
 
-has() ( ### @- print the result of `which` if the program is found, else simply return 1.
-    ### ```
-    ### export SOLVER="$(has kissat || has picosat || has cadical || has minisat)"
-    ### ```
-    fancy=0
-    [ -z "$ZSH_VERSION" ] && [ -z "$BASH_VERSION" ] || fancy=1
-
-    if [ "${1:-/}" = "${1#*[!A-Za-z_-]}" ]; then # has a simple name?
-        # only ash and dash support aliases beginning with hyphens.
-        # forcefully unalias it (regardless of if it even was an alias):
-        if [ $fancy = 0 ] || [ "${1:-/}" = "${1#-}" ]; then
-            alias "$1"=
-            unalias -- "$1"
-        fi
-
-        # only bash and zsh support function names containing hyphens.
-        # forcefully unset it (regardless of if it even was a function):
-        if [ "$FANCY" = 1 ]; then
-            eval -- "$1() (:)"
-            unset -f -- "$1"
-        elif [ "${1:-/}" = "${1#*-}" ]; then
-            eval "$1() (:)"
-            unset -f -- "$1"
-        fi
-    fi
-
-    which -- "$1" >/dev/null 2>&1 && which -- "$1"
-) # this uses parentheses instead of braces so that the function is always run
-#   in a subshell. otherwise, the user's aliases and functions may be overwritten.
+has() { ### @- [`have`,](#have) silently.
+    if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi
+} >/dev/null 2>/dev/null
 
 [ -n "${preload+-}" ] || has "$@"

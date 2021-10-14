@@ -21,6 +21,10 @@ tableize() {
         [ -f "$f" ] || continue # probably failed to glob
 
         local fn="${f##*/}"
+        # ignore some stuff:
+        [ "$fn" = "${fn#_}" ] || continue # completion files
+        [ "$fn" = "${fn%.bak}" ] || continue # backup files
+
         local i=0 zsh= bash= dash= ash= pref=
         while IFS= read -r line; do
             : $((i+=1))

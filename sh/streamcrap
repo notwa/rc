@@ -75,7 +75,15 @@ mpv_watch() { ### @-
 
     local seen=0 A=()
     for a; do [ "$a" = "${a#--ytdl-format}" ] && A+=("$a") || seen=1; done
-    [ $seen = 0 ] || printf '%s\n' 'NOTE: the --ytdl-format flag is temporarily ignored due to throttling issues.' >&2
+    [ $seen = 0 ] || printf '%s\n' "NOTE: the --ytdl-format flag is temporarily ignored due to throttling issues." >&2
+
+    if has youtube-dl && ! has yt-dlp; then
+        if [[ "$(youtube-dl --version)" =~ 2021.06.06 ]]; then
+            printf '%s\n' "WARNING: the youtube-dl project is inactive; use yt-dlp instead." >&2
+        fi
+    elif has yt-dlc && ! has yt-dlp; then
+        printf '%s\n' "WARNING: the yt-dlc project is inactive; use yt-dlp instead." >&2
+    fi
 
     mpv \
       --af=lavfi="[$_M_PROCESS]" \

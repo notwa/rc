@@ -28,13 +28,13 @@ refer to the [compatibility table](#compatibility) for specifics.
 validate the number of arguments in a function.
 
 ```sh
-# usage: myfunc() { argc -(eq|le|ge) [0-9] "$0" "$@" || return; }
+# usage: myfunc() { argc $# -(eq|le|ge) [0-9] "$0" || return; }
 
 myfunc() {
     # use one of the following:
-    argc -eq N "$0" "$@" || return
-    argc -le N "$0" "$@" || return
-    argc -ge N "$0" "$@" || return
+    argc $# -eq N "$0" || return
+    argc $# -le N "$0" || return
+    argc $# -ge N "$0" || return
     # where N is an integer between 0 and 9.
 }
 ```

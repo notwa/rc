@@ -8,13 +8,21 @@ has() ( ### @- print the result of `which` if the program is found, else simply 
     ### ```
     ### export SOLVER="$(has kissat || has picosat || has cadical || has minisat)"
     ### ```
-    if [ "${1:--}" = "${1#*[!A-Za-z_]}" ]; then # valid alias name?
-        # forcefully unalias it (regardless of if it even was an alias)
-        alias "$1"=
-        unalias "$1"
-        # forcefully unset it (regardless of if it even was a function)
-        eval "$1() (:)"
-        unset -f "$1"
+    fancy=0
+    [ -z "$ZSH_VERSION" ] && [ -z "$BASH_VERSION" ] || fancy=1
+    if [ "${1:-/}" = "${1#*[!A-Za-z_-]}" ]; then # has a simple name?
+        if [ $fancy = 0 ] || [ "${1:-/}" = "${1#-}" ]; then
+            # only ash and dash support aliases beginning with hyphens.
+            # forcefully unalias it (regardless of if it even was an alias):
+            alias "$1"=
+            unalias "$1"
+        fi
+        if [ $fancy = 1 ] || [ "${1:-/}" = "${1#*-}" ]; then
+            # only bash and zsh support function names containing hyphens.
+            # forcefully unset it (regardless of if it even was a function):
+            eval "$1() (:)"
+            unset -f "$1"
+        fi
     fi
     which -- "$1" >/dev/null 2>&1 && which -- "$1"
 ) # this uses parentheses instead of braces so that the function is always run

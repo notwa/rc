@@ -116,8 +116,8 @@ yt() { ### @-
     mpv_watch "$vid" "$@"
 }
 
-ytg() { ### @-
-    ### watch a youtube video. like `yt`, but with a preference for different formats.
+ytg() { # @-
+    # watch a youtube video. like `yt`, but with a preference for different formats.
     argc -ge 1 "$0" "$@" || return
     local vid="$1"; shift
     # --ytdl-format=22/95/300/best 
@@ -131,8 +131,8 @@ ytll() { ### @-
     youtube-dl -q -f best "$1" -o - | mpv_stream - --no-ytdl
 }
 
-ytgll() { ### @-
-    ### watch a stream from youtube in mpv. like `ytll`, but with a preference for different formats.
+ytgll() { # @-
+    # watch a stream from youtube in mpv. like `ytll`, but with a preference for different formats.
     argc -ge 1 "$0" "$@" || return
     youtube-dl -q -f 22/95/300/best "$1" -o - | mpv_stream - --no-ytdl
 }

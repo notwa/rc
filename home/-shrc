@@ -52,15 +52,15 @@ unset LD_LIBRARY_PATH
 
 [ "$DESKTOP_SESSION" != xfce ] || export QT_QPA_PLATFORMTHEME="" # unhide menu bar
 #[ "$TERM" != vt102 ] || export TERM="xterm" # PuTTY over serial
+export EA_AUTH="auth"
+export EA_DIR="t"
+export EA_DOMAIN="https://eaguru.guru"
 export EDITOR=vim
 export ENV="$HOME/.-shrc" # for dash
 export PAGER=less
 export PYTHONIOENCODING=utf-8 # damnit python!
 export SSH_AUTH_SOCK=0 # more info: https://0x0.st/NUnw
 export TZ=':/etc/localtime' # more info: https://0x0.st/NUnv
-export EA_AUTH="auth"
-export EA_DIR="t"
-export EA_DOMAIN="https://eaguru.guru"
 
 # $LANG has been my bane whenever i forget to set it properly, so check it.
 if [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ]; then

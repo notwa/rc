@@ -11,6 +11,8 @@ trash() { ### @-
     ### $ trash 10 | xxp
     ### 3A A5 4F C7 6D 89 E7 D7 F7 0C
     ### ```
+    ###
+    ### **TODO:** consider renaming because trash(1) already exists.
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     dd status=none if=/dev/random bs=1 count="${1:?missing count argument}"
 }

@@ -100,6 +100,7 @@ alias gs='git status' ### @- invoke git's status subcommand.
 alias gd='git diff -U2' ### @- invoke git's diff subcommand with fewer lines of context.
 alias gds='git --no-pager diff --stat' ### @- display difference stats from git.
 alias gl='git log --oneline' ### @- invoke git's log subcommand with a single line per commit.
+### **TODO:** consider renaming because [gl(1)](https://github.com/gitless-vcs/gitless) already exists.
 alias glo='git log --graph --decorate --pretty=oneline --abbrev-commit --all' ### @- navigate git's commit tree succinctly.
 alias g1='git log --pretty=oneline --abbrev-commit --color=always | head -1' ### @- display the most recent git commit.
 alias gr='git remote -v' ### @- display remote git repositories verbosely.

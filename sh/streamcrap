@@ -14,7 +14,7 @@ mpvs() { ### @- invoke mpv with some extra flags suited for streamed sources.
 }
 
 getladspa() {
-    argc -eq 1 "$0" "$@" || return
+    argc $# -eq 1 "$0" || return
     printf '%s' volume
     if [ -e "/usr/lib/ladspa/${1}.so" ]; then
         printf '%s' "ladspa=f=${1}:p=${1}"
@@ -36,7 +36,7 @@ _M_DANNY="$_M_PRE_EMPH,alimiter,dynaudnorm=f=400:g=5:p=1:m=32:r=0.1:c=1:s=9:t=0.
 _M_LEVEL="$(getladspa crap_level)"
 
 earphones() {
-    argc -eq 0 "$0" "$@" || return
+    argc $# -eq 0 "$0" || return
     _M_PROCESS="lowpass=8000:p=1,$_M_KILL,alimiter=level_out=0.707"
 }
 
@@ -47,7 +47,7 @@ case "$(uname -n | tr A-Z a-z)" in
 
     neobanshee)
         speakers() {
-            argc -eq 0 "$0" "$@" || return
+            argc $# -eq 0 "$0" || return
             _M_PROCESS="highpass=311,$_M_KILL,$_M_NEO,alimiter=level_in=2"
         }
         speakers
@@ -56,7 +56,7 @@ case "$(uname -n | tr A-Z a-z)" in
     banshee)
         _M_SPEAKERS="$(getladspa crap_eq_const_T420)"
         speakers() {
-            argc -eq 0 "$0" "$@" || return
+            argc $# -eq 0 "$0" || return
             _M_PROCESS="$_M_LEVEL,$_M_SPEAKERS,alimiter=level_in=0.5"
         }
         speakers
@@ -69,7 +69,7 @@ esac
 
 mpv_watch() { ### @-
     ### play some media in mpv with a bunch of unnecessary filters.
-    argc -ge 1 "$0" "$@" || return
+    argc $# -ge 1 "$0" || return
     pushd ~/play >/dev/null
     local url="$1"; shift
 
@@ -88,7 +88,7 @@ mpv_watch() { ### @-
 
 mpv_stream() { ### @-
     ### watch a stream in mpv with a bunch of unnecessary filters.
-    argc -ge 1 "$0" "$@" || return
+    argc $# -ge 1 "$0" || return
     pushd ~/play >/dev/null
     local url="$1"; shift
     mpvs --af=lavfi="[$_M_PROCESS]" "$@" -- "$url"
@@ -97,7 +97,7 @@ mpv_stream() { ### @-
 
 twitch() { ### @-
     ### watch a twitch stream in mpv with a bunch of unnecessary filters.
-    argc -ge 1 "$0" "$@" || return
+    argc $# -ge 1 "$0" || return
     local user="$1"; shift
     mpv_stream "http://twitch.tv/$user" "$@"
 }
@@ -110,7 +110,7 @@ yt() { ### @-
     ###
     ### **NOTE:** there also exists a yt(1) program provided by
     ### the *python3-yt* package that i don't use.
-    argc -ge 1 "$0" "$@" || return
+    argc $# -ge 1 "$0" || return
     local vid="$1"; shift
     [ -e "$vid" ] || [ "$vid" != "${vid#http}" ] || vid="ytdl://$vid"
     mpv_watch "$vid" "$@"
@@ -118,7 +118,7 @@ yt() { ### @-
 
 ytg() { # @-
     # watch a youtube video. like `yt`, but with a preference for different formats.
-    argc -ge 1 "$0" "$@" || return
+    argc $# -ge 1 "$0" || return
     local vid="$1"; shift
     # --ytdl-format=22/95/300/best 
     yt "$vid" "$@"
@@ -127,26 +127,26 @@ ytg() { # @-
 ytll() { ### @-
     ### watch a stream from youtube in mpv, etcetera etcetera.
     ### this is the low latency version that does not support seeking.
-    argc -ge 1 "$0" "$@" || return
+    argc $# -ge 1 "$0" || return
     youtube-dl -q -f best "$1" -o - | mpv_stream - --no-ytdl
 }
 
 ytgll() { # @-
     # watch a stream from youtube in mpv. like `ytll`, but with a preference for different formats.
-    argc -ge 1 "$0" "$@" || return
+    argc $# -ge 1 "$0" || return
     youtube-dl -q -f 22/95/300/best "$1" -o - | mpv_stream - --no-ytdl
 }
 
 ai() { # @-
     # hai domo!
-    argc -ge 1 "$0" "$@" || return
+    argc $# -ge 1 "$0" || return
     yt "$@" --slang=en --sub-font='Tekton Pro' --sub-bold=yes \
       --sub-font-size=60 --sub-border-color='#DD6180' --sub-margin-y=52
 }
 
 asmr() { # @-
     # for your aural pleasure.
-    argc -ge 1 "$0" "$@" || return
+    argc $# -ge 1 "$0" || return
     # --ytdl-format=251/300/best
     _M_PROCESS="acompressor=threshold=0.001:ratio=1.33:attack=900:release=6000:makeup=6:knee=8:mix=0.9,alimiter" \
       yt "$@" --volume=90

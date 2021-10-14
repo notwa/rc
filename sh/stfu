@@ -35,7 +35,7 @@ stfu() { ### @-
     ###
     ###
     ### ```
-    argc -ge 1 "$0" "$@" || return
+    argc $# -ge 1 "$0" || return
 
     local dirty=0 temp="$STFU_DIR"
     if [ -z "$temp" ]; then

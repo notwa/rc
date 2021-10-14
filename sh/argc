@@ -6,53 +6,58 @@
 
 argc() { ### @- validate the number of arguments in a function.
     ### ```sh
-    ### # usage: myfunc() { argc -(eq|le|ge) [0-9] "$0" "$@" || return; }
+    ### # usage: myfunc() { argc $# -(eq|le|ge) [0-9] "$0" || return; }
     ###
     ### myfunc() {
     ###     # use one of the following:
-    ###     argc -eq N "$0" "$@" || return
-    ###     argc -le N "$0" "$@" || return
-    ###     argc -ge N "$0" "$@" || return
+    ###     argc $# -eq N "$0" || return
+    ###     argc $# -le N "$0" || return
+    ###     argc $# -ge N "$0" || return
     ###     # where N is an integer between 0 and 9.
     ### }
     ### ```
 
-#   local usage='usage: myfunc() { %s -(eq|lt|gt|le|ge) [0-9] "$0" "$@" || return; }\n'
-    local usage='usage: myfunc() { %s -(eq|le|ge) [0-9] "$0" "$@" || return; }\n'
+    local usage='usage: myfunc() { %s $# -(eq|le|ge) [0-9] "$0" || return; }\n'
 
     # note that $zero can be empty, but must be set.
-    if [ $# -lt 3 ] || [ -z "$1" ] || [ -z "$2" ] || [ "${3+x}" != x ]; then
+    if [ $# -ne 4 ] || [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
         printf "$usage" argc >&2
         return 2
     fi
 
+    local argc="$1"; shift
     local cond="$1"; shift
     local want="$1"; shift
     local zero="$1"; shift
     local many='' plural=''
     [ "$want" = 1 ] || plural='s'
 
+    if [ "$argc" != "${argc%%[!0-9]*}" ]; then
+        printf "$usage" argc >&2
+        return 2
+    fi
+
     case "$cond" in
-    '-eq') many='exactly';;
-#   '-lt') many='fewer than';;
-#   '-gt') many='more than';;
-    '-le') many='at most';;
-    '-ge') many='at least';;
-    *)
+    ('-eq') many='exactly';;
+    ('-le') many='at most';;
+    ('-ge') many='at least';;
+    (*)
         printf "$usage" argc >&2
         return 2;;
     esac
 
     case "$want" in
-    [0-9]) :;; # no error, continue.
-    *)
+    ([0-9]) :;; # no error, continue.
+    (*)
         printf "$usage" argc >&2
         return 2;;
     esac
 
-    if [ ! $# "$cond" "$want" ]; then
+    if [ "$argc" "$cond" "$want" ] 2>/dev/null; then
+        :
+    else
         local err="expected $many $want argument$plural, got"
-        printf '%s: %s %s\n' "$zero" "$err" "$#" >&2
+        printf '%s: %s %s\n' "$zero" "$err" "$argc" >&2
         return 1
     fi
 

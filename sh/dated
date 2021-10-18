@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+dated() {
+    local u=0
+    [ "$1" != -u ] || { shift; u=1; }
+    argc $# -le 1 "$0" || return
+    if [ $# = 0 ]; then
+        # -u doesn't actually do anything here, but...
+        if [ $u = 1 ]; then date -u '+%s'; else date '+%s'; fi
+    else
+        if [ $u = 1 ]; then date -u -d '@'"$1"; else date -d '@'"$1"; fi
+    fi
+}
+
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} argc
+[ -n "${preload+-}" ] || dated "$@"

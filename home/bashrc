@@ -48,4 +48,4 @@ preload=dummy
 unset preload
 
 alias reload='cd; exec bash' ### @- **TODO:** respect initctl like in `.zshrc`.
-[ -e ~/.lol ] && . ~/.lol || touch ~/.lol
+[ ! -e ~/.lol ] || . ~/.lol

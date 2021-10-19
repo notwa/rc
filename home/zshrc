@@ -291,4 +291,4 @@ function {
 #compdef wat=which
 #. ~/.prezto-compinit
 
-[ -e ~/.lol ] && . ~/.lol || touch ~/.lol
+[ ! -e ~/.lol ] || . ~/.lol

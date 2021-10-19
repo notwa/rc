@@ -204,7 +204,7 @@ if has('autocmd')
         au BufRead,BufNewFile *.asm setlocal ft=lips
         au BufRead,BufNewFile *.nim setlocal ft=nim
         au BufRead,BufNewFile *.pde setlocal ft=processing
-        au BufRead * call DetectShebang()
+        au BufRead,BufNewFile,StdinReadPost * call DetectShebang()
     augroup END
 
     augroup insanity

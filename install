@@ -99,11 +99,13 @@ find_new_files() {
         if [ -d "$d2" ]; then
             find_new_files "$d1" "$d2"
         elif [ ! "$d1" -ef "$d2" ]; then
+            local ind=
+            [ ! -d "$d1" ] || ind=/
             if [ "$VERBOSE" -lt 1 ]; then
-                printf ' + %s\n' "$d1" >&2
+                printf ' + %s%s\n' "$d1" "$ind" >&2
             else
                 #printf 'new destination file. consider manually moving it:\n' >&2
-                printf '\033[32m + \033[0m %s\n' "$d1" >&2
+                printf '\033[32m + \033[0m %s%s\n' "$d1" "$ind" >&2
             fi
         fi
     done

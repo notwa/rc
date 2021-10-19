@@ -834,47 +834,47 @@ $ xxp ~/rc/install | head -n2
 
 return 0, ignoring arguments.
 
-### [dirprev (zshrc)](/home/zshrc#L76)
+### [dirprev (zshrc)](/home/zshrc#L74)
 
 rotate and change to the previous directory in the directory stack
 without consuming the prompt.
 
-### [dirnext (zshrc)](/home/zshrc#L83)
+### [dirnext (zshrc)](/home/zshrc#L81)
 
 rotate and change to the next directory in the directory stack
 without consuming the prompt.
 
-### [dirup (zshrc)](/home/zshrc#L90)
+### [dirup (zshrc)](/home/zshrc#L88)
 
 change to the parent directory of the current working directory
 without consuming the prompt.
 
-### [dirview (zshrc)](/home/zshrc#L97)
+### [dirview (zshrc)](/home/zshrc#L95)
 
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L194)
+### [OMFG (zshrc)](/home/zshrc#L193)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L195)
+### [STFU (zshrc)](/home/zshrc#L194)
 
 silence stderr.
 
-### [WHOA (zshrc)](/home/zshrc#L196)
+### [WHOA (zshrc)](/home/zshrc#L195)
 
 expand to several C/C++ flags to ease development.
 
-### [WELP (zshrc)](/home/zshrc#L197)
+### [WELP (zshrc)](/home/zshrc#L196)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [tw (zshrc)](/home/zshrc#L202)
+### [tw (zshrc)](/home/zshrc#L201)
 
 invoke `twitch` as a job with both stdout and stderr silenced.
 
-### [reload (zshrc)](/home/zshrc#L246)
+### [reload (zshrc)](/home/zshrc#L245)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
@@ -1119,6 +1119,7 @@ print each argument on its own line.
 | [confirm](#confirm)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [cutv](#cutv)                                 |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [dated](#dated)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [decently](#decently)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

@@ -231,13 +231,6 @@ if has('autocmd')
         au GUIEnter * set vb t_vb=
     augroup END
 
-    if has('syntax')
-        augroup fuckyou               " why do you make me do this?
-            au!
-            au FileType vim syntax clear vim9Comment
-        augroup END
-    endif
-
     fu! ResCur()                      " attempt to preserve cursor position
         if line("'\"") > 1 && line("'\"") <= line("$")
             normal! g`"

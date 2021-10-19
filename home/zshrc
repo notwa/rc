@@ -71,8 +71,6 @@ preload=dummy
 . ~/.sh
 unset preload
 
-local fuzzy=`has fzy || print`
-
 dirprev() { ### @-
     ### rotate and change to the previous directory in the directory stack
     ### without consuming the prompt.
@@ -97,6 +95,7 @@ dirup() { ### @-
 dirview() { ### @-
     ### use a fuzzy finder to select a recent directory in the directory stack
     ### and change to it without consuming the prompt.
+    local fuzzy="$(has fzy || print)"
     print
     if [ -n "$fuzzy" ]; then
         local d="$(dirs -pl | awk '!seen[$0]++' | "$fuzzy")"

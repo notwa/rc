@@ -51,7 +51,6 @@ if has('syntax')
     syntax enable                     " required for folding as well
     set hlsearch                      " highlight search results
 endif
-let g:python_highlight_builtin_funcs=1
 
 if has('gui_running')
     set guioptions-=M                 " skip loading $VIMRUNTIME/menu.vim

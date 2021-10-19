@@ -22,7 +22,7 @@ else
 endif
 
 let &backupdir=g:rcvim.'/backup'      " stash tilde files elsewhere
-" the double slash at the end dumps the path of the file for uniqueness
+" using a double slash here enables file path inclusion for uniqueness:
 let &directory=g:rcvim.'/swp//'       " stash swap files too
 let &undodir=g:rcvim.'/undo/'         " undo files are cool
 try | call mkdir(&backupdir, "p")     | catch /E739/ | endtry
@@ -50,6 +50,7 @@ endif
 if has('syntax')
     syntax enable                     " required for folding as well
     set hlsearch                      " highlight search results
+    let c_syntax_for_h=1              " use C highlighting for .h files
 endif
 
 if has('gui_running')
@@ -76,21 +77,20 @@ set lazyredraw                        " when executing macros, untyped things
 set shortmess=atI                     " be less verbose and shut up vim
 set suffixes=.bak,~,.swp,.o,.log,.out " lower tab-completion priority
 set noerrorbells visualbell t_vb=     " disable bells
-set scrolloff=3                       " row context during scrolling
-set sidescrolloff=2                   " col context during scrolling
+set scrolloff=3                       " rows of context when scrolling
+set sidescrolloff=2                   " cols of context when scrolling
 set incsearch                         " show first search result as we type
 set ignorecase                        " insensitive searching
 set smartcase                         " except when uppercase is used
 set infercase                         " use existing case when ins-completing
-set tabstop=8 shiftwidth=8 smarttab   " 8 space tabs
+set smarttab                          " handle insertion and deletion of indents
 set virtualedit=block                 " allow cursor anywhere in visual block
 set foldmethod=marker                 " (performance issues with other methods)
 set foldlevelstart=99                 " start with everything unfolded...?
-let c_syntax_for_h=1                  " use C highlighting for .h files
 set nowrap                            " word wrapping is pretty weak in vim
 set nojoinspaces                      " don't use double-spaces for J and gq
-set ffs=unix,dos                      " ffs indeed
-set nobomb                            " bombs are bad ok
+set ffs=unix,dos                      " prefer unix-style EOLs (ffs indeed)
+set nobomb                            " don't mention these on planes
 set undofile                          " remember undos across files/sessions
 set diffopt+=iwhite                   " ignore whitespace in diff command
 set ttimeoutlen=50                    " make changing modes a bit snappier
@@ -101,7 +101,8 @@ if has('mksession')
 end
 
 if has('wildignore')
-    " a bunch of stuff that may or may not do any good
+    " ignore files that typically aren't interesting to text editors like vim
+    " FWIW, these lines don't need trailing commas
     set wildignore=""
     set wildignore+=.git,.svn,.hg,pkg,tmp
     set wildignore+=*.bak,*.tmp,*.log,*.cache
@@ -157,7 +158,8 @@ endf
 set tabstop=8 shiftwidth=4 expandtab softtabstop=4
 
 fu! DetectShebang()
-    " vim seems to have some rudimentary detection, but we can do better.
+    " vim has some rudimentary detection, but sometimes i want to override it.
+    " vim's version is typically found here: /usr/share/vim/vim82/scripts.vim
     let l = getline(1)
     let p = ''
 
@@ -207,11 +209,12 @@ if has('autocmd')
 
     augroup insanity
         au!
-        au FileType netrw setl bufhidden=wipe
+        au FileType netrw setlocal bufhidden=wipe
     augroup END
 
     augroup nocomment
         au!
+        " set or unset some convenient or annoying formatoptions
         au FileType * setlocal fo-=c fo-=r fo-=o
     augroup END
 
@@ -229,7 +232,7 @@ if has('autocmd')
     augroup END
 
     if has('syntax')
-        augroup fuckyou
+        augroup fuckyou               " why do you make me do this?
             au!
             au FileType vim syntax clear vim9Comment
         augroup END

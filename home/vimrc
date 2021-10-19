@@ -25,9 +25,9 @@ let &backupdir=g:rcvim.'/backup'      " stash tilde files elsewhere
 " using a double slash here enables file path inclusion for uniqueness:
 let &directory=g:rcvim.'/swp//'       " stash swap files too
 let &undodir=g:rcvim.'/undo/'         " undo files are cool
-try | call mkdir(&backupdir, "p")     | catch /E739/ | endtry
-try | call mkdir(&directory, "p")     | catch /E739/ | endtry
-try | call mkdir(&undodir,   "p")     | catch /E739/ | endtry
+try | call mkdir(&backupdir, "p") | catch /E739/ | endtry
+try | call mkdir(&directory, "p") | catch /E739/ | endtry
+try | call mkdir(&undodir,   "p") | catch /E739/ | endtry
 
 " force colors on anything that looks reasonable
 if (&term =~ "^xterm") || (&term == "screen")
@@ -366,18 +366,13 @@ set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
 " including this in case i'm on a _really_ bad terminal:
 "set list listchars=tab:>-,trail:.,extends:>,nbsp:_
 
-try | exec pathogen#infect()          | catch /E117/ | endtry
+try | exec pathogen#infect() | catch /E117/ | endtry
 
 let g:netrw_banner=0
+let g:netrw_fastbrowse = 0            " so THAT'S what's been causing me agony
 
 set background=dark
-try
-    colorscheme property16
-catch /E185/
-    colorscheme desert
-endtry
-
-let g:netrw_fastbrowse = 0            " so THAT'S what's been causing me agony
+try | colorscheme property16 | catch /E185/ | colorscheme desert | endtry
 
 " ctrlp {{{1
 
@@ -388,5 +383,5 @@ let g:ctrlp_match_window='bottom,order:btt,min:1,max:24,results:24'
 
 let s:hostname=hostname()
 if s:hostname == "phantom-pi" || s:hostname == "wraith"
-    colo Tomorrow-Night
+    colorscheme Tomorrow-Night
 endif

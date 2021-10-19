@@ -104,16 +104,16 @@ if has('wildignore')
     " a bunch of stuff that may or may not do any good
     set wildignore=""
     set wildignore+=.git,.svn,.hg,pkg,tmp
-    set wildignore+=*.bak,*.tmp,*.log,*.cache,
+    set wildignore+=*.bak,*.tmp,*.log,*.cache
     set wildignore+=Desktop.ini,Thumbs.db,*.lnk,.DS_Store
-    set wildignore+=*.zip,*.tar,*.tar.*,
+    set wildignore+=*.zip,*.tar,*.tar.*,*.7z
     set wildignore+=*.suo,*.sln,*.pch,*.pdb,*.pgc,*.pgd
     set wildignore+=*.o,*.obj,*.elf,*.lib,*.a,*.dll,*.so,*.so.*,*.exe,*.out
-    set wildignore+=*.png,*.jpg,*.jpeg,*.gif,*.pdf
-    set wildignore+=__pycache__,*.pyc,*.pyo,*.pyd,*.npy,*.npz,*.pkl
+    set wildignore+=*.wav,*.mp3,*.ogg,*.m4a,*.opus,*.mp4,*.mkv
+    set wildignore+=*.webp,*.png,*.jpg,*.jpeg,*.jfif,*.gif,*.pdf
+    set wildignore+=__pycache__,*.pyc,*.pyo,*.pyd,*.npy,*.npz,*.h5,*.pkl
     set wildignore+=*.gem,.bundle
     set wildignore+=CMakeCache.txt,CMakeFiles,install_manifest.txt
-    set wildignore+=*.h5,*.npz
 endif
 
 let $PATH .= ':'.$HOME.'/sh'          " allow direct invocation of shell funcs

@@ -26,7 +26,10 @@ ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
         printf 'ADDPATH: path does not exist: %s\n' "$1" >&2
         return 1
     fi
-    printf '%s' ":$PATH:" | grep -Fq ":$new:" || export PATH="$PATH:$new"
+    case ":$PATH:" in
+        (*":$new:"*) :;;
+        (*) export PATH="$PATH:$new";;
+    esac
 }
 
 # {{{1 configurations

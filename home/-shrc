@@ -81,6 +81,7 @@ alias perlu='perl -Mopen=locale -Mutf8' ### @- invoke perl expecting files with 
 alias rgn="rg --no-ignore" ### @- invoke ripgrep without respecting `.gitignore` files.
 alias cms="cryptominisat5 --verb 0" ### @- invoke cryptominisat5 with less noise.
 alias curls="curl -sS" ### @- invoke curl with less noise.
+alias curLs="curl -L --no-progress-meter"
 
 # git {{{2
 

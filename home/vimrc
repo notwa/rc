@@ -93,11 +93,12 @@ set ffs=unix,dos                      " prefer unix-style EOLs (ffs indeed)
 set nobomb                            " don't mention these on planes
 set undofile                          " remember undos across files/sessions
 set diffopt+=iwhite                   " ignore whitespace in diff command
-set ttimeoutlen=50                    " make changing modes a bit snappier
+set ttimeout ttimeoutlen=60           " make changing modes a bit snappier
 set hidden                            " allow swapping out of unsaved buffers
 set complete=.,w,b,u,t                " don't scan every file with autocomplete
+set nrformats=bin,hex,unsigned        " ctrl+a/x non-negative numbers, no octal
 if has('mksession')
-    set sessionoptions=blank,buffers,curdir,options,folds,tabpages,winsize,resize,winpos
+    set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize,resize,winpos
 end
 
 if has('wildignore')
@@ -312,7 +313,7 @@ nn <bar> <c-]>
 " delete line
 "nn D dd
 
-" execute vim code in visual selection
+" execute vim commands in visual selection
 vmap <space> "xy:@x<cr>
 
 " open a shell (only works if you `exec vim` instead of running it in a shell)
@@ -365,7 +366,7 @@ let g:netrw_banner=0
 let g:netrw_fastbrowse = 0            " so THAT'S what's been causing me agony
 
 set background=dark
-try | colorscheme property16 | catch /E185/ | colorscheme desert | endtry
+try | colorscheme minimalist | catch /E185/ | colorscheme desert | endtry
 
 " ctrlp {{{1
 
@@ -376,5 +377,5 @@ let g:ctrlp_match_window='bottom,order:btt,min:1,max:24,results:24'
 
 let s:hostname=hostname()
 if s:hostname == "phantom-pi" || s:hostname == "wraith"
-    colorscheme Tomorrow-Night
+    colorscheme minimalist
 endif

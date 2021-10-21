@@ -95,7 +95,7 @@ dirup() { ### @-
 dirview() { ### @-
     ### use a fuzzy finder to select a recent directory in the directory stack
     ### and change to it without consuming the prompt.
-    local fuzzy="$(has fzy || print)"
+    local fuzzy="$(have fzy || print)"
     print
     if [ -n "$fuzzy" ]; then
         local d="$(dirs -pl | awk '!seen[$0]++' | "$fuzzy")"

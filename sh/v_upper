@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+v_upper() { ### @- transform the contents of a variable to uppercase.
+    argc $# -eq 1 "$0" || return
+    map() {
+        case "$_i_" in
+        (a) _o_=A;; (b) _o_=B;; (c) _o_=C;; (d) _o_=D;; (e) _o_=E;; (f) _o_=F;; (g) _o_=G;;
+        (h) _o_=H;; (i) _o_=I;; (j) _o_=J;; (k) _o_=K;; (l) _o_=L;; (m) _o_=M;; (n) _o_=N;;
+        (o) _o_=O;; (p) _o_=P;; (q) _o_=Q;; (r) _o_=R;; (s) _o_=S;; (t) _o_=T;; (u) _o_=U;;
+        (v) _o_=V;; (w) _o_=W;; (x) _o_=X;; (y) _o_=Y;; (z) _o_=Z;; (*) _o_="$_i_";;
+        esac
+    }
+    v_domap "$1"
+}
+
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} argc v_domap
+[ -n "${preload+-}" ] || v_upper "$@"

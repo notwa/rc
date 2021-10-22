@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+v_domap() {
+    argc $# -eq 1 "$0" || return
+    # TODO: sanity-check on characters of the variable name.
+    local _k_="$1" _v_= _new_= _next_= _i_= _o_=
+    eval "_v_=\"\$$_k_\""
+    while [ -n "$_v_" ]; do
+        _next_="${_v_#[! ]}"
+        [ "$_next_" != "$_v_" ] || _next_="${_v_# }"
+        _i_="${_v_%"$_next_"}"; _v_="$_next_"
+        map
+        _new_="$_new_$_o_"
+        #printf 'new: %s\n' "$_new_"
+    done
+    eval "$_k_=\"\$_new_\""
+}
+
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} argc
+[ -n "${preload+-}" ] || v_domap "$@"

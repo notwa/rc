@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+v_lower() { ### @- transform the contents of a variable to lowercase.
+    argc $# -eq 1 "$0" || return
+    map() {
+        case "$_i_" in
+        (A) _o_=a;; (B) _o_=b;; (C) _o_=c;; (D) _o_=d;; (E) _o_=e;; (F) _o_=f;; (G) _o_=g;;
+        (H) _o_=h;; (I) _o_=i;; (J) _o_=j;; (K) _o_=k;; (L) _o_=l;; (M) _o_=m;; (N) _o_=n;;
+        (O) _o_=o;; (P) _o_=p;; (Q) _o_=q;; (R) _o_=r;; (S) _o_=s;; (T) _o_=t;; (U) _o_=u;;
+        (V) _o_=v;; (W) _o_=w;; (X) _o_=x;; (Y) _o_=y;; (Z) _o_=z;; (*) _o_="$_i_";;
+        esac
+    }
+    v_domap "$1"
+}
+
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} argc v_domap
+[ -n "${preload+-}" ] || v_lower "$@"

@@ -122,6 +122,20 @@ let $PATH .= ':'.$HOME.'/sh'          " allow direct invocation of shell funcs
 
 " fun {{{1
 
+fu! Colour(name)                      " go nuts. go wild.
+    hi clear | syntax clear | syntax on " reset everything for sure (#4405)
+    if has('termguicolors')
+        if &term =~ "^tmux-256color"
+            let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+            let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+            set termguicolors
+        endif
+    endif
+    exe "colo " . a:name
+endf
+
+command! -nargs=* Colour call Colour(<f-args>)
+
 " lifted from BurntSushi:
 fu! GlobalReplace()
     normal! gv"ry

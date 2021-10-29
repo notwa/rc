@@ -1,0 +1,23 @@
+#!/usr/bin/env perl
+### @ shelly
+### (perl 5) invoke the first shell found from a list of shells
+### as an interactive, non-login shell. arguments are ignored.
+
+use strict;
+use Env qw(@PATH);
+use File::Spec;
+
+# arbitrary ordering, feel free to change:
+my @shells = <zsh osh fish ion bash ash busybox ksh tcsh csh rc dash>;
+
+for my $s (@shells) {
+    for my $p (@PATH) {
+        my $fp = File::Spec->join($p, $s);
+        my @argv = $s eq "busybox" ? ("sh", "-i") : ($s, "-i");
+        exec {$fp} @argv if -f $fp and -e "$fp";
+        #print STDERR "fail: $fp\n";
+    }
+}
+
+print STDERR "$0: gave up; invoking `sh` without arguments...\n";
+exec {"sh"} "sh";

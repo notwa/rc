@@ -34,13 +34,20 @@ setopt path_dirs                # Perform path search even on command names with
 setopt rc_quotes                # 'it''s okay' becomes "it's okay"
 unsetopt flow_control           # Disable start/stop characters in shell editor.
 
-if [ "$SHLVL" -le 1 ] && [ "$TERM" = "${TERM#screen}" ] && [ "$TERM" = "${TERM#tmux}" ]; then
-    if (( $+commands[tmux] )); then
+function {
+    if [ "$SHLVL" -le 1 ] \
+    && [ "${TERM#screen}" = "$TERM" ] \
+    && [ "${TERM#tmux}" = "$TERM" ] \
+    && (( $+commands[tmux] ))
+    then
         # create a new session called "what" or attach if it already exists
-        LANG="en_US.UTF-8" TZ=":/etc/localtime" tmux new -A -s what && exit
+        local env=(LANG="en_US.UTF-8" TZ=":/etc/localtime")
+        local cmd=(tmux new -A -s what)
+        [ "${TTY#/dev/cons}" = "$TTY" ] || cmd=(script -qfec "$cmd" /dev/null)
+        env $env $cmd && exit
         printf '\e[91m\ntmux died (%i), continuing...\n\e[0m\n' $?
     fi
-fi
+}
 
 autoload -U zmv
 autoload -U zrecompile

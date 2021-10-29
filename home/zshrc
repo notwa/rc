@@ -1,4 +1,4 @@
-[ -e /etc/profile ] && emulate sh -c "source /etc/profile"
+. ~/.prep # handle boring stuff like /etc/profile and $PATH
 
 HISTFILE=~/.histfile
 HISTSIZE=99999

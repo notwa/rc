@@ -1,6 +1,10 @@
 #!/usr/bin/env false
 # for ash, dash, bash, and zsh.
+
 [ -n "$ZSH_VERSION" -o -n "$BASH_VERSION" ] && FANCY=1 || FANCY=0
+if [ "$FANCY" = 0 ]; then
+    . ~/.prep # handle boring stuff like /etc/profile and $PATH
+fi
 
 # {{{1 utilities
 
@@ -66,7 +70,7 @@ fi
 
 # enable colors {{{2
 
-if [ "$FANCY" -eq 1 ]; then
+if [ "$FANCY" = 1 ]; then
     # busybox is smart enough to ignore --color flags when unsupported.
     alias grep='grep --color=auto'
     alias ls='ls --color=auto'

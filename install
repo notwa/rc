@@ -130,7 +130,7 @@ cd "${HOME:?HOME variable empty or unset}" || die "failed to change directory"
 backup_dir="$rc/backup-$(date -u '+%s')"
 [ ! -d "$backup_dir" ] || die "backup directory already exists"
 
-for f in .bashrc .zshrc .-shrc .prezto-compinit .ls_colors \
+for f in .bashrc .zshrc .prep .-shrc .prezto-compinit .ls_colors \
   .vimrc .inputrc .Xresources .screenrc .tmux.conf; do
     hardlink "$f" "$rc/home/${f#.}"
 done

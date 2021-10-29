@@ -1,4 +1,5 @@
 [ -z "$PS1" ] && return
+. ~/.prep # handle boring stuff like /etc/profile and $PATH
 
 HISTCONTROL=erasedups
 HISTSIZE=1000

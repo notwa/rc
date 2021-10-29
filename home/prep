@@ -1,0 +1,52 @@
+#!/usr/bin/env false
+# for ash, dash, bash, and zsh.
+
+if [ -r /etc/msystem ]; then
+    # avoid sourcing /etc/profile because forking cygwin processes is awful.
+    . /etc/msystem # this doesn't fork anything, thankfully.
+
+    # NOTE: never inherits parent process's PATH. does not add perl paths.
+    PATH="/usr/local/bin:/usr/bin:/bin"
+    PATH="$PATH:/c/Windows/System32:/c/Windows:/c/Windows/System32/Wbem"
+    PATH="$PATH:/c/Windows/System32/WindowsPowerShell/v1.0/"
+    MANPATH="/usr/local/man:/usr/share/man:/usr/man:/share/man"
+    INFOPATH="/usr/local/info:/usr/share/info:/usr/info:/share/info"
+    SYSCONFDIR="${SYSCONFDIR:-/etc}" # not exported for some reason?
+
+    CONFIG_SITE="/etc/config.site"
+    SHELL="/usr/bin/zsh"
+
+    if [ "$MSYSTEM" = MSYS ]; then
+        PATH="$PATH:/opt/bin"
+        PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig:/lib/pkgconfig"
+    else
+        PATH="$MINGW_PREFIX/bin:$PATH"
+        PKG_CONFIG_PATH="$MINGW_PREFIX/lib/pkgconfig:$MINGW_PREFIX/share/pkgconfig"
+        export ACLOCAL_PATH="$MINGW_PREFIX/share/aclocal:/usr/share/aclocal"
+        MANPATH="$MINGW_PREFIX/local/man:$MINGW_PREFIX/share/man:$MANPATH"
+    fi
+
+    [ -n "${USER:=$USERNAME}" ] || USER="$(exec id -un)" # not much choice here
+    [ -n "${HOSTNAME:=$HOST}" ] || HOSTNAME="$(exec /usr/bin/hostname)"
+
+    LANG="en_US.UTF-8"
+    [ -s /etc/localtime ] && TZ=":/etc/localtime" || TZ="America/Vancouver"
+
+    TMP="/tmp"; TEMP="/tmp"
+    tmp="C:\\Users\\$USER\\AppData\\Local\\Temp"; temp="$tmp"
+    ORIGINAL_TMP="/c/Users/$USER/AppData/Local/Temp"; ORIGINAL_TEMP="$ORIGINAL_TMP"
+    export CONFIG_SITE HOSTNAME INFOPATH LANG MANPATH ORIGINAL_TEMP ORIGINAL_TMP PATH PKG_CONFIG_PATH SHELL TEMP TMP TZ USER temp tmp
+
+elif [ -r /etc/profile ]; then
+    if [ -n "$ZSH_VERSION" ]; then
+        emulate sh -c "source /etc/profile"
+    else
+        . /etc/profile
+    fi
+
+else # something's strange; set some sane defaults (from alpine)
+    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    export CHARSET="UTF-8"
+    export LANG="C.UTF-8"
+    export LC_COLLATE="C"
+fi

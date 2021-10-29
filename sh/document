@@ -108,7 +108,7 @@ document1() {
     fi
 
     # sanity check:
-    [ -d sh ] && [ -f .zshrc ] && [ -f .-shrc ] && [ -f .bashrc ] || return 3
+    [ -d sh ] && [ -f .zshrc ] && [ -f .shrc ] && [ -f .bashrc ] || return 3
 
     # create new output file (with a tilde as not to overwrite just yet):
     : > "$out" || return 4
@@ -140,7 +140,7 @@ document1() {
     printf '\n## %s\n' 'miscellaneous' >> "$out" || return 5
     document2 .zshrc >> "$out" || return
     document2 .bashrc >> "$out" || return
-    document2 .-shrc >> "$out" || return
+    document2 .shrc >> "$out" || return
 }
 
 document() { ### @-

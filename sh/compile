@@ -63,7 +63,7 @@ compile() { ### @-
     ### # debug build
     ### compile rd.c
     ### compile debug rd.c
-    ### # debug build with warning/error flags defined in .-shrc
+    ### # debug build with warning/error flags defined in ~/sh/arrays
     ### # (requires .zshrc for global alias expansion)
     ### compile WHOA rd.c
     ### # likewise for C++

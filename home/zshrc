@@ -195,7 +195,7 @@ else
     hash -d py=~/Dropbox/py
 fi
 
-. ~/.-shrc
+. ~/.shrc
 
 alias -g OMFG="1>/dev/null" ### @ OMFG - silence stdout.
 alias -g STFU="2>/dev/null" ### @ STFU - silence stderr.

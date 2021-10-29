@@ -59,7 +59,7 @@ else
 
     #( cd temp; HOME="$rc/temp" dash ./install )
     ln temp/home/zshrc temp/.zshrc || die 'failed to copy files'
-    ln temp/home/-shrc temp/.-shrc || die 'failed to copy files'
+    ln temp/home/shrc temp/.shrc || die 'failed to copy files'
     ln temp/home/bashrc temp/.bashrc || die 'failed to copy files'
 
     # use new documentation-generating scripts on old shell scripts.

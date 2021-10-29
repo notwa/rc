@@ -1,9 +1,5 @@
 #!/usr/bin/env dash
-# NO_ZSH
-# NO_BASH
-# YES_DASH
-# YES_ASH
-# okay, so this probably does run with zsh and bash, but why bother?
+# FAKE_COMPAT
 
 # NOTE: a lot of boilerplate code is pulled from the pure sh bible:
 #       https://github.com/dylanaraps/pure-sh-bible

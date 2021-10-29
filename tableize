@@ -55,6 +55,7 @@ tableize() {
                 '!/usr/bin/env bash') pref=bash;;
                 '!/usr/bin/env dash') pref=dash;;
                 '!/usr/bin/env false') pref=false;;
+                '!/usr/bin/env perl') pref=perl;;
                 '!/usr/bin/env sh') pref=sh;;
                 '!/usr/bin/env zsh') pref=zsh;;
                 '!/usr/bin/sh') pref=sh;;
@@ -72,16 +73,22 @@ tableize() {
         local yay='✔️'  # yay='y'
         local nay='⭕' # nay='✖️'  # nay='n'
         local huh='❔' # huh='?'
+        local etc='*n/a*'
 
         # TODO: escape underscores in filenames.
         printf '| [%s](#%s) ' "$fn" "$fn"
         printf "%$(( 40 - 2 * ${#fn} ))s" '' # funky way to pad the rest of the column
-        [ "$pref" != false ] || pref='**false**'
-        [ "$pref" != sh ] || pref='*sh*'
-        [ -n "$pref" ] && printf '| %10s ' "$pref" || printf '| %9s%s ' '' "$huh"
+
+        local p="$pref"
+        [ "$pref" != false ] || p='**false**'
+        [ "$pref" != perl ] || p='**perl**'
+        [ "$pref" != sh ] || p='*sh*'
+        [ -n "$p" ] && printf '| %10s ' "$p" || printf '| %9s%s ' '' "$huh"
+
         local t=
         for t in "$zsh" "$bash" "$dash" "$ash"; do
             local w="$huh"
+            [ "$pref" != perl ] || w="$etc"
             [ "$t" != yes ] || w="$yay"
             [ "$t" != no ] || w="$nay"
             # can't use '%4s' here because printf gets confused by UTF-8.

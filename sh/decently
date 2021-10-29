@@ -23,6 +23,8 @@ decently() ( ### @-
         find "$dir" -type f "$@" \
         '!' \
         '(' -path '*/.git/*' \
+        -or -path '*/CVS/*' \
+        -or -path '*/CVSROOT/*' \
         -or -path '*/__pycache__/*' \
         -or -path '*/[Dd]esktop.ini' \
         -or -path '*/Thumbs.db' \

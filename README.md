@@ -645,6 +645,11 @@ as a simple example, `echo hey | shcom` produces, verbatim:
 hey
 ```
 
+### [shelly](/sh/shelly#L2)
+
+(perl 5) invoke the first shell found from a list of shells
+as an interactive, non-login shell. arguments are ignored.
+
 ### [similar](/sh/similar#L8)
 
 highlight adjacent lines up to the first inequivalent character.
@@ -1172,6 +1177,7 @@ print each argument on its own line.
 | [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [scropt](#scropt)                             |       bash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [shcom](#shcom)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [shelly](#shelly)                             |   **perl** | *n/a*    | *n/a*    | *n/a*    | *n/a*    |
 | [similar](#similar)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [slit](#slit)                                 |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [slitt](#slitt)                               |       dash | ✔️    | ✔️    | ✔️    | ✔️    |

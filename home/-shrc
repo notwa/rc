@@ -97,6 +97,7 @@ alias gl='git log --oneline' ### @- invoke git's log subcommand with a single li
 ### **TODO:** consider renaming because [gl(1)](https://github.com/gitless-vcs/gitless) already exists.
 alias glo='git log --graph --decorate --pretty=oneline --abbrev-commit --all' ### @- navigate git's commit tree succinctly.
 alias g1='git log --pretty=oneline --abbrev-commit --color=always | head -1' ### @- display the most recent git commit.
+alias g11='git rev-parse --short HEAD'
 alias gr='git remote -v' ### @- display remote git repositories verbosely.
 alias gb='git --no-pager branch' ### @- display the current git branch.
 ### **NOTE:** there also exists a gb(1) program provided by
@@ -110,6 +111,7 @@ gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults
 # being specific {{{2
 
 alias ash="PS1='$ ' busybox ash"
+alias cort='LC_ALL=C sort'
 alias pip="maybesudo -H pip3"
 alias revend='objcopy -I binary -O binary --reverse-bytes=4' ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r' ### @- invoke rsync suitably for creating virtually indistinguishable copies of files.

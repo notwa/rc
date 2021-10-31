@@ -176,13 +176,9 @@ fu! DetectShebang()
     " vim has some rudimentary detection, but sometimes i want to override it.
     " vim's version is typically found here: /usr/share/vim/vim82/scripts.vim
     let l = getline(1)
-    let p = ''
-
-    if  l =~# '^#!/usr/bin/env -S ' | let p = get(split(l, ' '), 2)
-    elseif l =~# '^#!/usr/bin/env ' | let p = get(split(l, ' '), 1)
-    elseif l =~# '^#!/usr/bin/.'    | let p = get(split(l, '/'), 3)
-    elseif l =~# '^#!/s\?bin/.'     | let p = get(split(l, '/'), 2)
-    endif
+    if l[:1] !=# '#!' | return | endif
+    let l = trim(l[2:], ' ', 1) " sometimes there are spaces after the #!
+    let p = matchstr(l, '^\%(/usr\)\=/s\=bin/\%(env\%( \+-S\)\= \+\)\=\zs[^ ]*\ze')
 
     if p ==# 'bash'    | setlocal ft=bash   | endif
     if p ==# 'dash'    | setlocal ft=bash   | endif

@@ -7,10 +7,15 @@
 colors2() {
     [ $# -eq 0 ] || { printf "%s\n" "$0: does not take arguments" >&2; return 1; }
     for a in 0 60; do
+        for j in 40 41 43 42 46 44 45 47; do
+            printf ' \033[%s;%sm %03d \033[m' '48;5;16' $((a+j-10)) $((a+j))
+        done
+        printf '\n'
+
         for b in 0 60; do
             for i in 30 31 33 32 36 34 35 37; do
                 for j in 40 41 43 42 46 44 45 47; do
-                    printf ' \033[%s;%sm %03d \033[m' $((a+j)) $((b+i)) $((a+j))
+                    printf ' \033[%s;%sm %03d \033[m' $((a+j)) $((b+i)) $((b+i))
                 done
                 printf '\n'
             done

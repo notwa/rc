@@ -74,7 +74,8 @@ mpv_watch() { ### @-
     local url="$1"; shift
 
     local seen=0 A=()
-    for a; do [ "$a" = "${a#--ytdl-format}" ] && A+=("$a") || seen=1; done
+#   for a; do [ "$a" = "${a#--ytdl-format}" ] && A+=("$a") || seen=1; done
+    for a; do A+=("$a"); done # bypass ytdl-format checks
     [ $seen = 0 ] || printf '%s\n' "NOTE: the --ytdl-format flag is temporarily ignored due to throttling issues." >&2
 
     if has youtube-dl && ! has yt-dlp; then

@@ -200,6 +200,7 @@ fi
 alias -g OMFG="1>/dev/null" ### @ OMFG - silence stdout.
 alias -g STFU="2>/dev/null" ### @ STFU - silence stderr.
 alias -g WHOA='${whoa[@]}' ### @ WHOA - expand to several C/C++ flags to ease development.
+alias -g WHEE='${whee[@]}' ### @ WHEE - WHOA but for C++ (specifically g++) only.
 alias -g WELP='${welp[@]}' ### @ WELP - expand to C++ flags to enable a C++-as-C facade.
 
 alias sc="~/sh/sc" # only runs in bash (for now), so be explicit with path

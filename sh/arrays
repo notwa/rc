@@ -53,3 +53,27 @@ welp=(
     -ffunction-sections -fdata-sections -Wl,--gc-sections
     -finline-small-functions -findirect-inlining
 )
+
+whee=(
+    -Wall
+    -Wextra
+    -Wwrite-strings
+    -Werror=uninitialized
+    -Werror=format-security
+    -Werror=format-extra-args
+    -Werror=int-to-pointer-cast
+    -Werror=return-type
+    -Werror=memset-transposed-args
+    -Wno-unused
+    -Wno-padded
+    -Wno-missing-field-initializers
+    -Wno-misleading-indentation
+    -Wduplicated-cond
+    -Wduplicated-branches
+    -Wlogical-op
+    -Wrestrict
+    -Wnull-dereference
+    -Wdouble-promotion
+    -Wformat=2
+    -Werror=double-promotion
+)

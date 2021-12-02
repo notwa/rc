@@ -712,15 +712,15 @@ invoke mpv with some extra flags suited for streamed sources.
 
 play some media in mpv with a bunch of unnecessary filters.
 
-### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L97)
+### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L98)
 
 watch a stream in mpv with a bunch of unnecessary filters.
 
-### [twitch (sh/streamcrap)](/sh/streamcrap#L106)
+### [twitch (sh/streamcrap)](/sh/streamcrap#L107)
 
 watch a twitch stream in mpv with a bunch of unnecessary filters.
 
-### [yt (sh/streamcrap)](/sh/streamcrap#L113)
+### [yt (sh/streamcrap)](/sh/streamcrap#L114)
 
 watch a youtube video in mpv with a bunch of unnecessary filters.
 this can be given a full URL or just a video ID.
@@ -730,7 +730,7 @@ there exist several variants for more specific use cases.
 **NOTE:** there also exists a yt(1) program provided by
 the *python3-yt* package that i don't use.
 
-### [ytll (sh/streamcrap)](/sh/streamcrap#L135)
+### [ytll (sh/streamcrap)](/sh/streamcrap#L136)
 
 watch a stream from youtube in mpv, etcetera etcetera.
 this is the low latency version that does not support seeking.
@@ -879,15 +879,19 @@ silence stderr.
 
 expand to several C/C++ flags to ease development.
 
-### [WELP (zshrc)](/home/zshrc#L203)
+### [WHEE (zshrc)](/home/zshrc#L203)
+
+WHOA but for C++ (specifically g++) only.
+
+### [WELP (zshrc)](/home/zshrc#L204)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [tw (zshrc)](/home/zshrc#L208)
+### [tw (zshrc)](/home/zshrc#L209)
 
 invoke `twitch` as a job with both stdout and stderr silenced.
 
-### [reload (zshrc)](/home/zshrc#L252)
+### [reload (zshrc)](/home/zshrc#L253)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.

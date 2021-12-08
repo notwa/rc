@@ -21,7 +21,7 @@ ghmd() { ### @-
       'href="https://eaguru.guru/t/github-markdown.css" ' \
       'media="all" rel="stylesheet" type="text/css"/></head><body ' \
       'style="box-sizing: border-box; min-width: 200px; max-width: 980px; ' \
-      'margin: 0 auto; padding: 45px;"><article class="markdown-body">'
+      'margin: 0 auto;"><article class="markdown-body" style="padding: 45px;">'
     curl -s --data-binary @- -H 'Content-Type: text/plain' \
       https://api.github.com/markdown/raw
     local ret=$?

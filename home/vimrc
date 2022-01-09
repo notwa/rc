@@ -183,6 +183,7 @@ fu! DetectShebang()
     if p ==# 'bash'    | setlocal ft=bash   | endif
     if p ==# 'dash'    | setlocal ft=bash   | endif
     if p ==# 'false'   | setlocal ft=bash   | endif
+    if p ==# 'kuroko'  | setlocal ft=python | endif
     if p ==# 'lua'     | setlocal ft=lua    | endif
     if p ==# 'perl'    | setlocal ft=perl   | endif
     if p ==# 'perl6'   | setlocal ft=raku   | endif
@@ -198,20 +199,21 @@ endf
 if has('autocmd')
     augroup tabs
         au!
-        au BufRead,BufNewFile PKGBUILD call TabTwo()
-        au FileType ruby call TabTwo()
-        au FileType nim call TabTwo()
-        au BufRead,BufNewFile *.bt,*.1sc call TabFour()
-        au BufRead,BufNewFile *.ys call TabTwo()
-        au FileType javascript,processing call TabTwo()
-        au BufRead,BufNewFile .gitconfig call TabEight()
+        au BufRead,BufNewFile PKGBUILD      call TabTwo()
+        au FileType ruby                    call TabTwo()
+        au FileType nim                     call TabTwo()
+        au BufRead,BufNewFile *.bt,*.1sc    call TabFour()
+        au BufRead,BufNewFile *.ys          call TabTwo()
+        au FileType javascript,processing   call TabTwo()
+        au BufRead,BufNewFile .gitconfig    call TabEight()
     augroup END
 
     augroup filetypes
         au!
         au BufRead,BufNewFile *.lib setlocal ft=spice
-        au BufRead,BufNewFile *.bt setlocal ft=c
+        au BufRead,BufNewFile *.bt  setlocal ft=c
         au BufRead,BufNewFile *.1sc setlocal ft=c
+        au BufRead,BufNewFile *.krk setlocal ft=python
         au BufRead,BufNewFile *.asm setlocal ft=lips
         au BufRead,BufNewFile *.nim setlocal ft=nim
         au BufRead,BufNewFile *.pde setlocal ft=processing

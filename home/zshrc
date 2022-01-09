@@ -38,6 +38,7 @@ function {
     if [ "$SHLVL" -le 1 ] \
     && [ "${TERM#screen}" = "$TERM" ] \
     && [ "${TERM#tmux}" = "$TERM" ] \
+    && [ -z "$ALACRITTY_LOG" ] \
     && (( $+commands[tmux] ))
     then
         # create a new session called "what" or attach if it already exists

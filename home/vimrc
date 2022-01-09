@@ -252,7 +252,7 @@ if has('autocmd')
     endf
     augroup resCur
         au!
-        au BufWinEnter * call ResCur()
+    "   au BufWinEnter * call ResCur()
     augroup END
 endif
 

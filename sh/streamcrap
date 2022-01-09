@@ -21,6 +21,21 @@ getladspa() {
     fi
 }
 
+ytdl() {
+    if has yt-dlp; then
+        yt-dlp "$@"
+        return
+    elif has yt-dlc; then
+        yt-dlc "$@"
+        return
+    elif has youtube-dl; then
+        youtube-dl "$@"
+        return
+    fi
+    echo "bro where is your youtube-dl" >&2
+    return 99
+}
+
 # Q: Why are these variables prefixed with _M_?
 # A: I don't remember. :shobon:
 _M_PRE_EMPH='equalizer=f=50:g=-10:width_type=o:w=4,equalizer=f=5000:g=+5:width_type=o:w=4'
@@ -137,13 +152,13 @@ ytll() { ### @-
     ### watch a stream from youtube in mpv, etcetera etcetera.
     ### this is the low latency version that does not support seeking.
     argc $# -ge 1 "$0" || return
-    youtube-dl -q -f best "$1" -o - | mpv_stream - --no-ytdl
+    ytdl -q -f best "$1" -o - | mpv_stream - --no-ytdl
 }
 
 ytgll() { # @-
     # watch a stream from youtube in mpv. like `ytll`, but with a preference for different formats.
     argc $# -ge 1 "$0" || return
-    youtube-dl -q -f 22/95/300/best "$1" -o - | mpv_stream - --no-ytdl
+    ytdl -q -f 22/95/300/best "$1" -o - | mpv_stream - --no-ytdl
 }
 
 ai() { # @-

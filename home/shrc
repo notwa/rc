@@ -161,7 +161,7 @@ alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-�
 alias picky='comm -23 <(pacman -Qetq | sort -u) <(pacman -Qgq base base-devel xorg xorg-drivers xfce4 mingw-w64-x86_64-toolchain 2>/dev/null | sort -u) | tr -d "\t"' ### @-
 ### list pacman packages that were manually installed and are not in some common package groups.
 ### this list can be used to assist later reinstalls.
-alias unused='comm -23 <(pacman -Qtq) <(pacman -Qeq) | tr -d "\t"' ### @-
+alias unused='comm -23 <(pacman -Qtq | sort) <(pacman -Qeq | sort) | tr -d "\t"' ### @-
 ### list pacman packages that weren't installed explicitly and don't satisfy any dependencies.
 ### this list can be used to free up some disk space.
 alias makepkgf='makepkg -Af --skipchecksums --skippgpcheck' ### @- make the freakin' package!

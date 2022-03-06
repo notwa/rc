@@ -284,7 +284,7 @@ Filesystem              Used     Max    Left    Misc
 
 find files in system directories that aren't associated with any pacman packages.
 
-### [document](/sh/document#L146)
+### [document](/sh/document#L147)
 
 generate a markdown file out of docstrings in shell scripts.
 
@@ -708,19 +708,19 @@ asses
 
 invoke mpv with some extra flags suited for streamed sources.
 
-### [mpv_watch (sh/streamcrap)](/sh/streamcrap#L70)
+### [mpv_watch (sh/streamcrap)](/sh/streamcrap#L85)
 
 play some media in mpv with a bunch of unnecessary filters.
 
-### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L98)
+### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L113)
 
 watch a stream in mpv with a bunch of unnecessary filters.
 
-### [twitch (sh/streamcrap)](/sh/streamcrap#L107)
+### [twitch (sh/streamcrap)](/sh/streamcrap#L122)
 
 watch a twitch stream in mpv with a bunch of unnecessary filters.
 
-### [yt (sh/streamcrap)](/sh/streamcrap#L114)
+### [yt (sh/streamcrap)](/sh/streamcrap#L129)
 
 watch a youtube video in mpv with a bunch of unnecessary filters.
 this can be given a full URL or just a video ID.
@@ -730,7 +730,7 @@ there exist several variants for more specific use cases.
 **NOTE:** there also exists a yt(1) program provided by
 the *python3-yt* package that i don't use.
 
-### [ytll (sh/streamcrap)](/sh/streamcrap#L136)
+### [ytll (sh/streamcrap)](/sh/streamcrap#L151)
 
 watch a stream from youtube in mpv, etcetera etcetera.
 this is the low latency version that does not support seeking.
@@ -843,55 +843,55 @@ $ xxp ~/rc/install | head -n2
 
 ## miscellaneous
 
-### [dummy (zshrc)](/home/zshrc#L76)
+### [dummy (zshrc)](/home/zshrc#L77)
 
 return 0, ignoring arguments.
 
-### [dirprev (zshrc)](/home/zshrc#L81)
+### [dirprev (zshrc)](/home/zshrc#L82)
 
 rotate and change to the previous directory in the directory stack
 without consuming the prompt.
 
-### [dirnext (zshrc)](/home/zshrc#L88)
+### [dirnext (zshrc)](/home/zshrc#L89)
 
 rotate and change to the next directory in the directory stack
 without consuming the prompt.
 
-### [dirup (zshrc)](/home/zshrc#L95)
+### [dirup (zshrc)](/home/zshrc#L96)
 
 change to the parent directory of the current working directory
 without consuming the prompt.
 
-### [dirview (zshrc)](/home/zshrc#L102)
+### [dirview (zshrc)](/home/zshrc#L103)
 
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L200)
+### [OMFG (zshrc)](/home/zshrc#L201)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L201)
+### [STFU (zshrc)](/home/zshrc#L202)
 
 silence stderr.
 
-### [WHOA (zshrc)](/home/zshrc#L202)
+### [WHOA (zshrc)](/home/zshrc#L203)
 
 expand to several C/C++ flags to ease development.
 
-### [WHEE (zshrc)](/home/zshrc#L203)
+### [WHEE (zshrc)](/home/zshrc#L204)
 
 WHOA but for C++ (specifically g++) only.
 
-### [WELP (zshrc)](/home/zshrc#L204)
+### [WELP (zshrc)](/home/zshrc#L205)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [tw (zshrc)](/home/zshrc#L209)
+### [tw (zshrc)](/home/zshrc#L210)
 
 invoke `twitch` as a job with both stdout and stderr silenced.
 
-### [reload (zshrc)](/home/zshrc#L253)
+### [reload (zshrc)](/home/zshrc#L254)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.

@@ -19,7 +19,7 @@ baks() { ### @-
     ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.21-08-01_14-54-07.bak
     ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.21-08-01_14-54-09.bak
     ### ```
-    local ret=0
+    local ret=0 fp=
     for fp; do
         local now="$(date -u '+%y-%m-%d_%H-%M-%S')"
         local bak="$fp.$now.bak"

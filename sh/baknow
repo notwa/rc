@@ -16,7 +16,7 @@ baknow() { ### @- backup files by appending their timestamps given by [`now`.](#
     ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.2001-12-26_01800000.bak
     ### ```
     argc $# -ge 1 "$0" || return
-    local ret=0
+    local ret=0 f=
     for f; do
         cp -ip "$f" "$f.$(now "$f").bak" || ret=1
     done

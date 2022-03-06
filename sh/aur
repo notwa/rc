@@ -50,7 +50,7 @@ aur() { ### @-
 
     # TODO: option to auto install dependencies
 
-    local built=
+    local built= p=
     for p in "$@"; do
         cd "$bd"
         local download_fail=0
@@ -115,6 +115,7 @@ aur() { ### @-
         fi
     done
 
+    local recent=
     cd "$bd"
     if [ -n "$built" ] && [ $o_install -eq 1 ]; then
         if [ $o_all_at_once -eq 1 ]; then

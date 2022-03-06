@@ -11,6 +11,7 @@ wat() { ### @-
     ###
     ### written by [leah2.](https://leahneukirchen.org/)
     ( # constrain unalias
+    local cmd=
     for cmd; do
         if (( $+aliases[$cmd] )); then
             printf '%s: aliased to %s\n' $cmd $aliases[$cmd]

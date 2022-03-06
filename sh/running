@@ -8,7 +8,7 @@
 # probably not compatible with busybox ps because its column 2 isn't PID.
 
 running() { ### @- WIP
-    local cmd=0 pid=0
+    local cmd=0 pid=0 col=
     local usage='usage: running {cmd|pid} ...'
     [ $# -gt 0 ] || { printf '%s\n' "$usage" >&2; return 2; }
     for col; do

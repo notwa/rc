@@ -10,6 +10,7 @@ slit() { ### @-
     ### view specific columns of text.
     [ $# -gt 0 ] \
      || { printf '%s: too few arguments\n' "$0" >&2; return 1; }
+    local arg=
     for arg; do
         [ "$arg" -ge 0 ] 2>/dev/null \
          || { printf '%s: not a nonnegative integer: %s\n' "$0" "$arg"; return 1; };

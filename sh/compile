@@ -90,6 +90,8 @@ compile() { ### @-
     local clang="$(whence -p clang 2>/dev/null)"
     local clang_flags=() # currently just for clang-msvc
 
+    local flag= d= # iterator variables
+
     local cl= vc=
     if [ -n "$MSYSTEM" ]; then # using msys2?
         if [ -z "$clang" ]; then # don't have native clang?

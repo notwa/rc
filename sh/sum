@@ -14,7 +14,7 @@ sum() { ### @-
     ### ```
     ###
     ### **TODO:** consider renaming because sum(1) already exists.
-    local sum=0
+    local sum=0 i=
     for i; do
         i="${i%,}"
         : $((sum+=i))

@@ -125,6 +125,7 @@ document1() {
 
     # first section:
     printf '\n## %s\n' 'shell functions' >> "$out" || return 5
+    local f=
     for f in sh/*; do
         [ -e "$f" ] || continue # make sure glob went through
 

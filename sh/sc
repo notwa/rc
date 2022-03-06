@@ -53,7 +53,7 @@ sc() { ### @-
         return 1
     }
 
-    local clipboard=""
+    local clipboard="" f=
     for f; do
         f="$(readlink -f "$f")"
         if [ ! -e "$f" ]; then

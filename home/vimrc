@@ -286,11 +286,11 @@ com! -nargs=+ Inn call Inn(<q-args>)
 Inn <F5>    :w<cr>
 Inn <F6>    :Next<cr>
 Inn <F7>    :next<cr>
-Inn <F8>    :e<cr>
+Inn <F8>    :e %<cr>
 Inn <F9>    @@
 Inn <F10>   :bd<cr>
 Inn <c-F5>  :w!<cr>
-Inn <c-F8>  :e!<cr>
+Inn <c-F8>  :e! %<cr>
 Inn <c-F10> :bd!<cr>
 Inn <s-F5>  :wall<cr>
 

@@ -147,7 +147,7 @@ $ cd && busiest | head -n3
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
-excluding boilerplate, this script is a mere a 76-characters long!
+excluding boilerplate, this script is a mere 76 characters long!
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors.png)
 

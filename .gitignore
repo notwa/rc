@@ -2,7 +2,6 @@ sh/WIP
 sh/unmaintained
 
 ssh/*
-!ssh/known_hosts
 !ssh/crawl
 
 vim/.*

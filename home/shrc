@@ -81,7 +81,6 @@ fi
 # just flags {{{2
 
 export LESS='-SRQc'
-alias db="dropbox_uploader"
 alias fils="du -bahd1" ### @- (GNU du) display human-friendly filesizes for the files in a directory.
 alias lsa="ls -A --group-directories-first" ### @- (GNU ls) list files with directories and dotfiles ordered first.
 alias perlu='perl -Mopen=locale -Mutf8' ### @- invoke perl expecting files with UTF-8 encoding.

@@ -42,11 +42,19 @@ _M_PRE_EMPH='equalizer=f=50:g=-10:width_type=o:w=4,equalizer=f=5000:g=+5:width_t
 _M_POST_EMPH='equalizer=f=50:g=+10:width_type=o:w=4,equalizer=f=5000:g=-5:width_type=o:w=4'
 _M_COMPRESS="acompressor=threshold=0.0032:ratio=1.414:attack=17:release=640:makeup=5.5:knee=8:mix=0.8"
 _M_KILL="$_M_PRE_EMPH,$_M_COMPRESS,$_M_POST_EMPH"
+
+_M_PRE_EMPH2="lowshelf=f=100:g=-20:t=o:w=3.0,equalizer=f=1400:g=4:t=o:w=2.5,highshelf=f=5000:g=-8:t=o:w=2.0"
+_M_POST_EMPH2="lowshelf=f=100:g=20:t=o:w=3.0,equalizer=f=1400:g=-4:t=o:w=2.5,highshelf=f=5000:g=8:t=o:w=2.0"
+_M_COMPRESS2="acompressor=threshold=0.001:ratio=5:attack=10:release=330:makeup=15.0:knee=8:mix=0.4988"
+_M_COMPRESS3="acompressor=threshold=0.316:ratio=20:attack=0.1:release=80:makeup=2.0:knee=2:mix=0.9369:detection=peak"
+_M_KILL2="$_M_PRE_EMPH2,$_M_COMPRESS2,$_M_COMPRESS3,$_M_POST_EMPH2"
+
 _M_MULTI="volume=10,mcompand=0.256\,2.56 9 -90/-90\,-44/-44\,0/-26.4\,20/0 80 0 -44 0 | 0.128\,1.28 9 -90/-90\,-36/-36\,0/-18\,20/0 160 0 -36 0 | 0.064\,0.64 9 -90/-90\,-37/-37\,0/-18.5\,20/0 320 0 -37 0 | 0.032\,0.32 9 -90/-90\,-38/-38\,0/-19\,20/0 640 0 -38 0 | 0.016\,0.16 9 -90/-90\,-40/-40\,0/-20\,20/0 1280 0 -40 0 | 0.008\,0.08 9 -90/-90\,-41/-41\,0/-20.5\,20/0 2560 0 -41 0 | 0.004\,0.04 9 -90/-90\,-44/-44\,0/-22\,20/0 5120 0 -44 0 | 0.002\,0.02 9 -90/-90\,-52/-52\,0/-26\,20/0 10240 0 -52 0 | 0.001\,0.01 9 -90/-90\,-60/-60\,0/-36\,20/0 20480 0 -60 0"
 _M_MULTI2="volume=10,mcompand=0.256\,5.12 9 -90/-90\,-46/-46\,0/-18.9\,20/0 62.9 0 -46 0 | 0.128\,2.56 9 -90/-90\,-34/-34\,0/-9.7\,20/0 141.1 0 -34 0 | 0.064\,1.28 9 -90/-90\,-37/-37\,0/-10.6\,20/0 316.8 0 -37 0 | 0.032\,0.64 9 -90/-90\,-39/-39\,0/-11.1\,20/0 711.2 0 -39 0 | 0.016\,0.32 9 -90/-90\,-41/-41\,0/-11.7\,20/0 1596 0 -41 0 | 0.008\,0.16 9 -90/-90\,-46/-46\,0/-13.1\,20/0 3584 0 -46 0 | 0.004\,0.08 9 -90/-90\,-49/-49\,0/-14\,20/0 8046 0 -49 0 | 0.002\,0.04 9 -90/-90\,-58/-58\,0/-23.9\,20/0 18062 0 -58 0"
 _M_INSANE="$_M_PRE_EMPH,acompressor=threshold=0.001:ratio=2:attack=1000:release=9000:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.002:ratio=2:attack=320:release=2880:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.004:ratio=2:attack=100:release=900:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.008:ratio=2:attack=32:release=288:makeup=3:knee=6:mix=0.5,acompressor=threshold=0.016:ratio=2:attack=10:release=90:makeup=3:knee=6:mix=0.5,$_M_POST_EMPH,alimiter"
 _M_LESS_INSANE="$_M_PRE_EMPH,acompressor=threshold=0.0020:ratio=1.41:attack=1000:release=9000:makeup=2.2:knee=6:mix=0.6,acompressor=threshold=0.0028:ratio=1.41:attack=320:release=2880:makeup=2.2:knee=6:mix=0.6,acompressor=threshold=0.0040:ratio=1.41:attack=100:release=900:makeup=2.2:knee=6:mix=0.6,acompressor=threshold=0.0057:ratio=1.41:attack=32:release=288:makeup=2.2:knee=6:mix=0.6,acompressor=threshold=0.0080:ratio=1.41:attack=10:release=90:makeup=2.2:knee=6:mix=0.6,$_M_POST_EMPH,alimiter=level_in=2.2:level_out=0.45"
 _M_NEO="firequalizer=wfunc=hamming:fft2=on:min_phase=on:gain_entry='entry(78.5\,-11.7);entry(103\,2.28);entry(158\,4);entry(241\,4.94);entry(334\,7.44);entry(398\,1.42);entry(486\,-2.74);entry(627\,-5.93);entry(741\,-7.65);entry(860\,-5.93);entry(939\,-6.96);entry(1010\,-8.85);entry(1110\,-11.8);entry(1230\,-3.18);entry(1460\,0.43);entry(1720\,4.21);entry(1890\,-0.43);entry(2240\,1.33);entry(2570\,7.82);entry(2990\,10.4);entry(3320\,8.04);entry(3920\,7.61);entry(4280\,4.73);entry(4710\,-1.46);entry(5670\,6.51);entry(6290\,8.85);entry(6690\,4.21);entry(7240\,9.03);entry(8120\,9.03);entry(10000\,11.8);entry(11800\,8.91);entry(20200\,-9.09)'"
+_M_NEO2="$_M_NEO,equalizer=1100:o:1.0:-2,equalizer=2300:o:1.0:2,equalizer=5625:o:0.2:-3,equalizer=7800:o:0.6:-6,alimiter=level_in=1.5"
 _M_DANNY="$_M_PRE_EMPH,alimiter,dynaudnorm=f=400:g=5:p=1:m=32:r=0.1:c=1:s=9:t=0.0003,$_M_POST_EMPH,alimiter=level_in=2.6:level_out=0.91"
 _M_LEVEL="$(getladspa crap_level)"
 
@@ -63,7 +71,7 @@ case "$(uname -n | tr A-Z a-z)" in
     neobanshee)
         speakers() {
             argc $# -eq 0 "$0" || return
-            _M_PROCESS="highpass=100,$_M_KILL,$_M_NEO,alimiter=level_in=1"
+            _M_PROCESS="highpass=100,$_M_KILL2,$_M_NEO2"
         }
         speakers
         ;;

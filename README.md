@@ -708,19 +708,19 @@ asses
 
 invoke mpv with some extra flags suited for streamed sources.
 
-### [mpv_watch (sh/streamcrap)](/sh/streamcrap#L85)
+### [mpv_watch (sh/streamcrap)](/sh/streamcrap#L93)
 
 play some media in mpv with a bunch of unnecessary filters.
 
-### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L113)
+### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L121)
 
 watch a stream in mpv with a bunch of unnecessary filters.
 
-### [twitch (sh/streamcrap)](/sh/streamcrap#L122)
+### [twitch (sh/streamcrap)](/sh/streamcrap#L130)
 
 watch a twitch stream in mpv with a bunch of unnecessary filters.
 
-### [yt (sh/streamcrap)](/sh/streamcrap#L129)
+### [yt (sh/streamcrap)](/sh/streamcrap#L137)
 
 watch a youtube video in mpv with a bunch of unnecessary filters.
 this can be given a full URL or just a video ID.
@@ -730,7 +730,7 @@ there exist several variants for more specific use cases.
 **NOTE:** there also exists a yt(1) program provided by
 the *python3-yt* package that i don't use.
 
-### [ytll (sh/streamcrap)](/sh/streamcrap#L151)
+### [ytll (sh/streamcrap)](/sh/streamcrap#L158)
 
 watch a stream from youtube in mpv, etcetera etcetera.
 this is the low latency version that does not support seeking.

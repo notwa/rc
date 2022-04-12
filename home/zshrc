@@ -36,6 +36,7 @@ unsetopt flow_control           # Disable start/stop characters in shell editor.
 
 function {
     if [ "$SHLVL" -le 1 ] \
+    && [ "${(L)HOST}" != spectre ] \
     && [ "${TERM#screen}" = "$TERM" ] \
     && [ "${TERM#tmux}" = "$TERM" ] \
     && [ -z "$ALACRITTY_LOG" ] \

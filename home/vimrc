@@ -210,13 +210,16 @@ if has('autocmd')
 
     augroup filetypes
         au!
-        au BufRead,BufNewFile *.lib setlocal ft=spice
-        au BufRead,BufNewFile *.bt  setlocal ft=c
-        au BufRead,BufNewFile *.1sc setlocal ft=c
-        au BufRead,BufNewFile *.krk setlocal ft=python
-        au BufRead,BufNewFile *.asm setlocal ft=lips
-        au BufRead,BufNewFile *.nim setlocal ft=nim
-        au BufRead,BufNewFile *.pde setlocal ft=processing
+        au BufRead,BufNewFile *.lib     setlocal ft=spice
+        au BufRead,BufNewFile *.bt      setlocal ft=c
+        au BufRead,BufNewFile *.1sc     setlocal ft=c
+        au BufRead,BufNewFile *.fs      setlocal ft=c
+        au BufRead,BufNewFile *.glsl    setlocal ft=c
+        au BufRead,BufNewFile *.hlsl    setlocal ft=c
+        au BufRead,BufNewFile *.krk     setlocal ft=python
+        au BufRead,BufNewFile *.asm     setlocal ft=lips
+        au BufRead,BufNewFile *.nim     setlocal ft=nim
+        au BufRead,BufNewFile *.pde     setlocal ft=processing
         au BufRead,BufNewFile,StdinReadPost * call DetectShebang()
     augroup END
 

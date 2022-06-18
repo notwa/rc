@@ -97,6 +97,7 @@ set ttimeout ttimeoutlen=60           " make changing modes a bit snappier
 set hidden                            " allow swapping out of unsaved buffers
 set complete=.,w,b,u,t                " don't scan every file with autocomplete
 set nrformats=bin,hex,unsigned        " ctrl+a/x non-negative numbers, no octal
+set modeline modelines=5              " a file can specify its own vim settings
 if has('mksession')
     set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize,resize,winpos
 end

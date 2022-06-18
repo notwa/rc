@@ -232,7 +232,7 @@ if has('autocmd')
     augroup nocomment
         au!
         " set or unset some convenient or annoying formatoptions
-        au FileType * setlocal fo-=c fo-=r fo-=o fo+=j
+        au FileType * setlocal fo-=c fo-=r fo-=o fo-=j
     augroup END
 
     augroup forth

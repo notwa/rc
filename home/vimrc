@@ -372,6 +372,18 @@ vn <silent> & :call GlobalReplace()<cr>
 " alias :W to :w, via https://stackoverflow.com/a/3879737
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 
+" https://stackoverflow.com/a/58244921
+fu! SynStack()
+    for i1 in synstack(line("."), col("."))
+        let i2 = synIDtrans(i1)
+        let n1 = synIDattr(i1, "name")
+        let n2 = synIDattr(i2, "name")
+        echo n1 "->" n2
+    endfor
+endfunction
+
+map gm :call SynStack()<CR>
+
 " misc {{{1
 
 set list listchars=tab:»·,trail:·,extends:…,nbsp:‗

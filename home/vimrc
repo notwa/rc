@@ -207,6 +207,8 @@ if has('autocmd')
         au BufRead,BufNewFile *.ys          call TabTwo()
         au FileType javascript,processing   call TabTwo()
         au BufRead,BufNewFile .gitconfig    call TabEight()
+        exec 'au' 'BufRead,BufNewFile' $HOME..'/src/bass/*' 'call TabTwo()'
+
     augroup END
 
     augroup filetypes

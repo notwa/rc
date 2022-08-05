@@ -113,7 +113,7 @@ if has('wildignore')
     set wildignore+=*.suo,*.sln,*.pch,*.pdb,*.pgc,*.pgd
     set wildignore+=*.o,*.obj,*.elf,*.lib,*.a,*.dll,*.so,*.so.*,*.exe,*.out
     set wildignore+=*.wav,*.mp3,*.ogg,*.m4a,*.opus,*.mp4,*.mkv
-    set wildignore+=*.webp,*.png,*.jpg,*.jpeg,*.jfif,*.gif,*.pdf
+    set wildignore+=*.bmp,*.gif,*.jfif,*.jpeg,*.jpg,*.pdf,*.png,*.webp
     set wildignore+=__pycache__,*.pyc,*.pyo,*.pyd,*.npy,*.npz,*.h5,*.pkl
     set wildignore+=*.gem,.bundle
     set wildignore+=CMakeCache.txt,CMakeFiles,install_manifest.txt

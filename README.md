@@ -5,7 +5,10 @@ _(plus some little shell scripts)_
 quick install for random boxes:
 
 ```
+# with curl:
 cd && curl -L https://github.com/notwa/rc/archive/master.tar.gz | tar zx && mv rc-master rc && rc/install
+# with wget:
+cd && wget -O - https://github.com/notwa/rc/archive/master.tar.gz | tar zx && mv rc-master rc && rc/install
 ```
 
 the following shells are taken into consideration, ordered from most to least compatible:

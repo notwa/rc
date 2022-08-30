@@ -206,6 +206,7 @@ if has('autocmd')
         au BufRead,BufNewFile *.bt,*.1sc    call TabFour()
         au BufRead,BufNewFile *.ys          call TabTwo()
         au FileType javascript,processing   call TabTwo()
+        au FileType seed7                   call TabTwo()
         au BufRead,BufNewFile .gitconfig    call TabEight()
         exec 'au' 'BufRead,BufNewFile' $HOME..'/src/bass/*' 'call TabTwo()'
 

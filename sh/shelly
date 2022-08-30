@@ -12,9 +12,15 @@ my @shells = <zsh osh fish ion bash ash busybox ksh tcsh csh rc dash>;
 
 for my $s (@shells) {
     for my $p (@PATH) {
+        #print STDERR "path: $p\n";
         my $fp = File::Spec->join($p, $s);
         my @argv = $s eq "busybox" ? ("sh", "-i") : ($s, "-i");
-        exec {$fp} @argv if -f $fp and -e "$fp";
+        if (-d "/C/") {
+            # probably Windows.
+            exec {"$fp.exe"} @argv if -f "$fp.exe" and -e "$fp.exe";
+        } else {
+            exec {$fp} @argv if -f $fp and -e $fp;
+        }
         #print STDERR "fail: $fp\n";
     }
 }

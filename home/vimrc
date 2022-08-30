@@ -109,7 +109,7 @@ if has('wildignore')
     set wildignore+=.git,.svn,.hg,pkg,tmp
     set wildignore+=*.bak,*.tmp,*.log,*.cache
     set wildignore+=Desktop.ini,Thumbs.db,*.lnk,.DS_Store
-    set wildignore+=*.zip,*.tar,*.tar.*,*.7z
+    set wildignore+=*.7z,*.tar,*.tar.*,*.tgz,*.zip
     set wildignore+=*.suo,*.sln,*.pch,*.pdb,*.pgc,*.pgd
     set wildignore+=*.o,*.obj,*.elf,*.lib,*.a,*.dll,*.so,*.so.*,*.exe,*.out
     set wildignore+=*.wav,*.mp3,*.ogg,*.m4a,*.opus,*.mp4,*.mkv

@@ -36,6 +36,19 @@ ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
     esac
 }
 
+ROPATH() {
+    [ $# -eq 0 ] || { printf '%s: expected exactly %s arguments, got %s\n' ROPATH 0 $# >&2; return 2; }
+    local segment= previous= newpath= oldpath="$PATH:"
+    while segment="${oldpath%%:*}"; [ "$segment" != "$oldpath" ]; do
+        [ -z "$segment" ] || [ -z "$previous" ] || newpath="$newpath$previous:"
+        [ -z "$segment" ] || previous="$segment"
+        oldpath="${oldpath#*:}"
+    done
+    [ -z "$previous" ] || printf 'rotated %s\n' "$previous" >&2
+    [ -z "$previous" ] || newpath="$previous:$newpath"
+    export PATH="${newpath%:}"
+}
+
 # {{{1 configurations
 
 umask 022 # umask should be reset else pip might make faulty installations.

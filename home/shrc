@@ -128,9 +128,6 @@ gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults
 
 alias ash="PS1='$ ' busybox ash"
 alias cort='LC_ALL=C sort'
-alias grop='grep -oP' ### @- invoke grep with `-oP`.
-### **NOTE:** there also exists a grop(1) program provided by
-### the *grop* package that i don't use.
 alias pip="maybesudo -H pip3"
 alias revend='objcopy -I binary -O binary --reverse-bytes=4' ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r' ### @- invoke rsync suitably for creating virtually indistinguishable copies of files.

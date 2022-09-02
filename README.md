@@ -343,6 +343,17 @@ this script utilizes the CSS provided at
 ~/sh/ghmd < ~/rc/README.md > ~/rc/README.html
 ```
 
+### [grop](/sh/grop#L8)
+
+invoke grep with `-oP`.
+
+**NOTE:** there also exists a grop(1) program provided by
+the *grop* package that i don't use.
+
+### [grop4](/sh/grop4#L7)
+
+[`grop`](#grop) for IPv4s.
+
 ### [has](/sh/has#L7)
 
 [`have`,](#have) silently.
@@ -617,6 +628,10 @@ you'll want to tweak this if you use it yourself.
 this contains some extra logic for screenshots created by `scropt`.
 
 **TODO:** consider renaming because sc(1) already exists.
+
+### [scount](/sh/scount#L7)
+
+perform `sort | unic -c | sort -n`, preferring GNU awk when available.
 
 ### [scramble](/sh/scramble#L9)
 
@@ -982,147 +997,140 @@ the *gb* package that i don't use.
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [grop (shrc)](/home/shrc#L131)
-
-invoke grep with `-oP`.
-
-**NOTE:** there also exists a grop(1) program provided by
-the *grop* package that i don't use.
-
-### [revend (shrc)](/home/shrc#L135)
+### [revend (shrc)](/home/shrc#L132)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (shrc)](/home/shrc#L136)
+### [clone (shrc)](/home/shrc#L133)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (shrc)](/home/shrc#L137)
+### [aligntabs (shrc)](/home/shrc#L134)
 
 align tab-delimited fields in stdin.
 
-### [crawla (shrc)](/home/shrc#L138)
+### [crawla (shrc)](/home/shrc#L135)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (shrc)](/home/shrc#L139)
+### [crawlz (shrc)](/home/shrc#L136)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [eahead (shrc)](/home/shrc#L141)
+### [eahead (shrc)](/home/shrc#L138)
 
 deprecated name for [`ea head`.](#ea)
 
-### [eaget (shrc)](/home/shrc#L142)
+### [eaget (shrc)](/home/shrc#L139)
 
 deprecated name for [`ea get`.](#ea)
 
-### [eaput (shrc)](/home/shrc#L143)
+### [eaput (shrc)](/home/shrc#L140)
 
 deprecated name for [`ea put`.](#ea)
 
-### [eamove (shrc)](/home/shrc#L144)
+### [eamove (shrc)](/home/shrc#L141)
 
 deprecated name for [`ea move`.](#ea)
 
-### [eacopy (shrc)](/home/shrc#L145)
+### [eacopy (shrc)](/home/shrc#L142)
 
 deprecated name for [`ea copy`.](#ea)
 
-### [eadelete (shrc)](/home/shrc#L146)
+### [eadelete (shrc)](/home/shrc#L143)
 
 deprecated name for [`ea delete`.](#ea)
 
-### [eamv (shrc)](/home/shrc#L147)
+### [eamv (shrc)](/home/shrc#L144)
 
 invoke [`ea move`.](#ea)
 
-### [eacp (shrc)](/home/shrc#L148)
+### [eacp (shrc)](/home/shrc#L145)
 
 invoke [`ea copy`.](#ea)
 
-### [earm (shrc)](/home/shrc#L149)
+### [earm (shrc)](/home/shrc#L146)
 
 invoke [`ea delete`.](#ea)
 
-### [ll (shrc)](/home/shrc#L151)
+### [ll (shrc)](/home/shrc#L148)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [diff (shrc)](/home/shrc#L160)
+### [diff (shrc)](/home/shrc#L159)
 
 use git's diff subcommand for general diffing.
 
-### [gc (shrc)](/home/shrc#L161)
+### [gc (shrc)](/home/shrc#L160)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (shrc)](/home/shrc#L163)
+### [counts (shrc)](/home/shrc#L162)
 
 count files in the current directory, including files found recursively.
 
-### [exts (shrc)](/home/shrc#L164)
+### [exts (shrc)](/home/shrc#L163)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (shrc)](/home/shrc#L165)
+### [nocom (shrc)](/home/shrc#L164)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (shrc)](/home/shrc#L166)
+### [jrep (shrc)](/home/shrc#L165)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (shrc)](/home/shrc#L167)
+### [bomb (shrc)](/home/shrc#L166)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (shrc)](/home/shrc#L168)
+### [cleanse (shrc)](/home/shrc#L167)
 
 strip unprintable and non-ASCII characters.
 
-### [unwrap (shrc)](/home/shrc#L169)
+### [unwrap (shrc)](/home/shrc#L168)
 
 join paragraphs into one line each.
 
-### [double (shrc)](/home/shrc#L170)
+### [double (shrc)](/home/shrc#L169)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [join2 (shrc)](/home/shrc#L173)
+### [join2 (shrc)](/home/shrc#L172)
 
 join every other line.
 
-### [katagana (shrc)](/home/shrc#L174)
+### [katagana (shrc)](/home/shrc#L173)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (shrc)](/home/shrc#L176)
+### [picky (shrc)](/home/shrc#L175)
 
 list pacman packages that were manually installed and are not in some common package groups.
 this list can be used to assist later reinstalls.
 
-### [unused (shrc)](/home/shrc#L179)
+### [unused (shrc)](/home/shrc#L178)
 
 list pacman packages that weren't installed explicitly and don't satisfy any dependencies.
 this list can be used to free up some disk space.
 
-### [makepkgf (shrc)](/home/shrc#L182)
+### [makepkgf (shrc)](/home/shrc#L181)
 
 make the freakin' package!
 
-### [rakef (shrc)](/home/shrc#L183)
+### [rakef (shrc)](/home/shrc#L182)
 
 make the freakin' gem!
 
-### [pl (shrc)](/home/shrc#L185)
+### [pl (shrc)](/home/shrc#L184)
 
 print each argument on its own line.
 
@@ -1160,6 +1168,8 @@ print each argument on its own line.
 | [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ghmd](#ghmd)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [glug](#glug)                                 |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
+| [grop](#grop)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [grop4](#grop4)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [have](#have)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1188,6 +1198,7 @@ print each argument on its own line.
 | [rs](#rs)                                     |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [running](#running)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sc](#sc)                                     |       bash | ⭕    | ✔️    | ⭕    | ⭕    |
+| [scount](#scount)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [scropt](#scropt)                             |       bash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [shcom](#shcom)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1209,4 +1220,5 @@ print each argument on its own line.
 | [v_upper](#v_upper)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [wat](#wat)                                   |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [witch](#witch)                               |       *sh* | ❔    | ❔    | ❔    | ❔    |
 | [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

@@ -631,7 +631,7 @@ this contains some extra logic for screenshots created by `scropt`.
 
 ### [scount](/sh/scount#L7)
 
-perform `sort | unic -c | sort -n`, preferring GNU awk when available.
+perform `sort | uniq -c | sort -n`, preferring GNU awk when available.
 
 ### [scramble](/sh/scramble#L9)
 

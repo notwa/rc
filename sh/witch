@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
+# NO_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
 # this is `which` from Debian. the only changes are superficial (formatting).
 # this does not work as-is with zsh.
 

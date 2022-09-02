@@ -1220,5 +1220,5 @@ print each argument on its own line.
 | [v_upper](#v_upper)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [wat](#wat)                                   |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [witch](#witch)                               |       *sh* | ❔    | ❔    | ❔    | ❔    |
+| [witch](#witch)                               |       *sh* | ⭕    | ✔️    | ✔️    | ✔️    |
 | [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

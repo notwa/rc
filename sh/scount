@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+### @ scount
+### perform `sort | unic -c | sort -n`, preferring GNU awk when available.
+
+if "$HOME/sh/witch" gawk >/dev/null 2>/dev/null; then
+    scount() {
+        argc $# -le 1 scount || return
+        gawk -- 'BEGIN{PROCINFO["sorted_in"]="@val_num_desc"}{a[$0]--}END{for(i in a)printf "%7i %s\n",-a[i],i}' "$@"
+    }
+else
+    scount() {
+        argc $# -le 1 scount || return
+        sort -- "$@" | unic -c | sort -n
+    }
+fi
+
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} argc
+[ -n "${preload+-}" ] || scount "$@"

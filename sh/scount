@@ -5,7 +5,7 @@
 # YES_ASH
 
 ### @ scount
-### perform `sort | unic -c | sort -n`, preferring GNU awk when available.
+### perform `sort | uniq -c | sort -n`, preferring GNU awk when available.
 
 if "$HOME/sh/witch" gawk >/dev/null 2>/dev/null; then
     scount() {
@@ -15,7 +15,7 @@ if "$HOME/sh/witch" gawk >/dev/null 2>/dev/null; then
 else
     scount() {
         argc $# -le 1 scount || return
-        sort -- "$@" | unic -c | sort -n
+        sort -- "$@" | uniq -c | sort -n
     }
 fi
 

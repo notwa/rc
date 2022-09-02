@@ -148,6 +148,8 @@ alias earm='ea delete' ### @- invoke [`ea delete`.](#ea)
 ### @ ll - list files verbosely, fancily, ordered, but not recursively.
 if has lr; then
     alias ll='ify less lr -1lshGG -o tev'
+elif has lr.com; then # https://eaguru.guru/t/lr.com
+    alias ll='ify less lr.com -1lshGG -o tuev'
 else
     alias ll='ify less ls -lAX --group-directories-first --color=force'
 fi

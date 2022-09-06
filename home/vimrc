@@ -84,6 +84,7 @@ set ignorecase                        " insensitive searching
 set smartcase                         " except when uppercase is used
 set infercase                         " use existing case when ins-completing
 set smarttab                          " handle insertion and deletion of indents
+set noautoindent                      " some distros have this set by default
 set virtualedit=block                 " allow cursor anywhere in visual block
 set foldmethod=marker                 " (performance issues with other methods)
 set foldlevelstart=99                 " start with everything unfolded...?

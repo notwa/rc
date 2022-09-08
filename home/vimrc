@@ -311,7 +311,7 @@ ino <Esc>[1;5F <c-o>G
 " hide search highlighting
 Inn <silent> <c-]> :nohls<enter>
 
-" rebind annoying things
+" rebind annoying things:
 " reflow text
 nn Q gq
 vn Q gq
@@ -329,7 +329,7 @@ vmap <space> "xy:@x<cr>
 " open a shell (only works if you `exec vim` instead of running it in a shell)
 nn <C-z> :sh<cr>
 
-" this frees up x and X for use if you like
+" this frees up x and X for rebinding if you like
 exec "set <s-Del>=\<Esc>[3;2~"
 Inn <s-Del> X
 
@@ -357,10 +357,6 @@ vn <silent> & :call GlobalReplace()<cr>
 "nn ,, :call CommentLines()<cr>
 "nn ,. :call UncommentLines()<cr>
 
-"!raku -e 'for lines() { say .chars, "\t", $_ }'
-"!raku -e 'lines.sort({ $^a.subst(/\s*\\#/) cmp $^b.subst(/\s*\\#/) }).map(&say)'
-"!raku -e 'lines.sort({ $^a.subst(/\s*\"/) cmp $^b.subst(/\s*\"/) }).map(&say)'
-
 " alias :W to :w, via https://stackoverflow.com/a/3879737
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 
@@ -382,9 +378,10 @@ set list listchars=tab:»·,trail:·,extends:…,nbsp:‗
 " including this in case i'm on a _really_ bad terminal:
 "set list listchars=tab:>-,trail:.,extends:>,nbsp:_
 
+" deprecated, but still perfectly functional, and especially backwards compatible:
 try | exec pathogen#infect() | catch /E117/ | endtry
 
-let g:netrw_banner=0
+let g:netrw_banner=0                  " be quiet
 let g:netrw_fastbrowse = 0            " so THAT'S what's been causing me agony
 
 set background=dark

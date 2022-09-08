@@ -97,15 +97,15 @@ if has('wildignore')
     " ignore files that typically aren't interesting to text editors like vim
     " FWIW, these lines don't need trailing commas
     set wildignore=""
-    set wildignore+=.git,.svn,.hg,pkg,tmp
-    set wildignore+=*.bak,*.tmp,*.log,*.cache
-    set wildignore+=Desktop.ini,Thumbs.db,*.lnk,.DS_Store
+    set wildignore+=.git,.hg,.svn,pkg,tmp
+    set wildignore+=*.bak,*.cache,*.log,*.tmp
+    set wildignore+=*.lnk,.DS_Store,Desktop.ini,Thumbs.db
     set wildignore+=*.7z,*.tar,*.tar.*,*.tgz,*.zip
-    set wildignore+=*.suo,*.sln,*.pch,*.pdb,*.pgc,*.pgd
-    set wildignore+=*.o,*.obj,*.elf,*.lib,*.a,*.dll,*.so,*.so.*,*.exe,*.out
-    set wildignore+=*.wav,*.mp3,*.ogg,*.m4a,*.opus,*.mp4,*.mkv
+    set wildignore+=*.pch,*.pdb,*.pgc,*.pgd,*.sln,*.suo
+    set wildignore+=*.a,*.dll,*.elf,*.exe,*.lib,*.o,*.obj,*.out,*.so,*.so.*
+    set wildignore+=*.m4a,*.mkv,*.mp3,*.mp4,*.ogg,*.opus,*.wav
     set wildignore+=*.bmp,*.gif,*.jfif,*.jpeg,*.jpg,*.pdf,*.png,*.webp
-    set wildignore+=__pycache__,*.pyc,*.pyo,*.pyd,*.npy,*.npz,*.h5,*.pkl
+    set wildignore+=*.h5,*.npy,*.npz,*.pkl,*.pyc,*.pyd,*.pyo,__pycache__
     set wildignore+=*.gem,.bundle
     set wildignore+=CMakeCache.txt,CMakeFiles,install_manifest.txt
 endif

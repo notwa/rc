@@ -10,17 +10,7 @@ if has('multi_byte')
     set encoding=utf-8                " and the default file is in it
 endif
 
-if has("win32")
-    " assume directory structure:
-    " something/anything/.vimrc       " this was passed to vim by the -u switch
-    " something/vim/
-    " something/vim/after
-    let $MYVIMRC=expand('<sfile>')
-    let g:rcvim=expand('<sfile>:p:h:h').'/vim'
-else
-    let g:rcvim=$HOME.'/.vim'
-endif
-
+let g:rcvim=$HOME.'/.vim'
 let &backupdir=g:rcvim.'/backup'      " stash tilde files elsewhere
 " using a double slash here enables file path inclusion for uniqueness:
 let &directory=g:rcvim.'/swp//'       " stash swap files too

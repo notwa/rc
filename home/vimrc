@@ -412,17 +412,14 @@ let s:q="'"
 " explode: split an expression's right-hand-side by commas
 let @s= 'ma'
 let @s.=':sil s/ *= */&\r/e'
-let @s.='-'
-let @s.='mb' " the next line may error, so set a mark now
+let @s.='-mb' " the next line may error, so set a mark now
 let @s.=':sil s/,/\r/g'
-let @s.='-'
-let @s.='mb'
+let @s.='-mb'
 "let @s.=s:q..'a'
 "let @s.='OEXPLODE=HERE;'
 "let @s.=s:q..'b'
 "let @s.='oEXPLODE=THERE;'
-let @s.=s:q..'a'
-let @s.=''
+let @s.=s:q..'a'
 
 " implode: join the previously split expression, sort -ui
 let @j= ':sil '..s:q..'a+1,'..s:q..'b'..'sor ui'

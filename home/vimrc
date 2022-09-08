@@ -335,6 +335,10 @@ Inn <s-Del> X
 
 let leader="\\"
 "ino <c-\> <C-o><Leader>              " this doesn't workkkkkkkkk
+nn <Leader>2 :call TabTwo()<cr>
+nn <Leader>3 :call TabBad()<cr>
+nn <Leader>4 :call TabFour()<cr>
+nn <Leader>5 :call TabEight()<cr>
 nm <Leader>a a?<Esc>r
 nm <Leader>i i?<Esc>r
 nn <Leader>, :Tab /,\zs<cr>

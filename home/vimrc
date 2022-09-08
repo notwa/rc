@@ -398,3 +398,30 @@ let s:hostname=hostname()
 if s:hostname == "phantom-pi" || s:hostname == "wraith"
     colorscheme minimalist
 endif
+
+" macros {{{1
+
+" to dump a macro, enter insert mode and hit [Ctrl+R] [Ctrl+R] [macro letter].
+" note that this will not properly escape any single quotes used in the macro.
+let s:q="'"
+
+" explode: split an expression's right-hand-side by commas
+let @s= 'ma'
+let @s.=':sil s/ *= */&\r/e'
+let @s.='-'
+let @s.='mb' " the next line may error, so set a mark now
+let @s.=':sil s/,/\r/g'
+let @s.='-'
+let @s.='mb'
+"let @s.=s:q..'a'
+"let @s.='OEXPLODE=HERE;'
+"let @s.=s:q..'b'
+"let @s.='oEXPLODE=THERE;'
+let @s.=s:q..'a'
+let @s.=''
+
+" implode: join the previously split expression, sort -ui
+let @j= ':sil '..s:q..'a+1,'..s:q..'b'..'sor ui'
+let @j.=':sil '..s:q..'a+1,'..s:q..'b-1'..'norm!A,'
+let @j.=':sil '..s:q..'a,'..s:q..'b'..'j!'
+let @j.=s:q..'a'

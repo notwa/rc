@@ -406,6 +406,10 @@ $ isup fdhafdslkjgfjs.com && echo yay || echo nay
 nay
 ```
 
+### [join2](/sh/join2#L7)
+
+join every other line.
+
 ### [lsarchive](/sh/lsarchive#L7)
 
 list the contents of an archive file in one of many formats.
@@ -822,6 +826,10 @@ extract the contents of an archive file in one of many formats.
 
 borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
 
+### [unwrap](/sh/unwrap#L7)
+
+join paragraphs into one line each.
+
 ### [v_lower](/sh/v_lower#L7)
 
 transform the contents of a variable to lowercase.
@@ -914,11 +922,11 @@ invoke `twitch` as a job with both stdout and stderr silenced.
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L46)
+### [dummy (bashrc)](/home/bashrc#L45)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L51)
+### [reload (bashrc)](/home/bashrc#L50)
 
 **TODO:** respect initctl like in `.zshrc`.
 
@@ -1091,46 +1099,38 @@ add a Byte-Order Mark to a file.
 
 strip unprintable and non-ASCII characters.
 
-### [unwrap (shrc)](/home/shrc#L168)
-
-join paragraphs into one line each.
-
-### [double (shrc)](/home/shrc#L169)
+### [double (shrc)](/home/shrc#L168)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [join2 (shrc)](/home/shrc#L172)
-
-join every other line.
-
-### [katagana (shrc)](/home/shrc#L173)
+### [katagana (shrc)](/home/shrc#L171)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (shrc)](/home/shrc#L175)
+### [picky (shrc)](/home/shrc#L173)
 
 list pacman packages that were manually installed and are not in some common package groups.
 this list can be used to assist later reinstalls.
 
-### [unused (shrc)](/home/shrc#L178)
+### [unused (shrc)](/home/shrc#L176)
 
 list pacman packages that weren't installed explicitly and don't satisfy any dependencies.
 this list can be used to free up some disk space.
 
-### [makepkgf (shrc)](/home/shrc#L181)
+### [makepkgf (shrc)](/home/shrc#L179)
 
 make the freakin' package!
 
-### [rakef (shrc)](/home/shrc#L182)
+### [rakef (shrc)](/home/shrc#L180)
 
 make the freakin' gem!
 
-### [pl (shrc)](/home/shrc#L184)
+### [pl (shrc)](/home/shrc#L182)
 
 print each argument on its own line.
 
@@ -1176,6 +1176,7 @@ print each argument on its own line.
 | [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [is_empty](#is_empty)                         |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
 | [isup](#isup)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [join2](#join2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [lsarchive](#lsarchive)                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1215,10 +1216,11 @@ print each argument on its own line.
 | [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [trunc](#trunc)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [unarchive](#unarchive)                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [unwrap](#unwrap)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [v_domap](#v_domap)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [v_lower](#v_lower)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [v_upper](#v_upper)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [wat](#wat)                                   |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [witch](#witch)                               |       *sh* | ⭕    | ✔️    | ✔️    | ✔️    |
+| [witch](#witch)                               |       *sh* | ⭕    | ⭕    | ✔️    | ✔️    |
 | [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

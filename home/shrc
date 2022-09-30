@@ -165,11 +165,9 @@ alias nocom='grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)"' ### @
 alias jrep='grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+"' ### @- extract strings comprised of basic ASCII or Japanese codepoints.
 alias bomb='uconv -f utf-8 -t utf-8 --add-signature' ### @- add a Byte-Order Mark to a file.
 alias cleanse='tr -cd "\11\12\15\40-\176"' ### @- strip unprintable and non-ASCII characters.
-alias unwrap='awk '\''BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'\' ### @- join paragraphs into one line each.
 alias double='awk "{print;print}"' ### @- print every line twice. <br/> print every line twice.
 ### **NOTE:** there also exists a double(1) program provided by
 ### the *plotutils* package that i don't use.
-alias join2='paste -d" " - -' ### @- join every other line.
 alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r'"'" ### @- convert katakana codepoints to their equivalent hiragana.
 ### this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 alias picky='comm -23 <(pacman -Qetq | sort -u) <(pacman -Qgq base base-devel xorg xorg-drivers xfce4 mingw-w64-x86_64-toolchain 2>/dev/null | sort -u) | tr -d "\t"' ### @-

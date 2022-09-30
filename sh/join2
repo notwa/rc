@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+join2() { ### @- join every other line.
+    # TODO: argc, also better interface that allows n file inputs without stdin.
+    paste -d" " - -
+}
+
+[ -n "${preload+-}" ] || join2 "$@"

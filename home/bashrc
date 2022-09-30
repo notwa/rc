@@ -12,22 +12,21 @@ set -o hashall # enable hash command
 
 [ "$TERM" != rxvt-unicode-256color ] || export TERM=xterm-256color
 
-t="${TERM%%-*}"
-if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
-    _title="\[\033]2;\w\a\]"
-else
-    _title=""
-fi
-unset t
+_temporary_scope_() {
+    local t="${TERM%%-*}" title=
+    if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
+        title='\[\033]2;\w\a\]'
+    fi
 
-Csucc=$'\\[\e[42m\\]'
-Cfail=$'\\[\e[41m\\]'
-_line1=$' \\[\e[0m\\]'
-_line2=$'\\[\e[1;37m\\]\\$\\[\e[0m\\] '
-ret_succ="$_title${Csucc}$_line1\n${Csucc}$_line2"
-ret_fail="$_title${Cfail}$_line1\n${Cfail}$_line2"
+    local color_okay='\\[\e[42m\\]'
+    local color_fail='\\[\e[41m\\]'
+    local line1=' \\[\e[0m\\]'
+    local line2='\\[\e[1;37m\\]\\$\\[\e[0m\\] '
+    local ret_okay="$title$color_okay$line1\n$color_okay$line2"
+    local ret_fail="$title$color_fail$line1\n$color_fail$line2"
 
-PROMPT_COMMAND='[ $? = 0 ] && PS1=${ret_succ} || PS1=${ret_fail}'
+    PROMPT_COMMAND="[ \$? = 0 ] && PS1=\$'$ret_okay' || PS1=\$'$ret_fail'"
+}; _temporary_scope_; unset _temporary_scope_
 
 . ~/.shrc
 
@@ -38,7 +37,7 @@ ADDPATH "$HOME/sh"
     # combine everything matching "YES_BASH" in ~/sh/ into ~/.sh-bash.
     # unlike zsh, we do not check the sha1sum of the output.
     cd ~/sh \
-     && printf "%s\n" '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' '' \
+     && printf '%s\n' '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' '' \
       | cat - $(grep -lF YES_BASH -- $(find ~/sh/ -maxdepth 1 -type f '!' -name '*.bak')) \
       > ~/.sh-bash
 )
@@ -50,3 +49,5 @@ unset preload
 
 alias reload='cd; exec bash' ### @- **TODO:** respect initctl like in `.zshrc`.
 [ ! -e ~/.lol ] || . ~/.lol
+
+true

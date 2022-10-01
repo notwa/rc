@@ -33,14 +33,14 @@ _temporary_scope_() {
 # this doesn't work for all scripts at the moment, but
 ADDPATH "$HOME/sh"
 
-(
-    # combine everything matching "YES_BASH" in ~/sh/ into ~/.sh-bash.
-    # unlike zsh, we do not check the sha1sum of the output.
-    cd ~/sh \
-     && printf '%s\n' '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' '' \
-      | cat - $(grep -lF YES_BASH -- $(find ~/sh/ -maxdepth 1 -type f '!' -name '*.bak')) \
-      > ~/.sh-bash
-)
+# combine everything matching "YES_BASH" in ~/sh/ into ~/.sh-bash.
+# unlike zsh, we do not check the sha1sum of the output.
+ (: \
+ && cd ~/sh \
+ && printf '%s\n' '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' '' \
+  | cat - > ~/.sh-bash \
+    $(grep -lF YES_BASH -- $(find ~/sh/ -maxdepth 1 -type f '!' -name '*.bak')) \
+ ;)
 
 dummy() { :; } ### @- return 0, ignoring arguments.
 preload=dummy

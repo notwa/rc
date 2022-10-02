@@ -869,55 +869,55 @@ $ xxp ~/rc/install | head -n2
 
 ## miscellaneous
 
-### [dummy (zshrc)](/home/zshrc#L78)
+### [dummy (zshrc)](/home/zshrc#L79)
 
 return 0, ignoring arguments.
 
-### [dirprev (zshrc)](/home/zshrc#L83)
+### [dirprev (zshrc)](/home/zshrc#L84)
 
 rotate and change to the previous directory in the directory stack
 without consuming the prompt.
 
-### [dirnext (zshrc)](/home/zshrc#L90)
+### [dirnext (zshrc)](/home/zshrc#L91)
 
 rotate and change to the next directory in the directory stack
 without consuming the prompt.
 
-### [dirup (zshrc)](/home/zshrc#L97)
+### [dirup (zshrc)](/home/zshrc#L98)
 
 change to the parent directory of the current working directory
 without consuming the prompt.
 
-### [dirview (zshrc)](/home/zshrc#L104)
+### [dirview (zshrc)](/home/zshrc#L105)
 
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L202)
+### [OMFG (zshrc)](/home/zshrc#L203)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L203)
+### [STFU (zshrc)](/home/zshrc#L204)
 
 silence stderr.
 
-### [WHOA (zshrc)](/home/zshrc#L204)
+### [WHOA (zshrc)](/home/zshrc#L205)
 
 expand to several C/C++ flags to ease development.
 
-### [WHEE (zshrc)](/home/zshrc#L205)
+### [WHEE (zshrc)](/home/zshrc#L206)
 
 WHOA but for C++ (specifically g++) only.
 
-### [WELP (zshrc)](/home/zshrc#L206)
+### [WELP (zshrc)](/home/zshrc#L207)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [tw (zshrc)](/home/zshrc#L211)
+### [tw (zshrc)](/home/zshrc#L212)
 
 invoke `twitch` as a job with both stdout and stderr silenced.
 
-### [reload (zshrc)](/home/zshrc#L255)
+### [reload (zshrc)](/home/zshrc#L256)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.

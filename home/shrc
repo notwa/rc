@@ -22,17 +22,31 @@ else
 fi
 
 ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
-    if [ "$1" != "${1#[A-Z]:\\}" ]; then
-        set -- "$(cygpath -u "$1")"
+    if [ $# -ne 1 ]; then
+        printf 'ADDPATH: expected exactly 1 argument, got %s\n' $# >&2
+        return 2
     fi
-    local new="$(readlink -f "$1")"
-    if [ ! -d "$new" ]; then
-        printf 'ADDPATH: path does not exist: %s\n' "$1" >&2
+    if [ "$1" != "${1#[A-Z]:\\}" ]; then
+        set -- "$(cygpath -u "$1" || printf '%s\n' "$1")"
+    fi
+    set -- "$(readlink -f "$1")" "$1"
+    if ! [ -d "$1" ]; then
+        if [ -e "$1" ]; then
+            printf 'ADDPATH: not a directory: %s\n' "$1" >&2
+        else
+            set -- "$2" "$( (true <"$2") 2>&1)"
+            [ -z "$ZSH_VERSION" ] || 2="${2%: *}"
+            printf 'ADDPATH: %s: %s\n' "$1" "${2##*: }" >&2
+        fi
         return 1
     fi
+    if [ ${#PATH} = 0 ]; then
+        PATH="$1"
+        return 0
+    fi
     case ":$PATH:" in
-        (*":$new:"*) :;;
-        (*) export PATH="$PATH:$new";;
+        (*":$1:"*) :;;
+        (*) PATH="$PATH:$1";;
     esac
 }
 

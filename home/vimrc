@@ -154,7 +154,7 @@ fu! TabFour()
 endf
 
 fu! TabTwo()
-    setlocal tabstop=2 shiftwidth=2 expandtab
+    setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
 endf
 
 fu! TabBad()

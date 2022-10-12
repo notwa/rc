@@ -61,15 +61,15 @@ list_files() {
     done
 }
 
-softlink_pseudo() {
+softlink_pseudo() (
     : "${1:?missing argument}"
     : "${2:?missing argument}"
     [ -d "$2" ] || die "$1 is not a directory to softlink"
     [ -d "$1" ] || mkdir "$1" || die "failed to mkdir $1"
 
     list_files "$2" | while read -r f; do
-        local d1="$1/$f"
-        local d2="$2/$f"
+        d1="$1/$f"
+        d2="$2/$f"
 
         if [ -d "$d2" ]; then
             if [ "$d1" != ".vim/bundle" ]; then # buggy on Windows
@@ -83,23 +83,25 @@ softlink_pseudo() {
             die "i don't know how to pseudo-symlink $d2"
         fi
     done || exit
-}
+)
 
-find_new_files() {
+find_new_files() (
     : "${1:?missing argument}"
     : "${2:?missing argument}"
+
     list_files "$1" | while read -r f; do
-        local d1="$1/$f"
-        local d2="$2/$f"
+        d1="$1/$f"
+        d2="$2/$f"
         [ "$d1" != ".vim/.netrwhist" ] || continue
         [ "$d1" != ".vim/backup" ] || continue
         [ "$d1" != ".vim/bundle" ] || continue
         [ "$d1" != ".vim/swp" ] || continue
         [ "$d1" != ".vim/undo" ] || continue
+
         if [ -d "$d2" ]; then
-            find_new_files "$d1" "$d2"
+            find_new_files "$d1" "$d2" || exit
         elif [ ! "$d1" -ef "$d2" ]; then
-            local ind=
+            ind=
             [ ! -d "$d1" ] || ind=/
             if [ "$VERBOSE" -lt 1 ]; then
                 printf ' + %s%s\n' "$d1" "$ind" >&2
@@ -109,13 +111,14 @@ find_new_files() {
             fi
         fi
     done
-}
+)
 
 softlink() {
     if [ -n "$MSYSTEM" ]; then
         # MSYS2 does not have nor emulate symbolic links.
-        softlink_pseudo "$@"
-        find_new_files "$@" # to make up for git status not seeing new files
+        softlink_pseudo "$@" || exit
+        # to make up for git status not seeing new files:
+        find_new_files "$@" || exit
     else
         softlink_nix "$@"
     fi
@@ -146,8 +149,8 @@ if [ ! -e .bash_profile ] || ! grep -qF .bashrc .bash_profile; then
 fi
 
 is_empty() {
-    local f="${1:?is_empty requires an argument}"
-    find "$f" -type f | while read -r f; do
+    set -- "${1:?is_empty requires an argument}"
+    find "$1" -type f | while read -r dummy; do
         return 1
     done || return 1 # just in case pipes mess things up
     return 0

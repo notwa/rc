@@ -102,7 +102,7 @@ maybesudo_() ( ### @-
             "${HOME:+HOME=}${HOME:--i}" \
             "${HOSTNAME:+HOSTNAME=}${HOSTNAME:--i}" \
             "${KRB5CCNAME:+KRB5CCNAME=}${KRB5CCNAME:--i}" \
-            "${LOGNAME:+HOME=}${USER:--i}" \
+            "${LOGNAME:+LOGNAME=}${USER:--i}" \
             "${LS_COLORS:+LS_COLORS=}${LS_COLORS:--i}" \
             "${PATH:+PATH=}${PATH:--i}" \
             "${SHELL:+SHELL=}${SHELL:--i}" \

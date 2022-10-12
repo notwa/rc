@@ -94,25 +94,23 @@ maybesudo_() ( ### @-
         #   "${USER:+DOAS_USER}=${USER}"
         #   "${USER:+SUDO_USER}=${USER}"
 
-        # env seems to treat arguments of "=" as a no-op across GNU and busybox.
+        # coreutils treats '=' arguments as no-ops, but busybox does not, so...
         env -i \
-            "${COLORS:+COLORS}=${COLORS}" \
-            "${DISPLAY:+DISPLAY}=${DISPLAY}" \
-            "${DPKG_COLORS:+DPKG_COLORS}=${DPKG_COLORS}" \
-            "${HOME:+HOME}=${HOME}" \
-            "${HOSTNAME:+HOSTNAME}=${HOSTNAME}" \
-            "${KRB5CCNAME:+KRB5CCNAME}=${KRB5CCNAME}" \
-            "${LOGNAME:+HOME}=${USER}" \
-            "${LS_COLORS:+LS_COLORS}=${LS_COLORS}" \
-            "${PATH:+PATH}=${PATH}" \
-            "${PS1:+PS1}=${PS1}" \
-            "${PS2:+PS2}=${PS2}" \
-            "${SHELL:+SHELL}=${SHELL}" \
-            "${TERM:+TERM}=${TERM}" \
-            "${USER:+USER}=${USER}" \
-            "${USERNAME:+USERNAME}=${USERNAME}" \
-            "${XAUTHORITY:+XAUTHORITY}=${XAUTHORITY}" \
-            "${XAUTHORIZATION:+XAUTHORIZATION}=${XAUTHORIZATION}" \
+            "${COLORS:+COLORS=}${COLORS:--i}" \
+            "${DISPLAY:+DISPLAY=}${DISPLAY:--i}" \
+            "${DPKG_COLORS:+DPKG_COLORS=}${DPKG_COLORS:--i}" \
+            "${HOME:+HOME=}${HOME:--i}" \
+            "${HOSTNAME:+HOSTNAME=}${HOSTNAME:--i}" \
+            "${KRB5CCNAME:+KRB5CCNAME=}${KRB5CCNAME:--i}" \
+            "${LOGNAME:+HOME=}${USER:--i}" \
+            "${LS_COLORS:+LS_COLORS=}${LS_COLORS:--i}" \
+            "${PATH:+PATH=}${PATH:--i}" \
+            "${SHELL:+SHELL=}${SHELL:--i}" \
+            "${TERM:+TERM=}${TERM:--i}" \
+            "${USER:+USER=}${USER:--i}" \
+            "${USERNAME:+USERNAME=}${USERNAME:--i}" \
+            "${XAUTHORITY:+XAUTHORITY=}${XAUTHORITY:--i}" \
+            "${XAUTHORIZATION:+XAUTHORIZATION=}${XAUTHORIZATION:--i}" \
             -- "$@"
 
     else

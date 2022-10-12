@@ -2,7 +2,7 @@
 # this script is compatible with following shells:
 # ash, dash, bash, zsh
 
-VERBOSE="${VERBOSE:-1}"
+VERBOSE="${VERBOSE-1}"
 
 NAME="$0"
 
@@ -73,11 +73,11 @@ softlink_pseudo() {
 
         if [ -d "$d2" ]; then
             if [ "$d1" != ".vim/bundle" ]; then # buggy on Windows
-                [ "$VERBOSE" -lt 1 ] || printf '\033[34m / \033[0m %s %s\n' "$d1" "$d2" >&2
+                [ "$VERBOSE" -lt 2 ] || printf '\033[34m / \033[0m %s %s\n' "$d1" "$d2" >&2
                 softlink_pseudo "$d1" "$d2" || exit
             fi
         elif [ -f "$d2" ]; then
-            [ "$VERBOSE" -lt 1 ] || printf '\033[34m * \033[0m %s\n' "$d1" >&2
+            [ "$VERBOSE" -lt 2 ] || printf '\033[34m * \033[0m %s\n' "$d1" >&2
             hardlink "$d1" "$d2" || exit
         else
             die "i don't know how to pseudo-symlink $d2"

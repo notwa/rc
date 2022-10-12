@@ -4,16 +4,17 @@
 # YES_DASH
 # YES_ASH
 
-maybesudo_() { ### @-
+maybesudo_() ( ### @-
     ### mimic certain features of `sudo` for systems without it installed.
     ### as it stands, this mostly just handles some environment variables.
     ###
     ### try this: `maybesudo_ -u "$USER" printenv`
-    # TODO: you know, awk has an ENVIRON array that might be easier to work with.
-    local name=
-    local env_cleanup=0
+
+    name=
+    env_cleanup=0
+
     while getopts :AEHKPSVbhiklnsvC:U:g:p:r:t:u: name; do
-        case $name in
+        case "$name" in
         K|V|k)
         # K: sure kill
         # V: version
@@ -74,70 +75,52 @@ maybesudo_() { ### @-
         esac
     done
 
-    shift $((OPTIND-1))
+    shift "$((OPTIND-1))"
 
     if [ "$env_cleanup" = 1 ]; then
-        (
-            # portably listing exported variable names is virtually impossible
-            # without the blessing of null-terminated strings, so don't even try.
-            # just export the bare minimum that a fairly stock sudo would.
+        # portably listing exported variable names is virtually impossible
+        # without the blessing of null-terminated strings, so don't even try.
+        # just export the bare minimum that a fairly stock sudo would.
+        # TODO: you know, awk has an ENVIRON array that might be easier to work with.
 
-            # $path is special in zsh, so call it pathy instead.
-            local \
-                colors= display= dpkg_colors= home= hostname= krb5ccname= \
-                ls_colors= pathy= ps1= ps2= user= username= xauthority= \
-                xauthorization=
+        # don't eat up precious command space with dumb colors.
+        # xargs --show-limits says:
+        # Maximum length of command we could actually use: 5080
+        [ "${#LS_COLORS}" -le 1024 ] || LS_COLORS=
 
-            [ -z "$COLORS" ] || colors=COLORS="$COLORS"
-            [ -z "$DISPLAY" ] || display=DISPLAY="$DISPLAY"
-            [ -z "$DPKG_COLORS" ] || dpkg_colors=DPKG_COLORS="$DPKG_COLORS"
-            [ -z "$HOME" ] || home=HOME="$HOME"
-            [ -z "$HOSTNAME" ] || hostname=HOSTNAME="$HOSTNAME"
-            [ -z "$KRB5CCNAME" ] || krb5ccname=KRB5CCNAME="$KRB5CCNAME"
-            [ -z "$LS_COLORS" ] || ls_colors=LS_COLORS="$LS_COLORS"
-            [ -z "$PATH" ] || pathy=PATH="$PATH"
-            [ -z "$PS1" ] || ps1=PS1="$PS1"
-            [ -z "$PS2" ] || ps2=PS2="$PS2"
-            [ -z "$USER" ] || user=USER="$USER"
-            [ -z "$USERNAME" ] || username=USERNAME="$USERNAME"
-            [ -z "$XAUTHORITY" ] || xauthority=XAUTHORITY="$XAUTHORITY"
-            [ -z "$XAUTHORIZATION" ] || xauthorization=XAUTHORIZATION="$XAUTHORIZATION"
+        # doas seems to override PATH with /bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+        # sudo also sets SUDO_COMMAND, SUDO_GID, SUDO_UID, SUDO_USER, and MAIL,
+        # but who needs those?
+        #   "${USER:+DOAS_USER}=${USER}"
+        #   "${USER:+SUDO_USER}=${USER}"
 
-            # don't eat up precious command space with dumb colors.
-            # xargs --show-limits says:
-            # Maximum length of command we could actually use: 5080
-            [ "${#ls_colors}" -le 1024 ] || ls_colors==
-
-            # sudo also sets SUDO_COMMAND, SUDO_GID, SUDO_UID, SUDO_USER, and MAIL,
-            # but who needs those?
-
-            # env seems to treat arguments of "=" as a no-op across GNU and busybox.
-            env -i \
-                "${colors:-=}" \
-                "${display:-=}" \
-                "${dpkg_colors:-=}" \
-                "${home:-=}" \
-                "${hostname:-=}" \
-                "${krb5ccname:-=}" \
-                "${ls_colors:-=}" \
-                "${pathy:-=}" \
-                "${ps1:-=}" \
-                "${ps2:-=}" \
-                "${user:-=}" \
-                "${username:-=}" \
-                "${xauthority:-=}" \
-                "${xauthorization:-=}" \
-                "$@"
-        )
+        # env seems to treat arguments of "=" as a no-op across GNU and busybox.
+        env -i \
+            "${COLORS:+COLORS}=${COLORS}" \
+            "${DISPLAY:+DISPLAY}=${DISPLAY}" \
+            "${DPKG_COLORS:+DPKG_COLORS}=${DPKG_COLORS}" \
+            "${HOME:+HOME}=${HOME}" \
+            "${HOSTNAME:+HOSTNAME}=${HOSTNAME}" \
+            "${KRB5CCNAME:+KRB5CCNAME}=${KRB5CCNAME}" \
+            "${LOGNAME:+HOME}=${USER}" \
+            "${LS_COLORS:+LS_COLORS}=${LS_COLORS}" \
+            "${PATH:+PATH}=${PATH}" \
+            "${PS1:+PS1}=${PS1}" \
+            "${PS2:+PS2}=${PS2}" \
+            "${SHELL:+SHELL}=${SHELL}" \
+            "${TERM:+TERM}=${TERM}" \
+            "${USER:+USER}=${USER}" \
+            "${USERNAME:+USERNAME}=${USERNAME}" \
+            "${XAUTHORITY:+XAUTHORITY}=${XAUTHORITY}" \
+            "${XAUTHORIZATION:+XAUTHORIZATION}=${XAUTHORIZATION}" \
+            -- "$@"
 
     else
-        # run it in a subshell so it won't affect ours.
-        # TODO: run through env anyway for consistency.
-        #       (`maybesudo export` should fail)
-        ( "$@"; )
+        # run it through env anyway for consistency.
+        env -- "$@"
     fi
 
     # don't put any code here or you'll clobber $?.
-}
+)
 
 [ -n "${preload+-}" ] || maybesudo_ "$@"

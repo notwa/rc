@@ -91,34 +91,28 @@ maybesudo_() ( ### @-
         # doas seems to override PATH with /bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
         # sudo also sets SUDO_COMMAND, SUDO_GID, SUDO_UID, SUDO_USER, and MAIL,
         # but who needs those?
-        #   "${USER:+DOAS_USER}=${USER}"
-        #   "${USER:+SUDO_USER}=${USER}"
+        #   "${USER:+DOAS_USER=}${USER}"
+        #   "${USER:+SUDO_USER=}${USER}"
+        #   "${LOGNAME:+LOGNAME=}${USER:--i}"
 
-        # coreutils treats '=' arguments as no-ops, but busybox does not, so...
-        env -i \
-            "${COLORS:+COLORS=}${COLORS:--i}" \
-            "${DISPLAY:+DISPLAY=}${DISPLAY:--i}" \
-            "${DPKG_COLORS:+DPKG_COLORS=}${DPKG_COLORS:--i}" \
-            "${HOME:+HOME=}${HOME:--i}" \
-            "${HOSTNAME:+HOSTNAME=}${HOSTNAME:--i}" \
-            "${KRB5CCNAME:+KRB5CCNAME=}${KRB5CCNAME:--i}" \
-            "${LOGNAME:+LOGNAME=}${USER:--i}" \
-            "${LS_COLORS:+LS_COLORS=}${LS_COLORS:--i}" \
-            "${PATH:+PATH=}${PATH:--i}" \
-            "${SHELL:+SHELL=}${SHELL:--i}" \
-            "${TERM:+TERM=}${TERM:--i}" \
-            "${USER:+USER=}${USER:--i}" \
-            "${USERNAME:+USERNAME=}${USERNAME:--i}" \
-            "${XAUTHORITY:+XAUTHORITY=}${XAUTHORITY:--i}" \
-            "${XAUTHORIZATION:+XAUTHORIZATION=}${XAUTHORIZATION:--i}" \
-            -- "$@"
-
-    else
-        # run it through env anyway for consistency.
-        env -- "$@"
+        [ -z "$XAUTHORIZATION" ] || set -- XAUTHORIZATION="$XAUTHORIZATION" "$@"
+        [ -z "$XAUTHORITY" ]     || set -- XAUTHORITY="$XAUTHORITY" "$@"
+        [ -z "$USERNAME" ]       || set -- USERNAME="$USERNAME" "$@"
+        [ -z "$USER" ]           || set -- USER="$USER" "$@"
+        [ -z "$TERM" ]           || set -- TERM="$TERM" "$@"
+        [ -z "$SHELL" ]          || set -- SHELL="$SHELL" "$@"
+        [ -z "$PATH" ]           || set -- PATH="$PATH" "$@"
+        [ -z "$LS_COLORS" ]      || set -- LS_COLORS="$LS_COLORS" "$@"
+        [ -z "$KRB5CCNAME" ]     || set -- KRB5CCNAME="$KRB5CCNAME" "$@"
+        [ -z "$HOSTNAME" ]       || set -- HOSTNAME="$HOSTNAME" "$@"
+        [ -z "$HOME" ]           || set -- HOME="$HOME" "$@"
+        [ -z "$DPKG_COLORS" ]    || set -- DPKG_COLORS="$DPKG_COLORS" "$@"
+        [ -z "$DISPLAY" ]        || set -- DISPLAY="$DISPLAY" "$@"
+        [ -z "$COLORS" ]         || set -- COLORS="$COLORS" "$@"
+        set -- -i "$@"
     fi
 
-    # don't put any code here or you'll clobber $?.
+    env "$@"
 )
 
 [ -n "${preload+-}" ] || maybesudo_ "$@"

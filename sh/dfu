@@ -4,6 +4,7 @@
 # YES_DASH
 # YES_ASH
 # YES_BB_AWK
+# YES_OT_AWK
 
 dfu() { ### @-
     ### pretty-print `df` in GiB.

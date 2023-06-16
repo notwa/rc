@@ -4,6 +4,7 @@
 # YES_DASH
 # YES_ASH
 # YES_BB_AWK
+# YES_OT_AWK
 
 countdiff() { ### @-
     ### count the number of lines changed between two files.
@@ -18,7 +19,7 @@ countdiff() { ### @-
     [ $# -gt 1 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
     [ $# -le 2 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     git --no-pager diff --stat --no-color --no-index "$1" "$2" \
-    | awk '/changed/{print $4+$6;a=1}END{if(!a)print 0}'
+    | awk ' /changed/{print $4+$6;a=1}END{if(!a)print 0}'
 }
 
 [ -n "${preload+-}" ] || countdiff "$@"

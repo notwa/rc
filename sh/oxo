@@ -25,6 +25,7 @@ oxo() { ### @-
     ### $ echo test | oxo
     ### https://0x0.st/sj2.txt
     ### oxo: successfully uploaded 1/1 file
+    ###
     ### $ oxo ~/play/{hey,you,fake,empty}
     ### https://0x0.st/-3rz.txt
     ### oxo: expires in 365 days: /home/notwa/play/hey
@@ -67,7 +68,7 @@ oxo() { ### @-
             # restrict the filepath to simple ascii characters that curl likes.
             if [ "$f" != "${f#*[! -~]}" ] || [ "$f" != "${f#*[\":<>?\\|]}" ]; then
                 # copy the user's file to a temporary path and use that instead.
-                g=/tmp/oxo
+                g=/tmp/oxo.tmp
                 #printf "$warn" "oxo: special characters found: $f" >&2
                 if ! cp -p -- "$f" "$g"; then
                     printf "$bad" "oxo: failed to copy file: $f" >&2

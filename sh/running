@@ -18,6 +18,13 @@ running() { ### @- WIP
         (*) printf '%s\n' "$usage" >&2; return 2;;
         esac
     done
+
+    # ps -o pid,comm=CMD
+    # argumentless flags accepted by busybox:
+    #   a   d e f       l                   A               T     Z
+    # argumentless flags accepted by coreutils:
+    #   a c d e f g h j l m n r s t u v w x A F H L M N P S T V X Z
+
     ps -f | awk -v cmd=$cmd -v pid=$pid '
     NR==1{
         s=index($0,"COMMAND")

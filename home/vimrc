@@ -191,28 +191,29 @@ endf
 if has('autocmd')
     augroup tabs
         au!
-        au BufRead,BufNewFile PKGBUILD      call TabTwo()
-        au FileType ruby                    call TabTwo()
-        au FileType nim                     call TabTwo()
         au BufRead,BufNewFile *.bt,*.1sc    call TabFour()
         au BufRead,BufNewFile *.ys          call TabTwo()
-        au FileType javascript,processing   call TabTwo()
-        au FileType seed7                   call TabTwo()
         au BufRead,BufNewFile .gitconfig    call TabEight()
+        au BufRead,BufNewFile PKGBUILD      call TabTwo()
+        au FileType html,css                call TabTwo()
+        au FileType javascript,processing   call TabTwo()
+        au FileType nim                     call TabTwo()
+        au FileType ruby                    call TabTwo()
+        au FileType seed7                   call TabTwo()
         exec 'au' 'BufRead,BufNewFile' $HOME..'/src/bass/*' 'call TabTwo()'
 
     augroup END
 
     augroup filetypes
         au!
-        au BufRead,BufNewFile *.lib     setlocal ft=spice
-        au BufRead,BufNewFile *.bt      setlocal ft=c
         au BufRead,BufNewFile *.1sc     setlocal ft=c
+        au BufRead,BufNewFile *.asm     setlocal ft=lips
+        au BufRead,BufNewFile *.bt      setlocal ft=c
         au BufRead,BufNewFile *.fs      setlocal ft=c
         au BufRead,BufNewFile *.glsl    setlocal ft=c
         au BufRead,BufNewFile *.hlsl    setlocal ft=c
         au BufRead,BufNewFile *.krk     setlocal ft=python
-        au BufRead,BufNewFile *.asm     setlocal ft=lips
+        au BufRead,BufNewFile *.lib     setlocal ft=spice
         au BufRead,BufNewFile *.nim     setlocal ft=nim
         au BufRead,BufNewFile *.pde     setlocal ft=processing
         au BufRead,BufNewFile,StdinReadPost * call DetectShebang()

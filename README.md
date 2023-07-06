@@ -237,7 +237,7 @@ Continue? [y/N] y
  20 files changed, 406 insertions(+), 29 deletions(-)
 ```
 
-### [countdiff](/sh/countdiff#L8)
+### [countdiff](/sh/countdiff#L9)
 
 count the number of lines changed between two files.
 
@@ -272,7 +272,7 @@ has its timestamp updated. symlinks are followed.
 `.git` subdirectories are skipped over.
 the timestamps of subdirectories are ignored.
 
-### [dfu](/sh/dfu#L8)
+### [dfu](/sh/dfu#L9)
 
 pretty-print `df` in GiB.
 
@@ -504,6 +504,7 @@ directories are skipped. please review the terms of service
 $ echo test | oxo
 https://0x0.st/sj2.txt
 oxo: successfully uploaded 1/1 file
+
 $ oxo ~/play/{hey,you,fake,empty}
 https://0x0.st/-3rz.txt
 oxo: expires in 365 days: /home/notwa/play/hey
@@ -934,203 +935,203 @@ return 0, ignoring arguments.
 
 append a directory to `$PATH` if it isn't already present.
 
-### [fils (shrc)](/home/shrc#L97)
+### [fils (shrc)](/home/shrc#L111)
 
 (GNU du) display human-friendly filesizes for the files in a directory.
 
-### [lsa (shrc)](/home/shrc#L98)
+### [lsa (shrc)](/home/shrc#L112)
 
 (GNU ls) list files with directories and dotfiles ordered first.
 
-### [perlu (shrc)](/home/shrc#L99)
+### [perlu (shrc)](/home/shrc#L113)
 
 invoke perl expecting files with UTF-8 encoding.
 
-### [rgn (shrc)](/home/shrc#L100)
+### [rgn (shrc)](/home/shrc#L115)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [cms (shrc)](/home/shrc#L101)
+### [cms (shrc)](/home/shrc#L117)
 
 invoke cryptominisat5 with less noise.
 
-### [curls (shrc)](/home/shrc#L102)
+### [curls (shrc)](/home/shrc#L118)
 
 invoke curl with less noise.
 
-### [get (shrc)](/home/shrc#L107)
+### [get (shrc)](/home/shrc#L123)
 
 retrieve the most recent files from the default branch of a git repository, and not much else.
 
-### [gs (shrc)](/home/shrc#L108)
+### [gs (shrc)](/home/shrc#L124)
 
 invoke git's status subcommand.
 
 **TODO:** consider renaming because gs(1) already exists.
 
-### [gd (shrc)](/home/shrc#L110)
+### [gd (shrc)](/home/shrc#L126)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [gds (shrc)](/home/shrc#L111)
+### [gds (shrc)](/home/shrc#L127)
 
 display difference stats from git.
 
-### [gl (shrc)](/home/shrc#L112)
+### [gl (shrc)](/home/shrc#L128)
 
 invoke git's log subcommand with a single line per commit.
 
 **TODO:** consider renaming because [gl(1)](https://github.com/gitless-vcs/gitless) already exists.
 
-### [glo (shrc)](/home/shrc#L114)
+### [glo (shrc)](/home/shrc#L130)
 
 navigate git's commit tree succinctly.
 
-### [g1 (shrc)](/home/shrc#L115)
+### [g1 (shrc)](/home/shrc#L131)
 
 display the most recent git commit.
 
-### [gr (shrc)](/home/shrc#L117)
+### [gr (shrc)](/home/shrc#L133)
 
 display remote git repositories verbosely.
 
-### [gb (shrc)](/home/shrc#L118)
+### [gb (shrc)](/home/shrc#L134)
 
 display the current git branch.
 
 **NOTE:** there also exists a gb(1) program provided by
 the *gb* package that i don't use.
 
-### [gdp (shrc)](/home/shrc#L121)
+### [gdp (shrc)](/home/shrc#L137)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [revend (shrc)](/home/shrc#L132)
+### [revend (shrc)](/home/shrc#L148)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (shrc)](/home/shrc#L133)
+### [clone (shrc)](/home/shrc#L149)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (shrc)](/home/shrc#L134)
+### [aligntabs (shrc)](/home/shrc#L150)
 
 align tab-delimited fields in stdin.
 
-### [crawla (shrc)](/home/shrc#L135)
+### [crawla (shrc)](/home/shrc#L151)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (shrc)](/home/shrc#L136)
+### [crawlz (shrc)](/home/shrc#L152)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [eahead (shrc)](/home/shrc#L138)
+### [eahead (shrc)](/home/shrc#L154)
 
 deprecated name for [`ea head`.](#ea)
 
-### [eaget (shrc)](/home/shrc#L139)
+### [eaget (shrc)](/home/shrc#L155)
 
 deprecated name for [`ea get`.](#ea)
 
-### [eaput (shrc)](/home/shrc#L140)
+### [eaput (shrc)](/home/shrc#L156)
 
 deprecated name for [`ea put`.](#ea)
 
-### [eamove (shrc)](/home/shrc#L141)
+### [eamove (shrc)](/home/shrc#L157)
 
 deprecated name for [`ea move`.](#ea)
 
-### [eacopy (shrc)](/home/shrc#L142)
+### [eacopy (shrc)](/home/shrc#L158)
 
 deprecated name for [`ea copy`.](#ea)
 
-### [eadelete (shrc)](/home/shrc#L143)
+### [eadelete (shrc)](/home/shrc#L159)
 
 deprecated name for [`ea delete`.](#ea)
 
-### [eamv (shrc)](/home/shrc#L144)
+### [eamv (shrc)](/home/shrc#L160)
 
 invoke [`ea move`.](#ea)
 
-### [eacp (shrc)](/home/shrc#L145)
+### [eacp (shrc)](/home/shrc#L161)
 
 invoke [`ea copy`.](#ea)
 
-### [earm (shrc)](/home/shrc#L146)
+### [earm (shrc)](/home/shrc#L162)
 
 invoke [`ea delete`.](#ea)
 
-### [ll (shrc)](/home/shrc#L148)
+### [ll (shrc)](/home/shrc#L164)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [diff (shrc)](/home/shrc#L159)
+### [diff (shrc)](/home/shrc#L175)
 
 use git's diff subcommand for general diffing.
 
-### [gc (shrc)](/home/shrc#L160)
+### [gc (shrc)](/home/shrc#L176)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (shrc)](/home/shrc#L162)
+### [counts (shrc)](/home/shrc#L178)
 
 count files in the current directory, including files found recursively.
 
-### [exts (shrc)](/home/shrc#L163)
+### [exts (shrc)](/home/shrc#L179)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (shrc)](/home/shrc#L164)
+### [nocom (shrc)](/home/shrc#L180)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (shrc)](/home/shrc#L165)
+### [jrep (shrc)](/home/shrc#L181)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (shrc)](/home/shrc#L166)
+### [bomb (shrc)](/home/shrc#L182)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (shrc)](/home/shrc#L167)
+### [cleanse (shrc)](/home/shrc#L183)
 
 strip unprintable and non-ASCII characters.
 
-### [double (shrc)](/home/shrc#L168)
+### [double (shrc)](/home/shrc#L184)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (shrc)](/home/shrc#L171)
+### [katagana (shrc)](/home/shrc#L187)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [picky (shrc)](/home/shrc#L173)
+### [picky (shrc)](/home/shrc#L189)
 
 list pacman packages that were manually installed and are not in some common package groups.
 this list can be used to assist later reinstalls.
 
-### [unused (shrc)](/home/shrc#L176)
+### [unused (shrc)](/home/shrc#L192)
 
 list pacman packages that weren't installed explicitly and don't satisfy any dependencies.
 this list can be used to free up some disk space.
 
-### [makepkgf (shrc)](/home/shrc#L179)
+### [makepkgf (shrc)](/home/shrc#L195)
 
 make the freakin' package!
 
-### [rakef (shrc)](/home/shrc#L180)
+### [rakef (shrc)](/home/shrc#L196)
 
 make the freakin' gem!
 
-### [pl (shrc)](/home/shrc#L182)
+### [pl (shrc)](/home/shrc#L198)
 
 print each argument on its own line.
 

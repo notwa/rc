@@ -262,9 +262,9 @@ unlet s:exs_re
 "if s:Enabled('g:python_slow_sync')
 syn sync minlines=2000
 "else
-"" This is fast but code inside triple quoted strings screws it up. It
-"" is impossible to fix because the only way to know if you are inside a
-"" triple quoted string is to start from the beginning of the file.
+" This is fast but code inside triple quoted strings screws it up. It
+" is impossible to fix because the only way to know if you are inside a
+" triple quoted string is to start from the beginning of the file.
 "syn sync match pythonSync grouphere NONE '):$'
 "syn sync maxlines=200
 "endif

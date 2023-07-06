@@ -391,6 +391,10 @@ let g:netrw_fastbrowse = 0            " so THAT'S what's been causing me agony
 set background=dark
 try | colorscheme minimalist | catch /E185/ | colorscheme desert | endtry
 
+" barely any colorschemes set these to anything useful. negligence? indifference?
+hi diffRemoved ctermfg=168 guifg=#d75f87
+hi diffAdded   ctermfg=78  guifg=#5fd75f
+
 " ctrlp {{{1
 
 map <silent> <c-n> :CtrlPBuffer<cr>

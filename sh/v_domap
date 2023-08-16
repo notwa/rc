@@ -10,8 +10,7 @@ v_domap() {
     local _k_="$1" _v_= _new_= _next_= _i_= _o_=
     eval "_v_=\"\$$_k_\""
     while [ -n "$_v_" ]; do
-        _next_="${_v_#[! ]}"
-        [ "$_next_" != "$_v_" ] || _next_="${_v_# }"
+        _next_="${_v_#?}"
         _i_="${_v_%"$_next_"}"; _v_="$_next_"
         map
         _new_="$_new_$_o_"

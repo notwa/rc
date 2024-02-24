@@ -1,7 +1,7 @@
 #!/usr/bin/env false
 # for ash, dash, bash, and zsh.
 
-[ -n "$ZSH_VERSION" -o -n "$BASH_VERSION" ] && FANCY=1 || FANCY=0
+_=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect zsh and bash
 if [ "$FANCY" = 0 ]; then
     . ~/.prep # handle boring stuff like /etc/profile and $PATH
 fi
@@ -22,13 +22,8 @@ else
 fi
 
 ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
-    if [ $# -ne 1 ]; then
-        printf 'ADDPATH: expected exactly 1 argument, got %s\n' $# >&2
-        return 2
-    fi
-    if [ "$1" != "${1#[A-Z]:\\}" ]; then
-        set -- "$(cygpath -u "$1" || printf '%s\n' "$1")"
-    fi
+    [ $# = 1 ] || { printf >&2 'ADDPATH: expected exactly 1 argument, got %s\n' $#; return 64; }
+    [ "$1" = "${1#[A-Z]:\\}" ] || set -- "$(cygpath -u "$1" || printf '%s\n' "$1")"
     set -- "$(readlink -f "$1")" "$1"
     if ! [ -d "$1" ]; then
         if [ -e "$1" ]; then
@@ -51,7 +46,7 @@ ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
 }
 
 ROPATH() {
-    [ $# -eq 0 ] || { printf '%s: expected exactly %s arguments, got %s\n' ROPATH 0 $# >&2; return 2; }
+    [ $# = 0 ] || { printf >&2 'ROPATH: expected exactly 0 arguments, got %s\n' $#; return 64; }
     local segment= previous= newpath= oldpath="$PATH:"
     while segment="${oldpath%%:*}"; [ "$segment" != "$oldpath" ]; do
         [ -z "$segment" ] || [ -z "$previous" ] || newpath="$newpath$previous:"
@@ -105,6 +100,8 @@ if [ "$FANCY" = 1 ]; then
     #alias make="$(have colormake || have make)"
 fi
 
+if false; then # currently in the process of rewriting these
+
 # just flags {{{2
 
 export LESS='-SRQc'
@@ -136,7 +133,7 @@ alias gb='git --no-pager branch' ### @- display the current git branch.
 ### the *gb* package that i don't use.
 gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
     local commit="${1:-HEAD}"
-    [ $# -le 1 ] || { printf '%s: %s\n' gdp "too many arguments" >&2; return 2; }
+    [ $# -le 1 ] || { printf '%s: %s\n' gdp "too many arguments" >&2; return 64; }
     gd "$commit~" "$commit"
 }
 
@@ -194,5 +191,7 @@ alias unused='comm -23 <(pacman -Qtq | sort) <(pacman -Qeq | sort) | tr -d "\t"'
 ### this list can be used to free up some disk space.
 alias makepkgf='makepkg -Af --skipchecksums --skippgpcheck' ### @- make the freakin' package!
 alias rakef='rake && gem build *.gemspec && gem install *.gem' ### @- make the freakin' gem!
+
+fi
 
 pl() { printf '%s\n' "$@"; } ### @- print each argument on its own line.

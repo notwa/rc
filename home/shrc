@@ -100,6 +100,13 @@ else
     ll() { ls -lAX --group-directories-first --color=force "$@" | less; }
 fi
 
+gd() { git diff -U2 "$@"; } ### @- invoke git's diff subcommand with fewer lines of context.
+gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
+    local commit="${1:-HEAD}"
+    [ $# -le 1 ] || { printf '%s: %s\n' gdp "too many arguments" >&2; return 64; }
+    gd "$commit~" "$commit"
+}
+
 # enable colors {{{2
 
 if [ "$FANCY" = 1 ]; then
@@ -129,7 +136,6 @@ alias curLs="curl -L --no-progress-meter"
 alias get="git clone --single-branch --depth 1" ### @- retrieve the most recent files from the default branch of a git repository, and not much else.
 alias gs='git status' ### @- invoke git's status subcommand.
 ### **TODO:** consider renaming because gs(1) already exists.
-alias gd='git diff -U2' ### @- invoke git's diff subcommand with fewer lines of context.
 alias gds='git --no-pager diff --stat' ### @- display difference stats from git.
 alias gl='git log --oneline' ### @- invoke git's log subcommand with a single line per commit.
 ### **TODO:** consider renaming because [gl(1)](https://github.com/gitless-vcs/gitless) already exists.
@@ -140,11 +146,6 @@ alias gr='git remote -v' ### @- display remote git repositories verbosely.
 alias gb='git --no-pager branch' ### @- display the current git branch.
 ### **NOTE:** there also exists a gb(1) program provided by
 ### the *gb* package that i don't use.
-gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
-    local commit="${1:-HEAD}"
-    [ $# -le 1 ] || { printf '%s: %s\n' gdp "too many arguments" >&2; return 64; }
-    gd "$commit~" "$commit"
-}
 
 # being specific {{{2
 

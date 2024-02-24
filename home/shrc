@@ -91,6 +91,9 @@ fi
 
 # simple commands and aliases {{{1
 
+pl() ### @- print each argument on its own line.
+  { printf '%s\n' "$@"; }
+
 ### @ ll - list files verbosely, fancily, ordered, but not recursively.
 if has lr; then
     ll() { lr -1lshGG -o tev "$@" | less; }
@@ -100,12 +103,89 @@ else
     ll() { ls -lAX --group-directories-first --color=force "$@" | less; }
 fi
 
-gd() { git diff -U2 "$@"; } ### @- invoke git's diff subcommand with fewer lines of context.
 gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
     local commit="${1:-HEAD}"
     [ $# -le 1 ] || { printf '%s: %s\n' gdp "too many arguments" >&2; return 64; }
     gd "$commit~" "$commit"
 }
+
+gd() ### @- invoke git's diff subcommand with fewer lines of context.
+  { git diff -U2 "$@"; }
+
+rgn() ### @- invoke ripgrep without respecting `.gitignore` files.
+  { rg -u "$@"; }
+
+ryp()
+  { rg -M99 -g '*.py' "$@"; }
+
+curls() ### @- invoke curl with less noise.
+  { curl -sS "$@"; }
+
+curLs()
+  { curl -L --no-progress-meter "$@"; }
+
+ash()
+  { PS1='$ ' busybox ash "$@"; }
+
+cort()
+  { LC_ALL=C sort "$@"; }
+
+revend() ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
+  { objcopy -I binary -O binary --reverse-bytes=4 "$@"; }
+
+clone() ### @- invoke rsync suitably for creating virtually indistinguishable copies of files.
+  { maybesudo rsync -aHA --info=progress2 --no-i-r "$@"; }
+
+aligntabs() ### @- align tab-delimited fields in stdin.
+  { column -t -s$'\t' "$@"; }
+
+crawla() ### @- play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
+  { ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl "$@"; }
+
+crawlz() ### @- play Dungeon Crawl: Stone Soup through ssh on the develz server.
+  { ssh crawl@crawl.develz.org -i ~/.ssh/crawl "$@"; }
+
+diff() ### @- use git's diff subcommand for general diffing.
+  { git diff --color=auto --no-ext-diff --no-index --no-prefix "$@"; }
+
+gc() ### @- columnize text by using git's column subcommand.
+### **TODO:** consider renaming because gc(1) already exists.
+  { git column --mode=dense --padding=2 "$@"; }
+
+counts() ### @- count files in the current directory, including files found recursively.
+  { find . | wc -l "$@"; }
+
+exts() ### @- count and sort file extensions in the current directory, including files found recursively.
+  { find -type f | grep -o '\\.[^/.]*$' | sort | uniq -c | sort -n "$@"; }
+
+nocom() ### @- strip single-line C-like and shell-like comments.
+  { grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)" "$@"; }
+
+jrep() ### @- extract strings comprised of basic ASCII or Japanese codepoints.
+  { grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+" "$@"; }
+
+bomb() ### @- add a Byte-Order Mark to a file.
+  { uconv -f utf-8 -t utf-8 --add-signature "$@"; }
+
+cleanse() ### @- strip unprintable and non-ASCII characters.
+  { tr -cd "\11\12\15\40-\176" "$@"; }
+
+double() ### @- print every line twice. <br/> print every line twice.
+### **NOTE:** there also exists a double(1) program provided by
+### the *plotutils* package that i don't use.
+  { awk "{print;print}" "$@"; }
+
+katagana() ### @- convert katakana codepoints to their equivalent hiragana.
+### this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
+  { perlu -MUnicode::Normalize -pe\''$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r''\' "$@"; }
+
+makepkgf() ### @- make the freakin' package!
+  { makepkg -Af --skipchecksums --skippgpcheck "$@"; }
+
+rakef() ### @- make the freakin' gem!
+  { rake && gem build *.gemspec && gem install *.gem "$@"; }
+
+alias rg="rg -M200"
 
 # enable colors {{{2
 
@@ -117,20 +197,16 @@ if [ "$FANCY" = 1 ]; then
     #alias make="$(have colormake || have make)"
 fi
 
-alias rg="rg -M200"
+# garbage {{{1
 
-if false; then # currently in the process of rewriting these
+if false; then # currently in the process of nuking these
 
 # just flags {{{2
 
 alias fils="du -bahd1" ### @- (GNU du) display human-friendly filesizes for the files in a directory.
 alias lsa="ls -A --group-directories-first" ### @- (GNU ls) list files with directories and dotfiles ordered first.
 alias perlu='perl -Mopen=locale -Mutf8' ### @- invoke perl expecting files with UTF-8 encoding.
-alias rgn="rg -u" ### @- invoke ripgrep without respecting `.gitignore` files.
-alias ryp="rg -M99 -g '*.py'"
 alias cms="cryptominisat5 --verb 0" ### @- invoke cryptominisat5 with less noise.
-alias curls="curl -sS" ### @- invoke curl with less noise.
-alias curLs="curl -L --no-progress-meter"
 
 # git {{{2
 
@@ -150,14 +226,7 @@ alias gb='git --no-pager branch' ### @- display the current git branch.
 
 # being specific {{{2
 
-alias ash="PS1='$ ' busybox ash"
-alias cort='LC_ALL=C sort'
 alias pip="maybesudo -H pip3"
-alias revend='objcopy -I binary -O binary --reverse-bytes=4' ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
-alias clone='maybesudo rsync -aHA --info=progress2 --no-i-r' ### @- invoke rsync suitably for creating virtually indistinguishable copies of files.
-alias aligntabs="column -t -s$'\t'" ### @- align tab-delimited fields in stdin.
-alias crawla='ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl' ### @- play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
-alias crawlz='ssh crawl@crawl.develz.org -i ~/.ssh/crawl' ### @- play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
 alias eamv='ea move' ### @- invoke [`ea move`.](#ea)
 alias eacp='ea copy' ### @- invoke [`ea copy`.](#ea)
@@ -165,29 +234,12 @@ alias earm='ea delete' ### @- invoke [`ea delete`.](#ea)
 
 # providing extra functionality {{{2
 
-alias diff="git diff --color=auto --no-ext-diff --no-index --no-prefix" ### @- use git's diff subcommand for general diffing.
-alias gc="git column --mode=dense --padding=2" ### @- columnize text by using git's column subcommand.
-### **TODO:** consider renaming because gc(1) already exists.
-alias counts='find . | wc -l' ### @- count files in the current directory, including files found recursively.
-alias exts="find -type f | grep -o '\\.[^/.]*$' | sort | uniq -c | sort -n" ### @- count and sort file extensions in the current directory, including files found recursively.
-alias nocom='grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)"' ### @- strip single-line C-like and shell-like comments.
-alias jrep='grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+"' ### @- extract strings comprised of basic ASCII or Japanese codepoints.
-alias bomb='uconv -f utf-8 -t utf-8 --add-signature' ### @- add a Byte-Order Mark to a file.
-alias cleanse='tr -cd "\11\12\15\40-\176"' ### @- strip unprintable and non-ASCII characters.
-alias double='awk "{print;print}"' ### @- print every line twice. <br/> print every line twice.
-### **NOTE:** there also exists a double(1) program provided by
-### the *plotutils* package that i don't use.
-alias katagana='perlu -MUnicode::Normalize -pe'"'"'$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r'"'" ### @- convert katakana codepoints to their equivalent hiragana.
-### this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 alias picky='comm -23 <(pacman -Qetq | sort -u) <(pacman -Qgq base base-devel xorg xorg-drivers xfce4 mingw-w64-x86_64-toolchain 2>/dev/null | sort -u) | tr -d "\t"' ### @-
 ### list pacman packages that were manually installed and are not in some common package groups.
 ### this list can be used to assist later reinstalls.
 alias unused='comm -23 <(pacman -Qtq | sort) <(pacman -Qeq | sort) | tr -d "\t"' ### @-
 ### list pacman packages that weren't installed explicitly and don't satisfy any dependencies.
 ### this list can be used to free up some disk space.
-alias makepkgf='makepkg -Af --skipchecksums --skippgpcheck' ### @- make the freakin' package!
-alias rakef='rake && gem build *.gemspec && gem install *.gem' ### @- make the freakin' gem!
 
 fi
 
-pl() { printf '%s\n' "$@"; } ### @- print each argument on its own line.

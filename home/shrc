@@ -117,6 +117,8 @@ if [ "$FANCY" = 1 ]; then
     #alias make="$(have colormake || have make)"
 fi
 
+alias rg="rg -M200"
+
 if false; then # currently in the process of rewriting these
 
 # just flags {{{2
@@ -124,7 +126,6 @@ if false; then # currently in the process of rewriting these
 alias fils="du -bahd1" ### @- (GNU du) display human-friendly filesizes for the files in a directory.
 alias lsa="ls -A --group-directories-first" ### @- (GNU ls) list files with directories and dotfiles ordered first.
 alias perlu='perl -Mopen=locale -Mutf8' ### @- invoke perl expecting files with UTF-8 encoding.
-alias rg="rg -M200"
 alias rgn="rg -u" ### @- invoke ripgrep without respecting `.gitignore` files.
 alias ryp="rg -M99 -g '*.py'"
 alias cms="cryptominisat5 --verb 0" ### @- invoke cryptominisat5 with less noise.

@@ -293,7 +293,7 @@ function {
     for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
         alias $x="nocorrect ${aliases[$x][@]:-$x}"
     for x in ai arith curl fc find ftp hex history let locate \
-             rsync scp sftp tw twitch wget yt-dlp yt ytg
+             rsync scp sftp tw twitch wget yt yt-dlp ytdl ytg
         alias $x="noglob ${aliases[$x][@]:-$x}"
 }
 

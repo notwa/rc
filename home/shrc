@@ -88,7 +88,16 @@ if [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ]; then
     fi
 fi
 
-# aliases {{{1
+# simple commands and aliases {{{1
+
+### @ ll - list files verbosely, fancily, ordered, but not recursively.
+if has lr; then
+    ll() { lr -1lshGG -o tev "$@" | less; }
+elif has lr.com; then # https://eaguru.guru/t/lr.com
+    ll() { lr.com -1lshGG -o tuev "$@" | less; }
+else
+    ll() { ls -lAX --group-directories-first --color=force "$@" | less; }
+fi
 
 # enable colors {{{2
 
@@ -157,15 +166,6 @@ alias eadelete='ea delete' ### @- deprecated name for [`ea delete`.](#ea)
 alias eamv='ea move' ### @- invoke [`ea move`.](#ea)
 alias eacp='ea copy' ### @- invoke [`ea copy`.](#ea)
 alias earm='ea delete' ### @- invoke [`ea delete`.](#ea)
-
-### @ ll - list files verbosely, fancily, ordered, but not recursively.
-if has lr; then
-    alias ll='ify less lr -1lshGG -o tev'
-elif has lr.com; then # https://eaguru.guru/t/lr.com
-    alias ll='ify less lr.com -1lshGG -o tuev'
-else
-    alias ll='ify less ls -lAX --group-directories-first --color=force'
-fi
 
 # providing extra functionality {{{2
 

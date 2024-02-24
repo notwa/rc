@@ -184,7 +184,7 @@ bindkey '^[[1;8D' dummy # ctrl+alt+shift+arrow
 zle -N edit-command-line # new widget of the same function name
 bindkey '^Xe' edit-command-line # ctrl+x -> e
 
-# these drive letters are to counteract my overzealous zsh completions.
+# these drive letters were once to counteract my overzealous zsh completions.
 hash -d c="/c"
 hash -d d="/d"
 [ -d /media/chibi ] && hash -d e="/media/chibi" || hash -d e="/e"
@@ -208,12 +208,6 @@ alias -g WHEE='${whee[@]}' ### @ WHEE - WHOA but for C++ (specifically g++) only
 alias -g WELP='${welp[@]}' ### @ WELP - expand to C++ flags to enable a C++-as-C facade.
 
 alias sc="~/sh/sc" # only runs in bash (for now), so be explicit with path
-
-# needs the "function" keyword or else zsh complains:
-function tw() { ### @-
-    ### invoke `twitch` as a job with both stdout and stderr silenced.
-    twitch "$@" OMFG STFU &
-}
 
 function {
     # initialize prompts.
@@ -302,4 +296,4 @@ function {
 #compdef wat=which
 #. ~/.prezto-compinit
 
-[ ! -e ~/.lol ] || . ~/.lol
+! [ -e ~/.lol ] || . ~/.lol

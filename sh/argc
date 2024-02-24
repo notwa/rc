@@ -22,7 +22,7 @@ argc() { ### @- validate the number of arguments in a function.
     # note that $zero can be empty, but must be set.
     if [ $# -ne 4 ] || [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
         printf "$usage" argc >&2
-        return 2
+        return 1
     fi
 
     local argc="$1"; shift
@@ -34,7 +34,7 @@ argc() { ### @- validate the number of arguments in a function.
 
     if [ "$argc" != "${argc%%[!0-9]*}" ]; then
         printf "$usage" argc >&2
-        return 2
+        return 1
     fi
 
     case "$cond" in
@@ -43,14 +43,14 @@ argc() { ### @- validate the number of arguments in a function.
     ('-ge') many='at least';;
     (*)
         printf "$usage" argc >&2
-        return 2;;
+        return 1;;
     esac
 
     case "$want" in
     ([0-9]) :;; # no error, continue.
     (*)
         printf "$usage" argc >&2
-        return 2;;
+        return 1;;
     esac
 
     if [ "$argc" "$cond" "$want" ] 2>/dev/null; then
@@ -58,7 +58,7 @@ argc() { ### @- validate the number of arguments in a function.
     else
         local err="expected $many $want argument$plural, got"
         printf '%s: %s %s\n' "$zero" "$err" "$argc" >&2
-        return 1
+        return 64
     fi
 
     return 0

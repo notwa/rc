@@ -9,6 +9,7 @@ shopt -s histappend
 shopt -s checkwinsize
 #shopt -s physical # chaselinks (doesn't exist?)
 set -o hashall # enable hash command
+set +o histexpand # disable expansion of ! characters
 
 [ "$TERM" != rxvt-unicode-256color ] || export TERM=xterm-256color
 

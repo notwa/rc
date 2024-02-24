@@ -8,18 +8,10 @@ fi
 
 # {{{1 utilities
 
-have() {
-    if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi
-} 2>/dev/null
-has() {
-    have "$@"
-} >/dev/null
+have() { if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi; } 2>/dev/null
+has() { have "$@"; } >/dev/null
 
-if has sudo; then
-    maybesudo() { sudo "$@"; }
-else
-    maybesudo() { maybesudo_ "$@"; }
-fi
+has sudo && maybesudo() { sudo "$@"; } || maybesudo() { maybesudo_ "$@"; }
 
 ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
     [ $# = 1 ] || { printf >&2 'ADDPATH: expected exactly 1 argument, got %s\n' $#; return 64; }

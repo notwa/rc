@@ -1,5 +1,5 @@
 #!/usr/bin/env false
-# for ash, dash, bash, and zsh.
+# for busybox ash, dash, bash, and zsh.
 
 if [ -r /etc/msystem ]; then
     # avoid sourcing /etc/profile because forking cygwin processes is awful.

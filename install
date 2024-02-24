@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
-# this script is compatible with following shells:
-# ash, dash, bash, zsh
+# for busybox ash, dash, bash, and zsh.
 
 VERBOSE="${VERBOSE-1}"
 

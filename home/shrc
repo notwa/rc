@@ -1,5 +1,5 @@
 #!/usr/bin/env false
-# for ash, dash, bash, and zsh.
+# for busybox ash, dash, bash, and zsh.
 
 unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect zsh and bash
 if [ "$FANCY" = 0 ]; then . ~/.prep; fi # handle stuff like /etc/profile and $PATH

@@ -28,7 +28,7 @@ document2() {
         @-*)
             s="$code"
             n="${s%%[!a-zA-Z0-9_-]*}" # substr first word (might not be one)
-            while [ -z "$n" ] || ["$n" = function ] || [ "$n" = alias ]; do
+            while [ -z "$n" ] || [ "$n" = function ] || [ "$n" = alias ]; do
                 [ -n "$s" ] || break
                 s="${s#${s%%[!a-zA-Z0-9_-]*}}" # lstrip to end of word
                 s="${s#*[!a-zA-Z0-9_-]}" # lstrip to next word

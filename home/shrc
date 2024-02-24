@@ -1,10 +1,8 @@
 #!/usr/bin/env false
 # for ash, dash, bash, and zsh.
 
-_=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect zsh and bash
-if [ "$FANCY" = 0 ]; then
-    . ~/.prep # handle boring stuff like /etc/profile and $PATH
-fi
+unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect zsh and bash
+if [ "$FANCY" = 0 ]; then . ~/.prep; fi # handle stuff like /etc/profile and $PATH
 
 # {{{1 utilities
 

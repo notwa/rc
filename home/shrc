@@ -56,7 +56,7 @@ umask 022 # umask should be reset else pip might make faulty installations.
 
 ADDPATH "$HOME/opt/local/bin"
 
-# cleanup in case of inherited exports:
+# clean up problematic, potentially-inherited exports:
 unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY
 unset LD_LIBRARY_PATH

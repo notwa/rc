@@ -8,6 +8,7 @@
 ea() { ### @- **TODO:** document.
     local cmd="${1:?missing subcommand}"; shift
     case "$cmd" in
+    # FIXME: at the very least, escape spaces to %20!
     head)
         local trg="$EA_DOMAIN/$EA_DIR/${1:?missing target}"
         curl -s -I "$trg"
@@ -22,6 +23,15 @@ ea() { ### @- **TODO:** document.
         local src="${1:?missing source}"
         local dst="$EA_DOMAIN/$EA_AUTH/"
         curl -g -n -T "$src" "$dst"
+        return;;
+
+    puts)
+        local src="${1:?missing source}"
+        local dst="$EA_DOMAIN/$EA_AUTH/"
+        minisign -QSm "$src" || return
+        curl -g -n -T "$src" "$dst" || return
+        curl -g -n -T "$src.minisig" "$dst" || return
+        rm "$src.minisig"
         return;;
 
     move)

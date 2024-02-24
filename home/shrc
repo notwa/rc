@@ -60,6 +60,7 @@ ADDPATH "$HOME/opt/local/bin"
 unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY
 unset LD_LIBRARY_PATH
+unset CDPATH # grief.
 
 [ "$DESKTOP_SESSION" != xfce ] || export QT_QPA_PLATFORMTHEME="" # unhide menu bar
 #[ "$TERM" != vt102 ] || export TERM="xterm" # PuTTY over serial

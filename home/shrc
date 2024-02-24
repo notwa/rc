@@ -159,12 +159,6 @@ alias aligntabs="column -t -s$'\t'" ### @- align tab-delimited fields in stdin.
 alias crawla='ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl' ### @- play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 alias crawlz='ssh crawl@crawl.develz.org -i ~/.ssh/crawl' ### @- play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-alias eahead='ea head' ### @- deprecated name for [`ea head`.](#ea)
-alias eaget='ea get' ### @- deprecated name for [`ea get`.](#ea)
-alias eaput='ea put' ### @- deprecated name for [`ea put`.](#ea)
-alias eamove='ea move' ### @- deprecated name for [`ea move`.](#ea)
-alias eacopy='ea copy' ### @- deprecated name for [`ea copy`.](#ea)
-alias eadelete='ea delete' ### @- deprecated name for [`ea delete`.](#ea)
 alias eamv='ea move' ### @- invoke [`ea move`.](#ea)
 alias eacp='ea copy' ### @- invoke [`ea copy`.](#ea)
 alias earm='ea delete' ### @- invoke [`ea delete`.](#ea)

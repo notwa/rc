@@ -44,7 +44,7 @@ maybesudo_() ( ### @-
 
         C|U|b|g|i|l|r|s|t)
         # C: close from (fd)
-        # U: other user (in conjunction wiht -l)
+        # U: other user (in conjunction with -l)
         # b: background
         # g: group
         # i: simulate initial login (TODO)
@@ -57,7 +57,7 @@ maybesudo_() ( ### @-
             ;;
 
         u)      # user
-            if [ -z "$USER" -o "$OPTARG" != "$USER" ]; then
+            if [ -z "$USER" ] || [ "$OPTARG" != "$USER" ]; then
                 note 'maybesudo: users other than yourself are unsupported!'
                 return 1
             fi

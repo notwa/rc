@@ -68,7 +68,7 @@ stfu() { ### @-
 
     mkdir -p "$temp" || { printf "%s\n" "$0: failed to create temp directory" >&2; return 1; }
 
-    while [ -e "$temp/out_$time" -o -e "$temp/err_$time" ]; do time=$((time+1)); done
+    while [ -e "$temp/out_$time" ] || [ -e "$temp/err_$time" ]; do time=$((time+1)); done
     local out="$temp/out_$time"
     local err="$temp/err_$time"
 

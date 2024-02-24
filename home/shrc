@@ -76,6 +76,7 @@ export EA_DIR="t"
 export EA_DOMAIN="https://eaguru.guru"
 export EDITOR=vim
 export ENV="$HOME/.shrc" # for dash and ash
+export LESS='-SRQc'
 export PAGER=less
 export PYTHONIOENCODING=utf-8 # damnit python!
 export SSH_AUTH_SOCK=0 # more info: https://0x0.st/NUnw
@@ -113,7 +114,6 @@ if false; then # currently in the process of rewriting these
 
 # just flags {{{2
 
-export LESS='-SRQc'
 alias fils="du -bahd1" ### @- (GNU du) display human-friendly filesizes for the files in a directory.
 alias lsa="ls -A --group-directories-first" ### @- (GNU ls) list files with directories and dotfiles ordered first.
 alias perlu='perl -Mopen=locale -Mutf8' ### @- invoke perl expecting files with UTF-8 encoding.

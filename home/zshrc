@@ -26,6 +26,7 @@ setopt hist_ignore_space        # don't push lines beginning with spaces
 setopt hist_reduce_blanks       # trim superfluous spaces
 setopt hist_save_no_dups
 setopt hist_verify
+setopt interactive_comments     # allow #-comments in interactive shells
 setopt ksh_typeset              # treat `local x=$(cmd)` and `local x="$(cmd)"` the same
 setopt menu_complete            # autoselect the first completion entry
 setopt no_beep                  # be quiet

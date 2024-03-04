@@ -940,66 +940,66 @@ invoke rsync suitably for creating virtually indistinguishable copies of files.
 
 align tab-delimited fields in stdin.
 
-### [crawla (shrc)](/home/shrc#L133)
+### [crawla (shrc)](/home/shrc#L141)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (shrc)](/home/shrc#L136)
+### [crawlz (shrc)](/home/shrc#L144)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (shrc)](/home/shrc#L139)
+### [diff (shrc)](/home/shrc#L147)
 
 use git's diff subcommand for general diffing.
 
-### [gc (shrc)](/home/shrc#L142)
+### [gc (shrc)](/home/shrc#L150)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (shrc)](/home/shrc#L146)
+### [counts (shrc)](/home/shrc#L154)
 
 count files in the current directory, including files found recursively.
 
-### [exts (shrc)](/home/shrc#L149)
+### [exts (shrc)](/home/shrc#L157)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (shrc)](/home/shrc#L152)
+### [nocom (shrc)](/home/shrc#L160)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (shrc)](/home/shrc#L155)
+### [jrep (shrc)](/home/shrc#L163)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (shrc)](/home/shrc#L158)
+### [bomb (shrc)](/home/shrc#L166)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (shrc)](/home/shrc#L161)
+### [cleanse (shrc)](/home/shrc#L169)
 
 strip unprintable and non-ASCII characters.
 
-### [double (shrc)](/home/shrc#L164)
+### [double (shrc)](/home/shrc#L172)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (shrc)](/home/shrc#L169)
+### [katagana (shrc)](/home/shrc#L177)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (shrc)](/home/shrc#L173)
+### [makepkgf (shrc)](/home/shrc#L181)
 
 make the freakin' package!
 
-### [rakef (shrc)](/home/shrc#L176)
+### [rakef (shrc)](/home/shrc#L184)
 
 make the freakin' gem!
 

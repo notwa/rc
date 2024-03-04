@@ -1,9 +1,6 @@
 sh/WIP
 sh/unmaintained
 
-ssh/*
-!ssh/crawl
-
 vim/.*
 vim/backup/*
 vim/bundle/*

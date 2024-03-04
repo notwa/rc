@@ -5,7 +5,7 @@
 # NO_DASH
 # NO_ASH
 
-mpvs() { ### @- invoke mpv with some extra flags suited for streamed sources.
+mpvs() {
     mpv --quiet \
       --loop-playlist=no --no-resume-playback \
       --no-sub \
@@ -91,8 +91,7 @@ case "$(uname -n | tr A-Z a-z)" in
         ;;
 esac
 
-mpv_watch() { ### @-
-    ### play some media in mpv with a bunch of unnecessary filters.
+mpv_watch() {
     argc $# -ge 1 "$0" || return
     pushd ~/play >/dev/null
     local url="$1"; shift
@@ -119,8 +118,7 @@ mpv_watch() { ### @-
     popd >/dev/null
 }
 
-mpv_stream() { ### @-
-    ### watch a stream in mpv with a bunch of unnecessary filters.
+mpv_stream() {
     argc $# -ge 1 "$0" || return
     pushd ~/play >/dev/null
     local url="$1"; shift
@@ -128,55 +126,54 @@ mpv_stream() { ### @-
     popd >/dev/null
 }
 
-twitch() { ### @-
-    ### watch a twitch stream in mpv with a bunch of unnecessary filters.
+twitch() {
     argc $# -ge 1 "$0" || return
     local user="$1"; shift
     mpv_stream "http://twitch.tv/$user" "$@"
 }
 
-yt() { ### @-
-    ### watch a youtube video in mpv with a bunch of unnecessary filters.
-    ### this can be given a full URL or just a video ID.
-    ### remaining arguments are passed to mpv.
-    ### there exist several variants for more specific use cases.
-    ###
-    ### **NOTE:** there also exists a yt(1) program provided by
-    ### the *python3-yt* package that i don't use.
+yt() {
+    # watch a youtube video in mpv with a bunch of unnecessary filters.
+    # this can be given a full URL or just a video ID.
+    # remaining arguments are passed to mpv.
+    # there exist several variants for more specific use cases.
+    #
+    # **NOTE:** there also exists a yt(1) program provided by
+    # the *python3-yt* package that i don't use.
     argc $# -ge 1 "$0" || return
     local vid="$1"; shift
     [ -e "$vid" ] || [ "$vid" != "${vid#http}" ] || vid="ytdl://$vid"
     mpv_watch "$vid" "$@"
 }
 
-ytg() { # @-
+ytg() {
     # watch a youtube video. like `yt`, but with a preference for different formats.
     argc $# -ge 1 "$0" || return
     local vid="$1"; shift
     yt "$vid" "$@" --ytdl-format=22/95/300/best
 }
 
-ytll() { ### @-
-    ### watch a stream from youtube in mpv, etcetera etcetera.
-    ### this is the low latency version that does not support seeking.
+ytll() {
+    # watch a stream from youtube in mpv, etcetera etcetera.
+    # this is the low latency version that does not support seeking.
     argc $# -ge 1 "$0" || return
     ytdl -q -f best "$1" -o - | mpv_stream - --no-ytdl
 }
 
-ytgll() { # @-
+ytgll() {
     # watch a stream from youtube in mpv. like `ytll`, but with a preference for different formats.
     argc $# -ge 1 "$0" || return
     ytdl -q -f 22/95/300/best "$1" -o - | mpv_stream - --no-ytdl
 }
 
-ai() { # @-
+ai() {
     # hai domo!
     argc $# -ge 1 "$0" || return
     yt "$@" --slang=en --sub-font='Tekton Pro' --sub-bold=yes \
       --sub-font-size=60 --sub-border-color='#DD6180' --sub-margin-y=52
 }
 
-asmr() { # @-
+asmr() {
     # for your aural pleasure.
     argc $# -ge 1 "$0" || return
     _M_PROCESS="acompressor=threshold=0.001:ratio=1.33:attack=900:release=6000:makeup=6:knee=8:mix=0.9,alimiter" \

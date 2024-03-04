@@ -145,7 +145,7 @@ for f in \
     hardlink "$f" "$rc/home/${f#.}"
 done
 
-for d in sh .vim .mpv; do
+for d in sh .vim; do
     softlink "$d" "$rc/${d#.}"
 done
 

@@ -1,0 +1,100 @@
+#!/usr/bin/env sh
+# YES_ZSH
+# YES_BASH
+# YES_DASH
+# YES_ASH
+
+grab() ( ### @- download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
+[ -z "${ZSH_VERSION}" ] || emulate sh
+#!/usr/bin/env sh
+umask 002
+pub=RWQdYTxDsppw5ZFpYZFoF6IoPS0okMKlOiz9MwTl0NUoP41r57sf9dI1
+remote=eaguru.guru/t
+unset t
+
+_(){
+task="${1:-do something}"
+}
+will(){
+_ "$*"
+}
+die(){
+x=${?#0}
+printf "failed to %s\n" "$task" >&2
+exit ${x:-1}
+}
+get(){
+wget -qt1 -T5 -O "$@"
+}
+clean(){
+will clean up temporary files
+! [ -d "$t" ] || rm -r "$t" || die
+exit 1
+}
+
+owd="${PWD:?unsupported}"
+
+will create temporary directory
+trap clean INT EXIT
+t="$(exec mktemp -d)" && cd "$t" || die
+
+for f
+do fn="${f##*/}"
+fn="${fn%%\?*}" # for shame, wget
+fn="${fn%%#*}"
+
+will ensure filename is valid
+case "$fn" in
+(.) false;;
+(..) false;;
+([!\ -~]) false;;
+([\":\<\>?\\\|]) false;;
+esac || die
+touch -- "$fn" || die
+
+will ensure supported protocols # busybox restricts this
+case "$f" in
+(http://*);;
+(https://*);;
+(ftp://*);;
+(ftps://*);; # buggy
+(*:*)
+printf 'unsupported protocol: %s\n' "${f%%:*}" >&2
+die;;
+(*)
+f="https://$remote/$fn";;
+esac
+g="https://$remote/$fn.minisig"
+
+will download "$fn" from "$f"
+get "$fn" -- "$f" || die
+
+will download "$fn.minisig" from "$g"
+get "$fn.minisig" -- "$g" || die
+
+will verify file integrity of "$fn"
+minisign -QVm "$fn" -P "$pub" || die
+
+will determine basic file type
+x4="$(exec hexdump -ve '1 1 "%02X"' -n4 -- "$fn")" || die
+x2="${x4%????}"
+if [ "$x4" = 7F454C46 ] || [ "$x2" = 2321 ] || [ "$x2" = 4D5A ]
+then
+will set executable permission
+chmod +x -- "$fn" || die
+fi
+
+done
+
+will remove temporary files
+find -name '*.minisig' -delete || die
+
+will return files to original directory
+cd "$owd" && find "$t" -type f -exec mv -- {} . \; || die
+
+will remove temporary directory # assuming it's now emptied
+rmdir "$t" || die
+trap - INT EXIT
+)
+
+[ -n "${preload+-}" ] || grab "$@"

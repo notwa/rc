@@ -130,11 +130,19 @@ clone() ### @- invoke rsync suitably for creating virtually indistinguishable co
 aligntabs() ### @- align tab-delimited fields in stdin.
   { column -t -s$'\t' "$@"; }
 
+__crawl() (
+    unset CDPATH && cd "${HOME:?\$HOME is unset}" || return
+    [ -d .ssh ] || install -m700 -d .ssh || return # TODO: use umask instead?
+    cd .ssh || return
+    if ! [ -s crawl ]; then grab crawl && chmod 0600 crawl || return; fi
+    exec ssh -F none -i crawl "$@"
+)
+
 crawla() ### @- play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
-  { ssh joshua@crawl.akrasiac.org -i ~/.ssh/crawl "$@"; }
+  { __crawl joshua@crawl.akrasiac.org "$@"; } # password is joshua
 
 crawlz() ### @- play Dungeon Crawl: Stone Soup through ssh on the develz server.
-  { ssh crawl@crawl.develz.org -i ~/.ssh/crawl "$@"; }
+  { __crawl crawl@crawl.develz.org "$@"; }
 
 diff() ### @- use git's diff subcommand for general diffing.
   { git diff --color=auto --no-ext-diff --no-index --no-prefix "$@"; }

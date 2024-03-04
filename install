@@ -2,7 +2,6 @@
 # for busybox ash, dash, bash, and zsh.
 
 VERBOSE="${VERBOSE-1}"
-
 NAME="$0"
 
 die() {
@@ -12,25 +11,30 @@ die() {
     exit 1
 } >&2
 
+pl() { # print lines
+    printf '%s\n' "$@"
+}
+
 backup() {
     : "${1:?missing argument}"
-    printf '%s\n' "backing up $1"
-    mkdir -p "${backup_dir:?backup_dir unset}/$(dirname "$1")"
-    [ ! -e "$backup_dir/$1" ] || die "backup already exists"
-    mv "$1" "$backup_dir/$1"
+    pl "backing up $1"
+    mkdir -p "${backup_dir:?backup_dir unset}/${1%/*}" || die "failed to create backup directory"
+    ! [ -e "$backup_dir/$1" ] || die "backup already exists: $backup_dir/$1"
+    mv "$1" "$backup_dir/$1" || die "failed to backup $1"
 }
 
 hardlink() {
     : "${1:?missing argument}"
     : "${2:?missing argument}"
     if [ -e "$1" ]; then
-        [ ! "$1" -ef "$2" ] || return 0
+        ! [ "$1" -ef "$2" ] || return 0
         if [ -h "$1" ]; then
-            printf '%s\n' "removing symbolic link $1"
+            pl "removing symbolic link $1"
             rm "$1" || die "failed to remove symbolic link"
         fi
         if [ -s "$1" ]; then
-            backup "$1" || die "$1 already exists"
+            #diff -U3 "$1" "$2" >>/tmp/installed.patch
+            backup "$1"
         fi
     fi
 
@@ -43,7 +47,7 @@ softlink_nix() {
     if [ -e "$1" ]; then
         if [ -h "$1" ]; then
             [ "$(readlink "$1")" != "$2" ] || return 0
-            printf '%s\n' "removing symbolic link $1"
+            pl "removing symbolic link $1"
             rm "$1" || die "failed to remove symbolic link"
         else
             die "$1 already exists and is not a symbolic link"
@@ -55,8 +59,8 @@ softlink_nix() {
 
 list_files() {
     find "${1:-.}" -maxdepth 1 -printf "%P\n" | while read -r f; do
-        [ "${#f}" -gt 0 ] || continue
-        printf "%s\n" "$f"
+        [ "${#f}" != 0 ] || continue
+        pl "$f"
     done
 }
 
@@ -91,17 +95,19 @@ find_new_files() (
     list_files "$1" | while read -r f; do
         d1="$1/$f"
         d2="$2/$f"
-        [ "$d1" != ".vim/.netrwhist" ] || continue
-        [ "$d1" != ".vim/backup" ] || continue
-        [ "$d1" != ".vim/bundle" ] || continue
-        [ "$d1" != ".vim/swp" ] || continue
-        [ "$d1" != ".vim/undo" ] || continue
+
+        case "$d1" in
+        (.vim/.netrwhist) continue;;
+        (.vim/backup) continue;;
+        (.vim/bundle) continue;;
+        (.vim/swp) continue;;
+        (.vim/undo) continue;;
+        esac
 
         if [ -d "$d2" ]; then
             find_new_files "$d1" "$d2" || exit
-        elif [ ! "$d1" -ef "$d2" ]; then
-            ind=
-            [ ! -d "$d1" ] || ind=/
+        elif ! [ "$d1" -ef "$d2" ]; then
+            [ -d "$d1" ] && ind=/ || ind=
             if [ "$VERBOSE" -lt 1 ]; then
                 printf ' + %s%s\n' "$d1" "$ind" >&2
             else
@@ -123,17 +129,19 @@ softlink() {
     fi
 }
 
-which readlink >/dev/null || die 'failed sanity check (check your $PATH)'
+readlink -e / >/dev/null || die 'failed sanity check (check your $PATH)'
 
-rc="$(readlink -f "$(dirname "$NAME")" )"
-[ -d "$rc" ] || die "failed to determine rc directory"
+unset CDPATH
+rc="$(readlink -f "$0")" && rc="${rc%/*}" && cd "$rc" || die "failed to determine rc directory"
 cd "${HOME:?HOME variable empty or unset}" || die "failed to change directory"
 
-backup_dir="$rc/backup-$(date -u '+%s')"
-[ ! -d "$backup_dir" ] || die "backup directory already exists"
+backup_dir="$rc/backup-$(date -u +%s)" || die "failed to determine date"
+! [ -d "$backup_dir" ] || die "backup directory already exists"
 
-for f in .shrc .bashrc .zshrc .prep .prezto-compinit .ls_colors \
-  .vimrc .inputrc .Xresources .screenrc .tmux.conf; do
+for f in \
+    .shrc .bashrc .zshrc .prep .prezto-compinit .ls_colors \
+    .vimrc .inputrc .Xresources .screenrc .tmux.conf \
+; do
     hardlink "$f" "$rc/home/${f#.}"
 done
 
@@ -142,30 +150,14 @@ for d in sh .vim .mpv; do
 done
 
 # ensure that .bashrc gets executed
-if [ ! -e .bash_profile ] || ! grep -qF .bashrc .bash_profile; then
-    echo >> .bash_profile
-    printf '%s\n' '[ ! -f ~/.bashrc ] || . ~/.bashrc' >> .bash_profile
+if ! [ -e .bash_profile ] || ! grep -qF .bashrc .bash_profile; then
+    pl '' '! [ -f ~/.bashrc ] || . ~/.bashrc' >>.bash_profile
 fi
 
-is_empty() {
-    set -- "${1:?is_empty requires an argument}"
-    find "$1" -type f | while read -r dummy; do
-        return 1
-    done || return 1 # just in case pipes mess things up
-    return 0
-}
-
 # delete any directory structure that may have been included with the OS.
-# note that i'm careful not to delete them if they contain even a single file,
-# but you might still want to remove this if you're adapting my install script.
 for d in Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
-    [ -d "$d" ] || continue
-    if is_empty "$d"; then
-        rm -r "$d" # doesn't really matter if it fails
-    else
-        printf '%s\n' "not removing $d because it contains files"
-    fi
+    ! [ -d "$d" ] || rmdir "$f"
 done
 
 # create instead my preferred directory structure.
-mkdir -p opt/local/bin src work play
+mkdir -p opt/local/bin src work play || die "failed to create directories"

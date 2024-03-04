@@ -343,6 +343,10 @@ this script utilizes the CSS provided at
 ~/sh/ghmd < ~/rc/README.md > ~/rc/README.html
 ```
 
+### [grab](/sh/grab#L7)
+
+download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
+
 ### [grop](/sh/grop#L8)
 
 invoke grep with `-oP`.
@@ -727,37 +731,6 @@ asses
 
 ```
 
-### [mpvs (sh/streamcrap)](/sh/streamcrap#L8)
-
-invoke mpv with some extra flags suited for streamed sources.
-
-### [mpv_watch (sh/streamcrap)](/sh/streamcrap#L94)
-
-play some media in mpv with a bunch of unnecessary filters.
-
-### [mpv_stream (sh/streamcrap)](/sh/streamcrap#L122)
-
-watch a stream in mpv with a bunch of unnecessary filters.
-
-### [twitch (sh/streamcrap)](/sh/streamcrap#L131)
-
-watch a twitch stream in mpv with a bunch of unnecessary filters.
-
-### [yt (sh/streamcrap)](/sh/streamcrap#L138)
-
-watch a youtube video in mpv with a bunch of unnecessary filters.
-this can be given a full URL or just a video ID.
-remaining arguments are passed to mpv.
-there exist several variants for more specific use cases.
-
-**NOTE:** there also exists a yt(1) program provided by
-the *python3-yt* package that i don't use.
-
-### [ytll (sh/streamcrap)](/sh/streamcrap#L159)
-
-watch a stream from youtube in mpv, etcetera etcetera.
-this is the low latency version that does not support seeking.
-
 ### [sum](/sh/sum#L7)
 
 compute the summation of its arguments without forking processes.
@@ -1064,6 +1037,7 @@ make the freakin' gem!
 | [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ghmd](#ghmd)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [glug](#glug)                                 |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
+| [grab](#grab)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [grop](#grop)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [grop4](#grop4)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

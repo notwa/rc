@@ -25,6 +25,8 @@ __ea_urlencode() {
 } 2>&- # send bash's complaints to the abyss
 
 __ea() { ### @ ea - **TODO:** document.
+    unset LC_ALL cmd dst src trg
+    export LC_ALL=C
     cmd="${1:?missing subcommand}"; shift
     case "$cmd" in
     (head)

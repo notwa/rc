@@ -24,29 +24,28 @@ __ea_urlencode() {
     done
 } 2>&- # send bash's complaints to the abyss
 
-ea() { ### @- **TODO:** document.
-    local cmd="${1:?missing subcommand}"; shift
+ea() ( ### @- **TODO:** document.
+    cmd="${1:?missing subcommand}"; shift
     case "$cmd" in
     head)
-        local trg="$(__ea_urlencode "$EA_DIR/${1:?missing target}")"
+        trg="$(__ea_urlencode "$EA_DIR/${1:?missing target}")"
         __ea_curl -I "$EA_DOMAIN/$trg"
         return;;
 
     get)
-        local trg="$(__ea_urlencode "$EA_DIR/${1:?missing target}")"
+        trg="$(__ea_urlencode "$EA_DIR/${1:?missing target}")"
         __ea_curl -f -R "$EA_DOMAIN/$trg" -o "${2:-$1}"
         return;;
 
     put)
-        local src="${1:?missing source}"
-        local dst="$EA_DOMAIN/$EA_AUTH/"
+        src="${1:?missing source}"
+        dst="$EA_DOMAIN/$EA_AUTH/"
         __ea_curl -g -n -T "$src" "$dst"
         return;;
 
     puts)
-        local src=
         for src; do
-            local dst="$EA_DOMAIN/$EA_AUTH/"
+            dst="$EA_DOMAIN/$EA_AUTH/"
             minisign -QSm "$src" || return
             __ea_curl -g -n -T "$src" "$dst" || return
             __ea_curl -g -n -T "$src.minisig" "$dst" || return
@@ -55,19 +54,19 @@ ea() { ### @- **TODO:** document.
         return;;
 
     move)
-        local src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"
-        local dst="$EA_DOMAIN/$EA_DIR/${2:?missing destination}"
+        src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"
+        dst="$EA_DOMAIN/$EA_DIR/${2:?missing destination}"
         __ea_curl -n -X MOVE -H "Destination: $dst" "$src"
         return;;
 
     copy)
-        local src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"
-        local dst="$EA_DOMAIN/$EA_DIR/${2:?missing destination}"
+        src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"
+        dst="$EA_DOMAIN/$EA_DIR/${2:?missing destination}"
         __ea_curl -n -X COPY -H "Destination: $dst" "$src"
         return;;
 
     delete)
-        local trg="$EA_DOMAIN/$EA_AUTH/${1:?missing target}"
+        trg="$EA_DOMAIN/$EA_AUTH/${1:?missing target}"
         __ea_curl -f -n -X DELETE "$trg"
         return;;
 
@@ -75,6 +74,6 @@ ea() { ### @- **TODO:** document.
         printf 'unknown subcommand: %s\n' "$cmd" >&2
         return 2;;
     esac
-}
+)
 
 [ -n "${preload+-}" ] || ea "$@"

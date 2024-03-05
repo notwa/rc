@@ -306,7 +306,7 @@ $ e /etc/sudoers
 **NOTE:** there also exists an e(1) program provided by
 the *e-wrapper* package that i don't use.
 
-### [ea](/sh/ea#L8)
+### [ea](/sh/ea#L27)
 
 **TODO:** document.
 

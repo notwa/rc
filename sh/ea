@@ -5,50 +5,70 @@
 # YES_DASH
 # YES_ASH
 
+__ea_curl() {
+    curl -q --no-progress-meter 0.0.0.0 >/dev/null 2>&1
+    if [ $? = 2 ]
+    then __ea_curl() { curl -sS "$@"; }
+    else __ea_curl() { curl --no-progress-meter "$@"; }
+    fi
+    __ea_curl "$@"
+}
+
+__ea_urlencode() {
+    while test "$1"; do
+        case "$1" in
+        ([a-zA-Z0-9~_.-]*) printf '%.1s' "$1";; # RFC 3986
+        (*) printf '%%%02X' "'$1";; # bash complains but works
+        esac
+        set -- "${1#?}"
+    done
+} 2>&- # send bash's complaints to the abyss
+
 ea() { ### @- **TODO:** document.
     local cmd="${1:?missing subcommand}"; shift
     case "$cmd" in
-    # FIXME: at the very least, escape spaces to %20!
     head)
-        local trg="$EA_DOMAIN/$EA_DIR/${1:?missing target}"
-        curl -s -I "$trg"
+        local trg="$(__ea_urlencode "$EA_DIR/${1:?missing target}")"
+        __ea_curl -I "$EA_DOMAIN/$trg"
         return;;
 
     get)
-        local trg="$EA_DOMAIN/$EA_DIR/${1:?missing target}"
-        curl -R "$trg" -o "${2:-$1}"
+        local trg="$(__ea_urlencode "$EA_DIR/${1:?missing target}")"
+        __ea_curl -f -R "$EA_DOMAIN/$trg" -o "${2:-$1}"
         return;;
 
     put)
         local src="${1:?missing source}"
         local dst="$EA_DOMAIN/$EA_AUTH/"
-        curl -g -n -T "$src" "$dst"
+        __ea_curl -g -n -T "$src" "$dst"
         return;;
 
     puts)
-        local src="${1:?missing source}"
-        local dst="$EA_DOMAIN/$EA_AUTH/"
-        minisign -QSm "$src" || return
-        curl -g -n -T "$src" "$dst" || return
-        curl -g -n -T "$src.minisig" "$dst" || return
-        rm "$src.minisig"
+        local src=
+        for src; do
+            local dst="$EA_DOMAIN/$EA_AUTH/"
+            minisign -QSm "$src" || return
+            __ea_curl -g -n -T "$src" "$dst" || return
+            __ea_curl -g -n -T "$src.minisig" "$dst" || return
+            rm "$src.minisig"
+        done
         return;;
 
     move)
         local src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"
         local dst="$EA_DOMAIN/$EA_DIR/${2:?missing destination}"
-        curl -n -X MOVE -H "Destination: $dst" "$src"
+        __ea_curl -n -X MOVE -H "Destination: $dst" "$src"
         return;;
 
     copy)
         local src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"
         local dst="$EA_DOMAIN/$EA_DIR/${2:?missing destination}"
-        curl -n -X COPY -H "Destination: $dst" "$src"
+        __ea_curl -n -X COPY -H "Destination: $dst" "$src"
         return;;
 
     delete)
         local trg="$EA_DOMAIN/$EA_AUTH/${1:?missing target}"
-        curl -f -n -X DELETE "$trg"
+        __ea_curl -f -n -X DELETE "$trg"
         return;;
 
     *)

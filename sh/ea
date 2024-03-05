@@ -27,23 +27,23 @@ __ea_urlencode() {
 ea() ( ### @- **TODO:** document.
     cmd="${1:?missing subcommand}"; shift
     case "$cmd" in
-    head)
+    (head)
         trg="$(__ea_urlencode "$EA_DIR/${1:?missing target}")"
         __ea_curl -I "$EA_DOMAIN/$trg"
         return;;
 
-    get)
+    (get)
         trg="$(__ea_urlencode "$EA_DIR/${1:?missing target}")"
         __ea_curl -f -R "$EA_DOMAIN/$trg" -o "${2:-$1}"
         return;;
 
-    put)
+    (put)
         src="${1:?missing source}"
         dst="$EA_DOMAIN/$EA_AUTH/"
         __ea_curl -g -n -T "$src" "$dst"
         return;;
 
-    puts)
+    (puts)
         for src; do
             dst="$EA_DOMAIN/$EA_AUTH/"
             minisign -QSm "$src" || return
@@ -53,24 +53,24 @@ ea() ( ### @- **TODO:** document.
         done
         return;;
 
-    move)
+    (move)
         src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"
         dst="$EA_DOMAIN/$EA_DIR/${2:?missing destination}"
         __ea_curl -n -X MOVE -H "Destination: $dst" "$src"
         return;;
 
-    copy)
+    (copy)
         src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"
         dst="$EA_DOMAIN/$EA_DIR/${2:?missing destination}"
         __ea_curl -n -X COPY -H "Destination: $dst" "$src"
         return;;
 
-    delete)
+    (delete)
         trg="$EA_DOMAIN/$EA_AUTH/${1:?missing target}"
         __ea_curl -f -n -X DELETE "$trg"
         return;;
 
-    *)
+    (*)
         printf 'unknown subcommand: %s\n' "$cmd" >&2
         return 2;;
     esac

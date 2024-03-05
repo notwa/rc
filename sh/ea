@@ -24,7 +24,7 @@ __ea_urlencode() {
     done
 } 2>&- # send bash's complaints to the abyss
 
-ea() ( ### @- **TODO:** document.
+__ea() { ### @ ea - **TODO:** document.
     cmd="${1:?missing subcommand}"; shift
     case "$cmd" in
     (head)
@@ -74,6 +74,7 @@ ea() ( ### @- **TODO:** document.
         printf 'unknown subcommand: %s\n' "$cmd" >&2
         return 2;;
     esac
-)
+}
 
-[ -n "${preload+-}" ] || ea "$@"
+ea()(__ea "$@")
+[ -n "${preload+-}" ] || __ea "$@"

@@ -18,9 +18,13 @@ pl() { # print lines
 backup() {
     : "${1:?missing argument}"
     pl "backing up $1"
-    mkdir -p "${backup_dir:?backup_dir unset}/${1%/*}" || die "failed to create backup directory"
-    ! [ -e "$backup_dir/$1" ] || die "backup already exists: $backup_dir/$1"
-    mv "$1" "$backup_dir/$1" || die "failed to backup $1"
+    set -- "$1" "${backup_dir:?backup_dir unset}" # shorthand for my own sanity
+    [ -d "$2" ] || mkdir "$2" || die "failed to create backup directory"
+    if [ ${1%/*} != "$1" ]; then
+        mkdir -p "$2/${1%/*}" || die "failed to create backup directory"
+    fi
+    ! [ -e "$2/$1" ] || die "backup already exists: $2/$1"
+    mv "$1" "$2/$1" || die "failed to backup $1"
 }
 
 hardlink() {

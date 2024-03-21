@@ -420,7 +420,7 @@ list the contents of an archive file in one of many formats.
 
 borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
 
-### [maybesudo_ (sh/maybesudo)](/sh/maybesudo#L7)
+### [maybesudo](/sh/maybesudo#L7)
 
 mimic certain features of `sudo` for systems without it installed.
 as it stands, this mostly just handles some environment variables.
@@ -581,7 +581,7 @@ $ pegg rthalley dnspython 3933b49
 
 install Python packages using pip,
 but only update their dependencies as required.
-this uses [`maybesudo`](#maybesudo_-shmaybesudo) internally.
+this uses [`maybesudo`](#maybesudo) internally.
 
 ### [pre](/sh/pre#L7)
 

@@ -6,10 +6,6 @@
 
 scropt() { ### @-
     ### run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
-    ###
-    ### ```
-    ### $ ~/sh/sc $(~/sh/scropt -s -d0.5)
-    ### ```
     local now= fn=
     now="$(now)" || return
     fn="$HOME/play/$now.png"

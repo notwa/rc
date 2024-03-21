@@ -82,6 +82,9 @@ fi
 
 # simple commands and aliases {{{1
 
+refresh() ### @- invoke `hash -r`.
+  { hash -r; }
+
 pl() ### @- print each argument on its own line.
   { printf '%s\n' "$@"; }
 

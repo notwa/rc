@@ -496,6 +496,30 @@ $ now '@1234567890'
 2009-02-13_84690000
 ```
 
+### [__oshi (sh/oshi)](/sh/oshi#L7)
+
+upload files (or stdin) to [oshi.at.](https://oshi.at)
+this script exits with the number of failed uploads; up to 255 at once.
+directories are skipped. for now, file expiry is hard-coded at 2 weeks.
+
+```
+$ echo test | oshi
+MANAGE: https://oshi.at/a/7809e5e8a8b5c28555b1e8cadc99b069d08a5d09
+DL: https://oshi.at/ReTn/Dxzy
+
+$ oshi ~/play/{hey,you,fake,empty}
+MANAGE: https://oshi.at/a/9b56e4c5843006d491fabe859ea5746a8f36760c
+DL: https://oshi.at/obFf/hey
+oshi: expires in 14 days: /home/notwa/play/hey
+MANAGE: https://oshi.at/a/f2dc46ae900ca7465a377d7a7942e722f87ff483
+DL: https://oshi.at/JLBc/you
+oshi: expires in 14 days: /home/notwa/play/you
+oshi: no such file: /home/notwa/play/fake
+oshi: skipping directory: /home/notwa/play/empty
+oshi: successfully uploaded 2/4 files
+oshi: failed to upload 2/4 files
+```
+
 ### [oxo](/sh/oxo#L17)
 
 upload files (or stdin) to [0x0.st.](https://0x0.st)
@@ -887,7 +911,7 @@ WHOA but for C++ (specifically g++) only.
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [reload (zshrc)](/home/zshrc#L252)
+### [reload (zshrc)](/home/zshrc#L254)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
@@ -1055,6 +1079,7 @@ make the freakin' gem!
 | [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [oshi](#oshi)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [oxo](#oxo)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pause](#pause)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

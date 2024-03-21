@@ -626,10 +626,6 @@ $ randir
 ./sh
 ```
 
-### [refresh](/sh/refresh#L7)
-
-invoke `hash -r`.
-
 ### [rot13](/sh/rot13#L9)
 
 rot13 with numbers rotated as well.
@@ -654,14 +650,6 @@ i'm sure there's something equivalent for Linux.
 
 WIP
 
-### [sc](/sh/sc#L40)
-
-upload given files to a webserver and return a direct link for sharing them.
-you'll want to tweak this if you use it yourself.
-this contains some extra logic for screenshots created by `scropt`.
-
-**TODO:** consider renaming because sc(1) already exists.
-
 ### [scount](/sh/scount#L7)
 
 perform `sort | uniq -c | sort -n`, preferring GNU awk when available.
@@ -677,10 +665,6 @@ sacbremls ttex in a pdrceailtbe way unsig reegx.
 ### [scropt](/sh/scropt#L7)
 
 run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
-
-```
-$ ~/sh/sc $(~/sh/scropt -s -d0.5)
-```
 
 ### [shcom](/sh/shcom#L7)
 
@@ -928,102 +912,106 @@ return 0, ignoring arguments.
 
 append a directory to `$PATH` if it isn't already present.
 
-### [pl (shrc)](/home/shrc#L85)
+### [refresh (shrc)](/home/shrc#L85)
+
+invoke `hash -r`.
+
+### [pl (shrc)](/home/shrc#L88)
 
 print each argument on its own line.
 
-### [ll (shrc)](/home/shrc#L88)
+### [ll (shrc)](/home/shrc#L91)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [gdp (shrc)](/home/shrc#L97)
+### [gdp (shrc)](/home/shrc#L100)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [gd (shrc)](/home/shrc#L103)
+### [gd (shrc)](/home/shrc#L106)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [rgn (shrc)](/home/shrc#L106)
+### [rgn (shrc)](/home/shrc#L109)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (shrc)](/home/shrc#L112)
+### [curls (shrc)](/home/shrc#L115)
 
 invoke curl with less noise.
 
-### [revend (shrc)](/home/shrc#L124)
+### [revend (shrc)](/home/shrc#L127)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (shrc)](/home/shrc#L127)
+### [clone (shrc)](/home/shrc#L130)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (shrc)](/home/shrc#L130)
+### [aligntabs (shrc)](/home/shrc#L133)
 
 align tab-delimited fields in stdin.
 
-### [crawla (shrc)](/home/shrc#L141)
+### [crawla (shrc)](/home/shrc#L144)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (shrc)](/home/shrc#L144)
+### [crawlz (shrc)](/home/shrc#L147)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (shrc)](/home/shrc#L147)
+### [diff (shrc)](/home/shrc#L150)
 
 use git's diff subcommand for general diffing.
 
-### [gc (shrc)](/home/shrc#L150)
+### [gc (shrc)](/home/shrc#L153)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (shrc)](/home/shrc#L154)
+### [counts (shrc)](/home/shrc#L157)
 
 count files in the current directory, including files found recursively.
 
-### [exts (shrc)](/home/shrc#L157)
+### [exts (shrc)](/home/shrc#L160)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (shrc)](/home/shrc#L160)
+### [nocom (shrc)](/home/shrc#L163)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (shrc)](/home/shrc#L163)
+### [jrep (shrc)](/home/shrc#L166)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (shrc)](/home/shrc#L166)
+### [bomb (shrc)](/home/shrc#L169)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (shrc)](/home/shrc#L169)
+### [cleanse (shrc)](/home/shrc#L172)
 
 strip unprintable and non-ASCII characters.
 
-### [double (shrc)](/home/shrc#L172)
+### [double (shrc)](/home/shrc#L175)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (shrc)](/home/shrc#L177)
+### [katagana (shrc)](/home/shrc#L180)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (shrc)](/home/shrc#L181)
+### [makepkgf (shrc)](/home/shrc#L184)
 
 make the freakin' package!
 
-### [rakef (shrc)](/home/shrc#L184)
+### [rakef (shrc)](/home/shrc#L187)
 
 make the freakin' gem!
 
@@ -1089,11 +1077,9 @@ make the freakin' gem!
 | [preload](#preload)                           |  **false** | ✔️    | ✔️    | ✔️    | ✔️    |
 | [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [randir](#randir)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [refresh](#refresh)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [rs](#rs)                                     |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [running](#running)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [sc](#sc)                                     |       bash | ⭕    | ✔️    | ⭕    | ⭕    |
 | [scount](#scount)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [scropt](#scropt)                             |       bash | ✔️    | ✔️    | ✔️    | ✔️    |

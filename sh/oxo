@@ -46,7 +46,7 @@ oxo() { ### @-
     local f= s=
 
     if [ $# -eq 0 ]; then
-        curl -F'file=@-' https://0x0.st && : $((hits+=1)) || true
+        curl -f -F'file=@-' https://0x0.st && : $((hits+=1)) || true
         total=1
     elif [ $# -gt 255 ]; then
         printf "$err" "oxo: too many arguments (max: 255)" >&2
@@ -92,7 +92,7 @@ oxo() { ### @-
             local d=$(( b*c/8192+3*kib/16+1-32768 ))
             local r=$(( (d*-335+16384)/32768+30 ))
 
-            if ! curl -F"file=@\"$g\"" https://0x0.st; then
+            if ! curl -f -F"file=@\"$g\"" https://0x0.st; then
                 printf "$bad" "oxo: failed to upload file: $f" >&2
             else
                 : $((hits+=1))

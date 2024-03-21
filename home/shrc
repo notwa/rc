@@ -184,6 +184,7 @@ makepkgf() ### @- make the freakin' package!
 rakef() ### @- make the freakin' gem!
   { rake && gem build *.gemspec && gem install *.gem "$@"; }
 
+alias 0x0.st="oxo"
 alias rg="rg -M200"
 
 # enable colors {{{2

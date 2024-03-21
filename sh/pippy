@@ -7,7 +7,7 @@
 pippy() { ### @-
     ### install Python packages using pip,
     ### but only update their dependencies as required.
-    ### this uses [`maybesudo`](#maybesudo_-shmaybesudo) internally.
+    ### this uses [`maybesudo`](#maybesudo) internally.
     if [ -s ~/work/automamba ]; then
         ~/work/automamba --pip install --upgrade --upgrade-strategy only-if-needed --dry-run "$@"
         confirm || return

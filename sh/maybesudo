@@ -4,7 +4,7 @@
 # YES_DASH
 # YES_ASH
 
-maybesudo_() ( ### @-
+__maybesudo() { ### @maybesudo
     ### mimic certain features of `sudo` for systems without it installed.
     ### as it stands, this mostly just handles some environment variables.
     ###
@@ -113,6 +113,7 @@ maybesudo_() ( ### @-
     fi
 
     env "$@"
-)
+}
 
-[ -n "${preload+-}" ] || maybesudo_ "$@"
+maybesudo_()(__maybesudo "$@")
+[ -n "${preload+-}" ] || __maybesudo "$@"

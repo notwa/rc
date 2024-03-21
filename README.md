@@ -496,7 +496,7 @@ $ now '@1234567890'
 2009-02-13_84690000
 ```
 
-### [__oshi (sh/oshi)](/sh/oshi#L7)
+### [oshi](/sh/oshi#L7)
 
 upload files (or stdin) to [oshi.at.](https://oshi.at)
 this script exits with the number of failed uploads; up to 255 at once.

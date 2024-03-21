@@ -8,10 +8,16 @@ pippy() { ### @-
     ### install Python packages using pip,
     ### but only update their dependencies as required.
     ### this uses [`maybesudo`](#maybesudo_-shmaybesudo) internally.
+    if [ -s ~/work/automamba ]; then
+        ~/work/automamba --pip install --upgrade --upgrade-strategy only-if-needed --dry-run "$@"
+        confirm || return
+        ~/work/automamba --pip install --upgrade --upgrade-strategy only-if-needed "$@"
+        return
+    fi
     local sudo="$(has sudo || echo maybesudo_)"
     "$sudo" python3 -m pip install --upgrade --upgrade-strategy only-if-needed "$@"
 }
 
 [ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} has maybesudo
+eval ${preload:-preload} has maybesudo confirm
 [ -n "${preload+-}" ] || pippy "$@"

@@ -1,7 +1,21 @@
-"\e[A": history-search-backward
-"\e[B": history-search-forward
+$include /etc/inputrc
 "\e[1;5C": forward-word
 "\e[1;5D": backward-word
-set show-all-if-ambiguous on
-set completion-ignore-case on
+"\e[1~": beginning-of-line
+"\e[2~": paste-from-clipboard
+"\e[3~": delete-char
+"\e[5~": beginning-of-history
+"\e[6~": end-of-history
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"\e[Z": menu-complete-backward
+TAB:menu-complete
 set bell-style none
+set enable-bracketed-paste on
+set mark-directories on
+set menu-complete-display-prefix on
+set show-all-if-ambiguous on
+set visible-stats on
+$if Bash
+"\es":"\C-asudo \C-e"
+$endif

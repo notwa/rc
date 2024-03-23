@@ -9,7 +9,7 @@ $include /etc/inputrc
 "\e[A": history-search-backward
 "\e[B": history-search-forward
 "\e[Z": menu-complete-backward
-TAB:menu-complete
+TAB: menu-complete
 set bell-style none
 set enable-bracketed-paste on
 set mark-directories on
@@ -17,5 +17,5 @@ set menu-complete-display-prefix on
 set show-all-if-ambiguous on
 set visible-stats on
 $if Bash
-"\es":"\C-asudo \C-e"
+"\es": "\C-asudo \C-e"
 $endif

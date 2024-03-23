@@ -133,7 +133,7 @@ softlink() {
     fi
 }
 
-readlink -e / >/dev/null || die 'failed sanity check (check your $PATH)'
+readlink -f / >/dev/null || die 'failed sanity check (check your $PATH)'
 
 unset CDPATH
 rc="$(readlink -f "$0")" && rc="${rc%/*}" && cd "$rc" || die "failed to determine rc directory"

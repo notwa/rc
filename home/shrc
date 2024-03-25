@@ -89,6 +89,7 @@ pl() ### @- print each argument on its own line.
   { printf '%s\n' "$@"; }
 
 ### @ ll - list files verbosely, fancily, ordered, but not recursively.
+alias ll=; unalias ll # unalias without spitting an error
 if has lr; then
     ll() { lr -1lshGG -o tev "$@" | less; }
 elif has lr.com; then # https://eaguru.guru/t/lr.com

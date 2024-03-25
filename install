@@ -160,7 +160,7 @@ fi
 
 # delete any directory structure that may have been included with the OS.
 for d in bin Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
-    ! [ -d "$d" ] || rmdir "$f"
+    ! [ -d "$d" ] || rmdir "$d"
 done
 
 # create instead my preferred directory structure.

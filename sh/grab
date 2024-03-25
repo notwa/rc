@@ -4,7 +4,7 @@
 # YES_DASH
 # YES_ASH
 
-grab() ( ### @- download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
+__grab() { ### @grab - download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 [ -z "${ZSH_VERSION}" ] || emulate sh
 #!/usr/bin/env sh
 umask 002
@@ -90,11 +90,15 @@ will remove temporary files
 find -name '*.minisig' -delete || die
 
 will return files to original directory
-cd "$owd" && find "$t" -type f -exec mv -- {} . \; || die
+cd "$owd" || die
+find "$t" -type f | while read -r f
+do mv -- "$f" . || die
+done || exit
 
 will remove temporary directory # assuming it's now emptied
 rmdir "$t" || die
 trap - INT EXIT
-)
+}
 
-[ -n "${preload+-}" ] || grab "$@"
+grab()(__grab "$@")
+[ -n "${preload+-}" ] || __grab "$@"

@@ -24,7 +24,10 @@ printf "failed to %s\n" "$task" >&2
 exit ${x:-1}
 }
 get(){
-wget -qt1 -T5 -O "$@"
+if [ -f /usr/bin/curl ]
+then curl -sSm5 -o "$@"
+else wget -qt1 -T5 -O "$@"
+fi
 }
 clean(){
 will clean up temporary files

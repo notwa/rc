@@ -924,94 +924,94 @@ print each argument on its own line.
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [gdp (shrc)](/home/shrc#L100)
+### [gdp (shrc)](/home/shrc#L101)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [gd (shrc)](/home/shrc#L106)
+### [gd (shrc)](/home/shrc#L107)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [rgn (shrc)](/home/shrc#L109)
+### [rgn (shrc)](/home/shrc#L110)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (shrc)](/home/shrc#L115)
+### [curls (shrc)](/home/shrc#L116)
 
 invoke curl with less noise.
 
-### [revend (shrc)](/home/shrc#L127)
+### [revend (shrc)](/home/shrc#L128)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (shrc)](/home/shrc#L130)
+### [clone (shrc)](/home/shrc#L131)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (shrc)](/home/shrc#L133)
+### [aligntabs (shrc)](/home/shrc#L134)
 
 align tab-delimited fields in stdin.
 
-### [crawla (shrc)](/home/shrc#L144)
+### [crawla (shrc)](/home/shrc#L145)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (shrc)](/home/shrc#L147)
+### [crawlz (shrc)](/home/shrc#L148)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (shrc)](/home/shrc#L150)
+### [diff (shrc)](/home/shrc#L151)
 
 use git's diff subcommand for general diffing.
 
-### [gc (shrc)](/home/shrc#L153)
+### [gc (shrc)](/home/shrc#L154)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (shrc)](/home/shrc#L157)
+### [counts (shrc)](/home/shrc#L158)
 
 count files in the current directory, including files found recursively.
 
-### [exts (shrc)](/home/shrc#L160)
+### [exts (shrc)](/home/shrc#L161)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (shrc)](/home/shrc#L163)
+### [nocom (shrc)](/home/shrc#L164)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (shrc)](/home/shrc#L166)
+### [jrep (shrc)](/home/shrc#L167)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (shrc)](/home/shrc#L169)
+### [bomb (shrc)](/home/shrc#L170)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (shrc)](/home/shrc#L172)
+### [cleanse (shrc)](/home/shrc#L173)
 
 strip unprintable and non-ASCII characters.
 
-### [double (shrc)](/home/shrc#L175)
+### [double (shrc)](/home/shrc#L176)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (shrc)](/home/shrc#L180)
+### [katagana (shrc)](/home/shrc#L181)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (shrc)](/home/shrc#L184)
+### [makepkgf (shrc)](/home/shrc#L185)
 
 make the freakin' package!
 
-### [rakef (shrc)](/home/shrc#L187)
+### [rakef (shrc)](/home/shrc#L188)
 
 make the freakin' gem!
 

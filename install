@@ -159,9 +159,9 @@ if ! [ -e .bash_profile ] || ! grep -qF .bashrc .bash_profile; then
 fi
 
 # delete any directory structure that may have been included with the OS.
-for d in Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
+for d in bin Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
     ! [ -d "$d" ] || rmdir "$f"
 done
 
 # create instead my preferred directory structure.
-mkdir -p opt/local/bin src work play || die "failed to create directories"
+mkdir -p .local/bin src work play || die "failed to create directories"

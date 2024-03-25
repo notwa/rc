@@ -52,7 +52,13 @@ ROPATH() {
 
 umask 022 # umask should be reset else pip might make faulty installations.
 
-ADDPATH "$HOME/opt/local/bin"
+if [ -d "$HOME/opt/local/bin" ]; then
+    printf 'Warning: You have a %s directory\n         consider moving it to %s\n' \
+      '~/opt/local/bin' '~/.local/bin' >&2
+    ADDPATH "$HOME/opt/local/bin"
+else
+    ADDPATH "$HOME/.local/bin"
+fi
 
 # clean up problematic, potentially-inherited exports:
 unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS

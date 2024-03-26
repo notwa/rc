@@ -40,27 +40,39 @@ tableize() {
             decom="${decom#${decom%%[! ]*}}" # ltrim
             decom="${decom%${decom##*[! ]}}" # rtrim
 
+            _pref=
             case "$decom" in
-                YES_ZSH) zsh=yes;;
-                YES_BASH) bash=yes;;
-                YES_DASH) dash=yes;;
-                YES_ASH) ash=yes;;
-                FAKE_COMPAT) zsh=yes; bash=yes; dash=yes; ash=yes;;
-                NO_ZSH) zsh=no;;
-                NO_BASH) bash=no;;
-                NO_DASH) dash=no;;
-                NO_ASH) ash=no;;
-                '!/bin/sh') pref=sh;;
-                '!/usr/bin/env ash') pref=ash;;
-                '!/usr/bin/env bash') pref=bash;;
-                '!/usr/bin/env dash') pref=dash;;
-                '!/usr/bin/env false') pref=false;;
-                '!/usr/bin/env perl') pref=perl;;
-                '!/usr/bin/env sh') pref=sh;;
-                '!/usr/bin/env zsh') pref=zsh;;
-                '!/usr/bin/sh') pref=sh;;
+                ('!/bin/sh') _pref=sh;;
+                ('!/usr/bin/env ash') _pref=ash;;
+                ('!/usr/bin/env bash') _pref=bash;;
+                ('!/usr/bin/env dash') _pref=dash;;
+                ('!/usr/bin/env false') _pref=false;;
+                ('!/usr/bin/env perl') _pref=perl;;
+                ('!/usr/bin/env sh') _pref=sh;;
+                ('!/usr/bin/env zsh') _pref=zsh;;
+                ('!/usr/bin/sh') _pref=sh;;
                 #*) printf '\033[1mno match:\033[0m [%s]\n' "$decom";;
             esac
+
+            if [ -n "$_pref" ]; then
+                pref="$_pref"
+                continue
+            fi
+
+            set -f
+            IFS=' '
+            for flag in $decom; do case "$flag" in
+                (YES_ZSH) zsh=yes;;
+                (YES_BASH) bash=yes;;
+                (YES_DASH) dash=yes;;
+                (YES_ASH) ash=yes;;
+                (FAKE_COMPAT) zsh=yes; bash=yes; dash=yes; ash=yes;;
+                (NO_ZSH) zsh=no;;
+                (NO_BASH) bash=no;;
+                (NO_DASH) dash=no;;
+                (NO_ASH) ash=no;;
+                ('#'*) break;;
+            esac done
         done < "$f"
 
         #printf '%s' "script $fn has a preference for $pref and support for" >&2

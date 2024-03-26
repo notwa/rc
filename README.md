@@ -26,13 +26,13 @@ refer to the [compatibility table](#compatibility) for specifics.
 
 ## shell functions
 
-### [archive](/sh/archive#L7)
+### [archive](/sh/archive#L4)
 
 create an archive file in one of a few formats.
 
 borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
 
-### [argc](/sh/argc#L7)
+### [argc](/sh/argc#L4)
 
 validate the number of arguments in a function.
 
@@ -48,7 +48,7 @@ myfunc() {
 }
 ```
 
-### [arith](/sh/arith#L10)
+### [arith](/sh/arith#L7)
 
 perform arithmetic using the shell and display the result.
 see also [`hex`](#hex) and [`bin`](#bin).
@@ -60,7 +60,7 @@ this example requires zsh:
 1.9952623149688795
 ```
 
-### [aur](/sh/aur#L8)
+### [aur](/sh/aur#L5)
 
 download, edit, make, and install packages from the
 [AUR.](https://aur.archlinux.org/)
@@ -70,12 +70,12 @@ it's a little broken.
 $ aur -eyoI cmdpack-uips applyppf
 ```
 
-### [autosync](/sh/autosync#L9)
+### [autosync](/sh/autosync#L6)
 
 combine `inotifywait` and `rsync`.
 this is sometimes nicer than `ssh`-ing into a server and running `vim` remotely.
 
-### [bak](/sh/bak#L7)
+### [bak](/sh/bak#L4)
 
 backup files by creating copies and appending ".bak" to their names.
 this calls itself recursively to avoid clobbering existing backups.
@@ -92,7 +92,7 @@ total 0
 -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.bak.bak
 ```
 
-### [baknow](/sh/baknow#L7)
+### [baknow](/sh/baknow#L4)
 
 backup files by appending their timestamps given by [`now`.](#now)
 
@@ -107,7 +107,7 @@ total 0
 -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.2001-12-26_01800000.bak
 ```
 
-### [baks](/sh/baks#L8)
+### [baks](/sh/baks#L5)
 
 backup files by copying each and appending *the current* date-time,
 irrespective of when the files were modified or created.
@@ -123,7 +123,7 @@ total 0
 -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.21-08-01_14-54-09.bak
 ```
 
-### [bin](/sh/bin#L10)
+### [bin](/sh/bin#L7)
 
 perform arithmetic using the shell and display the result as
 an unsigned 8-bit integer in binary.
@@ -134,7 +134,7 @@ $ bin 123
 01111011
 ```
 
-### [busiest](/sh/busiest#L7)
+### [busiest](/sh/busiest#L4)
 
 list directories in descending order by the number of files in them,
 counted recursively.
@@ -146,7 +146,7 @@ $ cd && busiest | head -n3
 21042 play
 ```
 
-### [colors](/sh/colors#L7)
+### [colors](/sh/colors#L4)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
@@ -154,7 +154,7 @@ excluding boilerplate, this script is a mere 76 characters long!
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors.png)
 
-### [setup_clang_ubuntu (sh/compile)](/sh/compile#L7)
+### [setup_clang_ubuntu (sh/compile)](/sh/compile#L4)
 
 print (but don't execute) the commands necessary to install
 a fairly recent version of clang on ubuntu-based distros.
@@ -176,7 +176,7 @@ update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 1200
 update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-12 1200
 ```
 
-### [compile](/sh/compile#L50)
+### [compile](/sh/compile#L47)
 
 compile single-file C and C++ programs, messily.
 
@@ -213,7 +213,7 @@ compile release clang WHOA rd.c
 compile derelease rd.c && /tmp/rd
 ```
 
-### [confirm](/sh/confirm#L7)
+### [confirm](/sh/confirm#L4)
 
 display a simple yes-or-no prompt and return 0-or-1 respectively.
 
@@ -237,7 +237,7 @@ Continue? [y/N] y
  20 files changed, 406 insertions(+), 29 deletions(-)
 ```
 
-### [countdiff](/sh/countdiff#L9)
+### [countdiff](/sh/countdiff#L4)
 
 count the number of lines changed between two files.
 
@@ -248,11 +248,11 @@ $ countdiff README-old.md README.md
 739
 ```
 
-### [cutv](/sh/cutv#L7)
+### [cutv](/sh/cutv#L4)
 
 (WIP) create a short clip of a long video file.
 
-### [days](/sh/days#L7)
+### [days](/sh/days#L4)
 
 compute the number of days since a given date.
 
@@ -261,7 +261,7 @@ $ days 'January 1 1970'
 18838
 ```
 
-### [decently](/sh/decently#L9)
+### [decently](/sh/decently#L6)
 
 given a list of directories, update the last-modified timestamp
 of each argument to that of the most recent file that it contains.
@@ -272,7 +272,7 @@ has its timestamp updated. symlinks are followed.
 `.git` subdirectories are skipped over.
 the timestamps of subdirectories are ignored.
 
-### [dfu](/sh/dfu#L9)
+### [dfu](/sh/dfu#L4)
 
 pretty-print `df` in GiB.
 
@@ -283,7 +283,7 @@ Filesystem              Used     Max    Left    Misc
 /                      17.20   23.22    6.01    1.27
 ```
 
-### [disowned](/sh/disowned#L7)
+### [disowned](/sh/disowned#L4)
 
 find files in system directories that aren't associated with any pacman packages.
 
@@ -293,7 +293,7 @@ generate a markdown file out of docstrings in shell scripts.
 
 **TODO:** describe. i have a rough outline written in my scrap file.
 
-### [e](/sh/e#L8)
+### [e](/sh/e#L4)
 
 wrap around `$EDITOR` to run it as root if necessary.
 this still needs some work to detect root-owned directories.
@@ -306,11 +306,11 @@ $ e /etc/sudoers
 **NOTE:** there also exists an e(1) program provided by
 the *e-wrapper* package that i don't use.
 
-### [ea](/sh/ea#L27)
+### [ea](/sh/ea#L24)
 
 **TODO:** document.
 
-### [echo2](/sh/echo2#L7)
+### [echo2](/sh/echo2#L4)
 
 print arguments joined by spaces to stderr without parsing anything.
 
@@ -322,16 +322,16 @@ $ echo2 -e 'this\nthat' those
 -e this\nthat those
 ```
 
-### [explore](/sh/explore#L7)
+### [explore](/sh/explore#L4)
 
 open a single directory in `explorer.exe`, defaulting to `$PWD`.
 
-### [ff](/sh/ff#L7)
+### [ff](/sh/ff#L4)
 
 select a file from a given or current directory using
 [`fzy`.](https://github.com/jhawthorn/fzy)
 
-### [ghmd](/sh/ghmd#L10)
+### [ghmd](/sh/ghmd#L7)
 
 convert a markdown file to HTML in the style of GitHub.
 note that this uses GitHub's API, so it requires internet connectivity.
@@ -343,26 +343,26 @@ this script utilizes the CSS provided at
 ~/sh/ghmd < ~/rc/README.md > ~/rc/README.html
 ```
 
-### [grab](/sh/grab#L7)
+### [grab](/sh/grab#L4)
 
 download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 
-### [grop](/sh/grop#L8)
+### [grop](/sh/grop#L5)
 
 invoke grep with `-oP`.
 
 **NOTE:** there also exists a grop(1) program provided by
 the *grop* package that i don't use.
 
-### [grop4](/sh/grop4#L7)
+### [grop4](/sh/grop4#L4)
 
 [`grop`](#grop) for IPv4s.
 
-### [has](/sh/has#L7)
+### [has](/sh/has#L4)
 
 [`have`,](#have) silently.
 
-### [have](/sh/have#L7)
+### [have](/sh/have#L4)
 
 print the result of `which` if the program is found, else simply return 1.
 
@@ -370,7 +370,7 @@ print the result of `which` if the program is found, else simply return 1.
 export SOLVER="$(have kissat || have picosat || have cadical || have minisat)"
 ```
 
-### [hex](/sh/hex#L10)
+### [hex](/sh/hex#L7)
 
 perform arithmetic using the shell and display the result as
 an unsigned 32-bit integer in hexadecimal.
@@ -384,7 +384,7 @@ $ hex 0x221EA8-0x212020
 **NOTE:** there also exists a hex(1) program provided by
 the *basez* package that i don't use.
 
-### [ify](/sh/ify#L7)
+### [ify](/sh/ify#L4)
 
 pipe one command through another, so you can still pass arguments to the former.
 
@@ -395,11 +395,11 @@ $ alias ll="ify less ls -ACX --group-directories-first --color=force"
 $ ll /etc
 ```
 
-### [is_empty](/sh/is_empty#L7)
+### [is_empty](/sh/is_empty#L4)
 
 return 0 if the directory given by argument is empty.
 
-### [isup](/sh/isup#L7)
+### [isup](/sh/isup#L4)
 
 return 0 if a given website returns a 2xx HTTP code.
 
@@ -410,24 +410,24 @@ $ isup fdhafdslkjgfjs.com && echo yay || echo nay
 nay
 ```
 
-### [join2](/sh/join2#L7)
+### [join2](/sh/join2#L4)
 
 join every other line.
 
-### [lsarchive](/sh/lsarchive#L7)
+### [lsarchive](/sh/lsarchive#L4)
 
 list the contents of an archive file in one of many formats.
 
 borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
 
-### [maybesudo](/sh/maybesudo#L7)
+### [maybesudo](/sh/maybesudo#L4)
 
 mimic certain features of `sudo` for systems without it installed.
 as it stands, this mostly just handles some environment variables.
 
 try this: `maybesudo_ -u "$USER" printenv`
 
-### [minutemaid](/sh/minutemaid#L7)
+### [minutemaid](/sh/minutemaid#L4)
 
 check if the current minute is divisible by a given number,
 and optionally execute a command if it is. if a command is given,
@@ -455,7 +455,7 @@ while minutemaid 1; do sleep 1; done
 echo this will never happen
 ```
 
-### [monitor](/sh/monitor#L7)
+### [monitor](/sh/monitor#L4)
 
 this is [watch(1)](https://www.man7.org/linux/man-pages/man1/watch.1.html)
 loosely reimplemented as a shell script.
@@ -467,22 +467,22 @@ usage: monitor [-fs] [-n {period}] {command} [{args...}]
 **NOTE:** there also exists monitor(1) programs provided by
 the *389-ds-base* and *dmucs* packages that i don't use.
 
-### [morecolors](/sh/morecolors#L7)
+### [morecolors](/sh/morecolors#L4)
 
 print all 256 colors that are available on most terminals.
 
-### [noccom](/sh/noccom#L9)
+### [noccom](/sh/noccom#L6)
 
 strip C-like comments; both multi-line and single-line.
 
-### [note](/sh/note#L7)
+### [note](/sh/note#L4)
 
 act like [`echo2`,](#echo2) but use a bright color to stand out more.
 
 **NOTE:** there also exists a [note(1)](https://www.daemon.de/projects/note/)
 program provided by the *note* package that i don't use.
 
-### [now](/sh/now#L7)
+### [now](/sh/now#L4)
 
 print a date-time (UTC) in a sortable format.
 this takes a date or file as an argument,
@@ -496,7 +496,7 @@ $ now '@1234567890'
 2009-02-13_84690000
 ```
 
-### [oshi](/sh/oshi#L7)
+### [oshi](/sh/oshi#L4)
 
 upload files (or stdin) to [oshi.at.](https://oshi.at)
 this script exits with the number of failed uploads; up to 255 at once.
@@ -520,7 +520,7 @@ oshi: successfully uploaded 2/4 files
 oshi: failed to upload 2/4 files
 ```
 
-### [oxo](/sh/oxo#L17)
+### [oxo](/sh/oxo#L14)
 
 upload files (or stdin) to [0x0.st.](https://0x0.st)
 this script exits with the number of failed uploads; up to 255 at once.
@@ -544,7 +544,7 @@ oxo: successfully uploaded 2/4 files
 oxo: failed to upload 2/4 files
 ```
 
-### [pacbm](/sh/pacbm#L9)
+### [pacbm](/sh/pacbm#L6)
 
 display and order installed pacman packages by their filesize ascending,
 and their sum. requires `expac`.
@@ -555,7 +555,7 @@ $ pacbm | head -n -1 | tail -2
   235.44M linux-firmware
 ```
 
-### [pause](/sh/pause#L7)
+### [pause](/sh/pause#L4)
 
 pause — the companion script of [`confirm`.](#confirm)
 
@@ -565,7 +565,7 @@ Press any key to continue
 $ 
 ```
 
-### [pegg](/sh/pegg#L7)
+### [pegg](/sh/pegg#L4)
 
 download and (pip) install a Python "egg" from a project on GitHub,
 defaulting to the master branch. this uses [`pippy`](#pippy) internally.
@@ -577,13 +577,13 @@ $ pegg rthalley dnspython
 $ pegg rthalley dnspython 3933b49
 ```
 
-### [pippy](/sh/pippy#L7)
+### [pippy](/sh/pippy#L4)
 
 install Python packages using pip,
 but only update their dependencies as required.
 this uses [`maybesudo`](#maybesudo) internally.
 
-### [pre](/sh/pre#L7)
+### [pre](/sh/pre#L4)
 
 dump all the `#define`s that `$CC $CPPFLAGS $CFLAGS $LDFLAGS` would result in.
 
@@ -607,7 +607,7 @@ handle dependencies within the [`~/sh/`](/sh) directory.
 
 this function contains more comments than code, so you should read it.
 
-### [psbm](/sh/psbm#L8)
+### [psbm](/sh/psbm#L4)
 
 display and order processes by their memory usage ascending, and their sum.
 
@@ -617,7 +617,7 @@ $ psbm | head -n -1 | tail -2
   199.95M    1060 chromium
 ```
 
-### [randir](/sh/randir#L9)
+### [randir](/sh/randir#L6)
 
 display a random directory in the current working directory.
 
@@ -626,7 +626,7 @@ $ randir
 ./sh
 ```
 
-### [rot13](/sh/rot13#L9)
+### [rot13](/sh/rot13#L6)
 
 rot13 with numbers rotated as well.
 
@@ -638,7 +638,7 @@ nop678
 **NOTE:** there also exists rot13(1) programs provided by
 the *bsdgames* and *hxtools* packages that i don't use.
 
-### [rs](/sh/rs#L7)
+### [rs](/sh/rs#L4)
 
 record screen. does not record audio.
 currently only works on Windows (gdigrab).
@@ -646,15 +646,15 @@ i'm sure there's something equivalent for Linux.
 
 **TODO:** consider renaming because rs(1) already exists.
 
-### [running](/sh/running#L10)
+### [running](/sh/running#L6)
 
 WIP
 
-### [scount](/sh/scount#L7)
+### [scount](/sh/scount#L4)
 
 perform `sort | uniq -c | sort -n`, preferring GNU awk when available.
 
-### [scramble](/sh/scramble#L9)
+### [scramble](/sh/scramble#L6)
 
 scrambles text in a predictable way using regex.
 
@@ -662,11 +662,11 @@ sacbremls ttex in a pdrceailtbe way unsig reegx.
 
 **TODO:** consider renaming because scramble(1) already exists.
 
-### [scropt](/sh/scropt#L7)
+### [scropt](/sh/scropt#L4)
 
 run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
 
-### [shcom](/sh/shcom#L7)
+### [shcom](/sh/shcom#L4)
 
 comment out text from stdin and wrap it in a markdown blockquote
 for docstrings. this contains some extra logic for
@@ -685,28 +685,28 @@ hey
 (perl 5) invoke the first shell found from a list of shells
 as an interactive, non-login shell. arguments are ignored.
 
-### [similar](/sh/similar#L8)
+### [similar](/sh/similar#L4)
 
 highlight adjacent lines up to the first inequivalent character.
 
-### [slit](/sh/slit#L9)
+### [slit](/sh/slit#L6)
 
 view specific columns of text.
 
-### [slitt](/sh/slitt#L9)
+### [slitt](/sh/slitt#L6)
 
 view specific columns of text.
 this version of `slit` uses tabs for its field separators.
 
-### [sortip](/sh/sortip#L7)
+### [sortip](/sh/sortip#L4)
 
 sort lines numerically by IPv4 segments.
 
-### [sram](/sh/sram#L7)
+### [sram](/sh/sram#L4)
 
 convert between a couple saveram formats for N64 emulators.
 
-### [stfu](/sh/stfu#L7)
+### [stfu](/sh/stfu#L4)
 
 invoke a command, silencing stdout and stderr *unless* the command fails.
 
@@ -739,7 +739,7 @@ asses
 
 ```
 
-### [sum](/sh/sum#L7)
+### [sum](/sh/sum#L4)
 
 compute the summation of its arguments without forking processes.
 this relies on the shell's built-in arithmetic operators.
@@ -751,7 +751,7 @@ $ sum 1 2 3
 
 **TODO:** consider renaming because sum(1) already exists.
 
-### [sv](/sh/sv#L8)
+### [sv](/sh/sv#L4)
 
 collect the lastmost value of every key.
 the field separator can be given as its sole argument,
@@ -780,7 +780,7 @@ $ cd ~/play/hash && grep -r 'ing$' . | sv :
 
 **TODO:** rename because busybox(1) sv already exists.
 
-### [trash](/sh/trash#L7)
+### [trash](/sh/trash#L4)
 
 output a given number of bytes from `/dev/random`.
 
@@ -791,7 +791,7 @@ $ trash 10 | xxp
 
 **TODO:** consider renaming because trash(1) already exists.
 
-### [trunc](/sh/trunc#L8)
+### [trunc](/sh/trunc#L4)
 
 truncate text to fit within your terminal using the unicode character `…`.
 
@@ -802,31 +802,31 @@ $ seq 1 100 | tr '\n' ' ' | trunc
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31…
 ```
 
-### [unarchive](/sh/unarchive#L7)
+### [unarchive](/sh/unarchive#L4)
 
 extract the contents of an archive file in one of many formats.
 
 borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
 
-### [unwrap](/sh/unwrap#L7)
+### [unwrap](/sh/unwrap#L4)
 
 join paragraphs into one line each.
 
-### [v_lower](/sh/v_lower#L7)
+### [v_lower](/sh/v_lower#L4)
 
 transform the contents of a variable to lowercase.
 
-### [v_upper](/sh/v_upper#L7)
+### [v_upper](/sh/v_upper#L4)
 
 transform the contents of a variable to uppercase.
 
-### [wat](/sh/wat#L9)
+### [wat](/sh/wat#L6)
 
 wat — a better and recursive which/whence. for zsh only.
 
 written by [leah2.](https://leahneukirchen.org/)
 
-### [wipe](/sh/wipe#L8)
+### [wipe](/sh/wipe#L4)
 
 clear the screen and its scrollback, then print a high-contrast horizontal line.
 using this, you'll know with absolute certainty that you're looking at the top of your history,
@@ -834,7 +834,7 @@ and that your terminal's scrollback didn't cap out and eat text.
 
 **TODO:** rename because wipe(1) already exists.
 
-### [xxp](/sh/xxp#L7)
+### [xxp](/sh/xxp#L4)
 
 act like `xxd -p`, but nicely formatted.
 

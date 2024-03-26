@@ -1,9 +1,6 @@
 #!/usr/bin/env false
 # awful things
-# YES_ZSH
-# YES_BASH
-# NO_DASH
-# NO_ASH
+# YES_ZSH YES_BASH NO_DASH NO_ASH
 
 mpvs() {
     mpv --quiet \

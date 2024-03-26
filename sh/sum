@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH
-# YES_BASH
-# YES_DASH
-# YES_ASH
+# YES_ZSH YES_BASH YES_DASH YES_ASH
 
 sum() { ### @-
     ### compute the summation of its arguments without forking processes.

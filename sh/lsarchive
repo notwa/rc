@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
-# YES_ZSH
-# NO_BASH
-# NO_DASH
-# NO_ASH
+# YES_ZSH NO_BASH NO_DASH NO_ASH
 
 lsarchive() { ### @- list the contents of an archive file in one of many formats.
     ### borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)

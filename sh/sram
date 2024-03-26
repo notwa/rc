@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
-# YES_ZSH
-# YES_BASH
-# NO_DASH
-# NO_ASH
+# YES_ZSH YES_BASH NO_DASH NO_ASH
 
 sram() { ### @-
     ### convert between a couple saveram formats for N64 emulators.

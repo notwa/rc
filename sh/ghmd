@@ -2,10 +2,7 @@
 # ghmd - format GitHub markdown
 # via: https://leahneukirchen.org/dotfiles/.zshrc
 # example: ghmd < README.md > README.html
-# YES_ZSH
-# YES_BASH
-# YES_DASH
-# YES_ASH
+# YES_ZSH YES_BASH YES_DASH YES_ASH
 
 ghmd() { ### @-
     ### convert a markdown file to HTML in the style of GitHub.

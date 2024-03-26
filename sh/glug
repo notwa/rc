@@ -1,8 +1,5 @@
 #!/usr/bin/env dash
-# YES_ZSH
-# YES_BASH
-# YES_DASH
-# YES_ASH
+# YES_ZSH YES_BASH YES_DASH YES_ASH
 # fuck termcap, all my homies hate termcap.
 
 glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.

@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # http://aur.sh with massive feature creep
-# NO_ZSH
-# YES_BASH
-# NO_DASH
-# NO_ASH
+# NO_ZSH YES_BASH NO_DASH NO_ASH
 
 aur() { ### @-
     ### download, edit, make, and install packages from the

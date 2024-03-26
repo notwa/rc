@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH
-# YES_BASH
-# YES_DASH
-# YES_ASH
-# YES_BB_AWK
+# YES_ZSH YES_BASH YES_DASH YES_ASH YES_BB_AWK
 
 # probably not compatible with busybox ps because its column 2 isn't PID.
 

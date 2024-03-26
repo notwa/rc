@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH
-# YES_BASH
-# YES_DASH
-# YES_ASH
+# YES_ZSH YES_BASH YES_DASH YES_ASH
 
 __grab() { ### @grab - download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 [ -z "${ZSH_VERSION}" ] || emulate sh

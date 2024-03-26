@@ -1,10 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH
-# YES_BASH
-# YES_DASH
-# YES_ASH
-# YES_BB_AWK
-# YES_OT_AWK
+# YES_ZSH YES_BASH YES_DASH YES_ASH YES_BB_AWK YES_OT_AWK
 
 countdiff() { ### @-
     ### count the number of lines changed between two files.

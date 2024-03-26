@@ -1,9 +1,6 @@
 #!/usr/bin/env sh
 # backup, timestamped
-# YES_ZSH
-# YES_BASH
-# YES_DASH
-# YES_ASH
+# YES_ZSH YES_BASH YES_DASH YES_ASH
 
 baks() { ### @-
     ### backup files by copying each and appending *the current* date-time,

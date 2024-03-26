@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# YES_ZSH
-# YES_BASH
-# YES_DASH
-# YES_ASH
+# YES_ZSH YES_BASH YES_DASH YES_ASH
 
 colors2() {
     [ $# -eq 0 ] || { printf "%s\n" "$0: does not take arguments" >&2; return 1; }

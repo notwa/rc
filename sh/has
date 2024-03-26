@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH
-# YES_BASH
-# YES_DASH
-# YES_ASH
+# YES_ZSH YES_BASH YES_DASH YES_ASH
 
 has() { ### @- [`have`,](#have) silently.
     if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi

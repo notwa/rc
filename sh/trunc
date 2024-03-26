@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH
-# YES_BASH
-# YES_DASH
-# YES_ASH
-# YES_BB_AWK
+# YES_ZSH YES_BASH YES_DASH YES_ASH YES_BB_AWK
 
 trunc() { ### @-
     ### truncate text to fit within your terminal using the unicode character `…`.

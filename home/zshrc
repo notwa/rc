@@ -234,9 +234,12 @@ function {
     # zsh adds a % symbol to newline-less output, so my bash prompt is overkill
     # NOTE: i've started hardcoding escapes instead of relying on zsh
     #       because detecting terminal features is too troublesome.
-    local s=$'\x1B\x5B' # start escape code
-    local e=m           #   end escape code
-    local reset="${s}0${e}"
+    # https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Functions-using-CSI-_-ordered-by-the-final-character_s_
+    local chset=$'\033\050B\017' # set G0 to USASCII charset and "shift-in" to it
+    local s=$'\033\133' # CSI
+    local e=m           # SGR
+    local reset=$s$e
+    local curse=$s$'?25h' # show cursor (DECTCEM)
     local good=42 # green
     local  bad=41 # red
 
@@ -247,8 +250,7 @@ function {
     (sabotage)   good=45;; # magenta
     esac
 
-    # NOTE: i had ${s}10${e} here before, is it still necessary?
-    PROMPT="%{$reset${s}%(?.${good}.${bad})${e}${s}97${e}%}%#%{$reset%} "
+    PROMPT="%{$chset$curse$reset$s%(?.$good.$bad);97$e%}%#%{$reset%} "
 }
 
 reload() { ### @-

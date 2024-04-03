@@ -15,19 +15,45 @@ set +o histexpand # disable expansion of ! characters
 
 _temporary_scope_() {
     local t="${TERM%%-*}" title=
+
+    local ESC="\\E"
+    local BEL="\\a"
+    local SI="\\017" # switch to G0 charset
+    local SO="\\016" # switch to G1 charset
+
+    local CSI="$ESC["
+    local OSC="$ESC]"
+
     if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
-        title='\[\033]2;\w\a\]'
+        title="\\\\w"
+        [ "$t" = tmux ] || title="\\\\H: $title"
+        title="${OSC}2;$title$BEL"
     fi
 
-    local color_okay='\\[\e[42m\\]'
-    local color_fail='\\[\e[41m\\]'
-    local line1=' \\[\e[0m\\]'
-    local line2='\\[\e[1;37m\\]\\$\\[\e[0m\\] '
-    local ret_okay="$title$color_okay$line1\n$color_okay$line2"
-    local ret_fail="$title$color_fail$line1\n$color_fail$line2"
+    local G0="(" # change G0 charset
+    local G1=")" # change G1 charset
+    local USASCII="B" # sane default
+    local SPECIAL="0" # DEC Special Character and Line Drawing Set
+
+    local DECTCEM="25"
+    local DECSET="h"
+    local SGR="m"
+
+    local sanity="$ESC$G0$USASCII$SI$CSI?$DECTCEM$DECSET"
+    local hide="\\\\["
+    local show="\\\\]"
+    local prompt="\\\\$"
+    local reset="$hide$CSI$SGR$show"
+    local color1="$CSI;--$SGR"
+    local color2="$CSI--;97$SGR"
+    local line1="$hide$title$sanity$color1$show $reset"
+    local line2="$hide$color2$show$prompt$reset "
+    local ret="$line1\\n$line2"
+    local ret_okay="${ret//--/42}" # use green background
+    local ret_fail="${ret//--/41}" # use red background
 
     PROMPT_COMMAND="[ \$? = 0 ] && PS1=\$'$ret_okay' || PS1=\$'$ret_fail'"
-}; _temporary_scope_; unset _temporary_scope_
+}; _temporary_scope_; unset -f _temporary_scope_
 
 . ~/.shrc
 

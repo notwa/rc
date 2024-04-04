@@ -895,16 +895,16 @@ WHOA but for C++ (specifically g++) only.
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [reload (zshrc)](/home/zshrc#L254)
+### [reload (zshrc)](/home/zshrc#L256)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L46)
+### [dummy (bashrc)](/home/bashrc#L52)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L51)
+### [reload (bashrc)](/home/bashrc#L57)
 
 **TODO:** respect initctl like in `.zshrc`.
 

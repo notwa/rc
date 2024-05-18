@@ -171,13 +171,13 @@ nocom() ### @- strip single-line C-like and shell-like comments.
   { grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)" "$@"; }
 
 jrep() ### @- extract strings comprised of basic ASCII or Japanese codepoints.
-  { grep -aPo "[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+" "$@"; }
+  { grep -aPo '[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+' "$@"; }
 
 bomb() ### @- add a Byte-Order Mark to a file.
   { uconv -f utf-8 -t utf-8 --add-signature "$@"; }
 
 cleanse() ### @- strip unprintable and non-ASCII characters.
-  { tr -cd "\11\12\15\40-\176" "$@"; }
+  { tr -cd '\11\12\15\40-\176' "$@"; }
 
 double() ### @- print every line twice. <br/> print every line twice.
 ### **NOTE:** there also exists a double(1) program provided by

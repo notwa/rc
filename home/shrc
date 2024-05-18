@@ -165,7 +165,7 @@ counts() ### @- count files in the current directory, including files found recu
   { find . | wc -l "$@"; }
 
 exts() ### @- count and sort file extensions in the current directory, including files found recursively.
-  { find -type f | grep -o '\\.[^/.]*$' | sort | uniq -c | sort -n "$@"; }
+  { find -type f | sed -e 's@.*/@@' -e 's@.*\.@@' | tr A-Z a-z | scount; }
 
 nocom() ### @- strip single-line C-like and shell-like comments.
   { grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)" "$@"; }

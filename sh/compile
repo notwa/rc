@@ -24,24 +24,24 @@ setup_clang_ubuntu() { ### @-
 
     local site="http://apt.llvm.org"
     local name="$1"
-    local version=12 # NOTE: no longer decimal-based
+    local version=18 # NOTE: no longer decimal-based
     local priority=$(( version * 100 ))
     [ -n "$name" ] || name="$(lsb_release -c | cut -f2)"
     # TODO: use https? this is sketchy
-    echo wget -O - "$site/llvm-snapshot.gpg.key" \| apt-key add -
-    echo echo -n \""\
-deb $site/$name/ llvm-toolchain-$name main\n\
-# deb-src $site/$name/ llvm-toolchain-$name main\n\
-# $version\n\
-deb $site/$name/ llvm-toolchain-$name-$version main\n\
-# deb-src $site/$name/ llvm-toolchain-$name-$version main\n\
-"\" \> "/etc/apt/sources.list.d/llvm-toolchain-$name.list"
-    echo apt-get update
-    echo apt-get install clang-$version
-    echo apt-get install lld-$version
-    echo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-$version $priority
-    echo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-$version $priority
-    echo update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-$version $priority
+    echo wget -O- "$site/llvm-snapshot.gpg.key" \| apt-key add -
+    printf %s\\n "echo > \"/etc/apt/sources.list.d/llvm-toolchain-$name.list\" \\" \
+'"' \
+"deb $site/$name/ llvm-toolchain-$name main" \
+"# deb-src $site/$name/ llvm-toolchain-$name main" \
+"# $version" \
+"deb $site/$name/ llvm-toolchain-$name-$version main" \
+"# deb-src $site/$name/ llvm-toolchain-$name-$version main\""
+    echo export DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1
+    echo apt-get update -y \&\& apt-get install -y clang-$version lld-$version
+    #echo needrestart -ra
+    for p in clang clang++ llvm-symbolizer; do
+        echo update-alternatives --install /usr/bin/$p $p /usr/bin/$p-$version $priority
+    done
 }
 
 compile() { ### @-

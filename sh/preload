@@ -22,7 +22,7 @@ preload() { ### @- handle dependencies within the [`~/sh/`](/sh) directory.
         [ $? -eq 0 ] \
         || exit 2 # this `exit 2` is just for zsh and bash;
                   # dash and ash do it automatically.
-                  # zsh actually uses some other return value,
+                  # zsh actually uses some other exit code,
                   # but we use 2 anyway since everything else uses 2.
         shift # pop the queue
     done

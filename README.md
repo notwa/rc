@@ -1023,6 +1023,7 @@ make the freakin' gem!
 | [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arrays](#arrays)                             |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |
+| [askey](#askey)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [aur](#aur)                                   |       bash | ⭕    | ✔️    | ⭕    | ⭕    |
 | [autosync](#autosync)                         |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [bak](#bak)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

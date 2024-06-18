@@ -875,27 +875,31 @@ without consuming the prompt.
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L205)
+### [OMFG (zshrc)](/home/zshrc#L212)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L206)
+### [STFU (zshrc)](/home/zshrc#L213)
 
 silence stderr.
 
-### [WHOA (zshrc)](/home/zshrc#L207)
+### [SWAP (zshrc)](/home/zshrc#L214)
+
+swap stdout and stderr. uses fd 3 as an intermediary.
+
+### [WHOA (zshrc)](/home/zshrc#L215)
 
 expand to several C/C++ flags to ease development.
 
-### [WHEE (zshrc)](/home/zshrc#L208)
+### [WHEE (zshrc)](/home/zshrc#L216)
 
 WHOA but for C++ (specifically g++) only.
 
-### [WELP (zshrc)](/home/zshrc#L209)
+### [WELP (zshrc)](/home/zshrc#L217)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [reload (zshrc)](/home/zshrc#L256)
+### [reload (zshrc)](/home/zshrc#L264)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.

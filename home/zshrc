@@ -123,6 +123,12 @@ dirview() { ### @-
 
 for x (dummy dirprev dirnext dirup dirview) zle -N $x
 
+join-lines() {
+    BUFFER="${BUFFER//$'\n'/ }"
+    CURSOR="${#BUFFER}"
+}
+zle -N join-lines
+
 bindkey -e # emacs-style keybinds
 
 # oh thank god: http://blog.samsonis.me/2013/12/bash-like-history-search-functionality-for-zsh/
@@ -140,6 +146,7 @@ bindkey '^[[1;3C' dirnext # alt+right
 bindkey '^[[1;3A' dirup # alt+up
 bindkey '^[[1;3B' dirview # alt+down
 bindkey -s '^[s' '^Asudo ^E' # alt+s
+bindkey '^[j' join-lines # alt+j
 bindkey '^[[3~' delete-char # del
 bindkey '^[[1~' beginning-of-line # home
 bindkey '^[[4~' end-of-line # end

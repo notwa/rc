@@ -253,6 +253,17 @@ if has('autocmd')
         au!
     "   au BufWinEnter * call ResCur()
     augroup END
+
+    function! CheckFileEncoding()
+        if exists('b:fenc_at_read') && &fileencoding != b:fenc_at_read
+            exec 'e! ++enc=' . &fileencoding
+            unlet b:fenc_at_read
+        endif
+    endfunction
+    augroup fenc
+        au! BufRead     *.txt let b:fenc_at_read=&fileencoding
+        au! BufWinEnter *.txt call CheckFileEncoding()
+    augroup END
 endif
 
 " keys/binds {{{1

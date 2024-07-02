@@ -203,6 +203,7 @@ carry() ### @- copy files in a plain way using rsync. affected by umask.
 alias 0x0.st="oxo"
 alias oshi.at="oshi"
 alias pastel='pastel -f' # why would i want to use a color utility without colors?
+alias poo="pueue"
 alias rg="rg -M200"
 
 # enable colors {{{2

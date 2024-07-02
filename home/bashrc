@@ -37,8 +37,7 @@ _temporary_scope_() {
 
 . ~/.shrc
 
-# this doesn't work for all scripts at the moment, but
-ADDPATH "$HOME/sh"
+ADDPATH "$HOME/sh" # this doesn't work for all scripts at the moment
 
 # combine everything matching "YES_BASH" in ~/sh/ into ~/.sh-bash.
 # unlike zsh, we do not check the sha1sum of the output.

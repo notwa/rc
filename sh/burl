@@ -51,12 +51,11 @@ burl() ( ### @-
     f() { request | "$@" | { receive && cat ;} ;}
     for url; do
         request() { printf 'GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' "${query#/}" "$dom" ;}
-        receive() { while IFS=$r read -r l r; [ "$l" ]; do printf >&2 %s\\n "$l"; done ;}
+        receive() { while IFS=$r read -r l _; [ "$l" ]; do printf >&2 %s\\n "$l"; done ;}
         proto="${url%%:*}" proto="${proto##*[!a-z0-9-]*}"
         [ "$proto" ] && url="${url#$proto://}" || url="${url#//}"
         host="${url%%/*}" query="${url#"$host"}" dom="${host%:*}"
         [ "$host" = "${dom:?}" ] && PORT="${PORT:-80}" || PORT="${host##*:}"
-        printf '%s\t«%s»\n' proto "$proto" url "$url" host "$host" domain "$dom" port "$PORT" query "$query"
         if [ "$net" ]; then
             exec 3<>"/dev/tcp/$dom/$PORT" &&
             request >&3 && receive <&3 && cat <&3 || continue

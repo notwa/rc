@@ -194,6 +194,12 @@ makepkgf() ### @- make the freakin' package!
 rakef() ### @- make the freakin' gem!
   { rake && gem build *.gemspec && gem install *.gem "$@"; }
 
+relog() ### @- log on again to refresh your unix groups, etc.
+  { exec su - "${USER:?}"; }
+
+carry() ### @- copy files in a plain way using rsync. affected by umask.
+  { rsync -Hlrt --no-p --no-g --chmod=ugo=rwX; }
+
 alias 0x0.st="oxo"
 alias oshi.at="oshi"
 alias pastel='pastel -f' # why would i want to use a color utility without colors?

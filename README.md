@@ -177,6 +177,12 @@ $ cd && busiest | head -n3
 21042 play
 ```
 
+### [clash](/sh/clash#L4)
+
+run a command through 9 different shells.
+
+only returns false when no arguments are given.
+
 ### [colors](/sh/colors#L4)
 
 display all combinations of foreground and background terminal colors.
@@ -1075,6 +1081,7 @@ copy files in a plain way using rsync. affected by umask.
 | [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
 | [burl](#burl)                                 |       bash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [busiest](#busiest)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
+| [clash](#clash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [colors](#colors)                             |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
 | [colors2](#colors2)                           |       bash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [compile](#compile)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |

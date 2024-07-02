@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# YES_ZSH YES_BASH YES_DASH YES_ASH
+
+clash() { ### @- run a command through 9 different shells.
+    ### only returns false when no arguments are given.
+    [ $# != 0 ] || return
+    for sh in ash bash dash ksh mksh osh posh yash zsh; do
+        printf '\033[7m %s \033[m\n' "trying $sh"
+        "$sh" "$@"
+    done
+    true
+}
+
+[ -n "${preload+-}" ] || clash "$@"

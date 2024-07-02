@@ -134,6 +134,37 @@ $ bin 123
 01111011
 ```
 
+### [burl](/sh/burl#L4)
+
+turn bash into a makeshift HTTP client.
+inspired by [hackshell.sh.](https://thc.org/hs)
+also works in most other shells thanks to netcat.
+
+minimal/minified version: https://eaguru.guru/t/burl.sh (416 bytes)
+
+```
+$ burl httpbin.org/get
+
+HTTP/1.1 200 OK
+Date: Tue, 01 Jul 2024 00:00:00 GMT
+Content-Type: application/json
+Content-Length: 192
+Connection: close
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+{
+  "args": {},
+  "headers": {
+    "Host": "httpbin.org",
+    "X-Amzn-Trace-Id": "Root=1-12345678-deadfadefeedfacebeefcafe"
+  },
+  "origin": "0.0.0.0",
+  "url": "http://httpbin.org/get"
+}
+```
+
 ### [busiest](/sh/busiest#L4)
 
 list directories in descending order by the number of files in them,
@@ -904,11 +935,11 @@ expand to C++ flags to enable a C++-as-C facade.
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L52)
+### [dummy (bashrc)](/home/bashrc#L51)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L57)
+### [reload (bashrc)](/home/bashrc#L56)
 
 **TODO:** respect initctl like in `.zshrc`.
 
@@ -1019,6 +1050,14 @@ make the freakin' package!
 
 make the freakin' gem!
 
+### [relog (shrc)](/home/shrc#L197)
+
+log on again to refresh your unix groups, etc.
+
+### [carry (shrc)](/home/shrc#L200)
+
+copy files in a plain way using rsync. affected by umask.
+
 ## compatibility
 
 | script                                        | preference | zsh  | bash | dash | ash  |
@@ -1034,6 +1073,7 @@ make the freakin' gem!
 | [baknow](#baknow)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [baks](#baks)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
+| [burl](#burl)                                 |       bash | ✔️    | ✔️    | ✔️    | ✔️    |
 | [busiest](#busiest)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [colors](#colors)                             |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
 | [colors2](#colors2)                           |       bash | ✔️    | ✔️    | ✔️    | ✔️    |

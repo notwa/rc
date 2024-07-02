@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# YES_ZSH YES_BASH YES_DASH YES_ASH
+
+burl() ( ### @-
+    ### turn bash into a makeshift HTTP client.
+    ### inspired by [hackshell.sh.](https://thc.org/hs)
+    ### also works in most other shells thanks to netcat.
+    ###
+    ### minimal/minified version: https://eaguru.guru/t/burl.sh (416 bytes)
+    ###
+    ### ```
+    ### $ burl httpbin.org/get
+    ###
+    ### HTTP/1.1 200 OK
+    ### Date: Tue, 01 Jul 2024 00:00:00 GMT
+    ### Content-Type: application/json
+    ### Content-Length: 192
+    ### Connection: close
+    ### Server: gunicorn/19.9.0
+    ### Access-Control-Allow-Origin: *
+    ### Access-Control-Allow-Credentials: true
+    ###
+    ### {
+    ###   "args": {},
+    ###   "headers": {
+    ###     "Host": "httpbin.org",
+    ###     "X-Amzn-Trace-Id": "Root=1-12345678-deadfadefeedfacebeefcafe"
+    ###   },
+    ###   "origin": "0.0.0.0",
+    ###   "url": "http://httpbin.org/get"
+    ### }
+    ### ```
+
+    ! (set -o pipefail) 2>&- || set -o pipefail
+    (: </dev/udp/localhost/0) 2>&- && net=y || net=
+    [ $'' ] && r=$(printf \\r) || r=$'\r'
+
+    if /usr/bin/env nc; [ $? = 1 ] # needs absolute path to env thanks to busybox
+    then g() { f /usr/bin/env nc -- "$@" ;}
+    elif busybox nc; [ $? = 1 ]
+    then g() { f busybox nc -- "$@" ;}
+    elif netcat; [ $? = 1 ]
+    then g() { f netcat -- "$@" ;}
+    elif socat /dev/null /dev/null
+    then g() { f socat - "TCP:$1:$2" ;}
+    elif curl; [ $? = 2 ]
+    then g() { f curl "telnet://$1:$2" ;}
+    else return 127
+    fi 2>&-
+
+    f() { request | "$@" | { receive && cat ;} ;}
+    for url; do
+        request() { printf 'GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' "${query#/}" "$dom" ;}
+        receive() { while IFS=$r read -r l r; [ "$l" ]; do printf >&2 %s\\n "$l"; done ;}
+        proto="${url%%:*}" proto="${proto##*[!a-z0-9-]*}"
+        [ "$proto" ] && url="${url#$proto://}" || url="${url#//}"
+        host="${url%%/*}" query="${url#"$host"}" dom="${host%:*}"
+        [ "$host" = "${dom:?}" ] && PORT="${PORT:-80}" || PORT="${host##*:}"
+        printf '%s\t«%s»\n' proto "$proto" url "$url" host "$host" domain "$dom" port "$PORT" query "$query"
+        if [ "$net" ]; then
+            exec 3<>"/dev/tcp/$dom/$PORT" &&
+            request >&3 && receive <&3 && cat <&3 || continue
+            exec 3>&-
+        else
+            g "$dom" "$PORT" || return
+        fi
+    done
+)
+
+[ -n "${preload+-}" ] || burl "$@"

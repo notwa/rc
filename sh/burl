@@ -35,12 +35,15 @@ burl() ( ### @-
     (: </dev/udp/localhost/0) 2>&- && net=y || net=
     [ $'' ] && r=$(printf \\r) || r=$'\r'
 
-    if /usr/bin/env nc; [ $? = 1 ] # needs absolute path to env thanks to busybox
+    # nc.traditional needs the -- or else it waits for input.
+    if /usr/bin/env nc --; [ $? = 1 ] # needs absolute path to env thanks to busybox
     then g() { f /usr/bin/env nc -- "$@" ;}
-    elif busybox nc; [ $? = 1 ]
-    then g() { f busybox nc -- "$@" ;}
     elif netcat; [ $? = 1 ]
     then g() { f netcat -- "$@" ;}
+    elif ncat; [ $? = 1 ]
+    then g() { f ncat -- "$@" ;}
+    elif busybox nc; [ $? = 1 ]
+    then g() { f busybox nc -- "$@" ;}
     elif socat /dev/null /dev/null
     then g() { f socat - "TCP:$1:$2" ;}
     elif curl; [ $? = 2 ]

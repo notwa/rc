@@ -57,13 +57,7 @@ __obtain() {
 
 	if [ -d /C ]; then
 		[ "$arch" = x86_64 ] || __obtain_die "only x86_64 Windows is supported"
-		repo=https://bin.ajam.dev/x64_Windows/
 		arch=exe
-	else
-		case "$arch" in
-		(aarch64) repo=https://bin.ajam.dev/aarch64_arm64_Linux/;;
-		(x86_64)  repo=https://bin.ajam.dev/x86_64_Linux/;;
-		esac
 	fi
 
 	umask 0077 && mkdir -p ~/play/bootstrap && cd ~/play/bootstrap ||
@@ -77,6 +71,12 @@ __obtain() {
 	(x86_64)  sum=9f1adb1db8e70def95f4ace883ab2f8c0484df561d80daa9d008776d487e9b34;;
 	(aarch64) sum=79f69db01bc98201e02644d0ccb217b3593e4ed2067d56a73f7442e234212883;;
 	(*) __obtain_die "invalid value for \$arch: $arch"
+	esac
+
+	case "$arch" in
+	(exe)     repo=https://bin.ajam.dev/x64_Windows/;;
+	(aarch64) repo=https://bin.ajam.dev/aarch64_arm64_Linux/;;
+	(x86_64)  repo=https://bin.ajam.dev/x86_64_Linux/;;
 	esac
 
 	echo "$sum" \*minisign > minisign.sha256 &&

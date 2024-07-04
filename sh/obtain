@@ -1,0 +1,118 @@
+#!/usr/bin/env sh
+
+__obtain_die() {
+	__obtain_code="$?"
+	printf >&2 'obtain: %s\n' "$*"
+	[ "$__obtain_code" = 0 ] && exit 2 || exit "$__obtain_code"
+}
+
+__obtain_burl() ( # eaguru.guru/t/burl.sh specialized for this script. 343 bytes
+	# both methods exhibit a 45 second timeout on my machine.
+	X(){ printf %s\\r\\n "GET /${Q#/} HTTP/1.0" "Host: $D" '';}
+	Y(){ while IFS=$R read -r A B;[ "$A" ];do :;done;cat;}
+	U="${1#http://}" H="${U%%/*}" Q="${U#"$H"}" D="${H%:*}"
+	[ "$H" = "${D:?}" ]&&P=80||P="${H##*:}";R=$(printf \\r)
+	if (: </dev/udp/localhost/0)2>&-;then exec 3<>"/dev/tcp/$D/$P"&&X>&3&&Y<&3
+	else X|/usr/bin/env nc -- "$D" "$P"|Y;fi
+)
+
+__obtain_url() {
+	__obtain_die "run __obtain_prep first"
+}
+
+__obtain_signed() {
+	set -- "${1:?no source}" "${2:?no destination}" "${3:-"$__obtain_x"}"
+
+	__obtain_url "t.glorp.wang/$1$3" > "$2$3" &&
+	__obtain_url "t.glorp.wang/$1$3.minisig" > "$2$3.minisig" ||
+	__obtain_die "failed to download $2 ($1)"
+
+	./minisign -QVm "$2$3" -P "$__obtain_public_key" >/dev/null ||
+	__obtain_die "failed to validate $2$3 ($1$3)"
+
+	rm "$2$3.minisig"
+
+	if [ "$3" = .gz ]; then
+		gzip -k -d -f "$2$3" || __obtain_die "failed to extract $2$3 ($1$3)"
+		rm "$2$3"
+	fi
+}
+
+__obtain_prep() { # can be run many times in case curl/wget becomes available.
+	gzip -V >/dev/null 2>&1 && __obtain_x=.gz || __obtain_x=
+	if   curl; [ $? = 2 ]; then __obtain_url() { curl -fsS -m45 -o- "$*" ;}
+	elif wget; [ $? = 1 ]; then __obtain_url() { wget -qt1 -T45 -O- "$*" ;}
+	elif __obtain_burl microsoft.com >/dev/null
+	then __obtain_url() { __obtain_burl "$*" ;}
+	else __obtain_die "missing curl, wget, bash (/dev/tcp), and nc (netcat)"
+	fi 2>&-
+}
+
+__obtain() {
+	__obtain_prep
+
+	arch="$(exec uname -m)" || __obtain_die "uname is missing"
+	case "$arch" in (*[!A-Za-z0-9._-]*) false; esac ||
+	__obtain_die '`uname -m` returned something insane:' "$arch"
+
+	if [ -d /C ]; then
+		[ "$arch" = x86_64 ] || __obtain_die "only x86_64 Windows is supported"
+		repo=https://bin.ajam.dev/x64_Windows/
+		arch=exe
+	else
+		case "$arch" in
+		(aarch64) repo=https://bin.ajam.dev/aarch64_arm64_Linux/;;
+		(x86_64)  repo=https://bin.ajam.dev/x86_64_Linux/;;
+		esac
+	fi
+
+	umask 0077 && mkdir -p ~/play/bootstrap && cd ~/play/bootstrap ||
+	__obtain_die "failed to make bootstrap directory"
+
+	__obtain_url t.glorp.wang/minisign."$arch" > minisign ||
+	__obtain_die "failed to download minisign files"
+
+	case "$arch" in
+	(exe)     sum=6537b1da726d593877dc21720d8f8c44e6c7485da3dfddddee73e8b457e49b1a;;
+	(x86_64)  sum=9f1adb1db8e70def95f4ace883ab2f8c0484df561d80daa9d008776d487e9b34;;
+	(aarch64) sum=79f69db01bc98201e02644d0ccb217b3593e4ed2067d56a73f7442e234212883;;
+	(*) __obtain_die "invalid value for \$arch: $arch"
+	esac
+
+	echo "$sum" \*minisign > minisign.sha256 &&
+	sha256sum -c minisign.sha256 >/dev/null ||
+	__obtain_die "failed to validate minisign"
+
+	rm minisign.sha256
+	chmod +x minisign || __obtain_die
+
+	# this key is for files that i've personally signed myself.
+	__obtain_public_key=RWQdYTxDsppw5ZFpYZFoF6IoPS0okMKlOiz9MwTl0NUoP41r57sf9dI1
+	__obtain_signed "curl.$arch" curl
+
+	# this key is only for files signed by my server, not myself.
+	__obtain_public_key=RWQo7HxrRBmGLN2s7OuAYwGyeuDH0hEaCxsTBvseux8awYNbmP3b5rCg
+	__obtain_signed cacert.pem cacert.pem
+
+	curl="$(readlink -f "curl")" && cert="$(readlink -f "cacert.pem")" ||
+	__obtain_die "failed to determine paths to bootstrap files"
+
+	# TODO: escape paths in case they contain spaces or special characters.
+	eval "__obtain_url() { $curl --cacert $cert -qfsS -m45 -o- \"\$*\" ;}"
+	__obtain_url https://ipinfo.io
+
+	# FIXME? curl is still accessing these files:
+	# $ strace -fe trace=file ~/play/bootstrap/curl -q --cacert ~/play/bootstrap/cacert.pem https://example.com
+	# /etc/hosts
+	# /etc/netsvc.conf
+	# /etc/nsswitch.conf
+	# /etc/resolv.conf
+	# /etc/svc.conf
+	# /etc/ssl/certs/9f4c149e.0
+}
+
+obtain()(__obtain "$@")
+[ -n "${preload+-}" ] || __obtain "$@"
+
+# cursed modeline:
+# vim:ft=bash ts=3 sw=3 noet sts=3

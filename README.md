@@ -140,7 +140,7 @@ turn bash into a makeshift HTTP client.
 inspired by [hackshell.sh.](https://thc.org/hs)
 also works in most other shells thanks to netcat.
 
-minimal/minified version: https://eaguru.guru/t/burl.sh (416 bytes)
+minimal/minified version: https://eaguru.guru/t/burl.sh (469 bytes)
 
 ```
 $ burl httpbin.org/get

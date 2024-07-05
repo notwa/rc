@@ -114,7 +114,7 @@ END {for (k in a) print k}'
 do_clean() { rm -r _new; }
 
 desire() {
-    case "$f" in
+    case "$1" in
     (*.bak) false;;
     (*/.git/*) false;;
     (vim/.netrwhist/*) false;;

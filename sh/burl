@@ -37,24 +37,25 @@ burl() ( ### @-
 
     # nc.traditional needs the -- or else it waits for input.
     if /usr/bin/env nc --; [ $? = 1 ] # needs absolute path to env thanks to busybox
-    then g() { f /usr/bin/env nc -- "$@" ;}
+    then wrapped() { process /usr/bin/env nc -- "$@" ;}
     elif netcat; [ $? = 1 ]
-    then g() { f netcat -- "$@" ;}
+    then wrapped() { process netcat -- "$@" ;}
     elif ncat; [ $? = 1 ]
-    then g() { f ncat -- "$@" ;}
+    then wrapped() { process ncat -- "$@" ;}
     elif busybox nc; [ $? = 1 ]
-    then g() { f busybox nc -- "$@" ;}
+    then wrapped() { process busybox nc -- "$@" ;}
     elif socat /dev/null /dev/null
-    then g() { f socat - "TCP:$1:$2" ;}
+    then wrapped() { process socat - "TCP:$1:$2" ;}
     elif curl; [ $? = 2 ]
-    then g() { f curl "telnet://$1:$2" ;}
+    then wrapped() { process curl "telnet://$1:$2" ;}
     else return 127
     fi 2>&-
 
-    f() { request | "$@" | { receive && cat ;} ;}
+    request() { printf 'GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' "${query#/}" "$dom" ;}
+    receive() { while IFS=$r read -r l _; [ "$l" ]; do printf %s\\n "$l"; done; echo ;} >&2
+    process() { request | "$@" | { receive && cat ;} ;}
+
     for url; do
-        request() { printf 'GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' "${query#/}" "$dom" ;}
-        receive() { while IFS=$r read -r l _; [ "$l" ]; do printf %s\\n "$l"; done; echo ;} >&2
         proto="${url%%:*}" proto="${proto##*[!a-z0-9-]*}"
         [ "$proto" ] && url="${url#$proto://}" || url="${url#//}"
         host="${url%%/*}" query="${url#"$host"}" dom="${host%:*}"
@@ -64,7 +65,7 @@ burl() ( ### @-
             request >&3 && receive <&3 && cat <&3 || continue
             exec 3>&-
         else
-            g "$dom" "$PORT" || return
+            wrapped "$dom" "$PORT" || return
         fi
     done
 )

@@ -1119,6 +1119,7 @@ copy files in a plain way using rsync. affected by umask.
 | [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [obtain](#obtain)                             |       *sh* | ❔    | ❔    | ❔    | ❔    |
 | [oshi](#oshi)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [oxo](#oxo)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

@@ -1,9 +1,7 @@
 #!/usr/bin/env zsh
 # YES_ZSH NO_BASH NO_DASH NO_ASH
 
-cutv() { ### @-
-    ### (WIP) create a short clip of a long video file.
-
+cutv() {
     argc $# -ge 2 "$0" || return
     argc $# -le 4 "$0" || return
     local nel="${1?missing length parameter}"

@@ -1,0 +1,136 @@
+#!/usr/bin/env sh
+# YES_ZSH YES_BASH YES_DASH YES_ASH
+
+__recolor_install() {
+    ForegroundColour() { recolor RAW 10 "$@"; }
+    BackgroundColour() { recolor RAW 11 "$@"; }
+        CursorColour() { recolor RAW 12 "$@"; }
+               Black() { recolor      0 "$@"; }
+           BoldBlack() { recolor      8 "$@"; }
+                 Red() { recolor      1 "$@"; }
+             BoldRed() { recolor      9 "$@"; }
+               Green() { recolor      2 "$@"; }
+           BoldGreen() { recolor     10 "$@"; }
+              Yellow() { recolor      3 "$@"; }
+          BoldYellow() { recolor     11 "$@"; }
+                Blue() { recolor      4 "$@"; }
+            BoldBlue() { recolor     12 "$@"; }
+             Magenta() { recolor      5 "$@"; }
+         BoldMagenta() { recolor     13 "$@"; }
+                Cyan() { recolor      6 "$@"; }
+            BoldCyan() { recolor     14 "$@"; }
+               White() { recolor      7 "$@"; }
+           BoldWhite() { recolor     15 "$@"; }
+}
+
+__recolor() {
+    # TODO: clean up and optimize the heck out of this, i.e.
+    #       don't require 19+ subshells to replace every color.
+    pre='\033]'
+    post='\033\\'
+
+    tmuxy=0 screeny=0 linuxy=0
+    [ "${TERM#tmux}"   = "$TERM" ] || tmuxy=1
+    [ "${TERM#screen}" = "$TERM" ] || { tmuxy=1; screeny=1; }
+    [ "${TERM#linux}"  = "$TERM" ] || linuxy=1
+    [ -z "$TMUX" ] || tmuxy=0
+    [ "$tmuxy$screeny" = 00 ] || linuxy=0
+
+    if [ $tmuxy = 1 ]; then
+        pre='\033Ptmux;\033'"$pre"
+        post='\007'"$post"
+    elif [ $screeny = 1 ]; then
+        pre='\033P\033'"$pre"
+        post='\007'"$post"
+    fi
+
+    malarg() {
+        printf >&2 '%s: malformed argument #%s: %s\n' "$@"
+        exit 2
+    }
+
+    byteranged() {
+        [ "$1" -ge 0 ] && [ "$1" -le 255 ]
+    } 2>&-
+
+    valid_rex() {
+        [ -z "${2#[0-9a-f][0-9a-f]/[0-9a-f][0-9a-f]/[0-9a-f][0-9a-f]}" ]
+    }
+
+    rex() {
+        byteranged "$1" || malarg rex 1 "$1"
+        valid_rex || malarg rex 2 "$2"
+        if [ $linuxy = 1 ]; then
+            #local IFS=/
+            #set -- $1 $2
+            set -- "${1%%/*}" "${2#*/}"
+            set -- "$1" "${2%%/*}"
+            [ "$1" -ge 16 ] || printf '\e]P%x%s%s%s' "$@"
+        else
+            printf "${pre}4;%s;rgb:%s${post}" "$1" "$2"
+        fi
+    }
+
+    rexr() {
+        byteranged "$1" || malarg rexr 1 "$1"
+        valid_rex || malarg rexr 2 "$2"
+        if [ $linuxy = 1 ]; then
+            : # unsupported
+        else
+            printf "${pre}%s;rgb:%s${post}" "$1" "$2"
+        fi
+    }
+
+    colour_split() {
+        # use blue channel as a temporary variable.
+        b="${c%??}" r="${b%??}" g="${b#??}" b="${c#????}"
+    }
+
+    dirty=0 plus=0
+    n= r=ff g=ff b=ff a= c= i= raw=0
+
+    if [ "$1" = RAW ]; then raw=1; shift; fi
+    n="$1"
+
+    byteranged "$n" || malarg recolor 1 "$c"
+
+    if c="${2#\#}"; [ "$c" != "$2" ]; then
+        [ "${#c}" = 6 ] || malarg recolor 2 "$2"
+        v_lower c || return
+        colour_split || return
+
+    elif c="${2#0x}"; [ "$c" != "$2" ] && [ "${#c}" = 6 ]; then
+        v_lower c || return
+        colour_split || return
+
+    else
+        i=1
+        for a in "$2" "$3" "$4"; do
+            : $((i+=1))
+            if c="${a#0x}"; [ "$c" = "$a" ]; then
+                byteranged "$c" || malarg recolor $i "$c"
+                c="$(printf '%02x' "$c")" # TODO: avoid subshell.
+            fi
+            [ "${#c}" != 1 ] || c="0$c"
+            [ "${#c}" = 2 ] || malarg recolor $i "$c"
+            v_lower c || return
+            [ $i = 2 ] && r="$c" || [ $i = 3 ] && g="$c" || [ $i = 4 ] && b="$c"
+        done
+    fi
+
+    if [ $raw = 1 ]; then
+        rexr "$n" "$r/$g/$b"
+    else
+        rex "$n" "$r/$g/$b"
+        if [ "$n" -eq 21 ] && [ $plus = 1 ]; then
+            # use base16 "Bright White" for foreground as well.
+            rexr 10 "$r/$g/$b"
+        fi
+    fi
+    dirty=1
+} >/dev/tty
+
+recolor()(__recolor "$@")
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} v_lower v_upper
+[ -n "${preload+-}" ] || __recolor "$@"

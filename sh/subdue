@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+# YES_ZSH YES_BASH YES_DASH YES_ASH
+
+__subdue() { ### @subdue
+    ### reconfigure your terminal's color scheme using a preset for [recolor.](#recolor)
+    # TODO: take a screenshot and include it in the docs.
+    __recolor_install
+
+    ForegroundColour '#ECECEC'
+    BackgroundColour '#111111'
+        CursorColour '#F9F9F9'
+
+               Black '#111111'
+                 Red '#B62A1F'
+               Green '#41B43C'
+                Blue '#1D52E1'
+              Yellow '#ED9433'
+                Cyan '#40ADAC'
+             Magenta '#BA3CB9'
+               White '#BDBDBD'
+
+           BoldBlack '#747474'
+             BoldRed '#F43E31'
+           BoldGreen '#4FEB49'
+            BoldBlue '#4391F9'
+          BoldYellow '#F4F415'
+            BoldCyan '#3AF5F4'
+         BoldMagenta '#E84EE6'
+           BoldWhite '#ECECEC'
+}
+
+subdue()(__subdue "$@")
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} recolor
+[ -n "${preload+-}" ] || __subdue "$@"

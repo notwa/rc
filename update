@@ -137,31 +137,31 @@ for d in home sh vim; do
     discover "$d" > _new/hashes.txt ||
     die 'failed to find new files'
 
-    different < _new/hashes.txt > _new/updates.txt ||
+    different < _new/hashes.txt >> _new/updates.txt ||
     die 'failed to compare files'
-
-    LC_ALL=C sort < _new/updates.txt > _new/sorted.txt ||
-    die 'failed to sort file paths'
-
-    while read -r f; do
-        desire "$f" || continue
-
-        if [ -f "_new/$f" ] && ! [ -f "$f" ]; then
-            warn " +  $f"
-            cp -p "_new/$f" "$f"
-        elif ! [ -f "_new/$f" ] && [ -f "$f" ]; then
-            warn " -  $f"
-        elif [ "_new/$f" -nt "$f" ]; then
-            # NOTE: this does not play well with git --patch.
-            #       don't use this script when you have git!
-            warn " *  $f"
-            backup "$f"
-            cp -p "_new/$f" "$f"
-        elif [ "_new/$f" -ot "$f" ]; then
-            warn " /  $f"
-        #else warn " =  $f"
-        fi
-    done < _new/sorted.txt
 done
+
+LC_ALL=C sort < _new/updates.txt > _new/sorted.txt ||
+die 'failed to sort file paths'
+
+while read -r f; do
+    desire "$f" || continue
+
+    if [ -f "_new/$f" ] && ! [ -f "$f" ]; then
+        warn " +  $f"
+        cp -p "_new/$f" "$f"
+    elif ! [ -f "_new/$f" ] && [ -f "$f" ]; then
+        warn " -  $f"
+    elif [ "_new/$f" -nt "$f" ]; then
+        # NOTE: this does not play well with git --patch.
+        #       don't use this script when you have git!
+        warn " *  $f"
+        backup "$f"
+        cp -p "_new/$f" "$f"
+    elif [ "_new/$f" -ot "$f" ]; then
+        warn " /  $f"
+    #else warn " =  $f"
+    fi
+done < _new/sorted.txt
 
 clean

@@ -1,0 +1,209 @@
+#!/usr/bin/env sh
+# YES_ZSH YES_BASH YES_DASH YES_ASH
+
+### @feud - parse command-line arguments, mapping short-flags to variable names.
+### **NOTE:** the API is still experimental and will undergo major changes.
+
+__feud_invalid() {
+	#v(){ case "$1" in (*[!_A-Za-z0-9]*) :;;([_A-Za-z]*) [ ];esac;}
+	case "$1" in (*[!_A-Za-z0-9]*) true;; ([_A-Za-z]*) false;; (*) true;; esac
+}
+
+feud_new_program() {
+	if [ $# != 2 ]; then
+		printf >&2 %s\\n "usage: feud_new_program {program name} {callback name}"
+		return 64
+	elif __feud_invalid "$2"; then
+		printf >&2 %s\\n "feud_new_program: callback name must be a valid identifier"
+		return 64
+	fi
+
+	__feud_program="$1" __feud_callback="$2"
+	__feud_switches= __feud_options= __feud_matches=
+}
+
+feud_add_option() {
+	if [ $# != 2 ] || [ "${#1}" != 1 ] || [ "${#2}" = 0 ]; then
+		# TODO: improve error message, especially when running from __feud_dispatch!
+		[ "${#1}"  = 1 ] || printf >&2 %s\\n "feud_add_option: invalid argument: \"$1\""
+		[ "${#2}" != 0 ] || printf >&2 %s\\n "feud_add_option: invalid argument: \"$2\""
+		printf >&2 %s\\n "usage: feud_add_option {single character} {variable name}"
+		return 64
+	elif __feud_invalid "$2"; then
+		printf >&2 %s\\n "feud_add_option: invalid argument: \"$2\""
+		printf >&2 %s\\n "feud_add_option: variable name must be a valid identifier"
+		return 64
+	fi
+
+	__feud_options="$__feud_options$1"
+	__feud_matches="$__feud_matches ($1) $2=\"\$2\";;"
+}
+
+feud_add_switch() {
+	if { [ $# != 2 ] && [ $# != 3 ] ;} || [ "${#1}" != 1 ] || [ "${#2}" = 0 ]; then
+		# TODO: improve error message, especially when running from __feud_dispatch!
+		[ "${#1}"  = 1 ] || printf >&2 %s\\n "feud_add_switch: invalid argument: \"$1\""
+		[ "${#2}" != 0 ] || printf >&2 %s\\n "feud_add_switch: invalid argument: \"$2\""
+		printf >&2 %s\\n "usage: feud_add_switch {single character} {variable name} [value]"
+		return 64
+	elif __feud_invalid "$2"; then
+		printf >&2 %s\\n "feud_add_switch: invalid argument: \"$2\""
+		printf >&2 %s\\n "feud_add_switch: variable name must be a valid identifier"
+		return 64
+	elif [ $# = 3 ] && [ -z "${3##*[!0-9]*}" ]; then
+		# TODO: lift this restriction?
+		printf >&2 %s\\n "feud_add_switch: value must be a non-negative integer"
+		return 64
+	fi
+
+	__feud_switches="$__feud_switches$1"
+	if [ $# = 2 ]; then
+		eval "$2=0"
+		__feud_matches="$__feud_matches ($1) : \$(($2+=1));;"
+	else
+		__feud_matches="$__feud_matches ($1) $2=$3;;"
+	fi
+}
+
+__feud_dispatch() {
+	# NOTE: temporarily using 2>/dev/null instead of 2>&- until OSH bug gets fixed.
+	PATH=: setopt local_options sh_word_split 2>/dev/null
+	case $- in (*f*) set -- $1${1:+,};; (*) set -f; set -- $1${1:+,}; set +f;; esac
+	for arg; do
+		set -- "${arg##*-}" "${arg%-*}"
+		case "$arg" in
+		(?*=?*-?*)
+			"$__feud_c" "$1" "${2%%=*}" "${2#*=}";;
+		(?*-?*)
+			"$__feud_c" "$1" "$2";;
+		# TODO: handle (*=*) to give a contextual error message.
+		(*) # TODO: catch this case as well: "c=-d"
+			printf >&2 %s\\n "feud_configure: expected two hyphen-separated parameters: \"$arg\""
+			__feud_error=64;;
+		esac || {
+			__feud_error=$?
+			printf >&2 %s\\n "feud_configure: the above error is due to this substring: \"$arg\""
+		}
+	done
+}
+
+__feud_dispatch_both() {
+	# FIXME? on shells that don't support locals (ksh), IFS never gets reset.
+	__feud_c=feud_add_option IFS=, __feud_dispatch "$1"
+	__feud_c=feud_add_switch IFS=, __feud_dispatch "$2"
+	return $__feud_error
+}
+
+feud_configure() {
+	if [ $# != 1 ]; then
+		printf >&2 %s\\n 'usage: feud_configure {string of options:switches}'
+		printf >&2 %s\\n 'example: `feud_configure input-i,output-o:always-a,yes-y`'
+		return 64
+	fi
+
+	case "$1" in
+	(*:*:*)
+		printf >&2 %s\\n 'feud_configure: too many colons, expected one'
+		printf >&2 %s\\n 'feud_configure: (hint) "switch,switch:option,option"'
+		return 64;;
+	(*:*) :;; # no-op
+	(*)
+		printf >&2 %s\\n 'feud_configure: expected one colon'
+		return 64;;
+	esac
+
+	__feud_error=0 \
+	__feud_old_options="$__feud_options" \
+	__feud_old_switches="$__feud_switches" \
+	__feud_old_matches="$__feud_matches" \
+	__feud_dispatch_both "${1%:*}" "${1#*:}"
+}
+
+feud_match_flag() {
+	false
+}
+
+__feud_help() {
+	"${__feud_callback}_help"
+}
+
+feud() {
+	# locals: __feud_n, __feud_f
+
+	if [ -z "$__feud_callback" ]; then
+		printf >&2 %s\\n "feud: missing initialization -- call feud_new_program first!"
+		return 64
+	fi
+	eval "feud_match_flag() { case \"\$1\" in $__feud_matches (*) false; esac ;}"
+
+	__feud_n=$#
+	while [ $((__feud_n-=1)) -ge 0 ]; do
+		__feud_f="$1"
+		case "$__feud_f" in
+
+		# TODO: don't check for -h here if the user configured their own.
+		(/\?|-h|-help|--help)
+			__feud_help
+			return 0;;
+
+		(--)
+			shift
+			while [ $((__feud_n-=1)) -ge 0 ]; do
+				set -- "$@" "$1"
+				shift
+			done
+			break;;
+
+		(-*)
+			shift
+			case "${__feud_f#-}" in
+			(["$__feud_switches"])
+				feud_match_flag "${__feud_f#-}" || printf >&2 '%s: %s\n' feud "internal error"
+				:;;
+			(["$__feud_options"])
+				if [ $__feud_n = 0 ]; then
+					printf >&2 '%s: %s\n' "$__feud_program" "missing argument for $__feud_f"
+					__feud_help >&2
+					return 64
+				fi
+				: $((__feud_n-=1))
+				feud_match_flag "${__feud_f#-}" "$1" || printf '%s: %s\n' feud "internal error"
+				shift;;
+			(-*|?)
+				printf >&2 '%s: %s\n' "$__feud_program" "unknown flag: $__feud_f"
+				__feud_help >&2
+				return 64;;
+			(*)
+				if case "$__feud_f" in
+				(-["$__feud_options"]*) true;;
+				(*) false;;
+				esac; then
+					set -- "${__feud_f%"${__feud_f#-?}"}" "${__feud_f#-?}" "$@"
+				else
+					set -- "${__feud_f%"${__feud_f#-?}"}" "-${__feud_f#-?}" "$@"
+				fi
+				: $((__feud_n+=2))
+				continue;;
+			esac;;
+
+		(*)
+			shift
+			set -- "$@" "$__feud_f";;
+		esac
+	done
+
+	"$__feud_callback" "$@"
+}
+
+feud_cleanup() { # optional
+	unset \
+	__feud_program __feud_callback __feud_switches __feud_options __feud_matches \
+	__feud_c __feud_f __feud_n __feud_error \
+	__feud_old_options __feud_old_switches __feud_old_matches
+	feud_match_flag() { false; }
+}
+
+[ -n "${preload+-}" ] || feud "$@"
+
+# cursed modeline:
+# vim:ft=bash ts=3 sw=3 noet sts=3

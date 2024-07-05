@@ -54,7 +54,7 @@ burl() ( ### @-
     f() { request | "$@" | { receive && cat ;} ;}
     for url; do
         request() { printf 'GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' "${query#/}" "$dom" ;}
-        receive() { while IFS=$r read -r l _; [ "$l" ]; do printf >&2 %s\\n "$l"; done ;}
+        receive() { while IFS=$r read -r l _; [ "$l" ]; do printf %s\\n "$l"; done; echo ;} >&2
         proto="${url%%:*}" proto="${proto##*[!a-z0-9-]*}"
         [ "$proto" ] && url="${url#$proto://}" || url="${url#//}"
         host="${url%%/*}" query="${url#"$host"}" dom="${host%:*}"

@@ -28,11 +28,21 @@ die() {
 
 backup="backup-$(date -u +%s)" || die 'failed to determine date'
 
-# load libraries.
-# TODO: write a simple fallback when the library is missing!
+if ! [ -e sh/obtain ]; then
+    url=https://eaguru.guru/git/notwa/rc/raw/branch/master/sh/obtain
+    if   curl 2>&-; [ $? = 2 ]; then acquire() { curl -fsS -m45 -o- "$*" ;}
+    elif wget 2>&-; [ $? = 1 ]; then acquire() { wget -qt1 -T45 -O- "$*" ;}
+    else die '"sh/obtain" missing, curl and wget missing as well'
+    fi
+    mkdir -p sh || die 'failed to create "sh" directory'
+    acquire "$url" > sh/obtain && chmod +x sh/obtain ||
+    die 'failed to acquire "sh/obtain"'
+fi
+
 dummy() { :; }
 preload=dummy
-. sh/obtain
+(. sh/obtain) || die 'failed to import "sh/obtain"'
+. sh/obtain || exit
 
 __obtain_prep
 

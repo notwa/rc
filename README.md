@@ -285,10 +285,6 @@ $ countdiff README-old.md README.md
 739
 ```
 
-### [cutv](/sh/cutv#L4)
-
-(WIP) create a short clip of a long video file.
-
 ### [days](/sh/days#L4)
 
 compute the number of days since a given date.
@@ -782,6 +778,10 @@ asses
 
 ```
 
+### [subdue](/sh/subdue#L4)
+
+reconfigure your terminal's color scheme using a preset for [recolor.](#recolor)
+
 ### [sum](/sh/sum#L4)
 
 compute the summation of its arguments without forking processes.
@@ -1137,6 +1137,7 @@ copy files in a plain way using rsync. affected by umask.
 | [preload](#preload)                           |  **false** | ✔️    | ✔️    | ✔️    | ✔️    |
 | [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [randir](#randir)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [recolor](#recolor)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [rs](#rs)                                     |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [running](#running)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1152,6 +1153,7 @@ copy files in a plain way using rsync. affected by umask.
 | [sram](#sram)                                 |        zsh | ✔️    | ✔️    | ⭕    | ⭕    |
 | [stfu](#stfu)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [streamcrap](#streamcrap)                     |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |
+| [subdue](#subdue)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sv](#sv)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

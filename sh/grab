@@ -90,10 +90,7 @@ will remove temporary files
 find -name '*.minisig' -delete || die
 
 will return files to original directory
-cd "$owd" || die
-find "$t" -type f | while read -r f
-do mv -- "$f" . || die
-done || exit
+cd "$owd" && find "$t" -type f -exec mv -- {} . \; || die
 
 will remove temporary directory # assuming it's now emptied
 rmdir "$t" || die

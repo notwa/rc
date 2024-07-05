@@ -1,0 +1,161 @@
+#!/usr/bin/env sh
+here="$(readlink -f "$0")" && here="${here%/*}" && CDPATH= cd "$here" || exit
+#remote="https://github.com/notwa/rc/archive/refs/heads/master.tar.gz"
+remote="https://github.com/notwa/rc/archive/master.tar.gz"
+#remote="https://eaguru.guru/git/notwa/rc/archive/master.tar.gz"
+
+warn() {
+    printf >&2 %s\\n "$*"
+}
+
+do_clean() { true; }
+
+clean() {
+    do_clean || warn 'update: failed to remove temporary files'
+    do_clean() { true; }
+}
+
+die() {
+    warn "update:" "$@"
+    clean
+    exit 1
+}
+
+! [ -d .git ] || die "you don't need this script when you have .git!"
+! [ -e _new ] || die '"_new" already exists, please remove it before updating'
+
+backup="backup-$(date -u +%s)" || die 'failed to determine date'
+
+# load libraries
+dummy() { :; }
+preload=dummy
+. sh/obtain
+
+__obtain_prep
+
+do_clean() { rm dummy; }
+
+if ! __obtain_url https://eaguru.guru/t/dummy > dummy; then
+    __obtain_bootstrap || exit
+    die 'TODO'
+fi
+
+do_clean() { rm dummy dummy.sha256sum; }
+
+printf >dummy.sha256sum '%s *%s\n' \
+1b577383bcfb9f191c785497f4ac34a8fb546807bd1094ef65d0ce9a5a63423e dummy ||
+die 'failed to write file'
+
+if ! sha256sum -c dummy.sha256sum >/dev/null; then
+    die 'failed to validate dummy file'
+fi
+
+clean
+
+do_clean() { rm update.tar.gz; }
+
+if ! __obtain_url "$remote" > update.tar.gz; then
+    die 'failed to download new version'
+fi
+
+do_clean() { rm -r update.tar.gz _new_$$; }
+
+mkdir _new_$$ || die 'failed to create temporary directory'
+tar zxf update.tar.gz -C _new_$$ || die 'failed to extract update files'
+rm update.tar.gz || die 'failed to remove archive file'
+
+rename() {
+    if [ -d _new_$$/rc-master ]
+    then mv _new_$$/rc-master _new
+    else mv _new_$$/rc _new
+    fi
+}
+
+do_clean() { if [ -d _new ]; then rm -r _new_$$ _new; else rm -r _new_$$; fi; }
+
+if ! rename; then
+    die 'failed to move update files'
+fi
+
+do_clean() { rm -r _new _new_$$; }
+
+rmdir _new_$$ || die
+
+discover() {
+    find "$1" "_new/$1" -type f -exec sha256sum -- {} +
+}
+
+different() {
+    awk '
+{
+    k = substr($0, 67)
+    sub("^_new/", "", k)
+    if (a[k]) {
+        if (a[k] != $1) print k
+        delete a[k]
+    } else a[k] = $1
+}
+END {for (k in a) print k}'
+}
+
+do_clean() { rm -r _new; }
+
+desire() {
+    case "$f" in
+    (*.bak) false;;
+    (*/.git/*) false;;
+    (vim/.netrwhist/*) false;;
+    (vim/backup/*) false;;
+    (vim/bundle/*) false;;
+    (vim/swp/*) false;;
+    (vim/undo/*) false;;
+    (*) true
+    esac
+}
+
+backup() {
+    for f; do
+        if ! [ -d "$backup/${f%/*}" ]; then
+            mkdir -p -- "$backup/${f%/*}" ||
+            die 'failed to create backup directory'
+        fi
+        ! [ -f "$backup/$f" ] || die 'backup file already exists'
+        cp -- "$f" "$backup/$f" || die 'failed to create backup file'
+    done
+}
+
+for d in home sh vim; do
+    if ! discover "$d" > _new/hashes.txt; then
+        die 'failed to find new files'
+    fi
+
+    if ! different < _new/hashes.txt > _new/updates.txt; then
+        die 'failed to compare files'
+    fi
+
+    if ! LC_ALL=C sort < _new/updates.txt > _new/sorted.txt; then
+        die 'failed to sort file paths'
+    fi
+
+    while read -r f; do
+        desire "$f" || continue
+
+        if [ -f "_new/$f" ] && ! [ -f "$f" ]; then
+            warn " +  $f"
+            cp "_new/$f" "$f"
+        elif ! [ -f "_new/$f" ] && [ -f "$f" ]; then
+            warn " -  $f"
+        elif [ "_new/$f" -nt "$f" ]; then
+            # NOTE: this does not play well with git --patch.
+            #       don't use this script when you have git!
+            warn " *  $f"
+            backup "$f"
+            cp "_new/$f" "$f"
+        elif [ "_new/$f" -ot "$f" ]; then
+            warn " /  $f"
+        #else warn " =  $f"
+        fi
+    done < _new/sorted.txt
+done
+
+clean

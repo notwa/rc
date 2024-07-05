@@ -59,17 +59,15 @@ printf >dummy.sha256sum '%s *%s\n' \
 1b577383bcfb9f191c785497f4ac34a8fb546807bd1094ef65d0ce9a5a63423e dummy ||
 die 'failed to write file'
 
-if ! sha256sum -c dummy.sha256sum >/dev/null; then
-    die 'failed to validate dummy file'
-fi
+sha256sum -c dummy.sha256sum >/dev/null ||
+die 'failed to validate dummy file'
 
 clean
 
 do_clean() { rm update.tar.gz; }
 
-if ! __obtain_url "$remote" > update.tar.gz; then
-    die 'failed to download new version'
-fi
+__obtain_url "$remote" > update.tar.gz ||
+die 'failed to download new version'
 
 do_clean() { rm -r update.tar.gz _new_$$; }
 
@@ -86,9 +84,7 @@ rename() {
 
 do_clean() { if [ -d _new ]; then rm -r _new_$$ _new; else rm -r _new_$$; fi; }
 
-if ! rename; then
-    die 'failed to move update files'
-fi
+rename || die 'failed to move update files'
 
 do_clean() { rm -r _new _new_$$; }
 
@@ -123,7 +119,7 @@ desire() {
     (vim/swp/*) false;;
     (vim/undo/*) false;;
     (*) true
-    esac
+    |esac
 }
 
 backup() {
@@ -138,17 +134,14 @@ backup() {
 }
 
 for d in home sh vim; do
-    if ! discover "$d" > _new/hashes.txt; then
-        die 'failed to find new files'
-    fi
+    discover "$d" > _new/hashes.txt ||
+    die 'failed to find new files'
 
-    if ! different < _new/hashes.txt > _new/updates.txt; then
-        die 'failed to compare files'
-    fi
+    different < _new/hashes.txt > _new/updates.txt ||
+    die 'failed to compare files'
 
-    if ! LC_ALL=C sort < _new/updates.txt > _new/sorted.txt; then
-        die 'failed to sort file paths'
-    fi
+    LC_ALL=C sort < _new/updates.txt > _new/sorted.txt ||
+    die 'failed to sort file paths'
 
     while read -r f; do
         desire "$f" || continue

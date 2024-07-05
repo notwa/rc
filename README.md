@@ -363,6 +363,12 @@ $ echo2 -e 'this\nthat' those
 
 open a single directory in `explorer.exe`, defaulting to `$PWD`.
 
+### [feud](/sh/feud#L4)
+
+parse command-line arguments, mapping short-flags to variable names.
+
+**NOTE:** the API is still experimental and will undergo major changes.
+
 ### [ff](/sh/ff#L4)
 
 select a file from a given or current directory using
@@ -1098,6 +1104,7 @@ copy files in a plain way using rsync. affected by umask.
 | [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [echo2](#echo2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [feud](#feud)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ghmd](#ghmd)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [glug](#glug)                                 |       dash | ✔️    | ✔️    | ✔️    | ✔️    |

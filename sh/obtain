@@ -48,7 +48,7 @@ __obtain_prep() { # can be run many times in case curl/wget becomes available.
 	fi 2>&-
 }
 
-__obtain() {
+__obtain_bootstrap() {
 	__obtain_prep
 
 	arch="$(exec uname -m)" || __obtain_die "uname is missing"
@@ -109,6 +109,13 @@ __obtain() {
 	# /etc/resolv.conf
 	# /etc/svc.conf
 	# /etc/ssl/certs/9f4c149e.0
+
+	export PATH="$HOME/play/bootstrap:$PATH"
+}
+
+__obtain() {
+	printf >&2 %s\\n 'obtain: TODO'
+	exit 1
 }
 
 obtain()(__obtain "$@")

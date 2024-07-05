@@ -119,7 +119,7 @@ desire() {
     (vim/swp/*) false;;
     (vim/undo/*) false;;
     (*) true
-    |esac
+    esac
 }
 
 backup() {

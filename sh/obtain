@@ -40,7 +40,7 @@ __obtain_signed() {
 
 __obtain_prep() { # can be run many times in case curl/wget becomes available.
 	gzip -V >/dev/null 2>&1 && __obtain_x=.gz || __obtain_x=
-	if   curl; [ $? = 2 ]; then __obtain_url() { curl -fsS -m45 -o- "$*" ;}
+	if   curl; [ $? = 2 ]; then __obtain_url() { curl -sfL -m45 -o- "$*" ;}
 	elif wget; [ $? = 1 ]; then __obtain_url() { wget -qt1 -T45 -O- "$*" ;}
 	elif __obtain_burl microsoft.com >/dev/null
 	then __obtain_url() { __obtain_burl "$*" ;}
@@ -98,8 +98,8 @@ __obtain() {
 	__obtain_die "failed to determine paths to bootstrap files"
 
 	# TODO: escape paths in case they contain spaces or special characters.
-	eval "__obtain_url() { $curl --cacert $cert -qfsS -m45 -o- \"\$*\" ;}"
-	__obtain_url https://ipinfo.io
+	eval "__obtain_url() { $curl --cacert $cert -qsfL -m45 -o- \"\$*\" ;}"
+	#__obtain_url https://ipinfo.io
 
 	# FIXME? curl is still accessing these files:
 	# $ strace -fe trace=file ~/play/bootstrap/curl -q --cacert ~/play/bootstrap/cacert.pem https://example.com

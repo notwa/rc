@@ -30,8 +30,8 @@ backup="backup-$(date -u +%s)" || die 'failed to determine date'
 
 if ! [ -e sh/obtain ]; then
     url=https://eaguru.guru/git/notwa/rc/raw/branch/master/sh/obtain
-    if   curl 2>&-; [ $? = 2 ]; then acquire() { curl -fsS -m45 -o- "$*" ;}
-    elif wget 2>&-; [ $? = 1 ]; then acquire() { wget -qt1 -T45 -O- "$*" ;}
+    if   curl 2>&-; [ $? = 2 ]; then acquire() { curl -fsS -m45 -o- "$*"; }
+    elif wget 2>&-; [ $? = 1 ]; then acquire() { wget -qt1 -T45 -O- "$*"; }
     else die '"sh/obtain" missing, curl and wget missing as well'
     fi
     mkdir -p sh || die 'failed to create "sh" directory'

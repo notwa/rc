@@ -148,7 +148,7 @@ for d in home sh vim; do
 
         if [ -f "_new/$f" ] && ! [ -f "$f" ]; then
             warn " +  $f"
-            cp "_new/$f" "$f"
+            cp -p "_new/$f" "$f"
         elif ! [ -f "_new/$f" ] && [ -f "$f" ]; then
             warn " -  $f"
         elif [ "_new/$f" -nt "$f" ]; then
@@ -156,7 +156,7 @@ for d in home sh vim; do
             #       don't use this script when you have git!
             warn " *  $f"
             backup "$f"
-            cp "_new/$f" "$f"
+            cp -p "_new/$f" "$f"
         elif [ "_new/$f" -ot "$f" ]; then
             warn " /  $f"
         #else warn " =  $f"

@@ -1,8 +1,10 @@
 #!/usr/bin/env sh
 here="$(readlink -f "$0")" && here="${here%/*}" && CDPATH= cd "$here" || exit
-#remote="https://github.com/notwa/rc/archive/refs/heads/master.tar.gz"
-remote="https://github.com/notwa/rc/archive/master.tar.gz"
-#remote="https://eaguru.guru/git/notwa/rc/archive/master.tar.gz"
+#remote="https://github.com/notwa/rc/archive/master.tar.gz"
+remote="https://eaguru.guru/git/notwa/rc/archive/master.tar.gz"
+
+# NOTE: this script only updates files in subdirectories.
+#       it does not update itself!
 
 warn() {
     printf >&2 %s\\n "$*"
@@ -26,7 +28,8 @@ die() {
 
 backup="backup-$(date -u +%s)" || die 'failed to determine date'
 
-# load libraries
+# load libraries.
+# TODO: write a simple fallback when the library is missing!
 dummy() { :; }
 preload=dummy
 . sh/obtain
@@ -36,8 +39,8 @@ __obtain_prep
 do_clean() { rm dummy; }
 
 if ! __obtain_url https://eaguru.guru/t/dummy > dummy; then
-    __obtain_bootstrap || exit
-    die 'TODO'
+    __obtain_bootstrap || die
+    __obtain_url https://eaguru.guru/t/dummy > dummy || die
 fi
 
 do_clean() { rm dummy dummy.sha256sum; }

@@ -49,6 +49,16 @@ __notice_urlencode() {
 	done
 } 2>&- # send bash's complaints to the abyss
 
+__notice_urlencode2() {
+	while test "$1"; do
+		case "$1" in
+		([:/a-zA-Z0-9~_.-]*) printf '%.1s' "$1";; # : and / added here
+		(*) printf '%%%02X' "'$1";; # bash complains but works
+		esac
+		set -- "${1#?}"
+	done
+} 2>&- # send bash's complaints to the abyss
+
 __notice_generate_id() { # wraps around every 25 years
 	: "${1:?missing seed}"
 	REPLY=""
@@ -246,6 +256,8 @@ __notice_upload() {
 		return 1
 	}
 	[ "$interrupt" != 1 ] || return 127
+	normal="$(__notice_urlencode2 "$normal")"
+	aux="$(__notice_urlencode2 "$aux")"
 	REPLY="$(__notice_log)"
 	return 0
 }

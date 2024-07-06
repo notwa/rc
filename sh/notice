@@ -80,15 +80,29 @@ __notice_log() {
 }
 
 # __notice_upload_to_...
-#	org_c_net_paste      50000000 or   47 MiB (approx)
-#	se_uguu              67108864 or   64 MiB
-#	at_x0               104857600 or  100 MiB
-#	com_cockfile        134217728 or  128 MiB
-#	sh_envs             536870912 or  512 MiB
-#	io_file            2000000000 or 1907 MiB (approx)
-#	at_oshi            5000000000 or 4768 MiB (approx)
-#	com_bashupload    50000000000 or   47 GiB (approx)
-#	net_filebin        unlimited?
+# (SLOW) com_cockfile     134217728+???     or  128 MiB (wtf is going on here)
+# (slow) io_file         2000000000-200-4-x or 1907 MiB (untested)
+#        sh_envs          536870912-200-4-x or  512 MiB (untested)
+#        se_uguu           67108864-200-7-x or   64 MiB (tested)
+#        org_c_net_paste   50000000         or   47 MiB (tested)
+#        at_oshi         5000000000-200-1-x or 4768 MiB (untested)
+#        net_filebin     unlimited?
+# (fast) com_bashupload 50000000000         or   47 GiB (untested)
+# (FAST) at_x0            232783872-200-4-x or  222 MiB (tested) (used to be 100 MiB)
+
+# NOTE: for sites that use `curl -F` to upload, you automatically lose
+#       at least 200 bytes to multipart form-data. names count toward this.
+
+# EXAMPLE: curl -F files[]=@myfile https://example.com
+#          let's say example.com advertises a file size limit of 1000 bytes.
+#          you lose 200, then another 7 for "files[]", then another 6 for "myfile".
+#          therefore the maximum size that "myfile" can be is instead 787.
+
+__notice_compute_form_limit() {
+	# usage: $0 {FIELD NAME} {FILE NAME} {FILE SIZE} {SIZE LIMIT}
+	# returns 1 when over the limit.
+	return "$(( ($3) + 200 + (${#1}) + (${#2}) > ($4) ))"
+}
 
 __notice_upload_to_org_c_net_paste() {
 	# defaults: 180 days, permanent (remains after download)
@@ -106,7 +120,7 @@ __notice_upload_to_org_c_net_paste() {
 __notice_upload_to_io_file() {
 	# defaults: 14 days, ephemeral (deletes after 1 download)
 	# wget should use --content-disposition when downloading
-	[ "${bytes:-0}" -le 2000000000 ] || return 128 # approx, untested
+	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 2000000000 || return 128
 	target=file.io
 	raw="$(__notice_curl -F "file=@$1" "https://$target")" || return
 	[ "${raw#'{"success":true,"status":200,'}" ] || return
@@ -119,7 +133,7 @@ __notice_upload_to_at_oshi() {
 	# configured: 14 days instead
 	# TODO: retrieve admin URL from response (suffixed with " [Admin]")
 	# NOTE: spaces are automatically converted (by the server) to underscores.
-	[ "${bytes:-0}" -le 5000000000 ] || return 128 # approx, untested
+	__notice_compute_form_limit "f" "${1##*/}" "${bytes:-0}" 5000000000 || return 128
 	target=oshi.at
 	raw="$(__notice_curl -fF "f=@$1" -F expire=20160 "https://$target")" || return
 	normal="https:${raw##*DL: http*:}"; normal="${normal%%[!!-~]*}"
@@ -159,7 +173,7 @@ __notice_upload_to_at_x0() {
 	# note that file retention decreases as file size increases.
 	# 100 MiB files are kept for 3 days, and 0 byte files are kept for 100 days.
 	# filenames are randomized. cannot manually delete nor specify expiry.
-	[ "${bytes:-0}" -le 104857600 ] || return 128
+	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 232783872 || return 128
 	target=x0.at
 	raw="$(__notice_curl -fF "file=@$1" "https://$target")" || return
 	normal="$raw"
@@ -169,7 +183,8 @@ __notice_upload_to_at_x0() {
 __notice_upload_to_se_uguu() {
 	# defaults: 3 hours, permanent
 	# filenames are randomized. cannot manually delete nor specify expiry.
-	[ "${bytes:-0}" -le 67108864 ] || return 128
+	# TODO: use fixed filename to squeeze a couple more bytes out of the limit?
+	__notice_compute_form_limit "files[]" "${1##*/}" "${bytes:-0}" 67108864 || return 128
 	target=uguu.se
 	raw="$(__notice_curl -fF "files[]=@$1" "https://$target/upload?output=text")" || return
 	normal="$raw"
@@ -179,9 +194,10 @@ __notice_upload_to_se_uguu() {
 __notice_upload_to_com_cockfile() {
 	# defaults: 12 hours, permanent
 	# filenames are randomized. cannot manually delete nor specify expiry.
-	[ "${bytes:-0}" -le 134217728 ] || return 128
+	# must have a file extension or it gets rejected (415), so use `.bin`.
+	__notice_compute_form_limit "files[]" ".bin" "${bytes:-0}" 999999999 || return 128
 	target=cockfile.com
-	raw="$(__notice_curl -fF "files[]=@$1" "https://$target/upload.php?output=text")" || return
+	raw="$(__notice_curl -fF "files[]=@$1;filename=.bin" "https://$target/upload.php?output=text")" || return
 	normal="$raw"
 	aux="$normal"
 }
@@ -191,7 +207,7 @@ __notice_upload_to_sh_envs() {
 	# does not remember filenames in any capacity, BUT we can tack on our own to the URL.
 	# you can delete files if you extract the X-Token field from the response HTTP headers.
 	# banned MIME types: application/java-archive, application/java-vm
-	[ "${bytes:-0}" -le 536870912 ] || return 128
+	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 536870912 || return 128
 	target=envs.sh
 	raw="$(__notice_curl -fF "file=@$1" -Fsecret= -Fexpires=336 "https://$target")" || return
 	aux="$raw"

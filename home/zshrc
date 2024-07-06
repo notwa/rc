@@ -32,6 +32,7 @@ setopt menu_complete            # autoselect the first completion entry
 setopt no_beep                  # be quiet
 setopt no_match                 # error on bad tab-complete
 setopt path_dirs                # Perform path search even on command names with slashes.
+setopt prompt_cr prompt_sp      # prevent truncated output from ruining shell prompts
 setopt rc_quotes                # 'it''s okay' becomes "it's okay"
 unsetopt flow_control           # Disable start/stop characters in shell editor.
 unsetopt bang_hist              # this does nothing but cause me grief (disables !s)

@@ -98,8 +98,8 @@ __notice_upload_to_org_c_net_paste() {
 	[ "${bytes:-0}" -le 50000000 ] || return 128 # approx, untested
 	target=paste.c-net.org
 	#normal="$(__notice_curl -gT "$1" "https://$target")" || return
-	normal="$(__notice_curl -g --data-binary "@$filepath" -H "X-FileName: ${1##*/}" "https://$target")" || return
-	normal="https:${normal#*http*:}"; normal="${normal%%[!!-~]*}"
+	raw="$(__notice_curl -g --data-binary "@$filepath" -H "X-FileName: ${1##*/}" "https://$target")" || return
+	normal="https:${raw#*http*:}"; normal="${normal%%[!!-~]*}"
 	aux="$normal"
 }
 
@@ -108,9 +108,9 @@ __notice_upload_to_io_file() {
 	# wget should use --content-disposition when downloading
 	[ "${bytes:-0}" -le 2000000000 ] || return 128 # approx, untested
 	target=file.io
-	normal="$(__notice_curl -F "file=@$1" "https://$target")" || return
-	[ "${normal#'{"success":true,"status":200,'}" ] || return
-	normal="https:${normal#*\"link\":\"https:}"; normal="${normal%%[\"]*}"
+	raw="$(__notice_curl -F "file=@$1" "https://$target")" || return
+	[ "${raw#'{"success":true,"status":200,'}" ] || return
+	normal="https:${raw#*\"link\":\"https:}"; normal="${normal%%[\"]*}"
 	aux="$normal" # no direct link, i think it's based on User-Agent
 }
 
@@ -121,8 +121,8 @@ __notice_upload_to_at_oshi() {
 	# NOTE: spaces are automatically converted (by the server) to underscores.
 	[ "${bytes:-0}" -le 5000000000 ] || return 128 # approx, untested
 	target=oshi.at
-	normal="$(__notice_curl -fF "f=@$1" -F expire=20160 "https://$target")" || return
-	normal="https:${normal##*DL: http*:}"; normal="${normal%%[!!-~]*}"
+	raw="$(__notice_curl -fF "f=@$1" -F expire=20160 "https://$target")" || return
+	normal="https:${raw##*DL: http*:}"; normal="${normal%%[!!-~]*}"
 	aux="$normal"
 }
 
@@ -134,8 +134,8 @@ __notice_upload_to_com_bashupload() {
 	[ "${bytes:-0}" -le 50000000000 ] || return 128 # approx, untested
 	target=bashupload.com
 	# https://$target/${${1##*/}// /%20}
-	normal="$(__notice_curl -gT "$1" "https://$target")" || return
-	normal="https:${normal#*http*:}"; normal="${normal%%[!!-~]*}"
+	raw="$(__notice_curl -gT "$1" "https://$target")" || return
+	normal="https:${raw#*http*:}"; normal="${normal%%[!!-~]*}"
 	aux="$normal?download=1"
 }
 
@@ -147,9 +147,9 @@ __notice_upload_to_net_filebin() {
 	target=filebin.net
 	__notice_generate_id "$(date -u +%s)" || return
 	aux="https://$target/$REPLY"
-	#normal="$(__notice_curl -gfT "$1" "$aux/$(__notice_urlencode ${1##*/})")" || return
-	normal="$(__notice_curl -gfT "$1" "$aux/")" || return
-	normal="${normal##*\"filename\": \"}"; normal="$aux/${normal%%\"*}"
+	#raw="$(__notice_curl -gfT "$1" "$aux/$(__notice_urlencode ${1##*/})")" || return
+	raw="$(__notice_curl -gfT "$1" "$aux/")" || return
+	normal="${raw##*\"filename\": \"}"; normal="$aux/${normal%%\"*}"
 	# optional: lock the bin so nobody can edit it, but anyone can still delete it.
 	curl -sSX PUT "$aux" >/dev/null || true
 }
@@ -161,7 +161,8 @@ __notice_upload_to_at_x0() {
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	[ "${bytes:-0}" -le 104857600 ] || return 128
 	target=x0.at
-	normal="$(__notice_curl -fF "file=@$1" "https://$target")" || return
+	raw="$(__notice_curl -fF "file=@$1" "https://$target")" || return
+	normal="$raw"
 	aux="$normal"
 }
 
@@ -170,7 +171,8 @@ __notice_upload_to_se_uguu() {
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	[ "${bytes:-0}" -le 67108864 ] || return 128
 	target=uguu.se
-	normal="$(__notice_curl -fF "files[]=@$1" "https://$target/upload?output=text")" || return
+	raw="$(__notice_curl -fF "files[]=@$1" "https://$target/upload?output=text")" || return
+	normal="$raw"
 	aux="$normal"
 }
 
@@ -179,7 +181,8 @@ __notice_upload_to_com_cockfile() {
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	[ "${bytes:-0}" -le 134217728 ] || return 128
 	target=cockfile.com
-	normal="$(__notice_curl -fF "files[]=@$1" "https://$target/upload.php?output=text")" || return
+	raw="$(__notice_curl -fF "files[]=@$1" "https://$target/upload.php?output=text")" || return
+	normal="$raw"
 	aux="$normal"
 }
 
@@ -190,9 +193,9 @@ __notice_upload_to_sh_envs() {
 	# banned MIME types: application/java-archive, application/java-vm
 	[ "${bytes:-0}" -le 536870912 ] || return 128
 	target=envs.sh
-	normal="$(__notice_curl -fF "file=@$1" -Fsecret= -Fexpires=336 "https://$target")" || return
-	aux="$normal"
-	normal="$normal/${1##*/}"
+	raw="$(__notice_curl -fF "file=@$1" -Fsecret= -Fexpires=336 "https://$target")" || return
+	aux="$raw"
+	normal="$raw/${1##*/}"
 }
 
 __notice_retrying() {
@@ -213,7 +216,7 @@ __notice_retrying() {
 }
 
 __notice_upload() {
-	unset REPLY aux bytes fancy file filepath interrupt normal pretty sanitized sha1 target
+	unset REPLY aux bytes fancy file filepath interrupt normal pretty raw sanitized sha1 target
 	file="${1:-missing argument}"
 
 	file="$(readlink -f "$file")" || return 2 # also converts `\`s to `/`s

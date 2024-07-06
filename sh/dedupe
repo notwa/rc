@@ -1,0 +1,47 @@
+#!/usr/bin/env sh
+# YES_ZSH YES_BASH YES_DASH YES_ASH
+
+dedupe() ( ### @- copy a directory, but make hard/softlinks for identical files.
+# Copyright (C) 2022 Connor Olding
+h=0 D= usage='dedupe [OPTION...] {SOURCE} {TARGET} [FILE...]
+Copy files, recursively, from the source directory to the target directory,
+creating hard (or soft) links to any earlier file containing the same data.
+Optional file arguments allow for finer control of the order of files seen.
+
+      --help                 display this help and exit
+      --soft                 create soft links (default)
+      --hard                 create hard links
+
+This software is provided WITHOUT WARRANTY under the terms of the ISC license.'
+
+read program <<'EOF'
+BEGIN{if(!D){print U;exit 64}E=(Q="'")"\\"'\\""Q;H=(G=".")(F="/");I=" -- "Q;J="\
+[^/]*/";sub(F"?$",F,D)gsub(Q,E,D)}function C(x){if(X=system(x))exit X}{if((p=$2\
+)==B){print V;exit 65}for(r=z=i=d=B;d!=!i;i++){b=a=p;d=sub("/.*",B,a);sub(J,B,\
+p);if(a==G G)e=!sub(J,B,z);else z=a==G?z:b!=a?z a F:z a;if(e||!i&&!a){print W;\
+exit 65}}P=p=!z?H:z;if((o=O[$1])==p)next;gsub(Q,E,P);M=m=D P;gsub("/[^/]+$",B,\
+M);if(!u[M]++)C("mkdir -p"I M Q);if(o){T=split(o,t,F);S=split(p,s,F);for(i=1;t\
+[i]==s[i];i++);for(j=i;j<S;j++)r=r G H;for(j=i;j<T;j++)r=r t[j]F;r=h?o:r t[T];\
+gsub(Q,E,r);C("ln"(h?I D:" -s"I)r"' '"m Q);next}O[$1]=p;C("cp -i"I P"' '"m Q)}
+EOF
+
+die() { printf '\033[1mdedupe:\033[m %s\n' >&2 "$2"; exit "$1" ;}
+
+while o="${1#-}" && [ "${#o}" != "${#1}" ] && shift
+    do case "$o" in
+    (-) break ;;
+    (-help) printf '\033[1mUsage:\033[m %s\n' "$usage"; exit ;;
+    (-soft) h=0 ;; (-hard) h=1 ;;
+    (-*) die 64 "unknown long option: -$o" ;;
+    (*) die 64 "unknown short option: -${o%"${o#?}"}" ;;
+    esac; done &&
+{ [ -d /tmp ] || die 72 "/tmp must be mounted" ;} &&
+{ [ $# -ge 2 ] || die 64 'expected at least 2 arguments' ;} &&
+CDPATH= cd -- "$1" && shift && D="$1" && shift &&
+t="$(mktemp)" && { [ $# -eq 0 ] || sha256sum >"$t" "$@" ;} &&
+find ! -type d ! -type s -exec sha256sum -- {} + >>"$t~" &&
+sort -k2 <"$t~" >>"$t" &&
+awk -v D="$D" -v h="$h" -F'  ' "$program" <"$t"
+)
+
+[ -n "${preload+-}" ] || dedupe "$@"

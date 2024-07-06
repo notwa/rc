@@ -37,8 +37,8 @@ while o="${1#-}" && [ "${#o}" != "${#1}" ] && shift
     esac; done &&
 { [ -d /tmp ] || die 72 "/tmp must be mounted" ;} &&
 { [ $# -ge 2 ] || die 64 'expected at least 2 arguments' ;} &&
-D="$(readlink -f "$2")" && CDPATH= cd -- "$1" && shift 2 && T="$(mktemp -d)" &&
-t="$T/sums" && { [ $# -eq 0 ] || sha256sum >"$t" "$@" ;} &&
+unset CDPATH && D="$(readlink -f "$2")" && cd -- "$1" && shift 2 &&
+T="$(mktemp -d)" && t="$T/sums" && { [ $# -eq 0 ] || sha256sum >"$t" "$@" ;} &&
 find ! -type d ! -type s -exec sha256sum -- {} + >>"$t~" &&
 sort -k2 <"$t~" >>"$t" && awk -v D="$D" -v h="$h" -F'  ' "$program" <"$t"; x=$?
 ! [ -d "$t" ] || rm -r "$t" && [ $x = 0 ] || die $x 'exiting after failure'

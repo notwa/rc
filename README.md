@@ -305,6 +305,10 @@ has its timestamp updated. symlinks are followed.
 `.git` subdirectories are skipped over.
 the timestamps of subdirectories are ignored.
 
+### [dedupe](/sh/dedupe#L4)
+
+copy a directory, but make hard/softlinks for identical files.
+
 ### [dfu](/sh/dfu#L4)
 
 pretty-print `df` in GiB.
@@ -1097,6 +1101,7 @@ copy files in a plain way using rsync. affected by umask.
 | [dated](#dated)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [decently](#decently)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [dedupe](#dedupe)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [disowned](#disowned)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [document](#document)                         |       dash | ✔️    | ✔️    | ✔️    | ✔️    |

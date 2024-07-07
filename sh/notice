@@ -214,6 +214,25 @@ __notice_upload_to_sh_envs() {
 	normal="$raw/${1##*/}"
 }
 
+__notice_upload_to_moe_catbox_litterbox() {
+	# defaults: 1 hour, permanent
+	# configured: 3 days, permanent
+	# filenames are randomized. cannot manually delete nor specify expiry.
+	# SUPER fast. disallowed filetypes: .exe, .scr, .cpl, .doc*, .jar
+	__notice_compute_form_limit "fileToUpload" "${1##*/}" "${bytes:-0}" 1000000000 || return 128
+	target=litterbox.catbox.moe
+	if [ "${1%.exe}" != "$1" ] || [ "${1%.scr}" != "$1" ]; then
+		set -- "$1" "fileToUpload=@$1;filename=${1%.???}.com" # bypass
+	elif [ "${1%.cpl}" != "$1" ]; then
+		set -- "$1" "fileToUpload=@$1;filename=${1%.???}.dll" # bypass
+	else
+		set -- "$1" "fileToUpload=@$1"
+	fi
+	raw="$(__notice_curl -fF "$2" -Ftime=72h -Freqtype=fileupload "https://$target/resources/internals/api.php")" || return
+	normal="$raw"
+	aux="$normal"
+}
+
 __notice_retrying() {
 	case $? in
 	(0) return 0;;
@@ -264,12 +283,13 @@ __notice_upload() {
 	fi
 
 	REPLY=
-	__notice_upload_to_sh_envs          "$file" || __notice_retrying || \
-	__notice_upload_to_net_filebin      "$file" || __notice_retrying || \
-	__notice_upload_to_at_oshi          "$file" || __notice_retrying || \
-	__notice_upload_to_org_c_net_paste  "$file" || __notice_retrying || \
-	__notice_upload_to_io_file          "$file" || __notice_retrying || \
-	__notice_upload_to_com_bashupload   "$file" || __notice_retrying || \
+	__notice_upload_to_sh_envs              "$file" || __notice_retrying || \
+	__notice_upload_to_at_oshi              "$file" || __notice_retrying || \
+	__notice_upload_to_net_filebin          "$file" || __notice_retrying || \
+	__notice_upload_to_org_c_net_paste      "$file" || __notice_retrying || \
+	__notice_upload_to_io_file              "$file" || __notice_retrying || \
+	__notice_upload_to_moe_catbox_litterbox "$file" || __notice_retrying || \
+	__notice_upload_to_com_bashupload       "$file" || __notice_retrying || \
 	{
 		__notice_warn "failed to upload to every service, exiting."
 		return 1

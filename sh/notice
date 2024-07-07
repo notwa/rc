@@ -59,9 +59,23 @@ __notice_urlencode2() {
 	done
 } 2>&- # send bash's complaints to the abyss
 
-__notice_generate_id() { # wraps around every 25 years
+__notice_generate_id() {
 	: "${1:?missing seed}"
-	REPLY=""
+	unset REPLY
+
+	case "$1" in
+		# when "$(date -u +%s)" is the argument, this will last until 2096.
+		(*[!0-9]*) false;; (???????????*) false;; ([4-9]?????????) false;;
+	esac || return
+
+	# use REPLY as a temporary variable, since we'll overwrite it later anyway.
+	REPLY="$(( (2250438373 * $1 + 1) & 4294967295 ))" # shuffle IDs
+	# all this checking for negatives is due to mksh which overflows an i32.
+	REPLY="$(( (REPLY < 0 ? REPLY + 216313691 : REPLY) % 815730721 ))"
+	REPLY="$((  REPLY < 0 ? REPLY + 815730721 : REPLY ))"
+
+	set -- "$REPLY"
+	REPLY=
 	while [ "${#REPLY}" -lt 8 ]; do
 		case "$(($1%13))" in
 		 (0) REPLY="${REPLY}a";;  (1) REPLY="${REPLY}c";;  (2) REPLY="${REPLY}e";;

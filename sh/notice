@@ -105,12 +105,12 @@ __notice_compute_form_limit() {
 }
 
 __notice_upload_to_org_c_net_paste() {
+	target=paste.c-net.org
 	# defaults: 180 days, permanent (remains after download)
 	# TODO: retrieve deletion key from json response (see docs).
 	# WARNING: there seems to be a bug where files with a hash collision
 	#          are not uploaded, and you get someone else's file instead!
 	[ "${bytes:-0}" -le 50000000 ] || return 128 # approx, untested
-	target=paste.c-net.org
 	#normal="$(__notice_curl -gT "$1" "https://$target")" || return
 	raw="$(__notice_curl -g --data-binary "@$filepath" -H "X-FileName: ${1##*/}" "https://$target")" || return
 	normal="https:${raw#*http*:}"; normal="${normal%%[!!-~]*}"
@@ -118,10 +118,10 @@ __notice_upload_to_org_c_net_paste() {
 }
 
 __notice_upload_to_io_file() {
+	target=file.io
 	# defaults: 14 days, ephemeral (deletes after 1 download)
 	# wget should use --content-disposition when downloading
 	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 2000000000 || return 128
-	target=file.io
 	raw="$(__notice_curl -F "file=@$1" "https://$target")" || return
 	[ "${raw#'{"success":true,"status":200,'}" ] || return
 	normal="https:${raw#*\"link\":\"https:}"; normal="${normal%%[\"]*}"
@@ -129,24 +129,24 @@ __notice_upload_to_io_file() {
 }
 
 __notice_upload_to_at_oshi() {
+	target=oshi.at
 	# defaults: 1 day, semi-permanent (remains up to 1000 downloads?)
 	# configured: 14 days instead
 	# TODO: retrieve admin URL from response (suffixed with " [Admin]")
 	# NOTE: spaces are automatically converted (by the server) to underscores.
 	__notice_compute_form_limit "f" "${1##*/}" "${bytes:-0}" 5000000000 || return 128
-	target=oshi.at
 	raw="$(__notice_curl -fF "f=@$1" -F expire=20160 "https://$target")" || return
 	normal="https:${raw##*DL: http*:}"; normal="${normal%%[!!-~]*}"
 	aux="$normal"
 }
 
 __notice_upload_to_com_bashupload() {
+	target=bashupload.com
 	# defaults: 3 days, ephemeral (deletes after 1 download)
 	# it also seems to accept `-F file=blah` multipart form-data
 	# note that filenames with spaces are treated as if no filename was given!
 	# TODO: when name contains spaces, replace with underscores and append to URL?
 	[ "${bytes:-0}" -le 50000000000 ] || return 128 # approx, untested
-	target=bashupload.com
 	# https://$target/${${1##*/}// /%20}
 	raw="$(__notice_curl -gT "$1" "https://$target")" || return
 	normal="https:${raw#*http*:}"; normal="${normal%%[!!-~]*}"
@@ -154,11 +154,11 @@ __notice_upload_to_com_bashupload() {
 }
 
 __notice_upload_to_net_filebin() {
+	target=filebin.net
 	# defaults: 7 days, permament (but can be deleted by anyone with the link)
 	# note that the site says 6 days, but this is rounded down. the API shows 7 days.
 	# spaces are converted to underscores, and perhaps other characters are as well.
 	# note that you need curl -L to retrieve the files; they redirect to an s3 store.
-	target=filebin.net
 	__notice_generate_id "$(date -u +%s)" || return
 	aux="https://$target/$REPLY"
 	#raw="$(__notice_curl -gfT "$1" "$aux/$(__notice_urlencode ${1##*/})")" || return
@@ -169,58 +169,58 @@ __notice_upload_to_net_filebin() {
 }
 
 __notice_upload_to_at_x0() {
+	target=x0.at
 	# defaults: 100 days, permanent
 	# note that file retention decreases as file size increases.
 	# 100 MiB files are kept for 3 days, and 0 byte files are kept for 100 days.
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 232783872 || return 128
-	target=x0.at
 	raw="$(__notice_curl -fF "file=@$1" "https://$target")" || return
 	normal="$raw"
 	aux="$normal"
 }
 
 __notice_upload_to_se_uguu() {
+	target=uguu.se
 	# defaults: 3 hours, permanent
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	# TODO: use fixed filename to squeeze a couple more bytes out of the limit?
 	__notice_compute_form_limit "files[]" "${1##*/}" "${bytes:-0}" 67108864 || return 128
-	target=uguu.se
 	raw="$(__notice_curl -fF "files[]=@$1" "https://$target/upload?output=text")" || return
 	normal="$raw"
 	aux="$normal"
 }
 
 __notice_upload_to_com_cockfile() {
+	target=cockfile.com
 	# defaults: 12 hours, permanent
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	# must have a file extension or it gets rejected (415), so use `.bin`.
 	__notice_compute_form_limit "files[]" ".bin" "${bytes:-0}" 999999999 || return 128
-	target=cockfile.com
 	raw="$(__notice_curl -fF "files[]=@$1;filename=.bin" "https://$target/upload.php?output=text")" || return
 	normal="$raw"
 	aux="$normal"
 }
 
 __notice_upload_to_sh_envs() {
+	target=envs.sh
 	# configured: 14 days, permanent (TODO: add "defaults" to match other docs)
 	# does not remember filenames in any capacity, BUT we can tack on our own to the URL.
 	# you can delete files if you extract the X-Token field from the response HTTP headers.
 	# banned MIME types: application/java-archive, application/java-vm
 	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 536870912 || return 128
-	target=envs.sh
 	raw="$(__notice_curl -fF "file=@$1" -Fsecret= -Fexpires=336 "https://$target")" || return
 	aux="$raw"
 	normal="$raw/${1##*/}"
 }
 
 __notice_upload_to_moe_catbox_litterbox() {
+	target=litterbox.catbox.moe
 	# defaults: 1 hour, permanent
 	# configured: 3 days, permanent
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	# SUPER fast. disallowed filetypes: .exe, .scr, .cpl, .doc*, .jar
 	__notice_compute_form_limit "fileToUpload" "${1##*/}" "${bytes:-0}" 1000000000 || return 128
-	target=litterbox.catbox.moe
 	if [ "${1%.exe}" != "$1" ] || [ "${1%.scr}" != "$1" ]; then
 		set -- "$1" "fileToUpload=@$1;filename=${1%.???}.com" # bypass
 	elif [ "${1%.cpl}" != "$1" ]; then

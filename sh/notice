@@ -315,16 +315,32 @@ __notice_upload() {
 	return 0
 }
 
+__notice_read_conf() {
+	# TODO: ensure conf file is unreadable by others?
+	while read -r line; do
+		line="${line%%#*}" # strip comments
+		line="${line#"${line%%[! ]*}"}" # strip left
+		line="${line%"${line##*[! ]}"}" # strip right
+		if [ "${line#gotify=}" != "$line" ]; then
+			__notice_push_to_gotify "${line#*=}"
+		elif [ "${line#discord=}" != "$line" ]; then
+			__notice_push_to_discord "${line#*=}"
+		elif [ -n "$line" ]; then
+			__notice_warn "warning: ignoring line: $line"
+		fi
+	done < "$1"
+}
+
 __notice() {
-	unset LC_ALL REPLY aux code extras message normal title token url
+	unset LC_ALL REPLY aux code conf extras line message normal title token url
 	export LC_ALL=C
-	: "${XDG_CONFIG_HOME:="$HOME/.config"}"
+	conf="${XDG_CONFIG_HOME:-"$HOME/.config"}/notice.conf"
 	lament() { printf >&2 %s\\n "$@"; }
 
 	url='https://eaguru.guru/gotify/message?token='
-	if [ -e ~/.gotify.secret ]; then
+	if ! [ -e "$conf" ] && [ -e ~/.gotify.secret ]; then
 		lament 'notice: warning: ~/.gotify.secret is being phased out in favor of'
-		lament '        '"$XDG_CONFIG_HOME"'/notice.conf containing a list of URLs:'
+		lament '        '"$conf"' containing a list of URLs:'
 		lament '        gotify=https://example.com/gotify/message?token=secret'
 		read -r token <~/.gotify.secret
 	fi
@@ -342,7 +358,11 @@ __notice() {
 		lament "$normal"
 	fi
 
-	[ -z "$token" ] || __notice_push_to_gotify "$url$token"
+	if [ -e "$conf" ]; then
+		__notice_read_conf "$conf"
+	elif [ -n "$token" ]; then
+		__notice_push_to_gotify "$url$token"
+	fi
 }
 
 __notice_push_to_gotify() {
@@ -372,7 +392,6 @@ __notice_push_to_discord() {
 	set -- -qLo /dev/null -w '%{http_code}' "$@"
 	if [ -n "$REPLY" ]; then
 		set -- "$@" --data '{"content": "# New file uploaded\n\n'"$REPLY"'", "flags": 2}'
-		set -- "$@" -H 'Content-Type: application/json'
 	elif [ -z "$title" ]; then
 		set -- "$@" --data '{"content": "'"$message"'", "flags": 2}'
 	elif [ -z "$message" ]; then
@@ -380,6 +399,7 @@ __notice_push_to_discord() {
 	else
 		set -- "$@" --data '{"content": "# '"$title"'\n\n'"$message"'", "flags": 2}'
 	fi
+	set -- "$@" -H 'Content-Type: application/json'
 	set -- "$@" -H "Accept: application/json"
 
 	if code="$(__notice_curl "$@")" && { [ "$code" = 200 ] || [ "$code" = 204 ]; }; then

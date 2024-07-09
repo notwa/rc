@@ -361,7 +361,31 @@ __notice_push_to_gotify() {
 	if code="$(__notice_curl "$@")" && [ "$code" = 200 ]; then
 		:
 	else
-		__notice_warn "failed to upload message to ${url%%\?*} (\$code=$code, \$?=$?)"
+		__notice_warn "failed to push message to $url (\$code=$code, \$?=$?)"
+		return 1
+	fi
+}
+
+__notice_push_to_discord() {
+	# flags: 2 (SUPPRESS_EMBEDS)
+	url="${1%%\?*}"
+	set -- -qLo /dev/null -w '%{http_code}' "$@"
+	if [ -n "$REPLY" ]; then
+		set -- "$@" --data '{"content": "# New file uploaded\n\n'"$REPLY"'", "flags": 2}'
+		set -- "$@" -H 'Content-Type: application/json'
+	elif [ -z "$title" ]; then
+		set -- "$@" --data '{"content": "'"$message"'", "flags": 2}'
+	elif [ -z "$message" ]; then
+		set -- "$@" --data '{"content": "# '"$title"'", "flags": 2}'
+	else
+		set -- "$@" --data '{"content": "# '"$title"'\n\n'"$message"'", "flags": 2}'
+	fi
+	set -- "$@" -H "Accept: application/json"
+
+	if code="$(__notice_curl "$@")" && { [ "$code" = 200 ] || [ "$code" = 204 ]; }; then
+		:
+	else
+		__notice_warn "failed to push message to ${url%/*} (\$code=$code, \$?=$?)"
 		return 1
 	fi
 }

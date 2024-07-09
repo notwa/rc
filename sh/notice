@@ -316,15 +316,22 @@ __notice_upload() {
 }
 
 __notice() {
-	unset LC_ALL REPLY aux code message normal title token url
+	unset LC_ALL REPLY aux code extras message normal title token url
 	export LC_ALL=C
+	: "${XDG_CONFIG_HOME:="$HOME/.config"}"
+	lament() { printf >&2 %s\\n "$@"; }
+
 	url='https://eaguru.guru/gotify/message?token='
-	#token="$(cat ~/.gotify.secret)" || return
-	read -r token <~/.gotify.secret
-	test "$token" || return # TODO: give an actual error message.
+	if [ -e ~/.gotify.secret ]; then
+		lament 'notice: warning: ~/.gotify.secret is being phased out in favor of'
+		lament '        '"$XDG_CONFIG_HOME"'/notice.conf containing a list of URLs:'
+		lament '        gotify=https://example.com/gotify/message?token=secret'
+		read -r token <~/.gotify.secret
+	fi
+
 	if [ $# != 1 ] && [ $# != 2 ]; then
-		printf 'usage:\n' >&2
-		printf '  %s %s\n' >&2 "$0" '{message}' "$0" '{title} {message}' "$0" '@{file}'
+		lament 'usage:'
+		printf >&2 '  %s %s\n' "$0" '{message}' "$0" '{title} {message}' "$0" '@{file}'
 		return 64
 	fi
 
@@ -332,13 +339,18 @@ __notice() {
 	message="${1:?missing message}"
 	if [ $# = 1 ] && [ "${message#@}" != "$message" ]; then
 		__notice_upload "${message#@}" || return
-		printf '%s\n' >&2 "$normal"
+		lament "$normal"
 	fi
 
-	set -- -qLo /dev/null -w '%{http_code}'
-	set -- "$@" "$url$token"
+	[ -z "$token" ] || __notice_push_to_gotify "$url$token"
+}
+
+__notice_push_to_gotify() {
+	url="${1%%\?*}"
+	set -- -qLo /dev/null -w '%{http_code}' "$@"
 	if [ -n "$REPLY" ]; then
-		set -- "$@" --data '{"title": "New file uploaded", "message": "'"$REPLY"'", "extras": {"client::display": {"contentType": "text/markdown"}, "client::notification": {"click": {"url": "'"$aux"'"}}}}'
+		extras='{"client::display": {"contentType": "text/markdown"}, "client::notification": {"click": {"url": "'"$aux"'"}}}'
+		set -- "$@" --data '{"title": "New file uploaded", "message": "'"$REPLY"'", "extras": '"$extras"'}'
 		set -- "$@" -H 'Content-Type: application/json'
 	else
 		[ -z "$title" ] || set -- "$@" --form-string "title=$title"

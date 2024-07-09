@@ -2,7 +2,7 @@
 # YES_ZSH YES_BASH YES_DASH YES_ASH
 
 __notice_warn() {
-	printf 'notice: %s\n' >&2 "$*"
+	printf >&2 'notice: %s\n' "$*"
 }
 
 __notice_curl() {
@@ -94,15 +94,16 @@ __notice_log() {
 }
 
 # __notice_upload_to_...
-# (SLOW) com_cockfile     134217728+???     or  128 MiB (wtf is going on here)
-# (slow) io_file         2000000000-200-4-x or 1907 MiB (untested)
-#        sh_envs          536870912-200-4-x or  512 MiB (untested)
-#        se_uguu           67108864-200-7-x or   64 MiB (tested)
-#        org_c_net_paste   50000000         or   47 MiB (tested)
-#        at_oshi         5000000000-200-1-x or 4768 MiB (untested)
-#        net_filebin     unlimited?
-# (fast) com_bashupload 50000000000         or   47 GiB (untested)
-# (FAST) at_x0            232783872-200-4-x or  222 MiB (tested) (used to be 100 MiB)
+# (SLOW) com_cockfile          134217728+???     or  128 MiB (wtf is going on here)
+# (slow) io_file              2000000000-200-4-x or 1907 MiB (untested)
+#        sh_envs               536870912-200-4-x or  512 MiB (untested)
+#        se_uguu                67108864-200-7-x or   64 MiB (tested)
+#        org_c_net_paste        50000000         or   47 MiB (tested)
+#        at_oshi              5000000000-200-1-x or 4768 MiB (untested)
+#        net_filebin           unlimited?
+#        com_bashupload      50000000000         or   47 GiB (untested)
+# (fast) at_x0                 232783872-200-4-x or  222 MiB (tested) (used to be 100 MiB)
+# (FAST) moe_catbox_litterbox 1000000000         or    1 GB  (untested)
 
 # NOTE: for sites that use `curl -F` to upload, you automatically lose
 #       at least 200 bytes to multipart form-data. names count toward this.
@@ -125,7 +126,6 @@ __notice_upload_to_org_c_net_paste() {
 	# WARNING: there seems to be a bug where files with a hash collision
 	#          are not uploaded, and you get someone else's file instead!
 	[ "${bytes:-0}" -le 50000000 ] || return 128 # approx, untested
-	#normal="$(__notice_curl -gT "$1" "https://$target")" || return
 	raw="$(__notice_curl -g --data-binary "@$filepath" -H "X-FileName: ${1##*/}" "https://$target")" || return
 	normal="https:${raw#*http*:}"; normal="${normal%%[!!-~]*}"
 	aux="$normal"
@@ -328,7 +328,7 @@ __notice() {
 		return 64
 	fi
 
-	[ $# != 2 ] || { title="$1"; shift ;}
+	[ $# != 2 ] || { title="$1"; shift; }
 	message="${1:?missing message}"
 	if [ $# = 1 ] && [ "${message#@}" != "$message" ]; then
 		__notice_upload "${message#@}" || return

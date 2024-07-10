@@ -1,0 +1,95 @@
+#!/usr/bin/env sh
+# YES_ZSH YES_BASH YES_DASH YES_ASH
+
+permit() { ### @- conditionally set executable permissions on each of its arguments.
+    ### flags:
+    ### * `-a` -- automatic: skip any files whose contents do not begin with
+    ###           with one of several signatures. this does not affect directories.
+    ### * `-A` -- turn off automatic mode. (default)
+    ### * `-e` -- everything: consider both regular files and directories. (default)
+    ### * `-f` -- files: skip any arguments that are not regular files.
+    ### * `-d` -- directories: skip any arguments that are not directories.
+    ###
+    ### the `-e`, `-f`, and `-d` flags all override one another, and any of them
+    ### can be combined with `-a`. arguments that are neither regular files nor
+    ### directories (such as symlinks) are always skipped. arguments that are
+    ### already executable by the current user are skipped. arguments that do
+    ### not appear to refer to an existing file are passed through to chmod.
+    ### directories are never recursed.
+    unset __permit_4 __permit_a __permit_f __permit_h __permit_m __permit_n __permit_x || return
+
+    __permit_h="[-a | -A] [-e | -f | -d] [--] {files...}"
+    if [ $# = 0 ]; then
+        printf >&2 'usage: permit %s\n' "$__permit_h"
+        return 64;
+    fi
+
+    __permit_m=e # everything
+    __permit_a=0 # automatic
+
+    __permit_n=$#
+    while [ $((__permit_n-=1)) -ge 0 ]; do
+        __permit_f="$1"
+        case "$__permit_f" in
+
+        (/\?|-h|-help|--help)
+            printf 'usage: permit %s\n' "$__permit_h"
+            return 0;;
+
+        (--)
+            shift
+            while [ $((__permit_n-=1)) -ge 0 ]; do
+                set -- "$@" "$1"
+                shift
+            done
+            break;;
+
+        (-*)
+            shift
+            case "${__permit_f#-}" in
+            (a) __permit_a=1;; # automatic (on)
+            (A) __permit_a=0;; # automatic (off)
+            (e) __permit_m=e;; # everything
+            (f) __permit_m=f;; # files only
+            (d) __permit_m=d;; # directories only
+            (?|-*)
+                printf >&2 'permit: %s\n' "unknown flag: $__permit_f"
+                return 64;;
+            (*)
+                set -- "${__permit_f%"${__permit_f#-?}"}" "-${__permit_f#-?}" "$@"
+                : $((__permit_n+=2))
+                continue;;
+            esac;;
+
+        (*)
+            shift
+            set -- "$@" "$__permit_f";;
+        esac
+    done
+
+    if [ $# = 0 ]; then
+        printf >&2 'usage: permit %s\n' "$__permit_h"
+        return 64;
+    fi
+
+    __permit_x=
+    for __permit_f; do
+        [ -n "$__permit_x" ] || { __permit_x=0; set --; }
+        if [ -x "$__permit_f" ]; then
+            : # pass
+        elif ! [ -e "$__permit_f" ]; then
+            set -- "$@" "$__permit_f"
+        elif [ "$__permit_a" = 1 ] && ! [ -d "$__permit_f" ]; then
+            __permit_4="$(exec hexdump -ve '1 1 "%02X"' -n4 -- "$__permit_f")" || __permit=$?
+            case "$__permit_4" in (7F454C46) false;; (2321*) false;; (4D5A*) false;;
+            esac || set -- "$@" "$__permit_f" # runs when a case matches
+        elif [ "-$__permit_m" "$__permit_f" ]; then
+            set -- "$@" "$__permit_f"
+        fi
+    done
+
+    [ "$#" = 0 ] || chmod +x -- "$@" || __permit_x=$?
+    return "$__permit_x"
+}
+
+[ -n "${preload+-}" ] || permit "$@"

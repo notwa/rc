@@ -297,13 +297,13 @@ __notice_upload() {
 	fi
 
 	REPLY=
-	__notice_upload_to_sh_envs              "$file" || __notice_retrying || \
-	__notice_upload_to_at_oshi              "$file" || __notice_retrying || \
-	__notice_upload_to_net_filebin          "$file" || __notice_retrying || \
-	__notice_upload_to_org_c_net_paste      "$file" || __notice_retrying || \
-	__notice_upload_to_io_file              "$file" || __notice_retrying || \
-	__notice_upload_to_moe_catbox_litterbox "$file" || __notice_retrying || \
-	__notice_upload_to_com_bashupload       "$file" || __notice_retrying || \
+	__notice_upload_to_sh_envs              "$file" || __notice_retrying ||
+	__notice_upload_to_at_oshi              "$file" || __notice_retrying ||
+	__notice_upload_to_net_filebin          "$file" || __notice_retrying ||
+	__notice_upload_to_org_c_net_paste      "$file" || __notice_retrying ||
+	__notice_upload_to_io_file              "$file" || __notice_retrying ||
+	__notice_upload_to_moe_catbox_litterbox "$file" || __notice_retrying ||
+	__notice_upload_to_com_bashupload       "$file" || __notice_retrying ||
 	{
 		__notice_warn "failed to upload to every service, exiting."
 		return 1

@@ -49,6 +49,8 @@ case "$fn" in
 (..) false;;
 ([!\ -~]) false;;
 ([\":\<\>?\\\|]) false;;
+(?*) true;;
+(*) false;;
 esac || die
 touch -- "$fn" || die
 

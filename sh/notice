@@ -275,7 +275,7 @@ __notice_upload() {
 
 	REPLY="${file##*/}"
 	# ksh and mksh dictate that the characters must be in this order:
-	__notice_escape "$REPLY" '][!#()*+.<>_`{|}\\\-'
+	__notice_escape "$REPLY" '][!#()*+<>_`{|}\\\-' # removed '.' due to discord
 	__notice_escape "$REPLY" '\\"'
 	sanitized="$REPLY"
 

@@ -610,6 +610,25 @@ $ pegg rthalley dnspython
 $ pegg rthalley dnspython 3933b49
 ```
 
+### [permit](/sh/permit#L4)
+
+conditionally set executable permissions on each of its arguments.
+
+flags:
+* `-a` -- automatic: skip any files whose contents do not begin with
+          with one of several signatures. this does not affect directories.
+* `-A` -- turn off automatic mode. (default)
+* `-e` -- everything: consider both regular files and directories. (default)
+* `-f` -- files: skip any arguments that are not regular files.
+* `-d` -- directories: skip any arguments that are not directories.
+
+the `-e`, `-f`, and `-d` flags all override one another, and any of them
+can be combined with `-a`. arguments that are neither regular files nor
+directories (such as symlinks) are always skipped. arguments that are
+already executable by the current user are skipped. arguments that do
+not appear to refer to an existing file are passed through to chmod.
+directories are never recursed.
+
 ### [pippy](/sh/pippy#L4)
 
 install Python packages using pip,
@@ -1127,6 +1146,7 @@ copy files in a plain way using rsync. affected by umask.
 | [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pause](#pause)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pegg](#pegg)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [permit](#permit)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pippy](#pippy)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [preload](#preload)                           |  **false** | ✔️    | ✔️    | ✔️    | ✔️    |

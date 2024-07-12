@@ -4,11 +4,11 @@
 colors() { ### @-
     ### display all combinations of foreground and background terminal colors.
     ### this only includes the basic 16-color palette.
-    ### excluding boilerplate, this script is a mere 72 characters long!
+    ### excluding boilerplate, this script is a mere 67 characters long!
     ###
     ### ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
     [ $# -eq 0 ] || { printf >&2 '%s: does not take arguments\n' colors; return 64 ;}
-    printf "\e[%dm`printf %s ' \e['{4,10}{0..7}'m mV \e[40m'`\n" {3,9}{0..7}
+    printf "\e[%dm `echo '\e['{4,10}{0..7}'m mV \e[40m'`\n" {3,9}{0..7}
 }
 
 [ -n "${preload+-}" ] || colors "$@"

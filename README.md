@@ -2,14 +2,35 @@
 
 _(plus some little shell scripts)_
 
-quick install for random boxes:
+### quick install
 
-```
+this archive is always up-to-date with git.
+
+```sh
 # with curl:
 cd && curl -L https://github.com/notwa/rc/archive/master.tar.gz | tar zx && mv rc-master rc && rc/install
 # with wget:
 cd && wget -O - https://github.com/notwa/rc/archive/master.tar.gz | tar zx && mv rc-master rc && rc/install
 ```
+
+### experimental install
+
+this archive is only updated once a day.
+
+```sh
+# one time:
+gpg --locate-key rc@glorp.wang
+# many times:
+cd && curl rc.glorp.wang | gpg --yes -o rc.tar -d - && tar xf rc.tar && rc/install
+```
+
+`curl` can be replaced by `wget -O-` or [`http`][httpie] or even [`burl`](#burl).
+note that you can't pipe gpg directly into tar, because
+because doing so would skip the signature being checked.
+
+[httpie]: https://httpie.io/docs/cli
+
+### compatibility
 
 the following shells are taken into consideration, ordered from most to least compatible:
 

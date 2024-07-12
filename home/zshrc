@@ -224,22 +224,6 @@ alias sc="~/sh/sc" # only runs in bash (for now), so be explicit with path
 function {
     # initialize prompts.
 
-    local t="${TERM%%-*}"
-    if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
-        # set window title
-        if [ "$t" = tmux ]; then
-            # don't include host, tmux prepends it
-            precmd() { print -Pn "\e]2;%~\a" }
-        else
-            precmd() { print -Pn "\e]2;%M: %~\a" }
-        fi
-    else
-        # act dumb
-        precmd() {}
-        PROMPT="%# "
-        return
-    fi
-
     # zsh adds a % symbol to newline-less output, so my bash prompt is overkill
     # NOTE: i've started hardcoding escapes instead of relying on zsh
     #       because detecting terminal features is too troublesome.
@@ -258,6 +242,24 @@ function {
     (wraith)     good=43;; # yellow
     (sabotage)   good=45;; # magenta
     esac
+
+    local t="${TERM%%-*}"
+    if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
+        # set window title
+        if [ "$t" = tmux ] # don't include host, tmux prepends it
+        then precmd() { print -Pn "\e]2;%~\a" }
+        else precmd() { print -Pn "\e]2;%M: %~\a" }
+        fi
+    elif [ "$t" = alacritty ]; then
+        # Alacritty-v0.13.2-portable.exe -t "MinGW x64" -e "usr/bin/env" PATH="/usr/local/sbin:/usr/local/bin:/usr/bin" MSYSTEM=MINGW64 TERM=alacritty shelly
+        precmd() {}
+        chset= # displays as U+263C for some reason
+    else
+        # act dumb
+        precmd() {}
+        PROMPT="%# "
+        return
+    fi
 
     PROMPT="%{$chset$curse$reset$s%(?.$good.$bad);97$e%}%#%{$reset%} "
 }

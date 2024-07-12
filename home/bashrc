@@ -22,7 +22,7 @@ _temporary_scope_() {
     local USASCII="B" SPECIAL="0" # charsets: sane default & line drawing
     local DECTCEM="25"
     local DECSET="h" SGR="m" # final characters of a command sequence
-    local sanity="$ESC$G0$USASCII$SI$CSI?$DECTCEM$DECSET"
+    local sanity="$CSI?$DECTCEM$DECSET"
     local color1="$CSI;--$SGR" color2="$CSI--;97$SGR" reset="$hide$CSI$SGR$show"
     local line1="$hide$title$sanity$color1$show $reset"
     local line2="$hide$color2$show$prompt$reset "
@@ -31,6 +31,7 @@ _temporary_scope_() {
     if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
         [ "$t" = tmux ] && title="$cwd" || title="$host: $cwd"
         title="${OSC}2;$title$BEL"
+        sanity="$ESC$G0$USASCII$SI$sanity"
     fi
     PROMPT_COMMAND="[ \$? = 0 ] && PS1=\$'$ret_okay' || PS1=\$'$ret_fail'"
 }; _temporary_scope_; unset -f _temporary_scope_

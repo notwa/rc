@@ -198,9 +198,9 @@ only returns false when no arguments are given.
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
-excluding boilerplate, this script is a mere 76 characters long!
+excluding boilerplate, this script is a mere 67 characters long!
 
-![terminal colors](https://eaguru.guru/t/terminal-colors.png)
+![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
 ### [setup_clang_ubuntu (sh/compile)](/sh/compile#L4)
 
@@ -208,20 +208,20 @@ print (but don't execute) the commands necessary to install
 a fairly recent version of clang on ubuntu-based distros.
 
 ```sh
-$ setup_clang_ubuntu bionic
-wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-echo -n "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main
-# deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic main
-# 12
-deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
-# deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
-" > /etc/apt/sources.list.d/llvm-toolchain-bionic.list
-apt-get update
-apt-get install clang-12
-apt-get install lld-12
-update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 1200
-update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 1200
-update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-12 1200
+$ setup_clang_ubuntu noble
+wget -O- http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+echo > "/etc/apt/sources.list.d/llvm-toolchain-noble.list" \
+"
+deb http://apt.llvm.org/noble/ llvm-toolchain-noble main
+# deb-src http://apt.llvm.org/noble/ llvm-toolchain-noble main
+# 18
+deb http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main
+# deb-src http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main"
+export DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1
+apt-get update -y && apt-get install -y clang-18 lld-18
+update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 1800
+update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 1800
+update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-18 1800
 ```
 
 ### [compile](/sh/compile#L47)

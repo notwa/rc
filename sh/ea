@@ -3,7 +3,7 @@
 # YES_ZSH YES_BASH YES_DASH YES_ASH
 
 __ea_curl() {
-    curl -q --no-progress-meter 0.0.0.0 >/dev/null 2>&1
+    curl -q --no-progress-meter 127.255.255.255 >/dev/null 2>&1
     if [ $? = 2 ]
     then __ea_curl() { curl -sS "$@"; }
     else __ea_curl() { curl --no-progress-meter "$@"; }

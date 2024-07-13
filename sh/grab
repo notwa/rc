@@ -31,6 +31,12 @@ will clean up temporary files
 ! [ -d "$t" ] || rm -r "$t" || die
 exit 1
 }
+hex(){
+if [ -f /usr/bin/xxd ]
+then exec xxd -p -l4 -- "$@"
+else exec hexdump -ve '1 1 "%02x"' -n4 -- "$@"
+fi
+}
 
 owd="${PWD:?unsupported}"
 
@@ -78,9 +84,9 @@ will verify file integrity of "$fn"
 minisign -QVm "$fn" -P "$pub" || die
 
 will determine basic file type
-x4="$(exec hexdump -ve '1 1 "%02X"' -n4 -- "$fn")" || die
+x4="$(hex "$fn")" || die
 x2="${x4%????}"
-if [ "$x4" = 7F454C46 ] || [ "$x2" = 2321 ] || [ "$x2" = 4D5A ]
+if [ "$x4" = 7f454c46 ] || [ "$x2" = 2321 ] || [ "$x2" = 4d5a ]
 then
 will set executable permission
 chmod +x -- "$fn" || die

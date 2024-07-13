@@ -911,6 +911,12 @@ and that your terminal's scrollback didn't cap out and eat text.
 
 **TODO:** rename because wipe(1) already exists.
 
+### [witch](/sh/witch#L3)
+
+this is a personal rewrite of `which` from Debian.
+the original version didn't run on certain shells,
+and inherited inconsistent behaviors from getopts.
+
 ### [xxp](/sh/xxp#L4)
 
 act like `xxd -p`, but nicely formatted.
@@ -1201,5 +1207,5 @@ copy files in a plain way using rsync. affected by umask.
 | [v_upper](#v_upper)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [wat](#wat)                                   |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [witch](#witch)                               |       *sh* | ⭕    | ⭕    | ✔️    | ✔️    |
+| [witch](#witch)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

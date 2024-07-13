@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# FAKE_COMPAT
 ### @ witch
 ### this is a personal rewrite of `which` from Debian.
 ### the original version didn't run on certain shells,

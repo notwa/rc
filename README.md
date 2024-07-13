@@ -916,6 +916,7 @@ and that your terminal's scrollback didn't cap out and eat text.
 this is a personal rewrite of `which` from Debian.
 the original version didn't run on certain shells,
 and inherited inconsistent behaviors from getopts.
+the silent (`-s`) flag from Ubuntu has been added.
 
 ### [xxp](/sh/xxp#L4)
 

@@ -26,7 +26,7 @@ for flag; do
 	esac
 done
 
-[ "$#" != 0 ] && res=1 || res=0
+[ "$#" = 0 ] && res=1 || res=0
 
 IFS=:
 for prog; do

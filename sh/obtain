@@ -21,7 +21,7 @@ __obtain_url() {
 }
 
 __obtain_signed() {
-	set -- "${1:?no source}" "${2:?no destination}" "${3:-"$__obtain_x"}"
+	set -- "${1:?no source}" "${2:?no destination}" "${3:-"$__obtain_ext"}"
 
 	__obtain_url "t.glorp.wang/$1$3" > "$2$3" &&
 	__obtain_url "t.glorp.wang/$1$3.minisig" > "$2$3.minisig" ||
@@ -39,7 +39,7 @@ __obtain_signed() {
 }
 
 __obtain_prep() { # can be run many times in case curl/wget becomes available.
-	gzip -V >/dev/null 2>&1 && __obtain_x=.gz || __obtain_x=
+	gzip -V >/dev/null 2>&1 && __obtain_ext=.gz || __obtain_ext=
 	if   curl; [ $? = 2 ]; then __obtain_url() { curl -sfL -m45 -o- "$*" ;}
 	elif wget; [ $? = 1 ]; then __obtain_url() { wget -qt1 -T45 -O- "$*" ;}
 	elif __obtain_burl microsoft.com >/dev/null
@@ -49,6 +49,8 @@ __obtain_prep() { # can be run many times in case curl/wget becomes available.
 }
 
 __obtain_bootstrap() {
+	# FIXME: sets globals: arch sum repo
+	# TODO: set a SIGINT trap to clean up and not leave things in disarray.
 	__obtain_prep
 
 	arch="$(exec uname -m)" || __obtain_die "uname is missing"
@@ -84,11 +86,12 @@ __obtain_bootstrap() {
 	__obtain_die "failed to validate minisign"
 
 	rm minisign.sha256
-	chmod +x minisign || __obtain_die
+	chmod +x minisign || __obtain_die "failed to set executable permissions"
 
 	# this key is for files that i've personally signed myself.
 	__obtain_public_key=RWQdYTxDsppw5ZFpYZFoF6IoPS0okMKlOiz9MwTl0NUoP41r57sf9dI1
 	__obtain_signed "curl.$arch" curl
+	chmod +x curl || __obtain_die "failed to set executable permissions"
 
 	# this key is only for files signed by my server, not myself.
 	__obtain_public_key=RWQo7HxrRBmGLN2s7OuAYwGyeuDH0hEaCxsTBvseux8awYNbmP3b5rCg
@@ -113,9 +116,28 @@ __obtain_bootstrap() {
 	export PATH="$HOME/play/bootstrap:$PATH"
 }
 
+__obtain_package() {
+	__obtain_die "TODO"
+}
+
 __obtain() {
-	printf >&2 %s\\n 'obtain: TODO'
-	exit 1
+	if [ $# = 0 ] && [ -t 1 ]; then
+		if [ -e ~/play/bootstrap/cacert.pem ]; then
+			printf >&2 %s\\n "obtain: updating core..."
+		else
+			printf >&2 %s\\n "obtain: bootstrapping..."
+		fi
+		__obtain_bootstrap
+		# TODO: print usage or status after we're done.
+		# TODO: obtain itself.
+		return
+	fi
+
+	__obtain_x=0
+	for pkg; do
+		__obtain_package "$pkg" || obtain_x=$?
+	done
+	return "$__obtain_x"
 }
 
 obtain()(__obtain "$@")

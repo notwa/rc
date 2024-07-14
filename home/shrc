@@ -149,7 +149,7 @@ __crawl() (
     [ -d .ssh ] || install -m700 -d .ssh || return # TODO: use umask instead?
     cd .ssh || return
     if ! [ -s crawl ]; then grab crawl && chmod 0600 crawl || return; fi
-    exec ssh -F none -i crawl "$@"
+    TERM=xterm-256color exec ssh -F none -i crawl "$@"
 )
 
 crawla() ### @- play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.

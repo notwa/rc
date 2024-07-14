@@ -20,7 +20,7 @@ for flag; do
 			(s*) silent=1;;
 			(*)
 				printf >&2 'Illegal option: -%.1s\n' "$flag"
-				printf 'Usage: %s\n' "$0 [-a] args"
+				printf 'Usage: %s\n' "$0 [-as] args"
 				exit 2;;
 			esac
 		done;;

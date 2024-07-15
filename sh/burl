@@ -46,6 +46,8 @@ burl() ( ### @-
     then wrapped() { process busybox nc -- "$@" ;}
     elif socat /dev/null /dev/null
     then wrapped() { process socat - "TCP:$1:$2" ;}
+    elif websocat; [ $? = 1 ]
+    then wrapped() { websocat --binary - "tcp:$1:$2" ;}
     elif curl; [ $? = 2 ]
     then wrapped() { process curl "telnet://$1:$2" ;}
     else return 127

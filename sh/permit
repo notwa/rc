@@ -1,6 +1,15 @@
 #!/usr/bin/env sh
 # YES_ZSH YES_BASH YES_DASH YES_ASH
 
+__permit_hex() {
+    if xxd -l 0 2>/dev/null; then
+        __permit_hex() { exec xxd -p -l4 -- "$@"; }
+    else
+        __permit_hex() { exec hexdump -ve '1 1 "%02x"' -n4 -- "$@"; }
+    fi
+    __permit_hex "$@"
+}
+
 permit() { ### @- conditionally set executable permissions on each of its arguments.
     ### flags:
     ### * `-a` -- automatic: skip any files whose contents do not begin with
@@ -80,8 +89,8 @@ permit() { ### @- conditionally set executable permissions on each of its argume
         elif ! [ -e "$__permit_f" ]; then
             set -- "$@" "$__permit_f"
         elif [ "$__permit_a" = 1 ] && ! [ -d "$__permit_f" ]; then
-            __permit_4="$(exec hexdump -ve '1 1 "%02X"' -n4 -- "$__permit_f")" || __permit=$?
-            case "$__permit_4" in (7F454C46) false;; (2321*) false;; (4D5A*) false;;
+            __permit_4="$(__permit_hex "$__permit_f")" || __permit=$?
+            case "$__permit_4" in (7f454c46) false;; (2321*) false;; (4d5a*) false;;
             esac || set -- "$@" "$__permit_f" # runs when a case matches
         elif [ "-$__permit_m" "$__permit_f" ]; then
             set -- "$@" "$__permit_f"

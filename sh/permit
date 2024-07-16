@@ -25,14 +25,16 @@ permit() { ### @- conditionally set executable permissions on each of its argume
     ### already executable by the current user are skipped. arguments that do
     ### not appear to refer to an existing file are passed through to chmod.
     ### directories are never recursed.
-    unset __permit_4 __permit_a __permit_f __permit_h __permit_m __permit_x || return
+    unset __permit_4 __permit_a __permit_f __permit_h __permit_m __permit_n __permit_v __permit_x || return
 
-    __permit_h="[-a | -A] [-e | -f | -d] [--] {files...}"
+    __permit_h="[-v] [-n] [-a | -A] [-e | -f | -d] [--] {files...}"
     if [ $# = 0 ]; then
         printf >&2 'usage: permit %s\n' "$__permit_h"
         return 64;
     fi
 
+    __permit_v=0 # verbosity
+    __permit_n=0 # dry-run
     __permit_m=e # mode
     __permit_a=0 # automatic
 
@@ -49,6 +51,8 @@ permit() { ### @- conditionally set executable permissions on each of its argume
             while __permit_f="${__permit_f#?}"; [ -n "$__permit_f" ]; do
                 case "${__permit_f}" in
 
+                (v*) __permit_v=1;; # verbosity
+                (n*) __permit_n=1;; # dry-run
                 (a*) __permit_a=1;; # automatic (on)
                 (A*) __permit_a=0;; # automatic (off)
                 (e*) __permit_m=e;; # everything
@@ -86,7 +90,8 @@ permit() { ### @- conditionally set executable permissions on each of its argume
         fi
     done
 
-    [ "$#" = 0 ] || chmod +x -- "$@" || __permit_x=$?
+    [ "$__permit_v" = 0 ] || [ "$#" = 0 ] || printf >&2 'notice: +x %s\n' "$@"
+    [ "$__permit_n" = 1 ] || [ "$#" = 0 ] || chmod +x -- "$@" || __permit_x=$?
     return "$__permit_x"
 }
 

@@ -53,22 +53,20 @@ permit() { ### @- conditionally set executable permissions on each of its argume
             done
             break;;
 
-        (-*)
+        (-?*)
             shift
-            case "${__permit_f#-}" in
-            (a) __permit_a=1;; # automatic (on)
-            (A) __permit_a=0;; # automatic (off)
-            (e) __permit_m=e;; # everything
-            (f) __permit_m=f;; # files only
-            (d) __permit_m=d;; # directories only
-            (?|-*)
-                printf >&2 'permit: %s\n' "unknown flag: $__permit_f"
-                return 64;;
-            (*)
-                set -- "${__permit_f%"${__permit_f#-?}"}" "-${__permit_f#-?}" "$@"
-                : $((__permit_n+=2))
-                continue;;
-            esac;;
+            while __permit_f="${__permit_f#?}"; [ -n "$__permit_f" ]; do
+                case "${__permit_f}" in
+                (a*) __permit_a=1;; # automatic (on)
+                (A*) __permit_a=0;; # automatic (off)
+                (e*) __permit_m=e;; # everything
+                (f*) __permit_m=f;; # files only
+                (d*) __permit_m=d;; # directories only
+                (*)
+                    printf >&2 'permit: unknown flag: -%.1s\n' "$__permit_f"
+                    return 64;;
+                esac
+            done;;
 
         (*)
             shift

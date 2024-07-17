@@ -45,8 +45,7 @@ permit() { ### @- conditionally set executable permissions on each of its argume
         (/\?|-h|-help|--help)
             printf 'usage: permit %s\n' "$__permit_h"
             return 0;;
-        (--)
-            __permit_stop=1;;
+        (--) __permit_stop=1;;
         (-?*)
             while __permit_f="${__permit_f#?}"; [ -n "$__permit_f" ]; do
                 case "${__permit_f}" in
@@ -64,8 +63,7 @@ permit() { ### @- conditionally set executable permissions on each of its argume
                     return 64;;
                 esac
             done;;
-        (*)
-            set -- "$@" "$__permit_f";;
+        (*) set -- "$@" "$__permit_f";;
         esac
     done
 

@@ -631,17 +631,19 @@ $ pegg rthalley dnspython
 $ pegg rthalley dnspython 3933b49
 ```
 
-### [permit](/sh/permit#L4)
+### [permit](/sh/permit#L13)
 
 conditionally set executable permissions on each of its arguments.
 
 flags:
 * `-a` -- automatic: skip any files whose contents do not begin with
           with one of several signatures. this does not affect directories.
-* `-A` -- turn off automatic mode. (default)
+* `-m` -- manual: turn off automatic mode. (default)
 * `-e` -- everything: consider both regular files and directories. (default)
 * `-f` -- files: skip any arguments that are not regular files.
 * `-d` -- directories: skip any arguments that are not directories.
+* `-n` -- dry-run: don't actually change anything.
+* `-v` -- verbose: print changes before doing them.
 
 the `-e`, `-f`, and `-d` flags all override one another, and any of them
 can be combined with `-a`. arguments that are neither regular files nor

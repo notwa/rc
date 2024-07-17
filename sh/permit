@@ -14,7 +14,7 @@ permit() { ### @- conditionally set executable permissions on each of its argume
     ### flags:
     ### * `-a` -- automatic: skip any files whose contents do not begin with
     ###           with one of several signatures. this does not affect directories.
-    ### * `-A` -- turn off automatic mode. (default)
+    ### * `-m` -- manual: turn off automatic mode. (default)
     ### * `-e` -- everything: consider both regular files and directories. (default)
     ### * `-f` -- files: skip any arguments that are not regular files.
     ### * `-d` -- directories: skip any arguments that are not directories.
@@ -27,7 +27,7 @@ permit() { ### @- conditionally set executable permissions on each of its argume
     ### directories are never recursed.
     unset __permit_4 __permit_a __permit_f __permit_h __permit_m __permit_n __permit_v __permit_x || return
 
-    __permit_h="[-v] [-n] [-a | -A] [-e | -f | -d] [--] {files...}"
+    __permit_h="[-v] [-n] [-a | -m] [-e | -f | -d] [--] {files...}"
     if [ $# = 0 ]; then
         printf >&2 'usage: permit %s\n' "$__permit_h"
         return 64;
@@ -53,8 +53,8 @@ permit() { ### @- conditionally set executable permissions on each of its argume
 
                 (v*) __permit_v=1;; # verbosity
                 (n*) __permit_n=1;; # dry-run
-                (a*) __permit_a=1;; # automatic (on)
-                (A*) __permit_a=0;; # automatic (off)
+                (a*) __permit_a=1;; # automatic
+                (m*) __permit_a=0;; # manual
                 (e*) __permit_m=e;; # everything
                 (f*) __permit_m=f;; # files only
                 (d*) __permit_m=d;; # directories only

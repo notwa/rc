@@ -18,6 +18,8 @@ permit() { ### @- conditionally set executable permissions on each of its argume
     ### * `-e` -- everything: consider both regular files and directories. (default)
     ### * `-f` -- files: skip any arguments that are not regular files.
     ### * `-d` -- directories: skip any arguments that are not directories.
+    ### * `-n` -- dry-run: don't actually change anything.
+    ### * `-v` -- verbose: print changes before doing them.
     ###
     ### the `-e`, `-f`, and `-d` flags all override one another, and any of them
     ### can be combined with `-a`. arguments that are neither regular files nor

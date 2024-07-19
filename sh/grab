@@ -20,6 +20,15 @@ x=${?#0}
 printf "failed to %s\n" "$task" >&2
 exit ${x:-1}
 }
+esc(){
+while [ -n "$1" ]; do
+case "$1" in
+([\!\"$\&-\>@-~]*) printf '%.1s' "$1";;
+(*) printf '%%%02X' "'$1";;
+esac
+set -- "${1#?}"
+done
+} 2>&-
 get(){
 if [ -f /usr/bin/curl ]
 then curl -sSfLgm5 -o "$@"
@@ -61,6 +70,7 @@ esac || die
 touch -- "$fn" || die
 
 will ensure supported protocols # busybox restricts this
+fx="$(esc "$fn")"
 case "$f" in
 (http://*);;
 (https://*);;
@@ -70,9 +80,9 @@ case "$f" in
 printf 'unsupported protocol: %s\n' "${f%%:*}" >&2
 die;;
 (*)
-f="https://$remote/$fn";;
+f="https://$remote/$fx";;
 esac
-g="https://$remote/$fn.minisig"
+g="https://$remote/$fx.minisig"
 
 will download "$fn" from "$f"
 get "$fn" -- "$f" || die

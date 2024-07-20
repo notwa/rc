@@ -24,7 +24,7 @@ for flag; do
 				exit 2;;
 			esac
 		done;;
-	(*) break
+	(*) break;;
 	esac
 done
 

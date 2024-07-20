@@ -12,34 +12,40 @@ unset t
 _(){
 task="${1:-do something}"
 }
+
 will(){
 _ "$*"
 }
+
 die(){
 x=${?#0}
 printf "failed to %s\n" "$task" >&2
 exit ${x:-1}
 }
+
 esc(){
 while [ -n "$1" ]; do
 case "$1" in
-([\!\"$\&-\>@-~]*) printf '%.1s' "$1";;
-(*) printf '%%%02X' "'$1";;
+([\!\"$\&-\>@-~]*) printf %.1s "$1";;
+(*) printf %%%02X "'$1";;
 esac
 set -- "${1#?}"
 done
 } 2>&-
+
 get(){
 if [ -f /usr/bin/curl ]
 then curl -sSfLgm5 -o "$@"
 else wget -qt1 -T5 -O "$@"
 fi
 }
+
 clean(){
 will clean up temporary files
 ! [ -d "$t" ] || rm -r "$t" || die
 exit 1
 }
+
 hex(){
 if [ -f /usr/bin/xxd ]
 then exec xxd -p -l4 -- "$@"
@@ -54,7 +60,8 @@ trap clean INT EXIT
 t="$(exec mktemp -d)" && cd "$t" || die
 
 for f
-do fn="${f##*/}"
+do
+fn="${f##*/}"
 fn="${fn%%\?*}" # for shame, wget
 fn="${fn%%#*}"
 

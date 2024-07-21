@@ -990,11 +990,11 @@ expand to C++ flags to enable a C++-as-C facade.
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L52)
+### [dummy (bashrc)](/home/bashrc#L42)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L57)
+### [reload (bashrc)](/home/bashrc#L54)
 
 **TODO:** respect initctl like in `.zshrc`.
 
@@ -1183,6 +1183,7 @@ copy files in a plain way using rsync. affected by umask.
 | [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [randir](#randir)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [recolor](#recolor)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| [recombine](#recombine)                       |  **false** | ✔️    | ✔️    | ✔️    | ✔️    |
 | [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [rs](#rs)                                     |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [running](#running)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |

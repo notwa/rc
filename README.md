@@ -937,179 +937,179 @@ $ xxp ~/rc/install | head -n2
 
 ## miscellaneous
 
-### [dummy (zshrc)](/home/zshrc#L82)
+### [dummy (zshrc)](/home/zshrc#L64)
 
 return 0, ignoring arguments.
 
-### [dirprev (zshrc)](/home/zshrc#L87)
+### [dirprev (zshrc)](/home/zshrc#L66)
 
 rotate and change to the previous directory in the directory stack
 without consuming the prompt.
 
-### [dirnext (zshrc)](/home/zshrc#L94)
+### [dirnext (zshrc)](/home/zshrc#L73)
 
 rotate and change to the next directory in the directory stack
 without consuming the prompt.
 
-### [dirup (zshrc)](/home/zshrc#L101)
+### [dirup (zshrc)](/home/zshrc#L80)
 
 change to the parent directory of the current working directory
 without consuming the prompt.
 
-### [dirview (zshrc)](/home/zshrc#L108)
+### [dirview (zshrc)](/home/zshrc#L87)
 
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L213)
+### [OMFG (zshrc)](/home/zshrc#L192)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L214)
+### [STFU (zshrc)](/home/zshrc#L193)
 
 silence stderr.
 
-### [SWAP (zshrc)](/home/zshrc#L215)
+### [SWAP (zshrc)](/home/zshrc#L194)
 
 swap stdout and stderr. uses fd 3 as an intermediary.
 
-### [WHOA (zshrc)](/home/zshrc#L216)
+### [WHOA (zshrc)](/home/zshrc#L195)
 
 expand to several C/C++ flags to ease development.
 
-### [WHEE (zshrc)](/home/zshrc#L217)
+### [WHEE (zshrc)](/home/zshrc#L196)
 
 WHOA but for C++ (specifically g++) only.
 
-### [WELP (zshrc)](/home/zshrc#L218)
+### [WELP (zshrc)](/home/zshrc#L197)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [reload (zshrc)](/home/zshrc#L267)
+### [reload (zshrc)](/home/zshrc#L246)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L42)
+### [dummy (bashrc)](/home/bashrc#L40)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L54)
+### [reload (bashrc)](/home/bashrc#L43)
 
 **TODO:** respect initctl like in `.zshrc`.
 
-### [ADDPATH (shrc)](/home/shrc#L14)
+### [ADDPATH (shrc)](/home/shrc#L26)
 
 append a directory to `$PATH` if it isn't already present.
 
-### [refresh (shrc)](/home/shrc#L91)
+### [refresh (shrc)](/home/shrc#L103)
 
 invoke `hash -r`.
 
-### [pl (shrc)](/home/shrc#L94)
+### [pl (shrc)](/home/shrc#L106)
 
 print each argument on its own line.
 
-### [ll (shrc)](/home/shrc#L97)
+### [ll (shrc)](/home/shrc#L109)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [gdp (shrc)](/home/shrc#L111)
+### [gdp (shrc)](/home/shrc#L123)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [gd (shrc)](/home/shrc#L117)
+### [gd (shrc)](/home/shrc#L129)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [rgn (shrc)](/home/shrc#L120)
+### [rgn (shrc)](/home/shrc#L132)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (shrc)](/home/shrc#L126)
+### [curls (shrc)](/home/shrc#L138)
 
 invoke curl with less noise.
 
-### [revend (shrc)](/home/shrc#L138)
+### [revend (shrc)](/home/shrc#L150)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (shrc)](/home/shrc#L141)
+### [clone (shrc)](/home/shrc#L153)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (shrc)](/home/shrc#L144)
+### [aligntabs (shrc)](/home/shrc#L156)
 
 align tab-delimited fields in stdin.
 
-### [crawla (shrc)](/home/shrc#L155)
+### [crawla (shrc)](/home/shrc#L167)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (shrc)](/home/shrc#L158)
+### [crawlz (shrc)](/home/shrc#L170)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (shrc)](/home/shrc#L161)
+### [diff (shrc)](/home/shrc#L173)
 
 use git's diff subcommand for general diffing.
 
-### [gc (shrc)](/home/shrc#L164)
+### [gc (shrc)](/home/shrc#L176)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (shrc)](/home/shrc#L168)
+### [counts (shrc)](/home/shrc#L180)
 
 count files in the current directory, including files found recursively.
 
-### [exts (shrc)](/home/shrc#L171)
+### [exts (shrc)](/home/shrc#L183)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (shrc)](/home/shrc#L174)
+### [nocom (shrc)](/home/shrc#L186)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (shrc)](/home/shrc#L177)
+### [jrep (shrc)](/home/shrc#L189)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (shrc)](/home/shrc#L180)
+### [bomb (shrc)](/home/shrc#L192)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (shrc)](/home/shrc#L183)
+### [cleanse (shrc)](/home/shrc#L195)
 
 strip unprintable and non-ASCII characters.
 
-### [double (shrc)](/home/shrc#L186)
+### [double (shrc)](/home/shrc#L198)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (shrc)](/home/shrc#L191)
+### [katagana (shrc)](/home/shrc#L203)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (shrc)](/home/shrc#L195)
+### [makepkgf (shrc)](/home/shrc#L207)
 
 make the freakin' package!
 
-### [rakef (shrc)](/home/shrc#L198)
+### [rakef (shrc)](/home/shrc#L210)
 
 make the freakin' gem!
 
-### [relog (shrc)](/home/shrc#L201)
+### [relog (shrc)](/home/shrc#L213)
 
 log on again to refresh your unix groups, etc.
 
-### [carry (shrc)](/home/shrc#L204)
+### [carry (shrc)](/home/shrc#L216)
 
 copy files in a plain way using rsync. affected by umask.
 

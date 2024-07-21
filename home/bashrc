@@ -36,20 +36,9 @@ _temporary_scope_() {
     PROMPT_COMMAND="[ \$? = 0 ] && PS1=\$'$ret_okay' || PS1=\$'$ret_fail'"
 }; _temporary_scope_; unset -f _temporary_scope_
 
-. ~/.shrc
-
 #ADDPATH "$HOME/sh" # this doesn't work for all scripts at the moment
 dummy() { :; } ### @- return 0, ignoring arguments.
-
-# combine everything matching "YES_BASH" in ~/sh/ into ~/.sh-bash.
-# unlike zsh, we do not check the sha1sum of the output.
-if [ -s ~/sh/recombine ] && (. ~/sh/recombine) > ~/.sh-bash; then
-    preload=dummy
-    . ~/.sh-bash
-    unset preload
-elif [ -f ~/.sh-bash ]; then
-    rm ~/.sh-bash
-fi
+. ~/.shrc
 
 alias reload='cd; exec bash' ### @- **TODO:** respect initctl like in `.zshrc`.
 [ ! -e ~/.lol ] || . ~/.lol

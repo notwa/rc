@@ -61,28 +61,7 @@ autoload edit-command-line
 autoload history-search-end
 zmodload zsh/mathfunc
 
-# combine everything matching "YES_ZSH" in ~/sh/ into ~/.sh,
-# but only recompile the output if the sha1sum has changed.
-function
- {: \
- && local a= b= \
- && { [ ! -s ~/.sh.sha1 ] || read -r b _ < ~/.sh.sha1 ;} \
- &&  (: \
-     && cd ~/sh \
-     && print -l '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' '' \
-      | cat - $(grep -lF YES_ZSH -- *~*.bak(.)) \
-      | tee ~/.sh \
-     ;) \
-  | sha1sum - \
-  | tee ~/.sh.sha1 \
-  | read -r a _ \
- && { [ "$a" = "$b" ] && touch ~/.sh.zwc || zrecompile -p ~/.sh ;} \
- ;}
-
 dummy() : ### @- return 0, ignoring arguments.
-preload=dummy
-. ~/.sh
-unset preload
 
 dirprev() { ### @-
     ### rotate and change to the previous directory in the directory stack

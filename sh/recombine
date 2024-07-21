@@ -2,7 +2,8 @@
 # FAKE_COMPAT
 
 cd ~/sh && unset IFS || exit
-case "$0" in
+[ -z "${0##/*}" ] && sh=zsh || sh="$0" # zsh replaces $0, so hardcode it
+case "$sh" in
 (ash) SH=ASH;;
 (bash) SH=BASH;;
 (dash) SH=DASH;;
@@ -14,10 +15,10 @@ case "$0" in
 (osh) SH=OSH;;
 (posh) SH=POSH;;
 (yash) SH=YASH;;
-(zsh) SH=ZSH;;
+(zsh) SH=ZSH; set -o SH_WORD_SPLIT;;
 (*)
     printf >&2 %s\\n "unknown shell (\$0): $0"
-    return 1
+    exit 1
 esac
 
 printf %s\\n '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' ''

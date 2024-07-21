@@ -4,6 +4,14 @@
 unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect zsh and bash
 if [ "$FANCY" = 0 ]; then . ~/.prep; fi # handle stuff like /etc/profile and $PATH
 
+# combine everything matching "YES_MYSHELL" in ~/sh/ into ~/.sh-myshell.
+[ -z "${0##/*}" ] && sh=zsh || sh="$0" # zsh replaces $0, so hardcode it
+if [ -s ~/sh/recombine ] && (. ~/sh/recombine) > ~/.sh-"$sh"; then
+    preload=:; . ~/.sh-"$sh"; unset preload
+elif [ -f ~/.sh-"$sh" ]; then
+    rm ~/.sh-"$sh"
+fi
+
 # {{{1 utilities
 
 have() { if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi; } 2>/dev/null

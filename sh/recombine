@@ -2,7 +2,7 @@
 # FAKE_COMPAT
 
 cd ~/sh && unset IFS || exit
-[ -z "${0##/*}" ] && sh=zsh || sh="$0" # zsh replaces $0, so hardcode it
+[ -z "${0##/*}" ] && sh=zsh || sh="${0#-}" # zsh replaces $0, so hardcode it
 case "$sh" in
 (ash) SH=ASH;;
 (bash) SH=BASH;;

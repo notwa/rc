@@ -4,13 +4,17 @@
 unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect zsh and bash
 if [ "$FANCY" = 0 ]; then . ~/.prep; fi # handle stuff like /etc/profile and $PATH
 
-# combine everything matching "YES_MYSHELL" in ~/sh/ into ~/.sh-myshell.
+# combine and load everything containing "YES_MYSHELL" in ~/sh/:
 [ -z "${0##/*}" ] && sh=zsh || sh="$0" # zsh replaces $0, so hardcode it
-if [ -s ~/sh/recombine ] && (. ~/sh/recombine) > ~/.sh-"$sh"; then
-    preload=:; . ~/.sh-"$sh"; unset preload
-elif [ -f ~/.sh-"$sh" ]; then
-    rm ~/.sh-"$sh"
+{ [ -d "${XDG_CACHE_HOME:="$HOME/.cache"}" ] || mkdir "$XDG_CACHE_HOME"; } &&
+{ [ -d "$XDG_CACHE_HOME/shrc" ] || mkdir "$XDG_CACHE_HOME/shrc"; } &&
+cache="$XDG_CACHE_HOME/shrc/$sh-$$" &&
+if [ -s ~/sh/recombine ] && (. ~/sh/recombine) > "$cache"; then
+    #wc -l "$cache" >&2
+    preload=:; . "$cache"; unset preload
 fi
+! [ -f "$cache" ] || rm "$cache"
+unset cache
 
 # {{{1 utilities
 

@@ -24,15 +24,15 @@ _temporary_scope_() {
     local DECSET="h" SGR="m" # final characters of a command sequence
     local sanity="$CSI?$DECTCEM$DECSET"
     local color1="$CSI;--$SGR" color2="$CSI--;97$SGR" reset="$hide$CSI$SGR$show"
-    local line1="$hide$title$sanity$color1$show $reset"
-    local line2="$hide$color2$show$prompt$reset "
-    local ret="$line1\\n$line2"
-    local ret_okay="${ret//--/42}" ret_fail="${ret//--/41}" # green/red bg
     if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
         [ "$t" = tmux ] && title="$cwd" || title="$host: $cwd"
         title="${OSC}2;$title$BEL"
         sanity="$ESC$G0$USASCII$SI$sanity"
     fi
+    local line1="$hide$title$sanity$color1$show $reset"
+    local line2="$hide$color2$show$prompt$reset "
+    local ret="$line1\\n$line2"
+    local ret_okay="${ret//--/42}" ret_fail="${ret//--/41}" # green/red bg
     PROMPT_COMMAND="[ \$? = 0 ] && PS1=\$'$ret_okay' || PS1=\$'$ret_fail'"
 }; _temporary_scope_; unset -f _temporary_scope_
 

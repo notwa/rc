@@ -253,7 +253,7 @@ reload() { ### @-
         return # preserves $?
     fi
 
-    if cd; then
+    if [ -n "$HOME" ] && cd -- "$HOME"; then
         # this doesn't seem to help with _vim_files errors, eh.
         # you wanna rm .zcompdump first, then exit. that's why!
         [ -f .zshrc ] && zrecompile -p .zshrc

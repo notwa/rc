@@ -1109,100 +1109,100 @@ copy files in a plain way using rsync. affected by umask.
 
 ## compatibility
 
-| script                                        | preference | zsh  | bash | dash | ash  |
-| --------------------------------------------- | ---------- | ---- | ---- | ---- | ---- |
-| [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
-| [arrays](#arrays)                             |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |
-| [askey](#askey)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [autosync](#autosync)                         |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [bak](#bak)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [baknow](#baknow)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [baks](#baks)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
-| [burl](#burl)                                 |       bash | ✔️    | ✔️    | ✔️    | ✔️    |
-| [busiest](#busiest)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [clash](#clash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [colors](#colors)                             |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
-| [colors2](#colors2)                           |       bash | ✔️    | ✔️    | ✔️    | ✔️    |
-| [compile](#compile)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [confirm](#confirm)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [cutv](#cutv)                                 |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [dated](#dated)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [decently](#decently)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [dedupe](#dedupe)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [disowned](#disowned)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [document](#document)                         |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
-| [e](#e)                                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [echo2](#echo2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [feud](#feud)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [ghmd](#ghmd)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [glug](#glug)                                 |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
-| [grab](#grab)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [grop](#grop)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [grop4](#grop4)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [have](#have)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
-| [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [is_empty](#is_empty)                         |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
-| [isup](#isup)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [join2](#join2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [lsarchive](#lsarchive)                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
-| [monitor](#monitor)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [morecolors](#morecolors)                     |       bash | ✔️    | ✔️    | ⭕    | ⭕    |
-| [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [notice](#notice)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [obtain](#obtain)                             |       *sh* | ❔    | ❔    | ❔    | ❔    |
-| [oshi](#oshi)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [oxo](#oxo)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [pause](#pause)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [pegg](#pegg)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [permit](#permit)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [pippy](#pippy)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [preload](#preload)                           |  **false** | ✔️    | ✔️    | ✔️    | ✔️    |
-| [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [randir](#randir)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [recolor](#recolor)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [recombine](#recombine)                       |  **false** | ✔️    | ✔️    | ✔️    | ✔️    |
-| [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [rs](#rs)                                     |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [running](#running)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [scount](#scount)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [scropt](#scropt)                             |       bash | ✔️    | ✔️    | ✔️    | ✔️    |
-| [shcom](#shcom)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [shelly](#shelly)                             |   **perl** | *n/a*    | *n/a*    | *n/a*    | *n/a*    |
-| [similar](#similar)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [slit](#slit)                                 |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
-| [slitt](#slitt)                               |       dash | ✔️    | ✔️    | ✔️    | ✔️    |
-| [sortip](#sortip)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [sram](#sram)                                 |        zsh | ✔️    | ✔️    | ⭕    | ⭕    |
-| [stfu](#stfu)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [streamcrap](#streamcrap)                     |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |
-| [subdue](#subdue)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [sv](#sv)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [trunc](#trunc)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [unarchive](#unarchive)                       |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [unwrap](#unwrap)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [v_domap](#v_domap)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [v_lower](#v_lower)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [v_upper](#v_upper)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [wat](#wat)                                   |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
-| [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [witch](#witch)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
-| [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
+| script                                        | preference | ash | bash | dash | ksh | mksh | oksh | osh | posh | yash | zsh |
+| --------------------------------------------- | ---------- | --- | ---- | ---- | --- | ---- | ---- | --- | ---- | ---- | --- |
+| [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [arrays](#arrays)                             |  **false** | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    |
+| [askey](#askey)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [autosync](#autosync)                         |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [bak](#bak)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [baknow](#baknow)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [baks](#baks)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [burl](#burl)                                 |       bash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [busiest](#busiest)                           |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [clash](#clash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [colors](#colors)                             |       bash | ⭕    | ✔️    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [colors2](#colors2)                           |       bash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [compile](#compile)                           |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [confirm](#confirm)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [cutv](#cutv)                                 |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [dated](#dated)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [days](#days)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [decently](#decently)                         |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [dedupe](#dedupe)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [dfu](#dfu)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [disowned](#disowned)                         |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [document](#document)                         |       dash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [e](#e)                                       |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [echo2](#echo2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [feud](#feud)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [ghmd](#ghmd)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [glug](#glug)                                 |       dash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [grab](#grab)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [grop](#grop)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [grop4](#grop4)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [have](#have)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [is_empty](#is_empty)                         |       bash | ⭕    | ✔️    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [isup](#isup)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [join2](#join2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [lsarchive](#lsarchive)                       |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [monitor](#monitor)                           |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [morecolors](#morecolors)                     |       bash | ⭕    | ✔️    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [notice](#notice)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [obtain](#obtain)                             |       *sh* | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    |
+| [oshi](#oshi)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [oxo](#oxo)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [pause](#pause)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [pegg](#pegg)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [permit](#permit)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [pippy](#pippy)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [preload](#preload)                           |  **false** | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [randir](#randir)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [recolor](#recolor)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [recombine](#recombine)                       |  **false** | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [rs](#rs)                                     |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [running](#running)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [scount](#scount)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [scropt](#scropt)                             |       bash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [shcom](#shcom)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [shelly](#shelly)                             |   **perl** | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    |
+| [similar](#similar)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [slit](#slit)                                 |       dash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [slitt](#slitt)                               |       dash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [sortip](#sortip)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [sram](#sram)                                 |        zsh | ⭕    | ✔️    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [stfu](#stfu)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [streamcrap](#streamcrap)                     |  **false** | ⭕    | ✔️    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [subdue](#subdue)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [sv](#sv)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [trunc](#trunc)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [unarchive](#unarchive)                       |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [unwrap](#unwrap)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [v_domap](#v_domap)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [v_lower](#v_lower)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [v_upper](#v_upper)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [wat](#wat)                                   |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [witch](#witch)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |

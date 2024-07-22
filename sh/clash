@@ -1,12 +1,13 @@
 #!/usr/bin/env sh
 # YES_ZSH YES_BASH YES_DASH YES_ASH
 
-clash() { ### @- run a command through 9 different shells.
+clash() { ### @- run a command through 12 different shells.
     ### only returns false when no arguments are given.
     [ $# != 0 ] || return
-    for sh in ash bash dash ksh mksh osh posh yash zsh; do
-        printf '\033[7m %s \033[m\n' "trying $sh"
+    for sh in ash bash dash hush ksh loksh mksh oksh osh posh yash zsh; do
+        printf >&2 '\033[7m %s \033[m\n' "trying $sh"
         "$sh" "$@"
+        printf >&2 '\033[100m $?=%s \033[m\n' $?
     done
     true
 }

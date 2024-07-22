@@ -479,7 +479,7 @@ borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
 mimic certain features of `sudo` for systems without it installed.
 as it stands, this mostly just handles some environment variables.
 
-try this: `maybesudo_ -u "$USER" printenv`
+try this: `maybesudo -u "$USER" printenv`
 
 ### [minutemaid](/sh/minutemaid#L4)
 
@@ -998,118 +998,118 @@ return 0, ignoring arguments.
 
 **TODO:** respect initctl like in `.zshrc`.
 
-### [ADDPATH (shrc)](/home/shrc#L26)
+### [ADDPATH (shrc)](/home/shrc#L36)
 
 append a directory to `$PATH` if it isn't already present.
 
-### [refresh (shrc)](/home/shrc#L103)
+### [refresh (shrc)](/home/shrc#L113)
 
 invoke `hash -r`.
 
-### [pl (shrc)](/home/shrc#L106)
+### [pl (shrc)](/home/shrc#L116)
 
 print each argument on its own line.
 
-### [ll (shrc)](/home/shrc#L109)
+### [ll (shrc)](/home/shrc#L119)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [gdp (shrc)](/home/shrc#L123)
+### [gdp (shrc)](/home/shrc#L133)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [gd (shrc)](/home/shrc#L129)
+### [gd (shrc)](/home/shrc#L139)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [rgn (shrc)](/home/shrc#L132)
+### [rgn (shrc)](/home/shrc#L142)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (shrc)](/home/shrc#L138)
+### [curls (shrc)](/home/shrc#L148)
 
 invoke curl with less noise.
 
-### [revend (shrc)](/home/shrc#L150)
+### [revend (shrc)](/home/shrc#L160)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (shrc)](/home/shrc#L153)
+### [clone (shrc)](/home/shrc#L163)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (shrc)](/home/shrc#L156)
+### [aligntabs (shrc)](/home/shrc#L166)
 
 align tab-delimited fields in stdin.
 
-### [crawla (shrc)](/home/shrc#L167)
+### [crawla (shrc)](/home/shrc#L177)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (shrc)](/home/shrc#L170)
+### [crawlz (shrc)](/home/shrc#L180)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (shrc)](/home/shrc#L173)
+### [diff (shrc)](/home/shrc#L183)
 
 use git's diff subcommand for general diffing.
 
-### [gc (shrc)](/home/shrc#L176)
+### [gc (shrc)](/home/shrc#L186)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (shrc)](/home/shrc#L180)
+### [counts (shrc)](/home/shrc#L190)
 
 count files in the current directory, including files found recursively.
 
-### [exts (shrc)](/home/shrc#L183)
+### [exts (shrc)](/home/shrc#L193)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (shrc)](/home/shrc#L186)
+### [nocom (shrc)](/home/shrc#L197)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (shrc)](/home/shrc#L189)
+### [jrep (shrc)](/home/shrc#L200)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (shrc)](/home/shrc#L192)
+### [bomb (shrc)](/home/shrc#L203)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (shrc)](/home/shrc#L195)
+### [cleanse (shrc)](/home/shrc#L206)
 
 strip unprintable and non-ASCII characters.
 
-### [double (shrc)](/home/shrc#L198)
+### [double (shrc)](/home/shrc#L209)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (shrc)](/home/shrc#L203)
+### [katagana (shrc)](/home/shrc#L214)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (shrc)](/home/shrc#L207)
+### [makepkgf (shrc)](/home/shrc#L218)
 
 make the freakin' package!
 
-### [rakef (shrc)](/home/shrc#L210)
+### [rakef (shrc)](/home/shrc#L221)
 
 make the freakin' gem!
 
-### [relog (shrc)](/home/shrc#L213)
+### [relog (shrc)](/home/shrc#L224)
 
 log on again to refresh your unix groups, etc.
 
-### [carry (shrc)](/home/shrc#L216)
+### [carry (shrc)](/home/shrc#L227)
 
 copy files in a plain way using rsync. affected by umask.
 

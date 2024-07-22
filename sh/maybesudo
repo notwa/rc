@@ -5,30 +5,41 @@ __maybesudo() { ### @maybesudo
     ### mimic certain features of `sudo` for systems without it installed.
     ### as it stands, this mostly just handles some environment variables.
     ###
-    ### try this: `maybesudo_ -u "$USER" printenv`
+    ### try this: `maybesudo -u "$USER" printenv`
+
+    complain() {
+        printf >&2 'maybesudo: %s\n' "$*"
+    }
+
+    usage() {
+        printf %s\\n \
+        'maybesudo - a dumb utility for systems without sudo' \
+        '' \
+        'usage: maybesudo -h | -V' \
+        'usage: maybesudo [-u user] command [arg ...]' \
+        'usage: maybesudo [-u user] file ...' \
+        ;
+    }
 
     name=
     env_cleanup=0
 
     while getopts :AEHKPSVbhiklnsvC:U:g:p:r:t:u: name; do
         case "$name" in
-        K|V|k)
+        ([KVk])
         # K: sure kill
         # V: version
         # k: kill
-            note 'maybesudo: your system does not have sudo installed!'
+            complain 'your system does not have sudo installed!'
             return 0
             ;;
 
-        h)
-            printf "%s\n" 'maybesudo - a dumb utility for systems without sudo'
-            printf "\n"
-            printf "%s\n" 'usage: maybesudo -h | -V'
-            printf "%s\n" 'usage: maybesudo [command]'
+        (h)
+            usage
             return 0
             ;;
 
-        A|E|H|P|S|n|p)
+        ([AEHPSnp])
         # A: askpass
         # E: preserve environment
         # H: HOME
@@ -36,10 +47,10 @@ __maybesudo() { ### @maybesudo
         # S: stdin (password)
         # n: non-interactive
         # p: prompt
-            note 'maybesudo: option has no effect --' "'$name'"
+            complain 'option has no effect --' "'$name'"
             ;;
 
-        C|U|b|g|i|l|r|s|t)
+        ([CUbgilrstv])
         # C: close from (fd)
         # U: other user (in conjunction with -l)
         # b: background
@@ -49,30 +60,36 @@ __maybesudo() { ### @maybesudo
         # r: role (SELinux)
         # s: shell (TODO)
         # t: type (SELinux)
-            note "maybesudo: unsupported option --" "'$name'"
+        # v: validate
+            complain 'unsupported option --' "'$name'"
             return 1
             ;;
 
-        u)      # user
+        (u) # user
             if [ -z "$USER" ] || [ "$OPTARG" != "$USER" ]; then
-                note 'maybesudo: users other than yourself are unsupported!'
+                complain 'users other than yourself are unsupported!'
                 return 1
             fi
             env_cleanup=1
             ;;
 
-        :)
-            note 'maybesudo: option requires an argument --' "'$OPTARG'"
+        (:)
+            complain 'option requires an argument --' "'$OPTARG'"
             return 1
             ;;
-        default)
-            note 'maybesudo: invalid option --' "'$OPTARG'"
+        (*)
+            complain 'invalid option --' "'$OPTARG'"
             return 1
             ;;
         esac
     done
 
     shift "$((OPTIND-1))"
+
+    if [ $# = 0 ]; then
+        usage >&2
+        exit 64 # EX_USAGE
+    fi
 
     if [ "$env_cleanup" = 1 ]; then
         # portably listing exported variable names is virtually impossible
@@ -107,10 +124,14 @@ __maybesudo() { ### @maybesudo
         [ -z "$DISPLAY" ]        || set -- DISPLAY="$DISPLAY" "$@"
         [ -z "$COLORS" ]         || set -- COLORS="$COLORS" "$@"
         set -- -i "$@"
+
+    elif ! [ -d /C ]; then # no such thing as sudo on Windows (kinda)
+        complain 'you requested root permissions, but you do not have sudo installed.'
+        return 69 # EX_UNAVAILABLE
     fi
 
-    env "$@"
+    exec env "$@"
 }
 
-maybesudo_()(__maybesudo "$@")
+maybesudo_()(__maybesudo "$@") # deprecated
 [ -n "${preload+-}" ] || __maybesudo "$@"

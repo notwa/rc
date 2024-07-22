@@ -21,7 +21,21 @@ unset cache
 have() { if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi; } 2>/dev/null
 has() { have "$@"; } >/dev/null
 
-has sudo && maybesudo() { sudo "$@"; } || maybesudo() { maybesudo_ "$@"; }
+if has sudo; then
+    doas() {
+        printf '\033[7m %s \033[m\n' 'warning: you ran sudo when you meant doas!'
+        sudo "$@"
+    }
+    maybesudo() { sudo "$@"; }
+elif has doas; then
+    sudo() {
+        printf '\033[7m %s \033[m\n' 'warning: you ran doas when you meant sudo!'
+        doas "$@"
+    }
+    maybesudo() { doas "$@"; }
+else
+    maybesudo() (__maybesudo "$@")
+fi
 
 ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
     [ $# = 1 ] || { printf >&2 'ADDPATH: expected exactly 1 argument, got %s\n' $#; return 64; }
@@ -183,6 +197,7 @@ counts() ### @- count files in the current directory, including files found recu
 exts() ### @- count and sort file extensions in the current directory, including files found recursively.
   { find -type f | sed -e 's@.*/@@' -e 's@.*\.@@' | tr A-Z a-z | scount; }
 
+# TODO: don't use GNU options when busybox is detected!
 nocom() ### @- strip single-line C-like and shell-like comments.
   { grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)" "$@"; }
 

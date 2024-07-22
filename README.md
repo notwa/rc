@@ -47,12 +47,6 @@ refer to the [compatibility table](#compatibility) for specifics.
 
 ## shell functions
 
-### [archive](/sh/archive#L4)
-
-create an archive file in one of a few formats.
-
-borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
-
 ### [argc](/sh/argc#L4)
 
 validate the number of arguments in a function.
@@ -1117,7 +1111,6 @@ copy files in a plain way using rsync. affected by umask.
 
 | script                                        | preference | zsh  | bash | dash | ash  |
 | --------------------------------------------- | ---------- | ---- | ---- | ---- | ---- |
-| [archive](#archive)                           |        zsh | ✔️    | ⭕    | ⭕    | ⭕    |
 | [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arrays](#arrays)                             |  **false** | ✔️    | ✔️    | ⭕    | ⭕    |

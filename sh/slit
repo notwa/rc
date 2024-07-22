@@ -1,5 +1,5 @@
 #!/usr/bin/env dash
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# compat: +ash +bash +dash +zsh
 
 # works with busybox ash.
 

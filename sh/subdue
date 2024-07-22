@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# compat: +ash +bash +dash +zsh
 
 __subdue() { ### @subdue
     ### reconfigure your terminal's color scheme using a preset for [recolor.](#recolor)

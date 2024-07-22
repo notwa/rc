@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# compat: +ash +bash +dash +zsh
 
 join2() { ### @- join every other line.
     # TODO: argc, also better interface that allows n file inputs without stdin.

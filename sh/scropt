@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# compat: +ash +bash +dash +zsh
 
 scropt() { ### @-
     ### run `scrot` through `optipng` and save the result to `~/play/$(now).png`.

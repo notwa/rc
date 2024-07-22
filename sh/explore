@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# compat: +ash +bash +dash +zsh
 
 explore() { ### @- open a single directory in `explorer.exe`, defaulting to `$PWD`.
     [ -n "$MSYSTEM" ] || { printf "%s\n" "$0: only for MSYS2" >&2; return 1; }

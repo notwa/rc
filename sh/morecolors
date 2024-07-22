@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# YES_ZSH YES_BASH NO_DASH NO_ASH
+# compat: -ash +bash -dash +zsh
 
 morecolors() { ### @- print all 256 colors that are available on most terminals.
     # borrowed from leah2's dotfiles.

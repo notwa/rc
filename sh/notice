@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# compat: +ash +bash +dash +zsh
 
 __notice_warn() {
 	printf >&2 'notice: %s\n' "$*"

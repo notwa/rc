@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# compat: +ash +bash +dash +zsh
 
 ### @feud - parse command-line arguments, mapping short-flags to variable names.
 ### **NOTE:** the API is still experimental and will undergo major changes.

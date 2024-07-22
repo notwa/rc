@@ -1,5 +1,5 @@
 #!/usr/bin/env false
-# YES_ZSH YES_BASH NO_DASH NO_ASH
+# compat: -ash +bash -dash +zsh
 
 whoa=(
     -Wall

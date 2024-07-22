@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# compat: +ash +bash +dash +zsh
 
 ### @ confirm
 ### display a simple yes-or-no prompt and return 0-or-1 respectively.

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH YES_BASH YES_DASH YES_ASH YES_BB_AWK
+# compat: +ash +bash +dash +zsh YES_BB_AWK
 
 sv() { ### @-
     ### collect the lastmost value of every key.

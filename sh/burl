@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# compat: +ash +bash +dash +zsh
 
 burl() ( ### @-
     ### turn bash into a makeshift HTTP client.

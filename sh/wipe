@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# YES_ZSH YES_BASH YES_DASH YES_ASH YES_BB_AWK
+# compat: +ash +bash +dash +zsh YES_BB_AWK
 
 wipe() { ### @-
     ### clear the screen and its scrollback, then print a high-contrast horizontal line.

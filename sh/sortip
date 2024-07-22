@@ -1,5 +1,5 @@
 #!/usr/bin/sh
-# YES_ZSH YES_BASH YES_DASH YES_ASH
+# compat: +ash +bash +dash +zsh
 
 sortip() { ### @- sort lines numerically by IPv4 segments.
     sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n "$@"

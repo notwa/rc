@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# YES_ZSH NO_BASH NO_DASH NO_ASH
+# compat: -ash -bash -dash +zsh
 
 rs() { ### @-
     ### record screen. does not record audio.

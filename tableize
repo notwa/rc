@@ -12,8 +12,8 @@ tableize() {
 
     # the script column has to be stupid wide because names are repeated twice for anchors.
     # column lengths: 45, 10, 4, 4, 4, 4
-    printf '%s\n' '| script                                        | preference | zsh  | bash | dash | ash  |'
-    printf '%s\n' '| --------------------------------------------- | ---------- | ---- | ---- | ---- | ---- |'
+    printf '%s\n' '| script                                        | preference | ash | bash | dash | ksh | mksh | oksh | osh | posh | yash | zsh |'
+    printf '%s\n' '| --------------------------------------------- | ---------- | --- | ---- | ---- | --- | ---- | ---- | --- | ---- | ---- | --- |'
 
     local f=
     for f in sh/*; do
@@ -25,7 +25,7 @@ tableize() {
         [ "$fn" = "${fn#_}" ] || continue # completion files
         [ "$fn" = "${fn%.bak}" ] || continue # backup files
 
-        local i=0 zsh= bash= dash= ash= pref=
+        local i=0 ash= bash= dash= ksh= mksh= oksh= osh= posh= yash= zsh= pref=
         while IFS= read -r line; do
             : $((i+=1))
             [ $i -le 10 ] || break # act like head -n10
@@ -73,14 +73,26 @@ tableize() {
                 (NO_DASH) dash=no;;
                 (NO_ASH) ash=no;;
                 (compat:) check=1;;
-                (+ash) [ "$check" = 0 ] || ash=yes;;
+                (+ash)  [ "$check" = 0 ] || ash=yes;;
                 (+bash) [ "$check" = 0 ] || bash=yes;;
                 (+dash) [ "$check" = 0 ] || dash=yes;;
-                (+zsh) [ "$check" = 0 ] || zsh=yes;;
-                (-ash) [ "$check" = 0 ] || ash=no;;
+                (+ksh)  [ "$check" = 0 ] || ksh=yes;;
+                (+mksh) [ "$check" = 0 ] || mksh=yes;;
+                (+oksh) [ "$check" = 0 ] || oksh=yes;;
+                (+osh)  [ "$check" = 0 ] || osh=yes;;
+                (+posh) [ "$check" = 0 ] || posh=yes;;
+                (+yash) [ "$check" = 0 ] || yash=yes;;
+                (+zsh)  [ "$check" = 0 ] || zsh=yes;;
+                (-ash)  [ "$check" = 0 ] || ash=no;;
                 (-bash) [ "$check" = 0 ] || bash=no;;
                 (-dash) [ "$check" = 0 ] || dash=no;;
-                (-zsh) [ "$check" = 0 ] || zsh=no;;
+                (-ksh)  [ "$check" = 0 ] || ksh=no;;
+                (-mksh) [ "$check" = 0 ] || mksh=no;;
+                (-oksh) [ "$check" = 0 ] || oksh=no;;
+                (-osh)  [ "$check" = 0 ] || osh=no;;
+                (-posh) [ "$check" = 0 ] || posh=no;;
+                (-yash) [ "$check" = 0 ] || yash=no;;
+                (-zsh)  [ "$check" = 0 ] || zsh=no;;
                 ('#'*) break;;
             esac done
         done < "$f"
@@ -108,7 +120,7 @@ tableize() {
         [ -n "$p" ] && printf '| %10s ' "$p" || printf '| %9s%s ' '' "$huh"
 
         local t=
-        for t in "$zsh" "$bash" "$dash" "$ash"; do
+        for t in "$ash" "$bash" "$dash" "$ksh" "$mksh" "$oksh" "$osh" "$posh" "$yash" "$zsh"; do
             local w="$huh"
             [ "$pref" != perl ] || w="$etc"
             [ "$t" != yes ] || w="$yay"

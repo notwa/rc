@@ -59,6 +59,7 @@ tableize() {
                 continue
             fi
 
+            check=0
             set -f
             IFS=' '
             for flag in $decom; do case "$flag" in
@@ -71,6 +72,15 @@ tableize() {
                 (NO_BASH) bash=no;;
                 (NO_DASH) dash=no;;
                 (NO_ASH) ash=no;;
+                (compat:) check=1;;
+                (+ash) [ "$check" = 0 ] || ash=yes;;
+                (+bash) [ "$check" = 0 ] || bash=yes;;
+                (+dash) [ "$check" = 0 ] || dash=yes;;
+                (+zsh) [ "$check" = 0 ] || zsh=yes;;
+                (-ash) [ "$check" = 0 ] || ash=no;;
+                (-bash) [ "$check" = 0 ] || bash=no;;
+                (-dash) [ "$check" = 0 ] || dash=no;;
+                (-zsh) [ "$check" = 0 ] || zsh=no;;
                 ('#'*) break;;
             esac done
         done < "$f"

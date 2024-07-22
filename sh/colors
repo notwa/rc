@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# compat: -ash +bash -dash +zsh
+# compat: -ash +bash -dash -hush +ksh -mksh -oksh +osh -posh -yash +zsh
 
 colors() { ### @-
     ### display all combinations of foreground and background terminal colors.

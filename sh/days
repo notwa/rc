@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: -ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 days() { ### @-
     ### compute the number of days since a given date.
@@ -8,6 +8,7 @@ days() { ### @-
     ### $ days 'January 1 1970'
     ### 18838
     ### ```
+    # FIXME: this doesn't always work in busybox because its `date` is too simple.
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     echo $(( ($(date +%s) - $(date -d "$1" +%s)) / 60 / 60 / 24 ))
 }

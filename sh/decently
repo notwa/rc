@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
-
-# TODO: check if this is compatible with busybox.
+# compat: +ash +bash +dash +hush -ksh +mksh +oksh +osh +posh +yash +zsh
 
 decently() ( ### @-
     ### given a list of directories, update the last-modified timestamp

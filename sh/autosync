@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
-# compat: -ash -bash -dash +zsh
+# compat: -ash -bash -dash -hush -ksh -mksh -oksh -osh -posh -yash +zsh
 
 # TODO: portable way of dodging aliases to allow other shell support?
+# TODO: rewrite to use entr instead of inotifywait.
 
 autosync() { ### @-
     ### combine `inotifywait` and `rsync`.

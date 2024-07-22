@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 colors2() {
     [ $# -eq 0 ] || { printf "%s\n" "$0: does not take arguments" >&2; return 1; }

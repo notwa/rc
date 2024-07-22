@@ -26,15 +26,11 @@ if has sudo; then
         printf '\033[7m %s \033[m\n' 'warning: you ran sudo when you meant doas!'
         sudo "$@"
     }
-    maybesudo() { sudo "$@"; }
 elif has doas; then
     sudo() {
         printf '\033[7m %s \033[m\n' 'warning: you ran doas when you meant sudo!'
         doas "$@"
     }
-    maybesudo() { doas "$@"; }
-else
-    maybesudo() (__maybesudo "$@")
 fi
 
 ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.

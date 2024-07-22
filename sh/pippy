@@ -11,8 +11,7 @@ pippy() { ### @-
         ~/work/automamba --pip install --upgrade --upgrade-strategy only-if-needed "$@"
         return
     fi
-    local sudo="$(has sudo || echo maybesudo_)"
-    "$sudo" python3 -m pip install --upgrade --upgrade-strategy only-if-needed "$@"
+    maybesudo python3 -m pip install --upgrade --upgrade-strategy only-if-needed "$@"
 }
 
 [ -n "${preload+-}" ] || . ~/sh/preload || exit 2

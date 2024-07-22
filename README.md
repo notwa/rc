@@ -190,7 +190,7 @@ $ cd && busiest | head -n3
 
 ### [clash](/sh/clash#L4)
 
-run a command through 9 different shells.
+run a command through 12 different shells.
 
 only returns false when no arguments are given.
 

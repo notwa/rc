@@ -9,9 +9,9 @@ case "$sh" in
 (dash) SH=DASH;;
 (hush) SH=HUSH;;
 (ksh) SH=KSH;;
-(loksh) SH=LOKSH;;
+(loksh) SH=MKSH;; # similar enough to mksh to use the same compatibility flag
 (mksh) SH=MKSH;;
-(oksh) SH=OKSH;;
+(oksh) SH=MKSH;; # similar enough to mksh to use the same compatibility flag
 (osh) SH=OSH;;
 (posh) SH=POSH;;
 (yash) SH=YASH;;

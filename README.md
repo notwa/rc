@@ -1161,7 +1161,7 @@ copy files in a plain way using rsync. affected by umask.
 | [morecolors](#morecolors)                     |       bash | ⭕    | ✔️    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    |
 | [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
-| [notice](#notice)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
+| [notice](#notice)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [obtain](#obtain)                             |       *sh* | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    |
 | [oshi](#oshi)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    |

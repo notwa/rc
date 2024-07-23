@@ -27,18 +27,21 @@ __notice_commaize() { # fun with POSIX shell
 	REPLY="${2%,}"
 }
 
-__notice_escape() {
-	# doesn't work in posh. it doesn't like "${1%%[$2]*}", bug?
-	# warning: mksh is O(n^2) with string length!
-	# note: bash is horribly slow without `export LC_ALL=C`. zsh is fastest.
-	set -- "" "" "$1" "$2"
-	while :; do
-		set -- "$1" "${3%%[$4]*}" "$3" "$4"
-		[ "$2" != "$3" ] || break
-		set -- "$1$2\\" "${3#"$2"}" "$3" "$4"
-		set -- "$1${2%"${2#?}"}" "$2" "${2#?}" "$4"
+__notice_escape_print() {
+	# much faster and more portable than the old version.
+	# unfortunately, this requires a subshell to capture.
+	a="$1"
+	until [ -z "$a" ]; do
+		case "$a" in
+		([$2]*) printf %s%.1s \\ "$a";;
+		(*) printf %.1s "$a";;
+		esac
+		a="${a#?}"
 	done
-	REPLY="$1$3"
+}
+
+__notice_escape() {
+	REPLY="$(__notice_escape_print "$@")"
 }
 
 __notice_urlencode() {

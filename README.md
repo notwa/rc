@@ -30,7 +30,7 @@ because doing so would skip the signature being checked.
 
 [httpie]: https://httpie.io/docs/cli
 
-### compatibility
+### shell compatibility
 
 the following shells are taken into consideration, ordered from most to least compatible:
 
@@ -39,7 +39,7 @@ the following shells are taken into consideration, ordered from most to least co
 * dash
 * ash (busybox)
 
-refer to the [compatibility table](#compatibility) for specifics.
+refer to the [compatibility table](#compatibility-table) for specifics.
 
 **NOTE:** everything below this line is overwritten and automatically [regenerated.](/regenerate)
 
@@ -1107,7 +1107,7 @@ log on again to refresh your unix groups, etc.
 
 copy files in a plain way using rsync. affected by umask.
 
-## compatibility
+## compatibility table
 
 | script                                        | preference | ash | bash | dash | ksh | mksh | oksh | osh | posh | yash | zsh |
 | --------------------------------------------- | ---------- | --- | ---- | ---- | --- | ---- | ---- | --- | ---- | ---- | --- |

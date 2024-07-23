@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash -hush -ksh +mksh -oksh +osh +posh +yash +zsh
 
 v_lower() { ### @- transform the contents of a variable to lowercase.
     argc $# -eq 1 "$0" || return

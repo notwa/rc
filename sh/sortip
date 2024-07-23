@@ -1,8 +1,8 @@
 #!/usr/bin/sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 sortip() { ### @- sort lines numerically by IPv4 segments.
-    sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n "$@"
+    LC_ALL=C sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n "$@"
 }
 
 [ -n "${preload+-}" ] || sortip "$@"

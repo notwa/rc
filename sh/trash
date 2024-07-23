@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 trash() { ### @-
     ### output a given number of bytes from `/dev/random`.

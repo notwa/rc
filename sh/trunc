@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh YES_BB_AWK
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh YES_BB_AWK
 
 trunc() { ### @-
     ### truncate text to fit within your terminal using the unicode character `…`.
@@ -12,8 +12,8 @@ trunc() { ### @-
     ### ```
 
     [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
-    COLUMNS=${COLUMNS:-$(tput cols)}
-    awk -vL=${1:-$COLUMNS} '{e=length()>L?"…":"";print substr($0,0,L-(e?1:0)) e}'
+    COLUMNS="${COLUMNS:-"$(tput cols)"}"
+    awk -vL="${1:-$COLUMNS}" '{e=length()>L?"…":"";print substr($0,0,L-(e?1:0)) e}'
 }
 
 [ -n "${preload+-}" ] || trunc "$@"

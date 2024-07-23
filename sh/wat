@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# compat: -ash -bash -dash +zsh
+# compat: -ash -bash -dash -hush -ksh -mksh -oksh -osh -posh -yash +zsh
 
 # wat - a better and recursive which/whence
 # via: https://leahneukirchen.org/dotfiles/tools.html

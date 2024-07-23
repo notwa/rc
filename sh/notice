@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash -hush +ksh +mksh +oksh +osh -posh +yash +zsh
+# hush either fails to output certain text or just segfaults.
+# posh generally works, but has issues with escaping strings.
 
 __notice_warn() {
 	printf >&2 'notice: %s\n' "$*"
@@ -113,6 +115,9 @@ __notice_log() {
 #          you lose 200, then another 7 for "files[]", then another 6 for "myfile".
 #          therefore the maximum size that "myfile" can be is instead 787.
 
+# NOTE: i haven't tested double quotes in filenames yet;
+#       perhaps they count as two bytes each - not sure.
+
 __notice_compute_form_limit() {
 	# usage: $0 {FIELD NAME} {FILE NAME} {FILE SIZE} {SIZE LIMIT}
 	# returns 1 when over the limit.
@@ -136,7 +141,8 @@ __notice_upload_to_io_file() {
 	# defaults: 14 days, ephemeral (deletes after 1 download)
 	# wget should use --content-disposition when downloading
 	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 2000000000 || return 128
-	raw="$(__notice_curl -F "file=@$1" "https://$target")" || return
+	__notice_escape "$1" '\\"'
+	raw="$(__notice_curl -F "file=@\"$REPLY\"" "https://$target")" || return
 	[ "${raw#'{"success":true,"status":200,'}" ] || return
 	normal="https:${raw#*\"link\":\"https:}"; normal="${normal%%[\"]*}"
 	aux="$normal" # no direct link, i think it's based on User-Agent
@@ -149,7 +155,8 @@ __notice_upload_to_at_oshi() {
 	# TODO: retrieve admin URL from response (suffixed with " [Admin]")
 	# NOTE: spaces are automatically converted (by the server) to underscores.
 	__notice_compute_form_limit "f" "${1##*/}" "${bytes:-0}" 5000000000 || return 128
-	raw="$(__notice_curl -F "f=@$1" -F expire=20160 "https://$target")" || return
+	__notice_escape "$1" '\\"'
+	raw="$(__notice_curl -F "f=@\"$REPLY\"" -F expire=20160 "https://$target")" || return
 	normal="https:${raw##*DL: http*:}"; normal="${normal%%[!!-~]*}"
 	aux="$normal"
 }
@@ -189,7 +196,8 @@ __notice_upload_to_at_x0() {
 	# 100 MiB files are kept for 3 days, and 0 byte files are kept for 100 days.
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 232783872 || return 128
-	raw="$(__notice_curl -F "file=@$1" "https://$target")" || return
+	__notice_escape "$1" '\\"'
+	raw="$(__notice_curl -F "file=@\"$REPLY\"" "https://$target")" || return
 	normal="$raw"
 	aux="$normal"
 }
@@ -200,7 +208,8 @@ __notice_upload_to_se_uguu() {
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	# TODO: use fixed filename to squeeze a couple more bytes out of the limit?
 	__notice_compute_form_limit "files[]" "${1##*/}" "${bytes:-0}" 67108864 || return 128
-	raw="$(__notice_curl -F "files[]=@$1" "https://$target/upload?output=text")" || return
+	__notice_escape "$1" '\\"'
+	raw="$(__notice_curl -F "files[]=@\"$REPLY\"" "https://$target/upload?output=text")" || return
 	normal="$raw"
 	aux="$normal"
 }
@@ -211,7 +220,8 @@ __notice_upload_to_com_cockfile() {
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	# must have a file extension or it gets rejected (415), so use `.bin`.
 	__notice_compute_form_limit "files[]" ".bin" "${bytes:-0}" 999999999 || return 128
-	raw="$(__notice_curl -F "files[]=@$1;filename=.bin" "https://$target/upload.php?output=text")" || return
+	__notice_escape "$1" '\\"'
+	raw="$(__notice_curl -F "files[]=@$\"$REPLY\";filename=.bin" "https://$target/upload.php?output=text")" || return
 	normal="$raw"
 	aux="$normal"
 }
@@ -223,7 +233,8 @@ __notice_upload_to_sh_envs() {
 	# you can delete files if you extract the X-Token field from the response HTTP headers.
 	# banned MIME types: application/java-archive, application/java-vm
 	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 536870912 || return 128
-	raw="$(__notice_curl -F "file=@$1" -Fsecret= -Fexpires=336 "https://$target")" || return
+	__notice_escape "$1" '\\"'
+	raw="$(__notice_curl -F "file=@\"$REPLY\"" -Fsecret= -Fexpires=336 "https://$target")" || return
 	aux="$raw"
 	normal="$raw/${1##*/}"
 }
@@ -235,12 +246,13 @@ __notice_upload_to_moe_catbox_litterbox() {
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	# SUPER fast. disallowed filetypes: .exe, .scr, .cpl, .doc*, .jar
 	__notice_compute_form_limit "fileToUpload" "${1##*/}" "${bytes:-0}" 1000000000 || return 128
+	__notice_escape "$1" '\\"'
 	if [ "${1%.exe}" != "$1" ] || [ "${1%.scr}" != "$1" ]; then
-		set -- "$1" "fileToUpload=@$1;filename=${1%.???}.com" # bypass
+		set -- "$1" "fileToUpload=@\"$REPLY\";filename=\"${REPLY%.???}.com\"" # bypass
 	elif [ "${1%.cpl}" != "$1" ]; then
-		set -- "$1" "fileToUpload=@$1;filename=${1%.???}.dll" # bypass
+		set -- "$1" "fileToUpload=@\"$REPLY\";filename=\"${REPLY%.???}.dll\"" # bypass
 	else
-		set -- "$1" "fileToUpload=@$1"
+		set -- "$1" "fileToUpload=@\"$REPLY\""
 	fi
 	raw="$(__notice_curl -F "$2" -Ftime=72h -Freqtype=fileupload "https://$target/resources/internals/api.php")" || return
 	normal="$raw"

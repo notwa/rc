@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash -hush +zsh
 
 pippy() { ### @-
     ### install Python packages using pip,

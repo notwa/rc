@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash -hush +zsh
 
 __recolor_install() {
     ForegroundColour() { recolor RAW 10 "$@"; }

@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# compat: -ash -bash -dash +zsh
+# compat: -ash -bash -dash -hush -ksh -mksh -oksh -osh -posh -yash +zsh
 
 monitor() { ### @-
     ### this is [watch(1)](https://www.man7.org/linux/man-pages/man1/watch.1.html)

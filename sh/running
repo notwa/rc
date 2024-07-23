@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh YES_BB_AWK
+# compat: +ash +bash +dash +hush -ksh +mksh +oksh +osh +posh +yash +zsh YES_BB_AWK
 
 # probably not compatible with busybox ps because its column 2 isn't PID.
 
@@ -21,7 +21,7 @@ running() { ### @- WIP
     # argumentless flags accepted by coreutils:
     #   a c d e f g h j l m n r s t u v w x A F H L M N P S T V X Z
 
-    ps -f | awk -v cmd=$cmd -v pid=$pid '
+    /usr/bin/env ps -f | awk -v cmd=$cmd -v pid=$pid '
     NR==1{
         s=index($0,"COMMAND")
         s=s?s:index($0,"CMD")

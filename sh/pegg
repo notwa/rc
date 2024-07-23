@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash -hush +zsh
 
 pegg() { ### @-
     ### download and (pip) install a Python "egg" from a project on GitHub,

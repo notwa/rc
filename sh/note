@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash +hush -ksh +mksh +oksh +osh +posh +yash +zsh
 
 note() { ### @-
     ### act like [`echo2`,](#echo2) but use a bright color to stand out more.

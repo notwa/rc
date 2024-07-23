@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash +hush -ksh +mksh +oksh +osh +posh +yash +zsh
 
 now() { ### @-
     ### print a date-time (UTC) in a sortable format.
@@ -17,11 +17,11 @@ now() { ### @-
 
     local dt= fmt='+%F_%T_%N'
     if [ -z "$1" ]; then
-        dt="$(date -u "$fmt")"
+        dt="$(exec /usr/bin/env date -u "$fmt")"
     elif [ -e "$1" ]; then
-        dt="$(date -u -r "$1" "$fmt")"
+        dt="$(exec /usr/bin/env date -u -r "$1" "$fmt")"
     else
-        dt="$(date -u -d "$1" "$fmt")"
+        dt="$(exec /usr/bin/env date -u -d "$1" "$fmt")"
     fi
 
     local F= T= N=

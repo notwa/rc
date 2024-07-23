@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash +hush -ksh +mksh +oksh +osh +posh +yash +zsh
 
 # **TL;DR RULES:**
 # * no executables (for the most part)

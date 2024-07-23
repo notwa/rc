@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh YES_BB_AWK
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh YES_BB_AWK
 
 psbm() { ### @-
     ### display and order processes by their memory usage ascending, and their sum.
@@ -10,7 +10,7 @@ psbm() { ### @-
     ###   199.95M    1060 chromium
     ### ```
     [ -z "$MSYSTEM" ] || { printf "%s\n" "$0: unsupported on MSYS2" >&2; return 1; }
-    ps axco rss,pid,command | awk '
+    /usr/bin/env ps axco rss,pid,command | awk '
     NR>1&&$1>0{t+=$1;printf("%8.2fM %7d %s\n",$1/1024,$2,$3)}
     END{printf("%8.2fM\n",t/1024)}
     ' | sort -n

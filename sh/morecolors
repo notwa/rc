@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# compat: -ash +bash -dash +zsh
+# compat: -ash +bash -dash -hush +ksh -mksh -oksh +osh -posh -yash +zsh
 
-morecolors() { ### @- print all 256 colors that are available on most terminals.
+morecolors() ( ### @- print all 256 colors that are available on most terminals.
     # borrowed from leah2's dotfiles.
-    local i=
     for i in {0..255}; do
         printf '\e[48;5;%dm\e[38;5;15m %03d ' $i $i
         printf '\e[33;5;0m\e[38;5;%dm %03d ' $i $i
@@ -11,6 +10,6 @@ morecolors() { ### @- print all 256 colors that are available on most terminals.
         [ "$(( i+1 <= 16 ? (i+1) % 16 : ( (i+1)-16) % 36 ))" = 0 ] && printf '\e[0m\n'
     done
     return 0
-}
+)
 
 [ -n "${preload+-}" ] || morecolors "$@"

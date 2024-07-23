@@ -1,5 +1,5 @@
 #!/usr/bin/env dash
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash -hush -ksh +mksh +oksh +osh +posh +yash +zsh
 
 minutemaid() { ### @-
     ### check if the current minute is divisible by a given number,
@@ -32,7 +32,7 @@ minutemaid() { ### @-
     while getopts 'o:h' name; do
         case $name in
         o)  offset="$OPTARG";;
-        ?)  local fd=0
+        ?)  local fd=0 # FIXME: this also matches single-character filenames!
             [ $name = h ] && fd=1 || fd=2
             printf '%s\n' "usage: $0 [-o offset] {interval} [{command} [{args...}]]" >&$fd
             [ $name = h ] && return 0 || return 1;;

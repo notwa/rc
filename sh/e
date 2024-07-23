@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh YES_BB_AWK
+# compat: +ash +bash +dash -hush -ksh +mksh +oksh +osh +posh +yash +zsh
 
 e() { ### @-
     ### wrap around `$EDITOR` to run it as root if necessary.

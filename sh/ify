@@ -1,5 +1,5 @@
 #!/usr/bin/sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 ify() { ### @-
     ### pipe one command through another, so you can still pass arguments to the former.

@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: -ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 dedupe() ( ### @- copy a directory, but make hard/softlinks for identical files.
 # Copyright (C) 2022 Connor Olding

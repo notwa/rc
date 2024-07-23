@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # remote file access (http file-sharing shenanigans)
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 __ea_curl() {
     curl -q --no-progress-meter 127.255.255.255 >/dev/null 2>&1

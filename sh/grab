@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: -ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
+# FIXME: `find -delete` is not POSIX (fails on busybox).
 
 __grab() { ### @grab - download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 [ -z "${ZSH_VERSION}" ] || emulate sh

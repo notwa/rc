@@ -1,5 +1,6 @@
 #!/usr/bin/env dash
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash -hush -ksh -mksh -oksh -osh -posh +yash +zsh
+# NOTE: many shells work, but some of them fail to restore tty settings.
 # fuck termcap, all my homies hate termcap.
 
 glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.

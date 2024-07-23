@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 # TODO: check for existence of grep -P; write a perl-based fallback.
 grop() { ### @- invoke grep with `-oP`.
     ### **NOTE:** there also exists a grop(1) program provided by
     ### the *grop* package that i don't use.
     argc $# -ge 1 grop || return
-    grep -oP -- "$@"
+    /usr/bin/env grep -oP -- "$@"
 }
 
 [ -n "${preload+-}" ] || . ~/sh/preload || exit 2

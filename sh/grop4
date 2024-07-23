@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 grop4() { ### @- [`grop`](#grop) for IPv4s.
-    grep -oP -- '(?<=^|[^\d.])((0|1\d\d|2[0-4]\d|25[0-5]|[1-9]\d?)\.((?2))\.((?2))\.((?2)))(?=$|[^\d.])'
+    /usr/bin/env grep -oP -- '(?<=^|[^\d.])((0|1\d\d|2[0-4]\d|25[0-5]|[1-9]\d?)\.((?2))\.((?2))\.((?2)))(?=$|[^\d.])'
 }
 
 [ -n "${preload+-}" ] || grop4 "$@"

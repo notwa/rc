@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh YES_BB_AWK YES_OT_AWK
+# compat: -ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh YES_BB_AWK YES_OT_AWK
 
 dfu() { ### @-
     ### pretty-print `df` in GiB.
@@ -10,6 +10,8 @@ dfu() { ### @-
     ### /dev                    0.00    0.46    0.46    0.00
     ### /                      17.20   23.22    6.01    1.27
     ### ```
+
+    # FIXME: -x is not an option in busybox df.
 
     [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
     df -xtmpfs | awk '

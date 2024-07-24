@@ -1107,7 +1107,7 @@ log on again to refresh your unix groups, etc.
 
 copy files in a plain way using rsync. affected by umask.
 
-## compatibility
+## compatibility table
 
 | script                                        | preference | ash | bash | dash | ksh | mksh | oksh | osh | posh | yash | zsh |
 | --------------------------------------------- | ---------- | --- | ---- | ---- | --- | ---- | ---- | --- | ---- | ---- | --- |

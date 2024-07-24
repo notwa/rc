@@ -15,6 +15,8 @@ tableize() {
     printf '%s\n' '| script                                        | preference | ash | bash | dash | ksh | mksh | oksh | osh | posh | yash | zsh |'
     printf '%s\n' '| --------------------------------------------- | ---------- | --- | ---- | ---- | --- | ---- | ---- | --- | ---- | ---- | --- |'
 
+    local x_ash=0 x_bash=0 x_dash=0 x_ksh=0 x_mksh=0 x_oksh=0 x_osh=0 x_posh=0 x_yash=0 x_zsh=0
+
     local f=
     for f in sh/*; do
         [ ! -d "$f" ] || continue # do not recurse or anything
@@ -123,8 +125,10 @@ tableize() {
         [ "$pref" != sh ] || p='*sh*'
         [ -n "$p" ] && printf '| %10s ' "$p" || printf '| %9s%s ' '' "$huh"
 
-        local t=
-        for t in "$ash" "$bash" "$dash" "$ksh" "$mksh" "$oksh" "$osh" "$posh" "$yash" "$zsh"; do
+        local n=
+        for n in ash bash dash ksh mksh oksh osh posh yash zsh; do
+            eval "local t=\$$n"
+            [ "$t" != no ] || eval ": \$((x_$n+=1))"
             local w="$huh"
             [ "$pref" != perl ] || w="$etc"
             [ "$t" != yes ] || w="$yay"
@@ -133,6 +137,12 @@ tableize() {
             printf '| %s    ' "$w"
         done
         printf '|\n'
+    done
+
+    local n=
+    for n in ash bash dash ksh mksh oksh osh posh yash zsh; do
+        eval "local x=\$x_$n"
+        printf >&2 'incompatibilities for %4s: %2s\n' "$n" "$x"
     done
 }
 

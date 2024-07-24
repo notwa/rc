@@ -39,13 +39,13 @@ if ! which git >/dev/null 2>&1; then
 
     # git unavailable. just document everything as it is.
     dash ./sh/document || die 'failed to generate documentation'
-    printf '%s\n' '' '## compatibility' '' >> README.md~ || die 'failed to make room for compatibility table'
+    printf '%s\n' '' '## compatibility table' '' >> README.md~ || die 'failed to make room for compatibility table'
     dash ./tableize >> README.md~ || die 'failed to generate compatibility table'
 
 elif [ "$1" = local ]; then
     # user requested to ignore git.
     dash ./sh/document || die 'failed to generate documentation'
-    printf '%s\n' '' '## compatibility' '' >> README.md~ || die 'failed to make room for compatibility table'
+    printf '%s\n' '' '## compatibility table' '' >> README.md~ || die 'failed to make room for compatibility table'
     dash ./tableize >> README.md~ || die 'failed to generate compatibility table'
 
 else
@@ -65,7 +65,7 @@ else
     # use new documentation-generating scripts on old shell scripts.
     cp -p README.md temp/README.md || die 'failed to copy existing readme'
     dash ./sh/document temp || die 'failed to generate documentation'
-    printf '%s\n' '' '## compatibility' '' >> temp/README.md~ || die 'failed to make room for compatibility table'
+    printf '%s\n' '' '## compatibility table' '' >> temp/README.md~ || die 'failed to make room for compatibility table'
     dash ./tableize temp >> temp/README.md~ || die 'failed to generate compatibility table'
 
     #[ ! -e README.md ] || backup README.md || die 'failed to backup existing readme'

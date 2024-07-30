@@ -4,33 +4,33 @@
 cd ~/sh && unset IFS || exit
 
 case "$0" in
-(-*) sh="${0#-}";;
-(/*) sh="${0##*/}";;
-(*) sh="$0"
+(-*) zero="${0#-}";;
+(/*) zero="${0##*/}";;
+(*) zero="$0"
 esac
 
-[ "$sh" != recombine ] || sh=zsh # only zsh does this (AFAIK)
+[ "$zero" != recombine ] || zero=zsh # only zsh does this (AFAIK)
 
-case "$sh" in
-(ash)   SH=ASH  c=ash;;
-(bash)  SH=BASH c=bash;;
-(dash)  SH=DASH c=dash;;
-(hush)  SH=HUSH c=hush;;
-(ksh)   SH=KSH  c=ksh;;
-(loksh) SH=OKSH c=oksh;; # similar enough to oksh to use the same compatibility flag
-(mksh)  SH=MKSH c=mksh;;
-(oksh)  SH=OKSH c=oksh;;
-(osh)   SH=OSH  c=osh;;
-(posh)  SH=POSH c=posh;;
-(yash)  SH=YASH c=yash;;
-(zsh)   SH=ZSH  c=zsh;;
+case "$zero" in
+(ash)   SH=ASH  sh=ash;;
+(bash)  SH=BASH sh=bash;;
+(dash)  SH=DASH sh=dash;;
+(hush)  SH=HUSH sh=hush;;
+(ksh)   SH=KSH  sh=ksh;;
+(loksh) SH=OKSH sh=oksh;; # similar enough to oksh to use the same compatibility flag
+(mksh)  SH=MKSH sh=mksh;;
+(oksh)  SH=OKSH sh=oksh;;
+(osh)   SH=OSH  sh=osh;;
+(posh)  SH=POSH sh=posh;;
+(yash)  SH=YASH sh=yash;;
+(zsh)   SH=ZSH  sh=zsh;;
 (sh)
     f() { ! return 1; }
     g() { return 256; }
     if f; then # (ash, hush) || (zsh)
-        g && SH=ASH  c=ash  || SH=ZSH  c=zsh
+        g && SH=ASH  sh=ash  || SH=ZSH  sh=zsh
     else # (bash, mksh, osh) || (dash, ksh, loksh, oksh, posh, yash)
-        g && SH=BASH c=bash || SH=DASH c=dash
+        g && SH=BASH sh=bash || SH=DASH sh=dash
     fi;;
 (*)
     printf >&2 %s\\n "unknown shell (\$0): $0"
@@ -43,15 +43,15 @@ printf %s\\n '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' ''
 [ "$SH" != ZSH ] || printf %s\\n 'emulate zsh'
 for f in "${HOME:?}/sh"/*; do
     [ -n "${f##*.*}" ] && [ -f "$f" ] || continue
-    i=10 sh=
+    i=10 ok=
     while IFS= read -r line; do
         check=0
         for word in $line; do
-            case "$word" in (YES_$SH) sh=1;; (NO_$SH) sh=0;; (compat:) check=1;; esac
-            [ "$check" != 1 ] || case "$word" in (+$c) sh=1;; (-$c) sh=0;; esac
+            case "$word" in (YES_$SH) ok=1;; (NO_$SH) ok=0;; (compat:) check=1;; esac
+            [ "$check" != 1 ] || case "$word" in (+$sh) ok=1;; (-$sh) ok=0;; esac
         done
         [ "$((i-=1))" != 0 ] || break # act like head -n10
     done < "$f"
-    [ "$sh" != 1 ] || set -- "$@" "$f"
+    [ "$ok" != 1 ] || set -- "$@" "$f"
 done
 [ $# = 0 ] || cat "$@"

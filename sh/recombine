@@ -23,11 +23,21 @@ case "$sh" in
 (osh)   SH=OSH  c=osh;;
 (posh)  SH=POSH c=posh;;
 (yash)  SH=YASH c=yash;;
-(zsh)   SH=ZSH  c=zsh; set -o SH_WORD_SPLIT;;
+(zsh)   SH=ZSH  c=zsh;;
+(sh)
+    f() { ! return 1; }
+    g() { return 256; }
+    if f; then # (ash, hush) || (zsh)
+        g && SH=ASH  c=ash  || SH=ZSH  c=zsh
+    else # (bash, mksh, osh) || (dash, ksh, loksh, oksh, posh, yash)
+        g && SH=BASH c=bash || SH=DASH c=dash
+    fi;;
 (*)
     printf >&2 %s\\n "unknown shell (\$0): $0"
     exit 1
 esac
+
+[ "$SH" != zsh ] || set -o SH_WORD_SPLIT
 
 printf %s\\n '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' ''
 for f in "${HOME:?}/sh"/*; do

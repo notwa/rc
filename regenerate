@@ -76,6 +76,10 @@ else
 
     if [ "$1" = commit ]; then
         mv README.md~ README.md || die 'failed to overwrite readme'
-        git commit README.md -m 'regenerate readme' || die 'failed to commit'
+        if ! git diff --no-patch --exit-code README.md; then
+            git commit README.md -m 'regenerate readme' || die 'failed to commit'
+        else
+            warn 'nothing to do'
+        fi
     fi
 fi

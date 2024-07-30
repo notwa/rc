@@ -37,9 +37,10 @@ case "$sh" in
     exit 1
 esac
 
-[ "$SH" != zsh ] || set -o SH_WORD_SPLIT
+[ "$SH" != ZSH ] || set -o SH_WORD_SPLIT
 
 printf %s\\n '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' ''
+[ "$SH" != ZSH ] || printf %s\\n 'emulate zsh'
 for f in "${HOME:?}/sh"/*; do
     [ -n "${f##*.*}" ] && [ -f "$f" ] || continue
     i=10 sh=

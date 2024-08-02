@@ -992,118 +992,118 @@ return 0, ignoring arguments.
 
 **TODO:** respect initctl like in `.zshrc`.
 
-### [ADDPATH (shrc)](/home/shrc#L36)
+### [ADDPATH (shrc)](/home/shrc#L43)
 
 append a directory to `$PATH` if it isn't already present.
 
-### [refresh (shrc)](/home/shrc#L113)
+### [refresh (shrc)](/home/shrc#L120)
 
 invoke `hash -r`.
 
-### [pl (shrc)](/home/shrc#L116)
+### [pl (shrc)](/home/shrc#L123)
 
 print each argument on its own line.
 
-### [ll (shrc)](/home/shrc#L119)
+### [ll (shrc)](/home/shrc#L126)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [gdp (shrc)](/home/shrc#L133)
+### [gdp (shrc)](/home/shrc#L140)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [gd (shrc)](/home/shrc#L139)
+### [gd (shrc)](/home/shrc#L146)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [rgn (shrc)](/home/shrc#L142)
+### [rgn (shrc)](/home/shrc#L149)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (shrc)](/home/shrc#L148)
+### [curls (shrc)](/home/shrc#L155)
 
 invoke curl with less noise.
 
-### [revend (shrc)](/home/shrc#L160)
+### [revend (shrc)](/home/shrc#L167)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (shrc)](/home/shrc#L163)
+### [clone (shrc)](/home/shrc#L170)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (shrc)](/home/shrc#L166)
+### [aligntabs (shrc)](/home/shrc#L173)
 
 align tab-delimited fields in stdin.
 
-### [crawla (shrc)](/home/shrc#L177)
+### [crawla (shrc)](/home/shrc#L184)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (shrc)](/home/shrc#L180)
+### [crawlz (shrc)](/home/shrc#L187)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (shrc)](/home/shrc#L183)
+### [diff (shrc)](/home/shrc#L190)
 
 use git's diff subcommand for general diffing.
 
-### [gc (shrc)](/home/shrc#L186)
+### [gc (shrc)](/home/shrc#L193)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (shrc)](/home/shrc#L190)
+### [counts (shrc)](/home/shrc#L197)
 
 count files in the current directory, including files found recursively.
 
-### [exts (shrc)](/home/shrc#L193)
+### [exts (shrc)](/home/shrc#L200)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (shrc)](/home/shrc#L197)
+### [nocom (shrc)](/home/shrc#L204)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (shrc)](/home/shrc#L200)
+### [jrep (shrc)](/home/shrc#L207)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (shrc)](/home/shrc#L203)
+### [bomb (shrc)](/home/shrc#L210)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (shrc)](/home/shrc#L206)
+### [cleanse (shrc)](/home/shrc#L213)
 
 strip unprintable and non-ASCII characters.
 
-### [double (shrc)](/home/shrc#L209)
+### [double (shrc)](/home/shrc#L216)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (shrc)](/home/shrc#L214)
+### [katagana (shrc)](/home/shrc#L221)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (shrc)](/home/shrc#L218)
+### [makepkgf (shrc)](/home/shrc#L225)
 
 make the freakin' package!
 
-### [rakef (shrc)](/home/shrc#L221)
+### [rakef (shrc)](/home/shrc#L228)
 
 make the freakin' gem!
 
-### [relog (shrc)](/home/shrc#L224)
+### [relog (shrc)](/home/shrc#L231)
 
 log on again to refresh your unix groups, etc.
 
-### [carry (shrc)](/home/shrc#L227)
+### [carry (shrc)](/home/shrc#L234)
 
 copy files in a plain way using rsync. affected by umask.
 

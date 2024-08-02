@@ -4,6 +4,13 @@
 unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect zsh and bash
 if [ "$FANCY" = 0 ]; then . ~/.prep; fi # handle stuff like /etc/profile and $PATH
 
+if [ -n "$ZSH_VERSION" ] && case $- in (im|ilm) :;; (?*) ! :;; (*) :; esac
+then emulate zsh && setopt histexpiredupsfirst histreduceblanks rcquotes \
+histignorespace completealiases normstarsilent histsavenodups kshtypeset \
+histignoredups completeinword nopromptsubst sharehistory pathdirs notify \
+promptpercent noflowcontrol menucomplete extendedglob alwaystoend nobeep \
+histverify chaselinks autopushd braceccl autocd; fi # if .zshrc hasn't run
+
 # combine and load everything containing "YES_MYSHELL" in ~/sh/:
 [ -z "${0##/*}" ] && sh=zsh || sh="${0#-}" # zsh replaces $0, so hardcode it
 { [ -d "${XDG_CACHE_HOME:="$HOME/.cache"}" ] || mkdir "$XDG_CACHE_HOME"; } &&

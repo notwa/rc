@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# compat: -ash +bash -dash -hush -ksh -loksh -mksh -oksh +osh -posh -yash +zsh
+
+__asn_rev() { # byte-swap
+    REPLY=
+    local ip="${1:?missing argument}" byte=
+    while [ -n "$ip" ]; do
+        byte="${ip%%.*}" ip="${ip#"$byte"}" ip="${ip#.}"
+        REPLY="$byte.$REPLY"
+    done
+    REPLY="${REPLY%.}"
+}
+
+__asn_txt() {
+    REPLY="$(exec dig +short +timeout=1 +tries=1 "$@" TXT)"
+    case "$REPLY" in
+    (";;"*) return 2;;
+    ('"'*'"') true;;
+    (*) return 1;;
+    esac
+    REPLY="${REPLY#\"}" REPLY="${REPLY%\"}"
+}
+
+declare -A __asn_replies __asn_descs
+__asn_lookup() {
+    local remote= ip= ish= reply= sep= asn= desc=
+    remote=asn.cymru.com
+    ip="${1:?missing argument}"
+    ish="${ip%.*}"
+    sep=' | '
+
+    __asn_rev "$ip"
+    if [ -n "${__asn_replies["$ish"]}" ]; then
+        reply="${__asn_replies["$ish"]}"
+    else
+        __asn_txt "$REPLY.origin.$remote" || return
+        reply="$REPLY"
+        __asn_replies["$ish"]="$reply"
+    fi
+
+        asns="${reply%%"$sep"*}" reply="${reply#"$asns$sep"}"
+      subnet="${reply%%"$sep"*}" reply="${reply#"$subnet$sep"}"
+     country="${reply%%"$sep"*}" reply="${reply#"$country$sep"}"
+    registry="${reply%%"$sep"*}" reply="${reply#"$registry$sep"}"
+        date="${reply}"
+
+    description=
+    while [ -n "$asns" ]; do
+        asn="${asns%% *}" asns="${asns#"$asn"}" asns="${asns# }"
+        if [ -n "${__asn_descs["$asn"]}" ]; then
+            desc="${__asn_descs["$asn"]}"
+        else
+            __asn_txt "AS$asn.$remote" || return
+            reply="$REPLY"
+            desc="${reply##* | }"
+            __asn_descs["$asn"]="$desc"
+        fi
+
+        if [ -z "$description" ]; then
+            description="$desc"
+        elif [ "${description%"$desc"}" = "$description" ]; then
+            description="$description,$desc"
+        fi
+    done
+
+    printf '%-7s | %-16s | %s\n' "$asn" "$ip" "$description"
+}
+
+__asn() {
+    local attempt="${2:-1}"
+    __asn_lookup "$1" ||
+    if [ $? = 1 ]; then
+        printf '%-7s | %-16s | %s\n' "n/a" "$1" "n/a"
+    elif [ "$attempt" -lt 2 ]; then
+        sleep 4 && asn "$1" $((attempt+1))
+    else
+        printf '%-7s | %-16s | %s\n' "(fail)" "$1" "(failed to retrieve data, try again)"
+    fi
+}
+
+asn() {
+    echo 'AS      | IP               | AS Name'
+    if [ $# = 0 ]; then
+        while read -r ip; do
+            __asn "$ip"
+        done < <(grep -oP '(?<=^|[^\d.])((0|1\d\d|2[0-4]\d|25[0-5]|[1-9]\d?)\.((?2))\.((?2))\.((?2)))(?=$|[^\d.])')
+    else
+        for ip; do
+            __asn "$ip"
+        done
+    fi
+}
+
+[ -n "${preload+-}" ] || asn "$@"

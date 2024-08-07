@@ -70,7 +70,7 @@ __asn() {
     if [ $? = 1 ]; then
         printf '%-7s | %-16s | %s\n' "n/a" "$1" "n/a"
     elif [ "$attempt" -lt 2 ]; then
-        sleep 4 && asn "$1" $((attempt+1))
+        sleep 4 && __asn "$1" $((attempt+1))
     else
         printf '%-7s | %-16s | %s\n' "(fail)" "$1" "(failed to retrieve data, try again)"
     fi

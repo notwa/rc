@@ -1115,6 +1115,7 @@ copy files in a plain way using rsync. affected by umask.
 | [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arrays](#arrays)                             |  **false** | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    |
 | [askey](#askey)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [asn](#asn)                                   |       bash | ⭕    | ✔️    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    |
 | [autosync](#autosync)                         |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
 | [bak](#bak)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [baknow](#baknow)                             |       *sh* | ⭕    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    |

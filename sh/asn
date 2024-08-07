@@ -23,7 +23,7 @@ __asn_txt() {
 
 declare -A __asn_replies __asn_descs
 __asn_lookup() {
-    local remote= ip= ish= reply= sep= asn= desc=
+    local remote= ip= ish= REPLY= sep= asn= desc=
     remote=asn.cymru.com
     ip="${1:?missing argument}"
     ish="${ip%.*}"
@@ -31,18 +31,17 @@ __asn_lookup() {
 
     __asn_rev "$ip"
     if [ -n "${__asn_replies["$ish"]}" ]; then
-        reply="${__asn_replies["$ish"]}"
+        REPLY="${__asn_replies["$ish"]}"
     else
         __asn_txt "$REPLY.origin.$remote" || return
-        reply="$REPLY"
-        __asn_replies["$ish"]="$reply"
+        __asn_replies["$ish"]="$REPLY"
     fi
 
-        asns="${reply%%"$sep"*}" reply="${reply#"$asns$sep"}"
-      subnet="${reply%%"$sep"*}" reply="${reply#"$subnet$sep"}"
-     country="${reply%%"$sep"*}" reply="${reply#"$country$sep"}"
-    registry="${reply%%"$sep"*}" reply="${reply#"$registry$sep"}"
-        date="${reply}"
+        asns="${REPLY%%"$sep"*}" REPLY="${REPLY#"$asns$sep"}"
+      subnet="${REPLY%%"$sep"*}" REPLY="${REPLY#"$subnet$sep"}"
+     country="${REPLY%%"$sep"*}" REPLY="${REPLY#"$country$sep"}"
+    registry="${REPLY%%"$sep"*}" REPLY="${REPLY#"$registry$sep"}"
+        date="${REPLY}"
 
     description=
     while [ -n "$asns" ]; do
@@ -51,8 +50,7 @@ __asn_lookup() {
             desc="${__asn_descs["$asn"]}"
         else
             __asn_txt "AS$asn.$remote" || return
-            reply="$REPLY"
-            desc="${reply##* | }"
+            desc="${REPLY##* | }"
             __asn_descs["$asn"]="$desc"
         fi
 

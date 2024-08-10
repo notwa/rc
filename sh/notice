@@ -370,6 +370,9 @@ __notice() {
 	if [ $# = 1 ] && [ "${message#@}" != "$message" ]; then
 		__notice_upload "${message#@}" || return
 		lament "$normal"
+	elif [ $# = 1 ] && [ "$title" = @ ]; then
+		__notice_upload "$message" || return
+		lament "$normal"
 	fi
 
 	if [ -e "$conf" ]; then

@@ -98,7 +98,6 @@ __notice_log() {
 }
 
 # __notice_upload_to_...
-# (SLOW) com_cockfile          134217728+???     or  128 MiB (wtf is going on here)
 # (slow) io_file              2000000000-200-4-x or 1907 MiB (untested)
 #        sh_envs               536870912-200-4-x or  512 MiB (untested)
 #        se_uguu                67108864-200-7-x or   64 MiB (tested)
@@ -212,18 +211,6 @@ __notice_upload_to_se_uguu() {
 	__notice_compute_form_limit "files[]" "${1##*/}" "${bytes:-0}" 67108864 || return 128
 	__notice_escape "$1" '\\"'
 	raw="$(__notice_curl -F "files[]=@\"$REPLY\"" "https://$target/upload?output=text")" || return
-	normal="$raw"
-	aux="$normal"
-}
-
-__notice_upload_to_com_cockfile() {
-	target=cockfile.com
-	# defaults: 12 hours, permanent
-	# filenames are randomized. cannot manually delete nor specify expiry.
-	# must have a file extension or it gets rejected (415), so use `.bin`.
-	__notice_compute_form_limit "files[]" ".bin" "${bytes:-0}" 999999999 || return 128
-	__notice_escape "$1" '\\"'
-	raw="$(__notice_curl -F "files[]=@$\"$REPLY\";filename=.bin" "https://$target/upload.php?output=text")" || return
 	normal="$raw"
 	aux="$normal"
 }

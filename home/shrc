@@ -235,6 +235,7 @@ carry() ### @- copy files in a plain way using rsync. affected by umask.
   { rsync -HOlrt --no-p --no-g --chmod=ugo=rwX "$@"; }
 
 alias 0x0.st="oxo"
+alias colorsmore="morecolors" # i always forget what it's called; this will help.
 alias oshi.at="oshi"
 alias pastel='pastel -f' # why would i want to use a color utility without colors?
 alias poo="pueue"

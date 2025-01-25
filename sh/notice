@@ -113,8 +113,8 @@ __notice_log() {
 
 # EXAMPLE: curl -F files[]=@myfile https://example.com
 #          let's say example.com advertises a file size limit of 1000 bytes.
-#          you lose 200, then another 7 for "files[]", then another 6 for "myfile".
-#          therefore the maximum size that "myfile" can be is instead 787.
+#          you lose 200, then another 7 for "files[]", and 6 more for "myfile".
+#          therefore, the size of "myfile" is limited to 787 instead of 1000.
 
 # NOTE: i haven't tested double quotes in filenames yet;
 #       perhaps they count as two bytes each - not sure.
@@ -217,7 +217,10 @@ __notice_upload_to_se_uguu() {
 
 __notice_upload_to_sh_envs() {
 	target=envs.sh
-	# configured: 14 days, permanent (TODO: add "defaults" to match other docs)
+	# defaults: 365 days, permanent
+	# configured: 14 days, permanent
+	# note that file retention decreases as file size increases.
+	# 512 MiB files are kept for up to 30 days, and 0 byte files are kept for up to 365 days.
 	# does not remember filenames in any capacity, BUT we can tack on our own to the URL.
 	# you can delete files if you extract the X-Token field from the response HTTP headers.
 	# banned MIME types: application/java-archive, application/java-vm

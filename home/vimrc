@@ -201,6 +201,7 @@ if has('autocmd')
         au FileType ruby                    call TabTwo()
         au FileType seed7                   call TabTwo()
         exec 'au' 'BufRead,BufNewFile' $HOME..'/src/bass/*' 'call TabTwo()'
+        exec 'au' 'BufRead,BufNewFile' $HOME..'/src/xray/*' 'call TabBad()'
 
     augroup END
 

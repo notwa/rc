@@ -122,6 +122,8 @@ __notice_log() {
 __notice_compute_form_limit() {
 	# usage: $0 {FIELD NAME} {FILE NAME} {FILE SIZE} {SIZE LIMIT}
 	# returns 1 when over the limit.
+	# NOTE: this assumes curl chooses Content-Type: application/octet-stream --
+	#       you save 14 bytes if curl instead chooses Content-Type: text/plain.
 	return "$(( ($3) + 200 + (${#1}) + (${#2}) > ($4) ))"
 }
 
@@ -194,7 +196,7 @@ __notice_upload_to_at_x0() {
 	target=x0.at
 	# defaults: 100 days, permanent
 	# note that file retention decreases as file size increases.
-	# 100 MiB files are kept for 3 days, and 0 byte files are kept for 100 days.
+	# 222 MiB files are kept for 3 days, and 0 byte files are kept for 100 days.
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 232783872 || return 128
 	__notice_escape "$1" '\\"'

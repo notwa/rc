@@ -26,6 +26,24 @@ __notice_commaize() { # fun with POSIX shell
 	REPLY="${2%,}"
 }
 
+__notice_fancify() {
+	REPLY="$1"
+	if [ "$REPLY" -ge 10200547328 ]; then
+		__notice_commaize "$(( (REPLY + 536870912) / 1073741824))" || return
+		REPLY="s ($REPLY GiB)"
+	elif [ "$REPLY" -ge 9961472 ]; then
+		__notice_commaize "$(( (REPLY + 524288) / 1048576))" || return
+		REPLY="s ($REPLY MiB)"
+	elif [ "$REPLY" -ge 9728 ]; then
+		__notice_commaize "$((  (REPLY + 512) / 1024))" || return
+		REPLY="s ($REPLY KiB)"
+	elif [ "$REPLY" -ne 1 ]; then
+		REPLY="s"
+	else
+		REPLY=""
+	fi
+}
+
 __notice_escape_print() {
 	# much faster and more portable than the old version.
 	# unfortunately, this requires a subshell to capture.
@@ -294,17 +312,8 @@ __notice_upload() {
 	bytes="${bytes%%[!!-~]*}"
 	sha1="${sha1%%[!!-~]*}"
 
-	__notice_commaize "$bytes"; pretty="$REPLY"
-	test "$bytes" -ge 0 || return 2
-	if [ "$bytes" -ge 10200547328 ]; then
-		fancy="s ($(( (bytes + 536870912) / 1073741824)) GiB)"
-	elif [ "$bytes" -ge 9961472 ]; then
-		fancy="s ($(( (bytes + 524288) / 1048576)) MiB)"
-	elif [ "$bytes" -ge 9728 ]; then
-		fancy="s ($(( (bytes + 512) / 1024)) KiB)"
-	elif [ "$bytes" -ne 1 ]; then
-		fancy="s"
-	fi
+	__notice_commaize "$bytes" || return 2; pretty="$REPLY"
+	__notice_fancify "$bytes" || return 2; fancy="$REPLY"
 
 	REPLY=
 	__notice_upload_to_sh_envs              "$file" || __notice_retrying ||

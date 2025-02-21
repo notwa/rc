@@ -275,6 +275,10 @@ __notice_upload() {
 	file="${1:-missing argument}"
 
 	file="$(exec readlink -f "$file")" || return 2 # also converts `\`s to `/`s
+	[ -e "$file" ] || { __notice_warn "file not found:" "$file"; return 2; }
+	[ -f "$file" ] || { __notice_warn "not a file:" "$file"; return 2; }
+	[ -s "$file" ] || { __notice_warn "empty file:" "$file"; } # keep going
+
 	# i have no idea why, but mingw64 curl on msys2 is replacing each unicode codepoint with a question mark.
 	# the irony is that it seems to be properly decoding the UTF-8 encoding and then replacing it all anyway.
 	[ -d /C ] && filepath="$(LC_ALL= cygpath -ws "$file")" || filepath="$file"

@@ -113,7 +113,7 @@ desire() {
     case "$1" in
     (*.bak) false;;
     (*/.git/*) false;;
-    (vim/.netrwhist/*) false;;
+    (vim/.netrwhist) false;;
     (vim/backup/*) false;;
     (vim/bundle/*) false;;
     (vim/swp/*) false;;

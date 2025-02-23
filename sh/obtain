@@ -14,6 +14,17 @@ __obtain_die() {
 	[ "$__obtain_code" = 0 ] && exit 2 || exit "$__obtain_code"
 }
 
+__obtain_escape_arg() {
+	a="$1"
+	until [ -z "$a" ]; do
+		case "$a" in
+		(\'*) printf "'\"'\"'";;
+		(*) printf %.1s "$a";;
+		esac
+		a="${a#?}"
+	done
+}
+
 __obtain_burl() ( # eaguru.guru/t/burl.sh specialized for this script. 343 bytes
 	# both methods exhibit a 45 second timeout on my machine.
 	X(){ printf %s\\r\\n "GET /${Q#/} HTTP/1.0" "Host: $D" '';}
@@ -102,8 +113,9 @@ __obtain_bootstrap() {
 	curl="$(readlink -f "curl")" && cert="$(readlink -f "cacert.pem")" ||
 	__obtain_die "failed to determine paths to bootstrap files"
 
-	# TODO: escape paths in case they contain spaces or special characters.
-	eval "__obtain_url() { $curl --cacert $cert -qsfL -m45 -o- \"\$*\" ;}"
+	curl="$(__obtain_escape_arg "$curl")"
+	cert="$(__obtain_escape_arg "$cert")"
+	eval "__obtain_url() { '$curl' --cacert '$cert' -qsfL -m45 -o- \"\$*\" ;}"
 	#__obtain_url https://ipinfo.io
 
 	# FIXME? curl is still accessing these files:

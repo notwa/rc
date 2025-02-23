@@ -1,5 +1,13 @@
 #!/usr/bin/env sh
 
+__obtain_reset() {
+	unset __obtain_public_key
+	unset __obtain_code # __obtain_die
+	unset __obtain_ext # __obtain_prep
+	unset arch sum curl cert # __obtain_bootstrap (FIXME)
+	__obtain_url() { __obtain_die "run __obtain_prep first" ;}
+}
+
 __obtain_die() {
 	__obtain_code="$?"
 	printf >&2 'obtain: %s\n' "$*"
@@ -49,7 +57,6 @@ __obtain_prep() { # can be run many times in case curl/wget becomes available.
 }
 
 __obtain_bootstrap() {
-	# FIXME: sets globals: arch sum repo
 	# TODO: set a SIGINT trap to clean up and not leave things in disarray.
 	__obtain_prep
 
@@ -75,18 +82,15 @@ __obtain_bootstrap() {
 	(*) __obtain_die "invalid value for \$arch: $arch"
 	esac
 
-	case "$arch" in
-	(exe)     repo=https://bin.ajam.dev/x64_Windows/;;
-	(aarch64) repo=https://bin.ajam.dev/aarch64_arm64_Linux/;;
-	(x86_64)  repo=https://bin.ajam.dev/x86_64_Linux/;;
-	esac
-
 	echo "$sum" \*minisign > minisign.sha256 &&
 	sha256sum -c minisign.sha256 >/dev/null ||
 	__obtain_die "failed to validate minisign"
 
 	rm minisign.sha256
 	chmod +x minisign || __obtain_die "failed to set executable permissions"
+
+	# FIXME: this is vulnerable to attacks where old (signed but vulnerable) files
+	#        are served by an attacker. so i guess i need an expiry for these files?
 
 	# this key is for files that i've personally signed myself.
 	__obtain_public_key=RWQdYTxDsppw5ZFpYZFoF6IoPS0okMKlOiz9MwTl0NUoP41r57sf9dI1

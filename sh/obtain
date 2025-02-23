@@ -64,10 +64,7 @@ __obtain_bootstrap() {
 	case "$arch" in (*[!A-Za-z0-9._-]*) false; esac ||
 	__obtain_die '`uname -m` returned something insane:' "$arch"
 
-	if [ -d /C ]; then
-		[ "$arch" = x86_64 ] || __obtain_die "only x86_64 Windows is supported"
-		arch=exe
-	fi
+	! [ -d /C ] || arch="$arch.exe"
 
 	umask 0077 && mkdir -p ~/play/bootstrap && cd ~/play/bootstrap ||
 	__obtain_die "failed to make bootstrap directory"
@@ -76,9 +73,10 @@ __obtain_bootstrap() {
 	__obtain_die "failed to download minisign files"
 
 	case "$arch" in
-	(exe)     sum=6537b1da726d593877dc21720d8f8c44e6c7485da3dfddddee73e8b457e49b1a;;
-	(x86_64)  sum=9f1adb1db8e70def95f4ace883ab2f8c0484df561d80daa9d008776d487e9b34;;
-	(aarch64) sum=79f69db01bc98201e02644d0ccb217b3593e4ed2067d56a73f7442e234212883;;
+	(x86_64.exe)  sum=5be80dd082adaf0e0a71c61c52c8d7b5551751f82940a436fa1cba4e0b213abb;;
+	(aarch64.exe) sum=077a21fdf1fe89c16afea4a73964a7d5baa849264a5bf16a9bde801bcf0393c3;;
+	(x86_64)      sum=e134242935a2808f3fe1697335dbe1a0c5e633a91bd47b51085f857a39f2ec72;;
+	(aarch64)     sum=804c873820e6a8e0e9623867416b73f609a0a77f966654a1183444d55fcc6a9d;;
 	(*) __obtain_die "invalid value for \$arch: $arch"
 	esac
 

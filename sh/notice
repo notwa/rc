@@ -173,13 +173,12 @@ __notice_upload_to_at_oshi() {
 	target=oshi.at
 	# defaults: 1 day, semi-permanent (remains up to 1000 downloads?)
 	# configured: 14 days instead
-	# TODO: retrieve admin URL from response (suffixed with " [Admin]")
 	# NOTE: spaces are automatically converted (by the server) to underscores.
 	__notice_compute_form_limit "f" "${1##*/}" "${bytes:-0}" 5000000000 || return 128
 	__notice_escape "$1" '\\"'
 	raw="$(__notice_curl -F "f=@\"$REPLY\"" -F expire=20160 "https://$target")" || return
-	normal="https:${raw##*DL: http*:}"; normal="${normal%%[!!-~]*}"
-	aux="$normal"
+	normal="http${raw##*DL: http}"; normal="${normal%%[!!-~]*}"
+	aux="http${raw##*MANAGE: http}"; aux="${aux%%[!!-~]*}"
 }
 
 __notice_upload_to_com_bashupload() {

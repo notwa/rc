@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
-# compat: -ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
-# FIXME: `find -delete` is not POSIX (fails on busybox).
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 __grab() { ### @grab - download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 [ -z "${ZSH_VERSION}" ] || emulate sh
@@ -101,6 +100,9 @@ get "$fn.minisig" -- "$g" || die
 will verify file integrity of "$fn"
 minisign -QVm "$fn" -P "$pub" || die
 
+will clean up the signature file
+rm -- "$fn.minisig" || die
+
 will determine basic file type
 x4="$(hex "$fn")" || die
 x2="${x4%????}"
@@ -111,9 +113,6 @@ chmod +x -- "$fn" || die
 fi
 
 done
-
-will remove temporary files
-find -name '*.minisig' -delete || die
 
 will return files to original directory
 cd "$owd" && find "$t" -type f -exec mv -- {} . \; || die

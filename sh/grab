@@ -42,7 +42,7 @@ fi
 
 clean(){
 will clean up temporary files
-! [ -d "$t" ] || rm -r "$t" || die
+! [ -d "$t" ] || rm -r -- "$t" || die
 exit 1
 }
 
@@ -57,7 +57,8 @@ owd="${PWD:?unsupported}"
 
 will create temporary directory
 trap clean INT EXIT
-t="$(exec mktemp -d)" && cd "$t" || die
+t="$(exec mktemp -d)" && [ "${t#/}" != "$t" ] || die
+cd -- "$t" && [ "$PWD" != "$owd" ] || die
 
 for f
 do
@@ -115,10 +116,10 @@ fi
 done
 
 will return files to original directory
-cd "$owd" && find "$t" -type f -exec mv -- {} . \; || die
+find . -type f -exec mv -- {} "$owd/" \; || die
 
 will remove temporary directory # assuming it's now emptied
-rmdir "$t" || die
+cd -- "$owd" && rmdir -- "$t" || die
 trap - INT EXIT
 }
 

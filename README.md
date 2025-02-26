@@ -391,7 +391,7 @@ this script utilizes the CSS provided at
 ~/sh/ghmd < ~/rc/README.md > ~/rc/README.html
 ```
 
-### [grab](/sh/grab#L5)
+### [grab](/sh/grab#L4)
 
 download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 
@@ -1145,7 +1145,7 @@ copy files in a plain way using rsync. affected by umask.
 | [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ghmd](#ghmd)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [glug](#glug)                                 |       dash | ✔️    | ✔️    | ✔️    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    | ✔️    |
-| [grab](#grab)                                 |       *sh* | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [grab](#grab)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [grop](#grop)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [grop4](#grop4)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

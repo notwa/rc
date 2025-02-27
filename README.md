@@ -325,10 +325,6 @@ Filesystem              Used     Max    Left    Misc
 /                      17.20   23.22    6.01    1.27
 ```
 
-### [disowned](/sh/disowned#L4)
-
-find files in system directories that aren't associated with any pacman packages.
-
 ### [document](/sh/document#L147)
 
 generate a markdown file out of docstrings in shell scripts.
@@ -613,18 +609,6 @@ Press any key to continue
 $ 
 ```
 
-### [pegg](/sh/pegg#L4)
-
-download and (pip) install a Python "egg" from a project on GitHub,
-defaulting to the master branch. this uses [`pippy`](#pippy) internally.
-
-```sh
-# install the development version of https://github.com/rthalley/dnspython
-$ pegg rthalley dnspython
-# or instead install the latest stable version (as of writing)
-$ pegg rthalley dnspython 3933b49
-```
-
 ### [permit](/sh/permit#L13)
 
 conditionally set executable permissions on each of its arguments.
@@ -645,12 +629,6 @@ directories (such as symlinks) are always skipped. arguments that are
 already executable by the current user are skipped. arguments that do
 not appear to refer to an existing file are passed through to chmod.
 directories are never recursed.
-
-### [pippy](/sh/pippy#L4)
-
-install Python packages using pip,
-but only update their dependencies as required.
-this uses [`maybesudo`](#maybesudo) internally.
 
 ### [pre](/sh/pre#L4)
 
@@ -686,15 +664,6 @@ $ psbm | head -n -1 | tail -2
   199.95M    1060 chromium
 ```
 
-### [randir](/sh/randir#L6)
-
-display a random directory in the current working directory.
-
-```
-$ randir
-./sh
-```
-
 ### [rot13](/sh/rot13#L6)
 
 rot13 with numbers rotated as well.
@@ -706,14 +675,6 @@ nop678
 
 **NOTE:** there also exists rot13(1) programs provided by
 the *bsdgames* and *hxtools* packages that i don't use.
-
-### [rs](/sh/rs#L4)
-
-record screen. does not record audio.
-currently only works on Windows (gdigrab).
-i'm sure there's something equivalent for Linux.
-
-**TODO:** consider renaming because rs(1) already exists.
 
 ### [running](/sh/running#L6)
 
@@ -730,10 +691,6 @@ scrambles text in a predictable way using regex.
 sacbremls ttex in a pdrceailtbe way unsig reegx.
 
 **TODO:** consider renaming because scramble(1) already exists.
-
-### [scropt](/sh/scropt#L4)
-
-run `scrot` through `optipng` and save the result to `~/play/$(now).png`.
 
 ### [shcom](/sh/shcom#L4)
 
@@ -770,10 +727,6 @@ this version of `slit` uses tabs for its field separators.
 ### [sortip](/sh/sortip#L4)
 
 sort lines numerically by IPv4 segments.
-
-### [sram](/sh/sram#L4)
-
-convert between a couple saveram formats for N64 emulators.
 
 ### [stfu](/sh/stfu#L4)
 
@@ -823,35 +776,6 @@ $ sum 1 2 3
 ```
 
 **TODO:** consider renaming because sum(1) already exists.
-
-### [sv](/sh/sv#L4)
-
-collect the lastmost value of every key.
-the field separator can be given as its sole argument,
-it defaults to a single space otherwise.
-
-```
-$ echo "alpha=first\nbeta=second\nalpha=third" | sv =
-alpha=third
-beta=second
-```
-
-this next example uses `sv` to only print the lastmost line
-matching a pattern in each file. in other words, it uses
-the filename printed by grep as the key in its key-value pairs.
-
-```
-$ cd ~/play/hash && grep -r 'ing$' . | sv :
-./dic_win32.txt:WriteProfileString
-./cracklib-small.txt:zoning
-./english-words.txt:zooming
-./usernames-125k.txt:flats_gaming
-./cain.txt:zoografting
-./pokemon.txt:Fletchling
-./pokemon8.txt:Fletchling
-```
-
-**TODO:** rename because busybox(1) sv already exists.
 
 ### [trash](/sh/trash#L4)
 
@@ -1135,7 +1059,6 @@ copy files in a plain way using rsync. affected by umask.
 | [decently](#decently)                         |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [dedupe](#dedupe)                             |       *sh* | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [dfu](#dfu)                                   |       *sh* | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
-| [disowned](#disowned)                         |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [document](#document)                         |       dash | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [e](#e)                                       |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1169,33 +1092,26 @@ copy files in a plain way using rsync. affected by umask.
 | [oxo](#oxo)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [pause](#pause)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ⭕    | ✔️    | ✔️    | ✔️    |
-| [pegg](#pegg)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [permit](#permit)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
-| [pippy](#pippy)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [preload](#preload)                           |  **false** | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
-| [randir](#randir)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [recolor](#recolor)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [recombine](#recombine)                       |  **false** | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
-| [rs](#rs)                                     |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [running](#running)                           |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [scount](#scount)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
-| [scropt](#scropt)                             |       bash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [shcom](#shcom)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [shelly](#shelly)                             |   **perl** | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    |
 | [similar](#similar)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [slit](#slit)                                 |       dash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [slitt](#slitt)                               |       dash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [sortip](#sortip)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
-| [sram](#sram)                                 |        zsh | ⭕    | ✔️    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [stfu](#stfu)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [streamcrap](#streamcrap)                     |  **false** | ⭕    | ✔️    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [subdue](#subdue)                             |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
-| [sv](#sv)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [trunc](#trunc)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [unarchive](#unarchive)                       |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |

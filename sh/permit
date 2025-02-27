@@ -90,7 +90,7 @@ permit() { ### @- conditionally set executable permissions on each of its argume
         fi
     done
 
-    [ "$__permit_v" = 0 ] || [ "$#" = 0 ] || printf >&2 'notice: +x %s\n' "$@"
+    [ "$__permit_v" = 0 ] || [ "$#" = 0 ] || printf >&2 'permit: +x %s\n' "$@"
     [ "$__permit_n" = 1 ] || [ "$#" = 0 ] || chmod +x -- "$@" || __permit_x=$?
     return "$__permit_x"
 }

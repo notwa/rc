@@ -188,14 +188,6 @@ run a command through 12 different shells.
 
 only returns false when no arguments are given.
 
-### [colors](/sh/colors#L4)
-
-display all combinations of foreground and background terminal colors.
-this only includes the basic 16-color palette.
-excluding boilerplate, this script is a mere 67 characters long!
-
-![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
-
 ### [setup_clang_ubuntu (sh/compile)](/sh/compile#L4)
 
 print (but don't execute) the commands necessary to install
@@ -510,10 +502,6 @@ usage: monitor [-fs] [-n {period}] {command} [{args...}]
 
 **NOTE:** there also exists monitor(1) programs provided by
 the *389-ds-base* and *dmucs* packages that i don't use.
-
-### [morecolors](/sh/morecolors#L4)
-
-print all 256 colors that are available on most terminals.
 
 ### [noccom](/sh/noccom#L6)
 
@@ -1031,6 +1019,17 @@ log on again to refresh your unix groups, etc.
 
 copy files in a plain way using rsync. affected by umask.
 
+### [colors (shrc)](/home/shrc#L254)
+
+display all combinations of foreground and background terminal colors.
+this only includes the basic 16-color palette.
+
+![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
+
+### [morecolors (shrc)](/home/shrc#L296)
+
+print all 256 colors that are available on most terminals.
+
 ## compatibility table
 
 | script                                        | preference | ash | bash | dash | ksh | mksh | oksh | osh | posh | yash | zsh |
@@ -1048,8 +1047,6 @@ copy files in a plain way using rsync. affected by umask.
 | [burl](#burl)                                 |       bash | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [busiest](#busiest)                           |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
 | [clash](#clash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
-| [colors](#colors)                             |       bash | ⭕    | ✔️    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    |
-| [colors2](#colors2)                           |       bash | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [compile](#compile)                           |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [confirm](#confirm)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
@@ -1082,7 +1079,6 @@ copy files in a plain way using rsync. affected by umask.
 | [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [monitor](#monitor)                           |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
-| [morecolors](#morecolors)                     |       bash | ⭕    | ✔️    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    |
 | [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [notice](#notice)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

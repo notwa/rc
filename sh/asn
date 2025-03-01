@@ -21,6 +21,14 @@ __asn_txt() {
     REPLY="${REPLY#\"}" REPLY="${REPLY%\"}"
 }
 
+__asn_txt_bad() {
+    REPLY="$(nslookup -type=TXT "$@" 2>/dev/null)"
+    [ "${REPLY#Server:}" != "$REPLY" ] || return 2
+    [ "${REPLY#*\"}" != "$REPLY" ] && REPLY="${REPLY#*\"}" || return 1
+    [ "${REPLY%%\"*}" != "$REPLY" ] && REPLY="${REPLY%%\"*}" || return 1
+    [ -n "$REPLY" ] || return 1
+}
+
 declare -A __asn_replies __asn_descs
 __asn_lookup() {
     local remote= ip= ish= REPLY= sep= asn= desc=
@@ -77,6 +85,8 @@ __asn() {
 }
 
 asn() {
+    dig -h >/dev/null 2>&1 || __asn_txt() { __asn_txt_bad "$@"; }
+
     echo 'AS      | IP               | AS Name'
     if [ $# = 0 ]; then
         while read -r ip; do

@@ -40,6 +40,7 @@ __asn_lookup() {
     __asn_rev "$ip"
     if [ -n "${__asn_replies["$ish"]}" ]; then
         REPLY="${__asn_replies["$ish"]}"
+        [ "$REPLY" != "n/a" ] || return # as if __asn_txt below had returned 1
     else
         __asn_txt "$REPLY.origin.$remote" || return
         __asn_replies["$ish"]="$REPLY"
@@ -57,7 +58,7 @@ __asn_lookup() {
         if [ -n "${__asn_descs["$asn"]}" ]; then
             desc="${__asn_descs["$asn"]}"
         else
-            __asn_txt "AS$asn.$remote" || return
+            __asn_txt "AS$asn.$remote" || REPLY="?" # not allowed to fail
             desc="${REPLY##* | }"
             __asn_descs["$asn"]="$desc"
         fi
@@ -76,6 +77,9 @@ __asn() {
     local attempt="${2:-1}"
     __asn_lookup "$1" ||
     if [ $? = 1 ]; then
+        # this code should not be here, but i need to fix this now.
+        __asn_replies["${1%.*}"]="n/a"
+
         printf '%-7s | %-16s | %s\n' "n/a" "$1" "n/a"
     elif [ "$attempt" -lt 2 ]; then
         sleep 4 && __asn "$1" $((attempt+1))

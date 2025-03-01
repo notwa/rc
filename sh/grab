@@ -7,7 +7,7 @@ __grab() { ### @grab - download a file from my site and verify its integrity by 
 umask 002
 pub=RWQdYTxDsppw5ZFpYZFoF6IoPS0okMKlOiz9MwTl0NUoP41r57sf9dI1
 remote=eaguru.guru/t
-unset t
+unset CDPATH t || exit
 
 _(){
 task="${1:-do something}"
@@ -24,8 +24,8 @@ exit ${x:-1}
 }
 
 esc(){
-while [ -n "$1" ]; do
-case "$1" in
+while [ -n "$1" ]
+do case "$1" in
 ([\!\"$\&-\>@-~]*) printf %.1s "$1";;
 (*) printf %%%02X "'$1";;
 esac
@@ -53,12 +53,23 @@ else exec hexdump -ve '1 1 "%02x"' -n4 -- "$@"
 fi
 }
 
+resolve(){
+read -r d && cd -- "${d:?}" && pwd -P
+}
+
+trap clean INT EXIT
 owd="${PWD:?unsupported}"
 
 will create temporary directory
-trap clean INT EXIT
-t="$(exec mktemp -d)" && [ "${t#/}" != "$t" ] || die
-cd -- "$t" && [ "$PWD" != "$owd" ] || die
+t="$(mktemp -d | resolve)" || die
+
+will check directory validity
+! {
+[ "${t#/}" = "$t" ] || [ "$t" -ef / ] || [ "$t" -ef "$owd" ]
+} || die
+
+will change directory
+cd -- "$t" || die
 
 for f
 do
@@ -120,6 +131,7 @@ find . -type f -exec mv -- {} "$owd/" \; || die
 
 will remove temporary directory # assuming it's now emptied
 cd -- "$owd" && rmdir -- "$t" || die
+
 trap - INT EXIT
 }
 

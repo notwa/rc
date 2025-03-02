@@ -379,7 +379,7 @@ this script utilizes the CSS provided at
 ~/sh/ghmd < ~/rc/README.md > ~/rc/README.html
 ```
 
-### [grab](/sh/grab#L4)
+### [grab](/sh/grab#L5)
 
 download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 

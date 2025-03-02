@@ -1,20 +1,20 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
+# posh complains about test -ef
 
 __grab() { ### @grab - download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 [ -z "${ZSH_VERSION}" ] || emulate sh
 #!/usr/bin/env sh
-umask 002
+unset CDPATH f fn fx g IFS LC_ALL owd pub remote t task x x2 x4 || exit
+
 pub=RWQdYTxDsppw5ZFpYZFoF6IoPS0okMKlOiz9MwTl0NUoP41r57sf9dI1
 remote=eaguru.guru/t
-unset CDPATH t || exit
+export LC_ALL=C
 
-_(){
-task="${1:-do something}"
-}
+umask 002
 
 will(){
-_ "$*"
+task=$*
 }
 
 die(){
@@ -43,7 +43,6 @@ fi
 clean(){
 will clean up temporary files
 ! [ -d "$t" ] || rm -r -- "$t" || die
-exit 1
 }
 
 hex(){
@@ -54,7 +53,7 @@ fi
 }
 
 resolve(){
-read -r d && cd -- "${d:?}" && pwd -P
+IFS= read -r d && cd -- "${d:?}" && pwd -P
 }
 
 trap clean INT EXIT

@@ -1,0 +1,94 @@
+#!/usr/bin/env sh
+# compat: +ash +bash +dash -hush -ksh +mksh +oksh +osh +posh +yash +zsh
+
+__lepton() {
+    unset CDPATH IFS LC_ALL || exit 1
+    export LC_ALL=C
+    umask 002
+
+    unset cr d f k lf t v || exit 1
+    cr="$(printf '\n\r')" lf="${cr%?}" cr="${cr#?}"
+    note() { printf "\033[1m%s\033[0m\n" "$*" >&2; }
+
+    unset out remote tgz || exit 1
+    remote='https://github.com/black7375/Firefox-UI-Fix/archive/refs/heads'
+    tgz=master.tar.gz
+    out=Firefox-UI-Fix-master
+
+    __lepton_find() {
+        home="${1:?}" subdir="${2:?}"
+        [ "$home" != _ ] && [ -s "$home/$subdir/profiles.ini" ] || return 0
+        note found "$home/$subdir"
+        while IFS== read -r k v; do
+            v="${v%$lf}" v="${v%$cr}"
+            [ "$k" = Path ] || continue
+            prefs="$v/prefs.js" # only for its timestamp
+            [ "${v#/}" != "$v" ] || prefs="$home/$subdir/$prefs"
+            [ -s "$prefs" ] || continue
+            note found "${prefs%/prefs.js}"
+            if [ -z "$profile" ] || [ "$prefs" -nt "$profile/prefs.js" ]
+            then profile="${prefs%/prefs.js}"
+            fi
+        done < "$home/$subdir/profiles.ini"
+    }
+
+    unset home prefs profile subdir || exit 1
+    note finding firefox profiles...
+    __lepton_find "${HOME:-_}" .floorp
+    __lepton_find "${HOME:-_}" .librewolf
+    __lepton_find "${HOME:-_}" .mozilla/firefox
+    __lepton_find "${HOME:-_}" .var/app/io.gitlab.librewolf-community/.librewolf
+    __lepton_find "${HOME:-_}" .var/app/net.waterfox.waterfox/.waterfox
+    __lepton_find "${HOME:-_}" .var/app/one.ablaze.floorp/.floorp
+    __lepton_find "${HOME:-_}" .var/app/org.mozilla.firefox/.mozilla/firefox
+    __lepton_find "${HOME:-_}" .waterfox
+    __lepton_find "${HOME:-_}" Library/Application\ Support/Firefox
+    __lepton_find "${HOME:-_}" snap/firefox/common/.mozilla/firefox
+    __lepton_find "${USERPROFILE:-_}" AppData/Roaming/Floorp
+    __lepton_find "${USERPROFILE:-_}" AppData/Roaming/Mozilla/Firefox
+    __lepton_find "${USERPROFILE:-_}" AppData/Roaming/Waterfox/Waterfox
+    __lepton_find "${USERPROFILE:-_}" AppData/Roaming/librewolf
+
+    [ -d "$profile" ] || { note failed to find any firefox profiles; exit 1; }
+    note selected profile "$profile"
+
+    # set up temporary directory:
+    t="$(mktemp -d | { IFS= read -r d && cd -- "${d:?}" && pwd -P; })" || exit
+    ! { [ "${t#/}" = "$t" ] || [ "$t" -ef / ] || [ "$t" -ef "$PWD" ]; } || exit
+    clean() { ! [ -d "$t" ] || rm -r -- "$t" || exit; } && trap clean INT EXIT
+
+    note downloading master branch of lepton...
+    cd -- "$t" && wget -q -O "$tgz" -- "$remote/$tgz" && tar zxf "$tgz" || exit
+
+    note updating/installing lepton... && confirm || exit
+    CDPATH= cd -- "$profile" || exit
+    [ -d chrome ] || mkdir chrome || exit
+    [ -d chrome/css ] || mkdir chrome/css || exit
+
+    note installing icons...
+    cp -r -- "$t/$out/icons" icons || exit
+
+    __lepton_css() {
+        cp -- "$t/$out/$2" chrome/$2 || exit
+        if ! [ -e "$1" ] || ! grep -Fq "@import url(\"$2\");" "$1"
+        then note adding import to "$1..."
+            printf %s\\n "@import url(\"$2\");" >> "$1"
+        fi
+    }
+
+    note installing css...
+    __lepton_css chrome/userChrome.css css/leptonChrome.css
+    __lepton_css chrome/userContent.css css/leptonContent.css
+
+    if [ -s user.js ]
+    then note skipping user.js because you already have one
+    else note installing stock user.js from lepton... && confirm || exit
+        cp -- "$t/$out/user.js" . || exit
+    fi
+}
+
+lepton()(__lepton "$@")
+
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} confirm
+[ -n "${preload+-}" ] || lepton "$@"

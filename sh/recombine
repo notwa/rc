@@ -1,7 +1,7 @@
 #!/usr/bin/env false
 # FAKE_COMPAT
 
-unset CDPATH IFS && cd "${HOME:?}/sh" || exit
+unset CDPATH IFS && cd -- "${HOME:?}/sh" || exit
 
 case "$0" in
 (-*) zero="${0#-}";;
@@ -39,7 +39,7 @@ esac
 
 [ "$SH" != ZSH ] || set -o SH_WORD_SPLIT -o NO_NOMATCH
 
-printf %s\\n '#!/usr/bin/env false' '[ -n "$preload" ] || exit 1' ''
+printf %s\\n '[ -n "$preload" ] || exit 1' ''
 for f in *; do
     [ -n "${f##*.*}" ] && [ -f "$f" ] || continue
     i=10 ok=

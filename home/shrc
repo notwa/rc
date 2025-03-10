@@ -13,18 +13,24 @@ promptpercent autopushd normstarsilent completealiases notify sharehistory \
 histignoredups kshtypeset nopromptsubst completeinword histexpiredupsfirst \
 menucomplete autocd; fi # in the event that .zshrc did not source at startup
 
-# combine and load everything containing "YES_MYSHELL" in ~/sh/:
-[ -z "${0##/*}" ] && sh=zsh || sh="${0#-}" # zsh replaces $0, so hardcode it
-{ [ -d "${XDG_CACHE_HOME:="$HOME/.cache"}" ] || mkdir "$XDG_CACHE_HOME"; } &&
-{ [ -d "$XDG_CACHE_HOME/shrc" ] || mkdir "$XDG_CACHE_HOME/shrc"; } &&
-cache="$XDG_CACHE_HOME/shrc/$sh-$$" &&
-if [ -s ~/sh/recombine ] && (. ~/sh/recombine) > "$cache"; then
-    preload=:; . "$cache"; unset preload
-fi
-! [ -f "$cache" ] || rm "$cache"
-unset cache
+__prepare() {
+pl() { printf %s\\n "$@"; } && die() { pl >&2 "prepare: $*"; exit 1; } || exit
+set +efu && unset CDPATH IFS && trap 'echo /dev/null' INT EXIT || die bad shell
+mkdirs() { for d; do [ -d "$d" ] || mkdir "$d" || die 'failed to mkdir'; done; }
+if [ "${HOME#/}" = "$HOME" ] || ! cd -- "$HOME"; then # rare but disastrous case
+for HOME in /root /home/* -; do [ -d "$HOME" ] && [ -O "$HOME" ] && break; done
+[ -n "$HOME" ] || HOME="$(mktemp -d)" && cd -- "${HOME:-/fail}" || die 'no home'
+fi && mkdirs "$HOME" "${XDG_CACHE_HOME:="$HOME/.cache"}" "$XDG_CACHE_HOME/shrc"
+cache="$XDG_CACHE_HOME/shrc/sh-$$" || die readonly # TODO: use shell name again!
+pl '#!/usr/bin/env false' 'preload=:' > "$cache" || die 'failed to create cache'
+printf %s "$cache" && trap - INT EXIT && exec >> "$cache" || die 'what the fuck'
+if combo="$HOME/sh/recombine" && [ -s "$combo" ]; then . "$combo" || exit
+else pl 'printf >&2 %s\\n "prepare: missing recombination script"'; fi &&
+pl 'unset preload' && if [ -n "${cache##*\'*}" ]; then pl "rm -- '$cache'"; fi
+}
 
-# {{{1 utilities
+. "$(__prepare)" || printf >&2 %s\\n "prepare: source returned failure"
+[ -z "$preload" ] || printf >&2 %s\\n "prepare: script ended abruptly"
 
 have() { if is_zsh; then whence -p -- "$1"; else which -- "$1"; fi; } 2>/dev/null
 has() { have "$@"; } >/dev/null

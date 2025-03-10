@@ -5,12 +5,13 @@ umask 022
 unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect bash, osh, and zsh
 if [ "$FANCY" = 0 ]; then . ~/.prep; fi # handle stuff like /etc/profile and $PATH
 
-if [ -n "$ZSH_VERSION" ] && case $- in (im|ilm) :;; (?*) ! :;; (*) :; esac
-then emulate zsh && setopt histexpiredupsfirst histreduceblanks rcquotes \
-histignorespace completealiases normstarsilent histsavenodups kshtypeset \
-histignoredups completeinword nopromptsubst sharehistory pathdirs notify \
-promptpercent noflowcontrol menucomplete extendedglob alwaystoend nobeep \
-histverify chaselinks autopushd braceccl autocd; fi # if .zshrc hasn't run
+__f() { ! return 1; } && __g() { return 256; } && is_zsh() { __f && ! __g; }
+if is_zsh && case $- in (im|ilm) :;; (?*) ! :;; (*) :; esac then emulate zsh
+setopt histverify rcquotes histsavenodups chaselinks braceccl extendedglob \
+histignorespace histreduceblanks alwaystoend noflowcontrol pathdirs nobeep \
+promptpercent autopushd normstarsilent completealiases notify sharehistory \
+histignoredups kshtypeset nopromptsubst completeinword histexpiredupsfirst \
+menucomplete autocd; fi # in the event that .zshrc did not source at startup
 
 # combine and load everything containing "YES_MYSHELL" in ~/sh/:
 [ -z "${0##/*}" ] && sh=zsh || sh="${0#-}" # zsh replaces $0, so hardcode it
@@ -25,7 +26,7 @@ unset cache
 
 # {{{1 utilities
 
-have() { if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi; } 2>/dev/null
+have() { if is_zsh; then whence -p -- "$1"; else which -- "$1"; fi; } 2>/dev/null
 has() { have "$@"; } >/dev/null
 
 if has sudo; then
@@ -46,7 +47,7 @@ ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
     [ $# = 1 ] || BADPATH 64 "expected exactly 1 argument, got $#" || return
     [ -n "$1" ] || BADPATH 64 "path cannot be empty" || return
     if ! __NEWPATH="$(CDPATH= 2>&1 cd -- "${1:?}" && pwd -P)"; then
-        [ -z "$ZSH_VERSION" ] || __NEWPATH="${__NEWPATH%: *}" # zsh appends it
+        ! is_zsh || __NEWPATH="${__NEWPATH%: *}" # zsh appends it
         BADPATH 66 "$1: ${__NEWPATH##*: }" || return # steal the error message
     fi
     set -- "$__NEWPATH" "$1" && unset __NEWPATH || return

@@ -1,9 +1,7 @@
 #!/usr/bin/env false
 # for busybox ash, dash, bash, and zsh.
 
-umask 022
-unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect bash, osh, and zsh
-if [ "$FANCY" = 0 ]; then . ~/.prep; fi # handle stuff like /etc/profile and $PATH
+set +efu; umask 022; unset CDPATH IFS; [ "$__prep" = ok ] || . ~/.prep # reset
 
 __f() { ! return 1; } && __g() { return 256; } && is_zsh() { __f && ! __g; }
 if is_zsh && case $- in (im|ilm) :;; (?*) ! :;; (*) :; esac then emulate zsh
@@ -32,7 +30,7 @@ pl 'unset preload' && if [ -n "${cache##*\'*}" ]; then pl "rm -- '$cache'"; fi
 . "$(__prepare)" || printf >&2 %s\\n "prepare: source returned failure"
 [ -z "$preload" ] || printf >&2 %s\\n "prepare: script ended abruptly"
 
-# {{{1 core utilities
+# core utilities:
 
 pl() { printf '%s\n' "$@"; } ### @ pl - print each argument on its own line.
 refresh() { hash -r; } ### @ refresh - invoke `hash -r`.
@@ -78,7 +76,7 @@ ROPATH() {
     export PATH="${newpath%:}"
 }
 
-# {{{1 configurations
+# configurations:
 
 if [ -d "$HOME/opt/local/bin" ]; then
     printf 'Warning: You have a %s directory\n         consider moving it to %s\n' \
@@ -92,7 +90,6 @@ fi
 unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY
 unset LD_LIBRARY_PATH
-unset CDPATH # grief.
 
 [ "$DESKTOP_SESSION" != xfce ] || export QT_QPA_PLATFORMTHEME="" # unhide menu bar
 #[ "$TERM" != vt102 ] || export TERM="xterm" # PuTTY over serial

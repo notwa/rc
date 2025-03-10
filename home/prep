@@ -1,6 +1,8 @@
 #!/usr/bin/env false
 # for busybox ash, dash, bash, and zsh.
 
+__prep=ok
+
 if [ -r /etc/msystem ]; then
     # avoid sourcing /etc/profile because forking cygwin processes is awful.
     . /etc/msystem # this doesn't fork anything, thankfully.

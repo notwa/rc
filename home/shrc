@@ -1,6 +1,7 @@
 #!/usr/bin/env false
 # for busybox ash, dash, bash, and zsh.
 
+umask 022
 unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect zsh and bash
 if [ "$FANCY" = 0 ]; then . ~/.prep; fi # handle stuff like /etc/profile and $PATH
 
@@ -78,8 +79,6 @@ ROPATH() {
 }
 
 # {{{1 configurations
-
-umask 022 # umask should be reset else pip might make faulty installations.
 
 if [ -d "$HOME/opt/local/bin" ]; then
     printf 'Warning: You have a %s directory\n         consider moving it to %s\n' \

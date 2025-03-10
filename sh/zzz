@@ -1,0 +1,168 @@
+#!/usr/bin/env false
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
+
+### @ ll - list files verbosely, fancily, ordered, but not recursively.
+{ alias ll=; unalias ll; } 2>&- # unalias without spitting an error
+if has lr; then
+    ll() { lr -1lshGG -o tev "$@" | less; }
+elif has lr.com; then # https://eaguru.guru/t/lr.com
+    ll() { lr.com -1lshGG -o tuev "$@" | less; }
+else
+    ll() { ls -lAX --group-directories-first --color=force "$@" | less; }
+fi
+
+if ! has busybox && has busybox-static; then
+    busybox() { busybox-static "$@"; }
+fi
+
+gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
+    local commit="${1:-HEAD}"
+    [ $# -le 1 ] || { printf '%s: %s\n' gdp "too many arguments" >&2; return 64; }
+    gd "$commit~" "$commit"
+}
+
+gd() ### @- invoke git's diff subcommand with fewer lines of context.
+  { git diff -U2 "$@"; }
+
+rgn() ### @- invoke ripgrep without respecting `.gitignore` files.
+  { rg -u "$@"; }
+
+ryp()
+  { rg -M99 -g '*.py' "$@"; }
+
+curls() ### @- invoke curl with less noise.
+  { curl -sS "$@"; }
+
+curLs()
+  { curl -L --no-progress-meter "$@"; }
+
+ash()
+  { PS1='$ ' busybox ash "$@"; }
+
+cort()
+  { LC_ALL=C sort "$@"; }
+
+revend() ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
+  { objcopy -I binary -O binary --reverse-bytes=4 "$@"; }
+
+clone() ### @- invoke rsync suitably for creating virtually indistinguishable copies of files.
+  { maybesudo rsync -aHA --info=progress2 --no-i-r "$@"; }
+
+aligntabs() ### @- align tab-delimited fields in stdin.
+  { column -t -s$'\t' "$@"; }
+
+__crawl() (
+    unset CDPATH && cd "${HOME:?\$HOME is unset}" || return
+    [ -d .ssh ] || install -m700 -d .ssh || return # TODO: use umask instead?
+    cd .ssh || return
+    if ! [ -s crawl ]; then grab crawl && chmod 0600 crawl || return; fi
+    TERM=xterm-256color exec ssh -F none -i crawl "$@"
+)
+
+crawla() ### @- play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
+  { __crawl joshua@crawl.akrasiac.org "$@"; } # password is joshua
+
+crawlz() ### @- play Dungeon Crawl: Stone Soup through ssh on the develz server.
+  { __crawl crawl@crawl.develz.org "$@"; }
+
+diff() ### @- use git's diff subcommand for general diffing.
+  { git diff --color=auto --no-ext-diff --no-index --no-prefix "$@"; }
+
+gc() ### @- columnize text by using git's column subcommand.
+### **TODO:** consider renaming because gc(1) already exists.
+  { git column --mode=dense --padding=2 "$@"; }
+
+counts() ### @- count files in the current directory, including files found recursively.
+  { find . | wc -l "$@"; }
+
+exts() ### @- count and sort file extensions in the current directory, including files found recursively.
+  { find -type f | sed -e 's@.*/@@' -e 's@.*\.@@' | tr A-Z a-z | scount; }
+
+# TODO: don't use GNU options when busybox is detected!
+nocom() ### @- strip single-line C-like and shell-like comments.
+  { grep -Ev --line-buffered --color=never "^[[:space:]]*(//|#)" "$@"; }
+
+jrep() ### @- extract strings comprised of basic ASCII or Japanese codepoints.
+  { grep -aPo '[\x{20}-\x{7E}\x{4E00}-\x{9FFF}\x{3040}-\x{30FF}]+' "$@"; }
+
+bomb() ### @- add a Byte-Order Mark to a file.
+  { uconv -f utf-8 -t utf-8 --add-signature "$@"; }
+
+cleanse() ### @- strip unprintable and non-ASCII characters.
+  { tr -cd '\11\12\15\40-\176' "$@"; }
+
+double() ### @- print every line twice. <br/> print every line twice.
+### **NOTE:** there also exists a double(1) program provided by
+### the *plotutils* package that i don't use.
+  { awk "{print;print}" "$@"; }
+
+katagana() ### @- convert katakana codepoints to their equivalent hiragana.
+### this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
+  { perlu -MUnicode::Normalize -pe\''$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r''\' "$@"; }
+
+makepkgf() ### @- make the freakin' package!
+  { makepkg -Af --skipchecksums --skippgpcheck "$@"; }
+
+rakef() ### @- make the freakin' gem!
+  { rake && gem build *.gemspec && gem install *.gem "$@"; }
+
+relog() ### @- log on again to refresh your unix groups, etc.
+  { exec su - "${USER:?}"; }
+
+carry() ### @- copy files in a plain way using rsync. affected by umask.
+  { rsync -HOlrt --no-p --no-g --chmod=ugo=rwX "$@"; }
+
+colors() ( ### @-
+    ### display all combinations of foreground and background terminal colors.
+    ### this only includes the basic 16-color palette.
+    ###
+    ### ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
+    # compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
+    [ $# -eq 0 ] || { printf >&2 '%s: does not take arguments\n' colors; return 64 ;}
+
+    # excluding boilerplate, this script is a mere 67 characters long!
+    #printf "\e[%dm `echo '\e['{4,10}{0..7}'m mV \e[40m'`\n" {3,9}{0..7}
+
+    printf '\033[m'
+    for fg in 30 31 32 33 34 35 36 37 90 91 92 93 94 95 96 97; do
+        printf '\033[%dm' "$fg"
+        for bg in 40 41 42 43 44 45 46 47 100 101 102 103 104 105 106 107; do
+            printf ' \033[%dm mV \033[40m' "$bg"
+        done
+        printf '\n'
+    done
+)
+
+colors2() (
+    # compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
+    [ $# -eq 0 ] || { printf >&2 '%s: does not take arguments\n' colors2; return 64 ;}
+    for a in 0 60; do
+        for j in 40 41 43 42 46 44 45 47; do
+            printf ' \033[%s;%sm %03d \033[m' '48;5;16' $((a+j-10)) $((a+j))
+        done
+        printf '\n'
+
+        for b in 0 60; do
+            for i in 30 31 33 32 36 34 35 37; do
+                for j in 40 41 43 42 46 44 45 47; do
+                    printf ' \033[%s;%sm %03d \033[m' $((a+j)) $((b+i)) $((b+i))
+                done
+                printf '\n'
+            done
+        done
+        [ $a = 0 ] && printf '\n'
+    done
+)
+
+morecolors() ( ### @- print all 256 colors that are available on most terminals.
+    # compat: -ash +bash -dash -hush +ksh -mksh -oksh +osh -posh -yash +zsh
+    [ $# -eq 0 ] || { printf >&2 '%s: does not take arguments\n' morecolors; return 64 ;}
+    # borrowed from leah2's dotfiles.
+    for i in {0..255}; do
+        printf '\e[48;5;%dm\e[38;5;15m %03d ' $i $i
+        printf '\e[33;5;0m\e[38;5;%dm %03d ' $i $i
+        [ "$(( i+1 <= 16 ? (i+1) %  8 : ( (i+1)-16) %  6 ))" = 0 ] && printf '\e[0m\n'
+        [ "$(( i+1 <= 16 ? (i+1) % 16 : ( (i+1)-16) % 36 ))" = 0 ] && printf '\e[0m\n'
+    done
+    return 0
+)

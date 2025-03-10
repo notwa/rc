@@ -1,0 +1,19 @@
+#!/usr/bin/env false
+# compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh -posh +yash +zsh
+
+alias 0x0.st="oxo"
+alias colorsmore="morecolors" # i always forget what it's called; this will help.
+alias oshi.at="oshi"
+alias pastel='pastel -f' # why would i want to use a color utility without colors?
+alias poo="pueue"
+alias rg="rg -M200"
+
+# TODO: remove this check, it should have nothing to do with colors.
+unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect bash, osh, and zsh
+if [ "$FANCY" = 1 ]; then
+    # busybox is smart enough to ignore --color flags when unsupported.
+    alias grep='grep --color=auto'
+    alias ls='ls --color=auto'
+    alias lr="lr -G"
+    #alias make="$(have colormake || have make)"
+fi

@@ -2,7 +2,7 @@
 # for busybox ash, dash, bash, and zsh.
 
 umask 022
-unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect zsh and bash
+unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect bash, osh, and zsh
 if [ "$FANCY" = 0 ]; then . ~/.prep; fi # handle stuff like /etc/profile and $PATH
 
 if [ -n "$ZSH_VERSION" ] && case $- in (im|ilm) :;; (?*) ! :;; (*) :; esac
@@ -18,7 +18,6 @@ histverify chaselinks autopushd braceccl autocd; fi # if .zshrc hasn't run
 { [ -d "$XDG_CACHE_HOME/shrc" ] || mkdir "$XDG_CACHE_HOME/shrc"; } &&
 cache="$XDG_CACHE_HOME/shrc/$sh-$$" &&
 if [ -s ~/sh/recombine ] && (. ~/sh/recombine) > "$cache"; then
-    #wc -l "$cache" >&2
     preload=:; . "$cache"; unset preload
 fi
 ! [ -f "$cache" ] || rm "$cache"

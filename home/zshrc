@@ -206,7 +206,6 @@ alias -g WELP='${welp[@]}' ### @ WELP - expand to C++ flags to enable a C++-as-C
 
 unalias 0x0.st
 0x0.st() oxo "$@" # zsh hates the alias i set in .shrc, so use this instead
-alias sc="~/sh/sc" # only runs in bash (for now), so be explicit with path
 
 function {
     # initialize prompts.

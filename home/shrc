@@ -1,7 +1,7 @@
 #!/usr/bin/env false
 # for busybox ash, dash, bash, and zsh.
 
-set +efu; umask 022; unset CDPATH IFS; [ "$__prep" = ok ] || . ~/.prep # reset
+set +efu; umask 022; unset CDPATH IFS # TODO: source /etc/profile in osh, yash.
 
 __f() { ! return 1; } && __g() { return 256; } && is_zsh() { __f && ! __g; }
 if is_zsh && case $- in (im|ilm) :;; (?*) ! :;; (*) :; esac then emulate zsh

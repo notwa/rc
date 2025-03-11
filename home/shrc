@@ -12,19 +12,35 @@ histignoredups kshtypeset nopromptsubst completeinword histexpiredupsfirst \
 menucomplete autocd; fi # in the event that .zshrc did not source at startup
 
 __prepare() {
-pl() { printf %s\\n "$@"; } && die() { pl >&2 "prepare: $*"; exit 1; } || exit
-set +efu && unset CDPATH IFS && trap 'echo /dev/null' INT EXIT || die bad shell
-mkdirs() { for d; do [ -d "$d" ] || mkdir "$d" || die 'failed to mkdir'; done; }
-if [ "${HOME#/}" = "$HOME" ] || ! cd -- "$HOME"; then # rare but disastrous case
+rst() { unset CDPATH IFS a b c d e f g h i j k l m n o p q r s t u v w x y z; }
+pl() { printf '%s\n' "$@"; }; die() { pl >&2 "prepare: failed to $*"; exit 1; }
+trap 'echo /dev/null' INT EXIT && set +efu && rst || die initialize shell state
+! is_zsh || set -o SH_WORD_SPLIT -o NO_NOMATCH -o NO_RCQUOTES || die adjust zsh
+
+mkdirs() { for d; do [ -d "$d" ] || mkdir "$d" || die 'make directory'; done; }
+if home() { [ "${HOME#/}" != "$HOME" ] && cd -- "$HOME" 2>&-; } && ! home; then
 for HOME in /root /home/* -; do [ -d "$HOME" ] && [ -O "$HOME" ] && break; done
-[ -n "$HOME" ] || HOME="$(mktemp -d)" && cd -- "${HOME:-/fail}" || die 'no home'
-fi && mkdirs "$HOME" "${XDG_CACHE_HOME:="$HOME/.cache"}" "$XDG_CACHE_HOME/shrc"
-cache="$XDG_CACHE_HOME/shrc/sh-$$" || die readonly # TODO: use shell name again!
-pl '#!/usr/bin/env false' 'preload=:' > "$cache" || die 'failed to create cache'
-printf %s "$cache" && trap - INT EXIT && exec >> "$cache" || die 'what the fuck'
+fi; if ! home; then HOME="$(mktemp -d)" && home || die 'set home directory'; fi
+
+xdg() { set -- "XDG_$1" "$HOME/$2" && export "$1" && eval "[ -d \"\$$1\" ] &&
+[ -w \"\$$1\" ] || { $1=\"\$2\" && mkdirs \"\$$1\"; }" || die allocate XDG; }
+mkdirs "$HOME/.local" && xdg CACHE_HOME .cache && xdg STATE_HOME .local/state &&
+xdg BIN_HOME .local/bin && xdg DATA_HOME .local/share && xdg CONFIG_HOME .config
+
+sqj() { a=; for s; do a="$a$x$s"; done; a=${a#"$x-"} a=${a%-}; }
+esc() { set -f; IFS=\' x="'\\''"; sqj -$*-; unset IFS; set +f; }
+cache="$XDG_CACHE_HOME/shrc/sh-$$" && mkdirs "${cache%/*}" && esc "$cache" &&
+__shrc_cache="$a" && pl '#!/usr/bin/env false' > "$cache" || die create cache
+printf %s "$cache" && trap - INT EXIT && exec >> "$cache" || die enable cache
+
+give() { eval "esc \"\$$v\" && pl \"$v='\$a'\"" || die give variable to cache; }
+ex() { for v; do give "$v"; done; export "$@" && pl "export $*" || die export; }
+ex HOME XDG_BIN_HOME XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
+
+rst && unset -f die && pl 'preload=:' || die prepare recombination script
 if combo="$HOME/sh/recombine" && [ -s "$combo" ]; then . "$combo" || exit
-else pl 'printf >&2 %s\\n "prepare: missing recombination script"'; fi &&
-pl 'unset preload' && if [ -n "${cache##*\'*}" ]; then pl "rm -- '$cache'"; fi
+else pl 'printf >&2 %s\\n "prepare: missing script: sh/recombine"'; fi &&
+pl 'unset preload' && pl "rm -- '$__shrc_cache'"
 }
 
 . "$(__prepare)" || printf >&2 %s\\n "prepare: source returned failure"

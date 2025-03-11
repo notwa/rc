@@ -841,6 +841,120 @@ $ xxp ~/rc/install | head -n2
 68 0A 23 20 74 68 69 73 20 73 63 72 69 70 74 20
 ```
 
+### [ll (sh/zzz)](/sh/zzz#L4)
+
+list files verbosely, fancily, ordered, but not recursively.
+
+### [gdp (sh/zzz)](/sh/zzz#L18)
+
+invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
+
+### [gd (sh/zzz)](/sh/zzz#L24)
+
+invoke git's diff subcommand with fewer lines of context.
+
+### [rgn (sh/zzz)](/sh/zzz#L27)
+
+invoke ripgrep without respecting `.gitignore` files.
+
+### [curls (sh/zzz)](/sh/zzz#L33)
+
+invoke curl with less noise.
+
+### [revend (sh/zzz)](/sh/zzz#L45)
+
+reverse the 4-byte endianness of a single file. *this is an in-place operation!*
+
+### [clone (sh/zzz)](/sh/zzz#L48)
+
+invoke rsync suitably for creating virtually indistinguishable copies of files.
+
+### [aligntabs (sh/zzz)](/sh/zzz#L51)
+
+align tab-delimited fields in stdin.
+
+### [crawla (sh/zzz)](/sh/zzz#L62)
+
+play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
+
+### [crawlz (sh/zzz)](/sh/zzz#L65)
+
+play Dungeon Crawl: Stone Soup through ssh on the develz server.
+
+### [diff (sh/zzz)](/sh/zzz#L68)
+
+use git's diff subcommand for general diffing.
+
+### [gc (sh/zzz)](/sh/zzz#L71)
+
+columnize text by using git's column subcommand.
+
+**TODO:** consider renaming because gc(1) already exists.
+
+### [counts (sh/zzz)](/sh/zzz#L75)
+
+count files in the current directory, including files found recursively.
+
+### [exts (sh/zzz)](/sh/zzz#L78)
+
+count and sort file extensions in the current directory, including files found recursively.
+
+### [nocom (sh/zzz)](/sh/zzz#L82)
+
+strip single-line C-like and shell-like comments.
+
+### [jrep (sh/zzz)](/sh/zzz#L85)
+
+extract strings comprised of basic ASCII or Japanese codepoints.
+
+### [bomb (sh/zzz)](/sh/zzz#L88)
+
+add a Byte-Order Mark to a file.
+
+### [cleanse (sh/zzz)](/sh/zzz#L91)
+
+strip unprintable and non-ASCII characters.
+
+### [double (sh/zzz)](/sh/zzz#L94)
+
+print every line twice. <br/> print every line twice.
+
+**NOTE:** there also exists a double(1) program provided by
+the *plotutils* package that i don't use.
+
+### [katagana (sh/zzz)](/sh/zzz#L99)
+
+convert katakana codepoints to their equivalent hiragana.
+
+this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
+
+### [makepkgf (sh/zzz)](/sh/zzz#L103)
+
+make the freakin' package!
+
+### [rakef (sh/zzz)](/sh/zzz#L106)
+
+make the freakin' gem!
+
+### [relog (sh/zzz)](/sh/zzz#L109)
+
+log on again to refresh your unix groups, etc.
+
+### [carry (sh/zzz)](/sh/zzz#L112)
+
+copy files in a plain way using rsync. affected by umask.
+
+### [colors (sh/zzz)](/sh/zzz#L115)
+
+display all combinations of foreground and background terminal colors.
+this only includes the basic 16-color palette.
+
+![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
+
+### [morecolors (sh/zzz)](/sh/zzz#L157)
+
+print all 256 colors that are available on most terminals.
+
 ## miscellaneous
 
 ### [dummy (zshrc)](/home/zshrc#L72)
@@ -891,7 +1005,7 @@ WHOA but for C++ (specifically g++) only.
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [reload (zshrc)](/home/zshrc#L254)
+### [reload (zshrc)](/home/zshrc#L253)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
@@ -904,136 +1018,23 @@ return 0, ignoring arguments.
 
 **TODO:** respect initctl like in `.zshrc`.
 
-### [ADDPATH (shrc)](/home/shrc#L43)
-
-append a directory to `$PATH` if it isn't already present.
-
-### [refresh (shrc)](/home/shrc#L120)
-
-invoke `hash -r`.
-
-### [pl (shrc)](/home/shrc#L123)
+### [pl (shrc)](/home/shrc#L51)
 
 print each argument on its own line.
 
-### [ll (shrc)](/home/shrc#L126)
+### [refresh (shrc)](/home/shrc#L52)
 
-list files verbosely, fancily, ordered, but not recursively.
+invoke `hash -r`.
 
-### [gdp (shrc)](/home/shrc#L140)
+### [ADDPATH (shrc)](/home/shrc#L70)
 
-invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
-
-### [gd (shrc)](/home/shrc#L146)
-
-invoke git's diff subcommand with fewer lines of context.
-
-### [rgn (shrc)](/home/shrc#L149)
-
-invoke ripgrep without respecting `.gitignore` files.
-
-### [curls (shrc)](/home/shrc#L155)
-
-invoke curl with less noise.
-
-### [revend (shrc)](/home/shrc#L167)
-
-reverse the 4-byte endianness of a single file. *this is an in-place operation!*
-
-### [clone (shrc)](/home/shrc#L170)
-
-invoke rsync suitably for creating virtually indistinguishable copies of files.
-
-### [aligntabs (shrc)](/home/shrc#L173)
-
-align tab-delimited fields in stdin.
-
-### [crawla (shrc)](/home/shrc#L184)
-
-play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
-
-### [crawlz (shrc)](/home/shrc#L187)
-
-play Dungeon Crawl: Stone Soup through ssh on the develz server.
-
-### [diff (shrc)](/home/shrc#L190)
-
-use git's diff subcommand for general diffing.
-
-### [gc (shrc)](/home/shrc#L193)
-
-columnize text by using git's column subcommand.
-
-**TODO:** consider renaming because gc(1) already exists.
-
-### [counts (shrc)](/home/shrc#L197)
-
-count files in the current directory, including files found recursively.
-
-### [exts (shrc)](/home/shrc#L200)
-
-count and sort file extensions in the current directory, including files found recursively.
-
-### [nocom (shrc)](/home/shrc#L204)
-
-strip single-line C-like and shell-like comments.
-
-### [jrep (shrc)](/home/shrc#L207)
-
-extract strings comprised of basic ASCII or Japanese codepoints.
-
-### [bomb (shrc)](/home/shrc#L210)
-
-add a Byte-Order Mark to a file.
-
-### [cleanse (shrc)](/home/shrc#L213)
-
-strip unprintable and non-ASCII characters.
-
-### [double (shrc)](/home/shrc#L216)
-
-print every line twice. <br/> print every line twice.
-
-**NOTE:** there also exists a double(1) program provided by
-the *plotutils* package that i don't use.
-
-### [katagana (shrc)](/home/shrc#L221)
-
-convert katakana codepoints to their equivalent hiragana.
-
-this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
-
-### [makepkgf (shrc)](/home/shrc#L225)
-
-make the freakin' package!
-
-### [rakef (shrc)](/home/shrc#L228)
-
-make the freakin' gem!
-
-### [relog (shrc)](/home/shrc#L231)
-
-log on again to refresh your unix groups, etc.
-
-### [carry (shrc)](/home/shrc#L234)
-
-copy files in a plain way using rsync. affected by umask.
-
-### [colors (shrc)](/home/shrc#L254)
-
-display all combinations of foreground and background terminal colors.
-this only includes the basic 16-color palette.
-
-![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
-
-### [morecolors (shrc)](/home/shrc#L296)
-
-print all 256 colors that are available on most terminals.
+append a directory to `$PATH` if it isn't already present.
 
 ## compatibility table
 
 | script                                        | preference | ash | bash | dash | ksh | mksh | oksh | osh | posh | yash | zsh |
 | --------------------------------------------- | ---------- | --- | ---- | ---- | --- | ---- | ---- | --- | ---- | ---- | --- |
+| [aliases](#aliases)                           |  **false** | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
 | [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arrays](#arrays)                             |  **false** | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    |
@@ -1072,9 +1073,10 @@ print all 256 colors that are available on most terminals.
 | [have](#have)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
-| [is_empty](#is_empty)                         |       bash | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    |
+| [is_empty](#is_empty)                         |       bash | ⭕    | ✔️    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    |
 | [isup](#isup)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [join2](#join2)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [lepton](#lepton)                             |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [lsarchive](#lsarchive)                       |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
 | [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1119,3 +1121,4 @@ print all 256 colors that are available on most terminals.
 | [wipe](#wipe)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [witch](#witch)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [xxp](#xxp)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [zzz](#zzz)                                   |  **false** | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

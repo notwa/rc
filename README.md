@@ -1026,9 +1026,13 @@ print each argument on its own line.
 
 invoke `hash -r`.
 
-### [ADDPATH (shrc)](/home/shrc#L70)
+### [ADDPATH (shrc)](/home/shrc#L69)
 
 append a directory to `$PATH` if it isn't already present.
+
+### [PREPATH (shrc)](/home/shrc#L81)
+
+prepend entries to `$PATH` and remove their duplications.
 
 ## compatibility table
 

@@ -79,19 +79,6 @@ ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
     case ":$PATH:" in (::) PATH="$1";; (*":$1:"*) :;; (*) PATH="$PATH:$1"; esac
 }
 
-ROPATH() {
-    [ $# = 0 ] || { printf >&2 'ROPATH: expected exactly 0 arguments, got %s\n' $#; return 64; }
-    local segment= previous= newpath= oldpath="$PATH:"
-    while segment="${oldpath%%:*}"; [ "$segment" != "$oldpath" ]; do
-        [ -z "$segment" ] || [ -z "$previous" ] || newpath="$newpath$previous:"
-        [ -z "$segment" ] || previous="$segment"
-        oldpath="${oldpath#*:}"
-    done
-    [ -z "$previous" ] || printf 'rotated %s\n' "$previous" >&2
-    [ -z "$previous" ] || newpath="$previous:$newpath"
-    export PATH="${newpath%:}"
-}
-
 # configurations:
 
 if [ -d "$HOME/opt/local/bin" ]; then

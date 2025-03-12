@@ -106,11 +106,10 @@ unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY
 unset LD_LIBRARY_PATH
 
+EA_AUTH="auth" EA_DIR="t" EA_DOMAIN="https://eaguru.guru"
+
 [ "$DESKTOP_SESSION" != xfce ] || export QT_QPA_PLATFORMTHEME="" # unhide menu bar
 #[ "$TERM" != vt102 ] || export TERM="xterm" # PuTTY over serial
-export EA_AUTH="auth"
-export EA_DIR="t"
-export EA_DOMAIN="https://eaguru.guru"
 export EDITOR=vim
 export ENV="$HOME/.shrc" # for dash and ash
 export LESS='-QRSci'

@@ -1,7 +1,7 @@
 #!/usr/bin/env false
 # FAKE_COMPAT
 
-unset CDPATH IFS && cd -- "${HOME:?}/sh" || exit
+unset CDPATH IFS check f line ok SH sh word zero && cd -- "${HOME:?}/sh" || exit
 
 case "$0" in
 (-*) zero="${0#-}";;

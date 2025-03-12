@@ -14,12 +14,11 @@ histignoredups kshtypeset nopromptsubst completeinword histexpiredupsfirst \
 menucomplete autocd; fi # in the event that .zshrc did not source at startup
 
 __prepare() {
-rst() { unset CDPATH IFS a b c d e f g h i j k l m n o p q r s t u v w x y z; }
 pl() { printf '%s\n' "$@"; }; die() { pl >&2 "prepare: failed to $*"; exit 1; }
-trap echo\ /dev/null INT EXIT && set +efuC && rst && LC_ALL=C || die initialize
-! is_zsh || set -o SH_WORD_SPLIT -o NO_NOMATCH -o NO_RCQUOTES || die adjust zsh
+trap 'echo /dev/null' INT EXIT && set +efuC && LC_ALL=C && unset IFS a s v x &&
+if is_zsh; then set -y +o NOMATCH +o FUNCTION_ARGZERO && 0=zsh; fi || die reset
 
-mkdirs() { for d; do [ -d "$d" ] || mkdir "$d" || die 'make directory'; done; }
+mkdirs() { for a; do [ -d "$a" ] || mkdir "$a" || die 'make directory'; done; }
 if home() { [ "${HOME#/}" != "$HOME" ] && cd -- "$HOME" 2>&-; } && ! home; then
 for HOME in /root /home/* -; do [ -d "$HOME" ] && [ -O "$HOME" ] && break; done
 fi; if ! home; then HOME="$(mktemp -d)" && home || die 'set home directory'; fi
@@ -39,7 +38,7 @@ give() { eval "esc \"\$$v\" && pl \"$v='\$a'\"" || die give variable to cache; }
 ex() { for v; do give "$v"; done; export "$@" && pl "export $*" || die export; }
 ex HOME XDG_BIN_HOME XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
-rst && unset -f die && pl 'preload=:' || die prepare recombination script
+unset combo a s v x && unset -f die && pl preload=: || die clean up state
 if combo="$HOME/sh/recombine" && [ -s "$combo" ]; then . "$combo" || exit
 else pl 'printf >&2 %s\\n "prepare: missing script: sh/recombine"'; fi &&
 pl 'unset preload' && pl "rm -- '$__shrc_cache'"

@@ -1018,19 +1018,19 @@ return 0, ignoring arguments.
 
 **TODO:** respect initctl like in `.zshrc`.
 
-### [pl (shrc)](/home/shrc#L51)
+### [pl (shrc)](/home/shrc#L52)
 
 print each argument on its own line.
 
-### [refresh (shrc)](/home/shrc#L52)
+### [refresh (shrc)](/home/shrc#L53)
 
 invoke `hash -r`.
 
-### [ADDPATH (shrc)](/home/shrc#L69)
+### [ADDPATH (shrc)](/home/shrc#L70)
 
 append a directory to `$PATH` if it isn't already present.
 
-### [PREPATH (shrc)](/home/shrc#L81)
+### [PREPATH (shrc)](/home/shrc#L82)
 
 prepend entries to `$PATH` and remove their duplications.
 

@@ -70,6 +70,7 @@ autoload history-search-end
 zmodload zsh/mathfunc
 
 dummy() : ### @- return 0, ignoring arguments.
+zle -N dummy
 
 dirprev() { ### @-
     ### rotate and change to the previous directory in the directory stack
@@ -109,7 +110,10 @@ dirview() { ### @-
     precmd
 }
 
-for x (dummy dirprev dirnext dirup dirview) zle -N $x
+zle -N dirprev
+zle -N dirnext
+zle -N dirup
+zle -N dirview
 
 join-lines() {
     BUFFER="${BUFFER//$'\n'/ }"

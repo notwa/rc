@@ -1,7 +1,7 @@
 #!/usr/bin/env false
-# for busybox ash, dash, bash, and zsh.
+# this script works in everything but hush, but hush is broken so whatever dude.
 
-set +efu; umask 022; unset CDPATH IFS # TODO: source /etc/profile in osh, yash.
+set +efuC; umask 022; unset CDPATH IFS # TODO: source /etc/profile in osh/yash.
 export LANG LC_CTYPE=C LC_COLLATE=C # shell scripts usually expect the C locale
 unset LC_ALL LC_NUMERIC LC_TIME LC_MONETARY LC_MESSAGES # these default to LANG
 
@@ -16,7 +16,7 @@ menucomplete autocd; fi # in the event that .zshrc did not source at startup
 __prepare() {
 rst() { unset CDPATH IFS a b c d e f g h i j k l m n o p q r s t u v w x y z; }
 pl() { printf '%s\n' "$@"; }; die() { pl >&2 "prepare: failed to $*"; exit 1; }
-trap 'echo /dev/null' INT EXIT && set +efu && rst && LC_ALL=C || die initialize
+trap echo\ /dev/null INT EXIT && set +efuC && rst && LC_ALL=C || die initialize
 ! is_zsh || set -o SH_WORD_SPLIT -o NO_NOMATCH -o NO_RCQUOTES || die adjust zsh
 
 mkdirs() { for d; do [ -d "$d" ] || mkdir "$d" || die 'make directory'; done; }

@@ -66,7 +66,6 @@ elif has doas; then
 fi
 
 BADPATH() { printf >&2 'ADDPATH: %s\n' "$2"; return "$1"; }
-
 ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
     [ $# = 1 ] || BADPATH 64 "expected exactly 1 argument, got $#" || return
     [ -n "$1" ] || BADPATH 64 "path cannot be empty" || return
@@ -79,14 +78,26 @@ ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.
     case ":$PATH:" in (::) PATH="$1";; (*":$1:"*) :;; (*) PATH="$PATH:$1"; esac
 }
 
+PREPATH() { ### @- prepend entries to `$PATH` and remove their duplications.
+    # NOTE: this does not validate the paths being added!
+    ! is_zsh || setopt LOCAL_OPTIONS SH_WORD_SPLIT || return
+    set -f; IFS=: p=$* q= s=
+    for s in $PATH; do
+        for q; do [ "$s" != "$q" ] || continue 2; done
+        p="$p:$s"
+    done
+    export PATH="$p"
+    unset IFS p q s; set +f
+}
+
 # configurations:
 
-if [ -d "$HOME/opt/local/bin" ]; then
-    printf 'Warning: You have a %s directory\n         consider moving it to %s\n' \
-      '~/opt/local/bin' '~/.local/bin' >&2
+# NOTE: XDG_BIN_HOME is not actually part of any XDG specification.
+[ -d "$XDG_BIN_HOME" ] && PREPATH "$XDG_BIN_HOME" # __prepare sets this
+if [ -d "$HOME/opt/local/bin" ]; then # still in use on some machines
+    printf >&2 'Warning: You have a %s directory,\n' '~/opt/local/bin'
+    printf >&2 '         consider using %s instead.\n' "$XDG_BIN_HOME"
     ADDPATH "$HOME/opt/local/bin"
-else
-    ADDPATH "$HOME/.local/bin"
 fi
 
 # clean up problematic, potentially-inherited exports:

@@ -5,13 +5,12 @@ HISTCONTROL=erasedups
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-shopt -s histappend
-shopt -s checkwinsize
-#shopt -s physical # chaselinks (doesn't exist?)
-set -o hashall # enable hash command
 set +o histexpand # disable expansion of ! characters
-
-#[ "$TERM" != rxvt-unicode-256color ] || export TERM=xterm-256color
+set -o hashall # enable hash command
+set -o physical # chaselinks
+shopt -s autocd
+shopt -s checkwinsize
+shopt -s histappend
 
 _temporary_scope_() {
     local t="${TERM%%-*}" title=

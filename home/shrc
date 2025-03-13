@@ -2,8 +2,7 @@
 # this script works in everything but hush, but hush is broken so whatever dude.
 
 set +efuC; umask 022; unset CDPATH IFS # TODO: source /etc/profile in osh/yash.
-export LANG LC_CTYPE=C LC_COLLATE=C # shell scripts usually expect the C locale
-unset LC_ALL LC_NUMERIC LC_TIME LC_MONETARY LC_MESSAGES # these default to LANG
+export LC_ALL=C # this is temporary; sane values are configured after __prepare
 
 __f() { ! return 1; } && __g() { return 256; } && is_zsh() { __f && ! __g; }
 if is_zsh && case $- in (im|ilm) :;; (?*) ! :;; (*) :; esac then emulate zsh
@@ -46,6 +45,12 @@ pl 'unset preload' && pl "rm -- '$__shrc_cache'"
 
 . "$(__prepare)" || printf >&2 %s\\n "prepare: source returned failure"
 [ -z "$preload" ] || printf >&2 %s\\n "prepare: script ended abruptly"
+
+export LC_CTYPE=C.UTF-8
+[ -n "$LANG" ] || LANG=en_US.UTF-8
+[ -e /usr/bin/locale ] || { LANG=C.UTF-8 && unset LC_CTYPE; } # a la alpine
+export LANG LC_COLLATE=C CHARSET=UTF-8
+unset LC_ALL LC_NUMERIC LC_TIME LC_MONETARY LC_MESSAGES
 
 # core utilities:
 
@@ -119,8 +124,7 @@ export SSH_AUTH_SOCK=0 # more info: https://0x0.st/NUnw
 export TZ=':/etc/localtime' # more info: https://0x0.st/NUnv
 
 # $LANG has been my bane whenever i forget to set it properly, so check it.
-if [ "$LANG" != "en_US.UTF-8" ] && [ "$LANG" != "en_CA.UTF-8" ]; then
-    if [ -z "$MSYSTEM" ] || [ "$LANG" != "C.UTF-8" ]; then
-        printf 'Warning: LANG is %s\n' "${LANG:-empty!}" >&2
-    fi
+if ! case "$LANG" in (en_US.UTF-8) :;; (en_CA.UTF-8) :;;
+(C.UTF-8) ! [ -e /usr/bin/locale ];; (*) ! :;; esac then
+    printf >&2 'Warning: LANG is %s\n' "${LANG:-empty!}"
 fi

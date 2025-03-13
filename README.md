@@ -961,60 +961,60 @@ print all 256 colors that are available on most terminals.
 
 return 0, ignoring arguments.
 
-### [dirprev (zshrc)](/home/zshrc#L74)
+### [dirprev (zshrc)](/home/zshrc#L75)
 
 rotate and change to the previous directory in the directory stack
 without consuming the prompt.
 
-### [dirnext (zshrc)](/home/zshrc#L81)
+### [dirnext (zshrc)](/home/zshrc#L82)
 
 rotate and change to the next directory in the directory stack
 without consuming the prompt.
 
-### [dirup (zshrc)](/home/zshrc#L88)
+### [dirup (zshrc)](/home/zshrc#L89)
 
 change to the parent directory of the current working directory
 without consuming the prompt.
 
-### [dirview (zshrc)](/home/zshrc#L95)
+### [dirview (zshrc)](/home/zshrc#L96)
 
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L200)
+### [OMFG (zshrc)](/home/zshrc#L204)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L201)
+### [STFU (zshrc)](/home/zshrc#L205)
 
 silence stderr.
 
-### [SWAP (zshrc)](/home/zshrc#L202)
+### [SWAP (zshrc)](/home/zshrc#L206)
 
 swap stdout and stderr. uses fd 3 as an intermediary.
 
-### [WHOA (zshrc)](/home/zshrc#L203)
+### [WHOA (zshrc)](/home/zshrc#L207)
 
 expand to several C/C++ flags to ease development.
 
-### [WHEE (zshrc)](/home/zshrc#L204)
+### [WHEE (zshrc)](/home/zshrc#L208)
 
 WHOA but for C++ (specifically g++) only.
 
-### [WELP (zshrc)](/home/zshrc#L205)
+### [WELP (zshrc)](/home/zshrc#L209)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [reload (zshrc)](/home/zshrc#L253)
+### [reload (zshrc)](/home/zshrc#L257)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L40)
+### [dummy (bashrc)](/home/bashrc#L38)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L43)
+### [reload (bashrc)](/home/bashrc#L41)
 
 **TODO:** respect initctl like in `.zshrc`.
 

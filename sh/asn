@@ -37,7 +37,7 @@ __asn_lookup() {
     ish="${ip%.*}"
     sep=' | '
 
-    __asn_rev "$ip"
+    __asn_rev "$ish"
     if [ -n "${__asn_replies["$ish"]}" ]; then
         REPLY="${__asn_replies["$ish"]}"
         [ "$REPLY" != "n/a" ] || return # as if __asn_txt below had returned 1

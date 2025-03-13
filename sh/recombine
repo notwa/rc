@@ -1,7 +1,8 @@
 #!/usr/bin/env false
 # FAKE_COMPAT
 
-unset CDPATH IFS check f line ok SH sh word zero && cd -- "${HOME:?}/sh" || exit
+[ -z "${IFS+-}" ] || { echo >&2 this script must be sourced from shrc; exit 1; }
+cd -- "${HOME:?}/sh" || exit
 
 case "$0" in
 (-*) zero="${0#-}";;
@@ -33,17 +34,14 @@ case "$zero" in
         g && SH=BASH sh=bash || SH=DASH sh=dash
     fi;;
 (*)
-    printf >&2 %s\\n "unknown shell (\$0): $0"
+    pl >&2 "unknown shell (\$0): $0"
     exit 1
 esac
 
-[ "$SH" != ZSH ] || set -o SH_WORD_SPLIT -o NO_NOMATCH
-
-printf %s\\n '[ -n "$preload" ] || exit 1' ''
+pl '[ -n "$preload" ] || exit 1'
 for f in *; do
     [ -n "${f##*.*}" ] && [ -f "$f" ] || continue
     i=10 ok=
-    set -f
     while IFS= read -r line; do
         check=0
         for word in $line; do
@@ -54,4 +52,5 @@ for f in *; do
     done < "$f"
     [ "$ok" != 1 ] || set -- "$@" "$f"
 done
+pl
 [ $# = 0 ] || cat "$@"

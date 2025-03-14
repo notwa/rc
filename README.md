@@ -396,7 +396,7 @@ the *grop* package that i don't use.
 
 ### [has](/sh/has#L4)
 
-[`have`,](#have) silently.
+like `which`, but faster. results go in `$REPLY`, unset if none.
 
 ### [have](/sh/have#L4)
 
@@ -841,117 +841,117 @@ $ xxp ~/rc/install | head -n2
 68 0A 23 20 74 68 69 73 20 73 63 72 69 70 74 20
 ```
 
-### [ll (sh/zzz)](/sh/zzz#L4)
+### [ll (sh/zzz)](/sh/zzz#L12)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [gdp (sh/zzz)](/sh/zzz#L18)
+### [gdp (sh/zzz)](/sh/zzz#L26)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [gd (sh/zzz)](/sh/zzz#L24)
+### [gd (sh/zzz)](/sh/zzz#L32)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [rgn (sh/zzz)](/sh/zzz#L27)
+### [rgn (sh/zzz)](/sh/zzz#L35)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (sh/zzz)](/sh/zzz#L33)
+### [curls (sh/zzz)](/sh/zzz#L41)
 
 invoke curl with less noise.
 
-### [revend (sh/zzz)](/sh/zzz#L45)
+### [revend (sh/zzz)](/sh/zzz#L53)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (sh/zzz)](/sh/zzz#L48)
+### [clone (sh/zzz)](/sh/zzz#L56)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (sh/zzz)](/sh/zzz#L51)
+### [aligntabs (sh/zzz)](/sh/zzz#L59)
 
 align tab-delimited fields in stdin.
 
-### [crawla (sh/zzz)](/sh/zzz#L62)
+### [crawla (sh/zzz)](/sh/zzz#L70)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (sh/zzz)](/sh/zzz#L65)
+### [crawlz (sh/zzz)](/sh/zzz#L73)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (sh/zzz)](/sh/zzz#L68)
+### [diff (sh/zzz)](/sh/zzz#L76)
 
 use git's diff subcommand for general diffing.
 
-### [gc (sh/zzz)](/sh/zzz#L71)
+### [gc (sh/zzz)](/sh/zzz#L79)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (sh/zzz)](/sh/zzz#L75)
+### [counts (sh/zzz)](/sh/zzz#L83)
 
 count files in the current directory, including files found recursively.
 
-### [exts (sh/zzz)](/sh/zzz#L78)
+### [exts (sh/zzz)](/sh/zzz#L86)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (sh/zzz)](/sh/zzz#L82)
+### [nocom (sh/zzz)](/sh/zzz#L90)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (sh/zzz)](/sh/zzz#L85)
+### [jrep (sh/zzz)](/sh/zzz#L93)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (sh/zzz)](/sh/zzz#L88)
+### [bomb (sh/zzz)](/sh/zzz#L96)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (sh/zzz)](/sh/zzz#L91)
+### [cleanse (sh/zzz)](/sh/zzz#L99)
 
 strip unprintable and non-ASCII characters.
 
-### [double (sh/zzz)](/sh/zzz#L94)
+### [double (sh/zzz)](/sh/zzz#L102)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (sh/zzz)](/sh/zzz#L99)
+### [katagana (sh/zzz)](/sh/zzz#L107)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (sh/zzz)](/sh/zzz#L103)
+### [makepkgf (sh/zzz)](/sh/zzz#L111)
 
 make the freakin' package!
 
-### [rakef (sh/zzz)](/sh/zzz#L106)
+### [rakef (sh/zzz)](/sh/zzz#L114)
 
 make the freakin' gem!
 
-### [relog (sh/zzz)](/sh/zzz#L109)
+### [relog (sh/zzz)](/sh/zzz#L117)
 
 log on again to refresh your unix groups, etc.
 
-### [carry (sh/zzz)](/sh/zzz#L112)
+### [carry (sh/zzz)](/sh/zzz#L120)
 
 copy files in a plain way using rsync. affected by umask.
 
-### [colors (sh/zzz)](/sh/zzz#L115)
+### [colors (sh/zzz)](/sh/zzz#L123)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L157)
+### [morecolors (sh/zzz)](/sh/zzz#L165)
 
 print all 256 colors that are available on most terminals.
 
@@ -1026,11 +1026,11 @@ print each argument on its own line.
 
 invoke `hash -r`.
 
-### [ADDPATH (shrc)](/home/shrc#L75)
+### [ADDPATH (shrc)](/home/shrc#L61)
 
 append a directory to `$PATH` if it isn't already present.
 
-### [PREPATH (shrc)](/home/shrc#L87)
+### [PREPATH (shrc)](/home/shrc#L73)
 
 prepend entries to `$PATH` and remove their duplications.
 

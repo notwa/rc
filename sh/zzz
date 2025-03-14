@@ -120,6 +120,15 @@ relog() ### @- log on again to refresh your unix groups, etc.
 carry() ### @- copy files in a plain way using rsync. affected by umask.
   { rsync -HOlrt --no-p --no-g --chmod=ugo=rwX "$@"; }
 
+ytdl() {
+    if   has yt-dlp;     then yt-dlp     "$@"; return
+    elif has yt-dlc;     then yt-dlc     "$@"; return
+    elif has youtube-dl; then youtube-dl "$@"; return
+    fi
+    echo "bro where is your youtube-dl" >&2
+    return 99
+}
+
 colors() ( ### @-
     ### display all combinations of foreground and background terminal colors.
     ### this only includes the basic 16-color palette.

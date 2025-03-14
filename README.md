@@ -944,14 +944,14 @@ log on again to refresh your unix groups, etc.
 
 copy files in a plain way using rsync. affected by umask.
 
-### [colors (sh/zzz)](/sh/zzz#L123)
+### [colors (sh/zzz)](/sh/zzz#L132)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L165)
+### [morecolors (sh/zzz)](/sh/zzz#L174)
 
 print all 256 colors that are available on most terminals.
 
@@ -1111,7 +1111,6 @@ prepend entries to `$PATH` and remove their duplications.
 | [slitt](#slitt)                               |       dash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [sortip](#sortip)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [stfu](#stfu)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
-| [streamcrap](#streamcrap)                     |  **false** | ⭕    | ✔️    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [subdue](#subdue)                             |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

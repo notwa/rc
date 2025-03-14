@@ -300,6 +300,5 @@ function {
 #zmodload zsh/complist               # need all this
 #autoload -Uz compinit && compinit   # just for compdef
 #compdef wat=which
-#. ~/.prezto-compinit
 
 ! [ -e ~/.lol ] || . ~/.lol

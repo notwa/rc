@@ -143,7 +143,7 @@ backup_dir="$rc/backup-$(date -u +%s)" || die "failed to determine date"
 ! [ -d "$backup_dir" ] || die "backup directory already exists"
 
 for f in \
-    .shrc .bashrc .zshrc .prep .prezto-compinit .ls_colors \
+    .shrc .bashrc .zshrc .prep .ls_colors \
     .vimrc .inputrc .Xresources .screenrc .tmux.conf \
 ; do
     hardlink "$f" "$rc/home/${f#.}"

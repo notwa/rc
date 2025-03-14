@@ -1,8 +1,17 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash -hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
-has() { ### @- [`have`,](#have) silently.
-    if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi
-} >/dev/null 2>/dev/null
+has() { ### @- like `which`, but faster. results go in `$REPLY`, unset if none.
+    [ $# = 1 ] || printf >&2 %s\\n "has: expected exactly 1 argument, got $#" || return 64
+    unset REPLY || return 70 # readonly bullshit
+    case "$1" in (*/*) [ -f "$1" ] && [ -x "$1" ] && REPLY="$1"; return; esac
+    [ -z "$ZSH_VERSION" ] || setopt LOCAL_OPTIONS SH_WORD_SPLIT || return 70
+    set -f; IFS=: || return 70 # readonly bullshit
+    for REPLY in $PATH; do
+        REPLY="${REPLY:-.}/$1" && [ -f "$REPLY" ] && [ -x "$REPLY" ] || continue
+        unset IFS; set +f; return 0
+    done
+    unset REPLY IFS; set +f; return 1
+}
 
 [ -n "${preload+-}" ] || has "$@"

@@ -56,20 +56,6 @@ unset LC_ALL LC_NUMERIC LC_TIME LC_MONETARY LC_MESSAGES
 
 pl() { printf '%s\n' "$@"; } ### @ pl - print each argument on its own line.
 refresh() { hash -r; } ### @ refresh - invoke `hash -r`.
-have() { if is_zsh; then whence -p -- "$1"; else which -- "$1"; fi; } 2>/dev/null
-has() { have "$@"; } >/dev/null
-
-if has sudo; then
-    doas() {
-        printf >&2 '\033[7m %s \033[m\n' 'warning: you ran sudo when you meant doas!'
-        sudo "$@"
-    }
-elif has doas; then
-    sudo() {
-        printf >&2 '\033[7m %s \033[m\n' 'warning: you ran doas when you meant sudo!'
-        doas "$@"
-    }
-fi
 
 BADPATH() { printf >&2 'ADDPATH: %s\n' "$2"; return "$1"; }
 ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.

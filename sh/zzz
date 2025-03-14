@@ -1,6 +1,14 @@
 #!/usr/bin/env false
 # compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
+__attention()
+  { printf >&2 '\033[7m %s \033[m\n' "$@"; }
+
+! has sudo || has doas || doas()
+  { __attention 'warning: you ran sudo when you meant doas!'; sudo "$@"; }
+! has doas || has sudo || sudo()
+  { __attention 'warning: you ran doas when you meant sudo!'; doas "$@"; }
+
 ### @ ll - list files verbosely, fancily, ordered, but not recursively.
 { alias ll=; unalias ll; } 2>&- # unalias without spitting an error
 if has lr; then

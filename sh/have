@@ -5,7 +5,9 @@ have() { ### @- print the result of `which` if the program is found, else simply
     ### ```
     ### export SOLVER="$(have kissat || have picosat || have cadical || have minisat)"
     ### ```
-    if [ -z "$ZSH_VERSION" ]; then which -- "$1"; else whence -p -- "$1"; fi
-} 2>/dev/null
+    has "$@" && printf %s\\n "$REPLY"
+}
 
+[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
+eval ${preload:-preload} has
 [ -n "${preload+-}" ] || have "$@"

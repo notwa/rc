@@ -1,21 +1,22 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash +zsh
 
-### @ scount
-### perform `sort | uniq -c | sort -n`, preferring GNU awk when available.
-
-if "$HOME/sh/witch" gawk >/dev/null 2>/dev/null; then
-    scount() {
-        argc $# -le 1 scount || return
-        gawk -- 'BEGIN{PROCINFO["sorted_in"]="@val_num_desc"}{a[$0]--}END{for(i in a)printf "%7i %s\n",-a[i],i}' "$@"
-    }
-else
-    scount() {
-        argc $# -le 1 scount || return
-        sort -- "$@" | uniq -c | sort -n
-    }
-fi
+scount() { ### @-
+    ### perform `sort | uniq -c | sort -n`, preferring GNU awk when available.
+    if has gawk; then
+        scount() {
+            argc $# -le 1 scount || return
+            gawk -- 'BEGIN{PROCINFO["sorted_in"]="@val_num_desc"}{a[$0]--}END{for(i in a)printf "%7i %s\n",-a[i],i}' "$@"
+        }
+    else
+        scount() {
+            argc $# -le 1 scount || return
+            sort -- "$@" | uniq -c | sort -n
+        }
+    fi
+    scount "$@"
+}
 
 [ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} argc
+eval ${preload:-preload} argc has
 [ -n "${preload+-}" ] || scount "$@"

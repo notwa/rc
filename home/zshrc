@@ -268,8 +268,9 @@ reload() { ### @-
         # this doesn't seem to help with _vim_files errors, eh.
         # you wanna rm .zcompdump first, then exit. that's why!
         [ -f .zshrc ] && zrecompile -p .zshrc
-        [ -f .prezto-compinit ] && zrecompile -p .prezto-compinit
-        rm -f .zcompdump .zshrc.zwc.old .zcompdump.zwc.old
+        rm -f .zcompdump .zshrc.zwc.old .zcompdump.zwc.old \
+              .prezto-compinit.zwc .prezto-compinit.zwc.old
+        cd -- "$OLDPWD"
     fi
     exec zsh # reload shell, inheriting environment
 }

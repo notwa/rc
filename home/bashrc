@@ -38,7 +38,7 @@ _temporary_scope_() {
 dummy() { :; } ### @- return 0, ignoring arguments.
 . ~/.shrc
 
-alias reload='cd; exec bash' ### @- **TODO:** respect initctl like in `.zshrc`.
+alias reload='exec bash' ### @- **TODO:** respect initctl like in `.zshrc`.
 ! [ -e ~/.lol ] || . ~/.lol
 
 true

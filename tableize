@@ -7,8 +7,8 @@ tableize() {
     local name="$1"
     local rc="$2"
     [ -n "$rc" ] || rc="$(readlink -f "$(dirname "$name")" )"
-    [ -d "$rc" ] || { printf "%s: %s\n" "$0" 'failed to determine rc directory' >&2; }
-    cd "$rc" || { printf "%s: %s\n" "$0" 'failed to change directory' >&2; }
+    [ -d "$rc" ] || { printf '%s: %s\n' "$0" 'failed to determine rc directory' >&2; }
+    cd "$rc" || { printf '%s: %s\n' "$0" 'failed to change directory' >&2; }
 
     # the script column has to be stupid wide because names are repeated twice for anchors.
     # column lengths: 45, 10, 4, 4, 4, 4

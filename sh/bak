@@ -16,7 +16,7 @@ bak() { ### @-
     ### -rw-r--r-- 1 notwa None 0 Aug  1 08:02 butts.bak
     ### -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.bak.bak
     ### ```
-    [ $# -gt 0 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
+    [ $# -gt 0 ] || { printf '%s\n' "$0: too few arguments" >&2; return 1; }
     local ret=0 f=
     for f; do
         if [ -e "$f.bak" ]; then

@@ -9,7 +9,7 @@ days() { ### @-
     ### 18838
     ### ```
     # FIXME: this doesn't always work in busybox because its `date` is too simple.
-    [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    [ $# -le 1 ] || { printf '%s\n' "$0: too many arguments" >&2; return 1; }
     echo $(( ($(date +%s) - $(date -d "$1" +%s)) / 60 / 60 / 24 ))
 }
 

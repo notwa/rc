@@ -62,7 +62,7 @@ softlink_nix() {
 }
 
 list_files() {
-    find "${1:-.}" -maxdepth 1 -printf "%P\n" | while read -r f; do
+    find "${1:-.}" -maxdepth 1 -printf '%P\n' | while read -r f; do
         [ "${#f}" != 0 ] || continue
         pl "$f"
     done

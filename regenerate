@@ -4,7 +4,7 @@ NAME="$0"
 
 note() {
     local IFS=" "
-    printf "%s\n" "$*"
+    printf '%s\n' "$*"
 }
 
 warn() {

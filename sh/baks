@@ -22,7 +22,7 @@ baks() { ### @-
         local bak="$fp.$now.bak"
         if [ -s "$bak" ]; then
             #note "how in the hell?" "$bak" "already exists"
-            printf "%s %s %s\n" "how in the hell?" "$bak" "already exists"
+            printf '%s %s %s\n' "how in the hell?" "$bak" "already exists"
             ret=1
         fi
         cp -p "$fp" "$bak" || ret=1

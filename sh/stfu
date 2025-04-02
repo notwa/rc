@@ -37,7 +37,7 @@ stfu() { ### @-
     local dirty=0 temp="$STFU_DIR"
     if [ -z "$temp" ]; then
         temp="$(mktemp -dt stfu.XXXXXXXXXX)"
-        [ $? -eq 0 ] || { printf "%s\n" "$0: failed create temporary directory" >&2; return 1; }
+        [ $? -eq 0 ] || { printf '%s\n' "$0: failed create temporary directory" >&2; return 1; }
         dirty=1
     fi
 
@@ -53,33 +53,33 @@ stfu() { ### @-
         fi
     else
         if [ -n "$STFU_DIR" ]; then
-            printf "%s\n" "$0: invalid temporary directory, please unset STFU_DIR" >&2
+            printf '%s\n' "$0: invalid temporary directory, please unset STFU_DIR" >&2
         else
-            printf "%s\n" "$0: something went horribly wrong, maybe you can tell?" "$perms" "$realtemp" >&2
+            printf '%s\n' "$0: something went horribly wrong, maybe you can tell?" "$perms" "$realtemp" >&2
         fi
         return 1
     fi
 
     local time="$(date -u '+%s')"
-    [ $? -eq 0 ] || { printf "%s\n" "$0: failed to get current time" >&2; return 1; }
+    [ $? -eq 0 ] || { printf '%s\n' "$0: failed to get current time" >&2; return 1; }
 
-    mkdir -p "$temp" || { printf "%s\n" "$0: failed to create temp directory" >&2; return 1; }
+    mkdir -p "$temp" || { printf '%s\n' "$0: failed to create temp directory" >&2; return 1; }
 
     while [ -e "$temp/out_$time" ] || [ -e "$temp/err_$time" ]; do time=$((time+1)); done
     local out="$temp/out_$time"
     local err="$temp/err_$time"
 
-    touch "$out" && touch "$err" || { printf "%s\n" "$0: failed to create temp files" >&2; return 1; }
+    touch "$out" && touch "$err" || { printf '%s\n' "$0: failed to create temp files" >&2; return 1; }
 
     #local out="$(mktemp -t -p "$temp" out_XXXXXX)"
-    #[ $? -eq 0 ] || { printf "%s\n" "$0: failed to create temp file" >&2; return 1; }
+    #[ $? -eq 0 ] || { printf '%s\n' "$0: failed to create temp file" >&2; return 1; }
     #local err="$(mktemp -t -p "$temp" err_XXXXXX)"
-    #[ $? -eq 0 ] || { printf "%s\n" "$0: failed to create temp file" >&2; return 1; }
+    #[ $? -eq 0 ] || { printf '%s\n' "$0: failed to create temp file" >&2; return 1; }
 
     local ret=0 tail="${STFU_TAIL:-20}"
     "$@" > "$out" 2> "$err" || ret=$?
     if [ $ret -ne 0 ]; then
-        printf "command failed with exit status %s:\n" $ret >&2
+        printf 'command failed with exit status %s:\n' $ret >&2
         echo2 "$@"
         echo2
         note '$ tail -n' "$tail" "$out"

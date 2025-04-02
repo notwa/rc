@@ -3,7 +3,7 @@
 
 similar() { ### @-
     ### highlight adjacent lines up to the first inequivalent character.
-    [ $# -eq 0 ] || { printf "%s\n" "$0: does not take arguments" >&2; return 1; }
+    [ $# -eq 0 ] || { printf '%s\n' "$0: does not take arguments" >&2; return 1; }
     awk '
     {
         i=0

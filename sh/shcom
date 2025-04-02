@@ -13,7 +13,7 @@ shcom() { ### @-
     ### ```
     ### hey
     ### ```
-    [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    [ $# -le 0 ] || { printf '%s\n' "$0: too many arguments" >&2; return 1; }
     local delim="#""#""#" block='```'
     local ret=0 opened=0 closed=0 seen_open=0 seen_close=0 left='' right=''
 

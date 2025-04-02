@@ -20,7 +20,7 @@ e() { ### @-
 
     (running pid cmd | while read -r pid cmd; do
         if [ "$cmd" = "$editor" ]; then
-            printf "%s (%s)\n" "$editor is already running" "$pid" >&2
+            printf '%s (%s)\n' "$editor is already running" "$pid" >&2
             confirm
             exit
         fi

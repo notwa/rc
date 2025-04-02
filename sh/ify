@@ -11,7 +11,7 @@ ify() { ### @-
     ### $ ll /etc
     ### ```
 
-    [ $# -ge 2 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
+    [ $# -ge 2 ] || { printf '%s\n' "$0: too few arguments" >&2; return 1; }
     local ex="$1"
     shift
     "$@" | "$ex"

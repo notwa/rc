@@ -13,7 +13,7 @@ now() { ### @-
     ### $ now '@1234567890'
     ### 2009-02-13_84690000
     ### ```
-    [ $# -le 1 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    [ $# -le 1 ] || { printf '%s\n' "$0: too many arguments" >&2; return 1; }
 
     local dt= fmt='+%F_%T_%N'
     if [ -z "$1" ]; then

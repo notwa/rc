@@ -11,8 +11,8 @@ countdiff() { ### @-
     ### 739
     ### ```
 
-    [ $# -gt 1 ] || { printf "%s\n" "$0: too few arguments" >&2; return 1; }
-    [ $# -le 2 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    [ $# -gt 1 ] || { printf '%s\n' "$0: too few arguments" >&2; return 1; }
+    [ $# -le 2 ] || { printf '%s\n' "$0: too many arguments" >&2; return 1; }
     git --no-pager diff --stat --no-color --no-index "$1" "$2" \
     | awk ' /changed/{print $4+$6;a=1}END{if(!a)print 0}'
 }

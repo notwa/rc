@@ -19,7 +19,7 @@ task=$*
 
 die(){
 x=${?#0}
-printf "failed to %s\n" "$task" >&2
+printf 'failed to %s\n' "$task" >&2
 exit ${x:-1}
 }
 

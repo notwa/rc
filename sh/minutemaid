@@ -46,7 +46,7 @@ minutemaid() { ### @-
     if [ "$interval" -gt 0 ] 2>/dev/null; then
         :
     else
-        printf "%s\n" "$0: interval must be a positive integer" >&2
+        printf '%s\n' "$0: interval must be a positive integer" >&2
         return 1
     fi
 

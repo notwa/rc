@@ -94,13 +94,13 @@ compile() { ### @-
         if [ -z "$clang" ]; then # don't have native clang?
             # then maybe we have clang-msvc installed.
             local dir=
-            printf "%s\n" "/c/Program Files/LLVM"*(On/N[1]) | read -r dir
+            printf '%s\n' "/c/Program Files/LLVM"*(On/N[1]) | read -r dir
             if [ -d "$dir" ] && [ -e "$dir/bin/clang" ]; then
                 clang="$dir/bin/clang"
 
                 # not sure if i'll need this:
                 #local clang_include=
-                #printf "%s\n" "$dir/lib/clang/"*(On/N[1]) | read -r clang_include
+                #printf '%s\n' "$dir/lib/clang/"*(On/N[1]) | read -r clang_include
                 #[ -n "$clang_include" ] || { echo "failed glob; missing clang include" >&2; return 1 }
                 #clang_flags+=(-I"$clang_include/include")
 
@@ -109,8 +109,8 @@ compile() { ### @-
         fi
 
         local winkit=
-        printf "%s\n" "/c/Program Files (x86)/Windows Kits/"*(on/N[1]) | read -r winkit
-        [ -z "$winkit" ] || printf "%s\n" "$winkit/Lib/"*(On/N[1]) | read -r winkit
+        printf '%s\n' "/c/Program Files (x86)/Windows Kits/"*(on/N[1]) | read -r winkit
+        [ -z "$winkit" ] || printf '%s\n' "$winkit/Lib/"*(On/N[1]) | read -r winkit
 
         if [ -z "$winkit" ]; then
             #echo "failed glob; missing winkit" >&2
@@ -121,12 +121,12 @@ compile() { ### @-
             [ "$MSYSTEM" = MINGW64 ] && clarch="/amd64" || clarch=""
             [ "$MSYSTEM" = MINGW64 ] && arch="x64" || arch="x86"
             if [ -d "/c/Program Files (x86)/Microsoft Visual Studio" ]; then # 2017+
-                printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio/20"*(On/N[1]) | read vc
-                printf "%s\n" "$vc"/*/VC | read vc
-                printf "%s\n" "$vc/Tools/MSVC/"*(On/N[1]) | read vc
+                printf '%s\n' "/c/Program Files (x86)/Microsoft Visual Studio/20"*(On/N[1]) | read vc
+                printf '%s\n' "$vc"/*/VC | read vc
+                printf '%s\n' "$vc/Tools/MSVC/"*(On/N[1]) | read vc
                 msvc_dig_deep="yes"
             else # older versions
-                printf "%s\n" "/c/Program Files (x86)/Microsoft Visual Studio "*(On/N[1]) | read vc
+                printf '%s\n' "/c/Program Files (x86)/Microsoft Visual Studio "*(On/N[1]) | read vc
                 vc="$vc/VC"
             fi
 

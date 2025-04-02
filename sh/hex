@@ -16,7 +16,7 @@ hex() { ### @-
     ###
     ### **NOTE:** there also exists a hex(1) program provided by
     ### the *basez* package that i don't use.
-    printf "%08X\n" "$(($@))"
+    printf '%08X\n' "$(($@))"
 }
 
 [ -n "${preload+-}" ] || hex "$@"

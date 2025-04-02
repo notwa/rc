@@ -7,7 +7,7 @@ wipe() { ### @-
     ### and that your terminal's scrollback didn't cap out and eat text.
     ###
     ### **TODO:** rename because wipe(1) already exists.
-    [ $# -le 0 ] || { printf "%s\n" "$0: too many arguments" >&2; return 1; }
+    [ $# -le 0 ] || { printf '%s\n' "$0: too many arguments" >&2; return 1; }
     clear
     clear # twice because mintty is weird
     printf '\033[30m\033[107m\n'

@@ -12,7 +12,7 @@ echo2() { ### @-
     ### -e this\nthat those
     ### ```
     local IFS=' '
-    printf "%s\n" "$*" >&2
+    printf '%s\n' "$*" >&2
 }
 
 [ -n "${preload+-}" ] || echo2 "$@"

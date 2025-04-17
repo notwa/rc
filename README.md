@@ -530,21 +530,21 @@ $ now '@1234567890'
 
 ### [oshi](/sh/oshi#L4)
 
-upload files (or stdin) to [oshi.at.](https://oshi.at)
+upload files (or stdin) to [oshi.ec.](https://oshi.ec)
 this script exits with the number of failed uploads; up to 255 at once.
 directories are skipped. for now, file expiry is hard-coded at 2 weeks.
 
 ```
 $ echo test | oshi
-MANAGE: https://oshi.at/a/7809e5e8a8b5c28555b1e8cadc99b069d08a5d09
-DL: https://oshi.at/ReTn/Dxzy
+MANAGE: https://oshi.ec/a/7809e5e8a8b5c28555b1e8cadc99b069d08a5d09
+DL: https://oshi.ec/ReTn/Dxzy
 
 $ oshi ~/play/{hey,you,fake,empty}
-MANAGE: https://oshi.at/a/9b56e4c5843006d491fabe859ea5746a8f36760c
-DL: https://oshi.at/obFf/hey
+MANAGE: https://oshi.ec/a/9b56e4c5843006d491fabe859ea5746a8f36760c
+DL: https://oshi.ec/obFf/hey
 oshi: expires in 14 days: /home/notwa/play/hey
-MANAGE: https://oshi.at/a/f2dc46ae900ca7465a377d7a7942e722f87ff483
-DL: https://oshi.at/JLBc/you
+MANAGE: https://oshi.ec/a/f2dc46ae900ca7465a377d7a7942e722f87ff483
+DL: https://oshi.ec/JLBc/you
 oshi: expires in 14 days: /home/notwa/play/you
 oshi: no such file: /home/notwa/play/fake
 oshi: skipping directory: /home/notwa/play/empty

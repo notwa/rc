@@ -2,21 +2,21 @@
 # compat: +ash +bash +dash +hush +ksh +mksh +oksh -osh +posh +yash +zsh
 
 __oshi() { ### @oshi
-    ### upload files (or stdin) to [oshi.at.](https://oshi.at)
+    ### upload files (or stdin) to [oshi.ec.](https://oshi.ec)
     ### this script exits with the number of failed uploads; up to 255 at once.
     ### directories are skipped. for now, file expiry is hard-coded at 2 weeks.
     ###
     ### ```
     ### $ echo test | oshi
-    ### MANAGE: https://oshi.at/a/7809e5e8a8b5c28555b1e8cadc99b069d08a5d09
-    ### DL: https://oshi.at/ReTn/Dxzy
+    ### MANAGE: https://oshi.ec/a/7809e5e8a8b5c28555b1e8cadc99b069d08a5d09
+    ### DL: https://oshi.ec/ReTn/Dxzy
     ###
     ### $ oshi ~/play/{hey,you,fake,empty}
-    ### MANAGE: https://oshi.at/a/9b56e4c5843006d491fabe859ea5746a8f36760c
-    ### DL: https://oshi.at/obFf/hey
+    ### MANAGE: https://oshi.ec/a/9b56e4c5843006d491fabe859ea5746a8f36760c
+    ### DL: https://oshi.ec/obFf/hey
     ### oshi: expires in 14 days: /home/notwa/play/hey
-    ### MANAGE: https://oshi.at/a/f2dc46ae900ca7465a377d7a7942e722f87ff483
-    ### DL: https://oshi.at/JLBc/you
+    ### MANAGE: https://oshi.ec/a/f2dc46ae900ca7465a377d7a7942e722f87ff483
+    ### DL: https://oshi.ec/JLBc/you
     ### oshi: expires in 14 days: /home/notwa/play/you
     ### oshi: no such file: /home/notwa/play/fake
     ### oshi: skipping directory: /home/notwa/play/empty
@@ -32,7 +32,7 @@ __oshi() { ### @oshi
     hits=0 total=0
 
     if [ $# = 0 ]; then
-        curl -f -F f=@- -F expire=20160 -F randomizefn=1 https://oshi.at && hits=1 || true
+        curl -f -F f=@- -F expire=20160 -F randomizefn=1 https://oshi.ec && hits=1 || true
         total=1
     elif [ $# -gt 255 ]; then
         recede "too many arguments (max: 255)"
@@ -63,7 +63,7 @@ __oshi() { ### @oshi
             continue
         fi
 
-        if curl -fg -F f=@"$g" -F expire=20160 -F filename="${f##*/}" https://oshi.at; then
+        if curl -fg -F f=@"$g" -F expire=20160 -F filename="${f##*/}" https://oshi.ec; then
             inform "expires in 14 days: $f"
             : $((hits+=1))
         else

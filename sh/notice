@@ -120,7 +120,7 @@ __notice_log() {
 #        sh_envs               536870912-200-4-x or  512 MiB (untested)
 #        se_uguu                67108864-200-7-x or   64 MiB (tested)
 #        org_c_net_paste        50000000         or   47 MiB (tested)
-#        at_oshi              5000000000-200-1-x or 4768 MiB (untested)
+#        ec_oshi              5000000000-200-1-x or 4768 MiB (untested)
 #        net_filebin           unlimited?
 #        com_bashupload      50000000000         or   47 GiB (untested)
 # (fast) at_x0                 232783872-200-4-x or  222 MiB (tested) (used to be 100 MiB)
@@ -169,14 +169,15 @@ __notice_upload_to_io_file() {
 	aux="$normal" # no direct link, i think it's based on User-Agent
 }
 
-__notice_upload_to_at_oshi() {
-	target=oshi.at
+__notice_upload_to_ec_oshi() {
+	target=oshi.ec
 	# defaults: 1 day, semi-permanent (remains up to 1000 downloads?)
 	# configured: 14 days instead
 	# NOTE: spaces are automatically converted (by the server) to underscores.
 	__notice_compute_form_limit "f" "${1##*/}" "${bytes:-0}" 5000000000 || return 128
 	__notice_escape "$1" '\\"'
-	raw="$(__notice_curl -F "f=@\"$REPLY\"" -F expire=20160 "https://$target")" || return
+	set -- "https://$target" --insecure --resolve "$target:443:194.15.112.248"
+	raw="$(__notice_curl -F "f=@\"$REPLY\"" -F expire=20160 "$@")" || return
 	normal="http${raw##*DL: http}"; normal="${normal%%[!!-~]*}"
 	aux="http${raw##*MANAGE: http}"; aux="${aux%%[!!-~]*}"
 }
@@ -316,7 +317,7 @@ __notice_upload() {
 
 	REPLY=
 	__notice_upload_to_sh_envs              "$file" || __notice_retrying ||
-	__notice_upload_to_at_oshi              "$file" || __notice_retrying ||
+	__notice_upload_to_ec_oshi              "$file" || __notice_retrying ||
 	__notice_upload_to_net_filebin          "$file" || __notice_retrying ||
 	__notice_upload_to_org_c_net_paste      "$file" || __notice_retrying ||
 	__notice_upload_to_io_file              "$file" || __notice_retrying ||

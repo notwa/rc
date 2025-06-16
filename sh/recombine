@@ -4,11 +4,7 @@
 [ -z "${IFS+-}" ] || { echo >&2 this script must be sourced from shrc; exit 1; }
 cd -- "${HOME:?}/sh" || exit
 
-case "$0" in
-(-*) zero="${0#-}";;
-(/*) zero="${0##*/}";;
-(*) zero="$0"
-esac
+case "$0" in (-*) zero="${0#-}";; (/*) zero="${0##*/}";; (*) zero="$0";; esac
 
 [ "$zero" != recombine ] || zero=zsh # only zsh does this (AFAIK)
 

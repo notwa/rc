@@ -36,7 +36,7 @@ rgn() ### @- invoke ripgrep without respecting `.gitignore` files.
   { rg -u "$@"; }
 
 ryp()
-  { rg -M99 -g '*.py' "$@"; }
+  { rg -M99 -g '*.py' --sort=modified "$@"; }
 
 curls() ### @- invoke curl with less noise.
   { curl -sS "$@"; }

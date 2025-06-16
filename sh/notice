@@ -246,7 +246,7 @@ __notice_upload_to_sh_envs() {
 	# banned MIME types: application/java-archive, application/java-vm
 	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 536870912 || return 128
 	__notice_escape "$1" '\\"'
-	raw="$(__notice_curl -F "file=@\"$REPLY\"" -Fsecret= -Fexpires=336 "https://$target")" || return
+	raw="$(__notice_curl -F "file=@\"$REPLY\"" -Fsecret= -Fexpires=336 -Agithub.com/notwa/rc "https://$target")" || return
 	aux="$raw"
 	normal="$raw/${1##*/}"
 }
@@ -318,10 +318,10 @@ __notice_upload() {
 	REPLY=
 	__notice_upload_to_sh_envs              "$file" || __notice_retrying ||
 	__notice_upload_to_ec_oshi              "$file" || __notice_retrying ||
+	__notice_upload_to_moe_catbox_litterbox "$file" || __notice_retrying ||
 	__notice_upload_to_net_filebin          "$file" || __notice_retrying ||
 	__notice_upload_to_org_c_net_paste      "$file" || __notice_retrying ||
 	__notice_upload_to_io_file              "$file" || __notice_retrying ||
-	__notice_upload_to_moe_catbox_litterbox "$file" || __notice_retrying ||
 	__notice_upload_to_com_bashupload       "$file" || __notice_retrying ||
 	{
 		__notice_warn "failed to upload to every service, exiting."

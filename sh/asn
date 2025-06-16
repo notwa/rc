@@ -22,6 +22,8 @@ __asn_txt() {
 }
 
 __asn_txt_bad() {
+    # NOTE TO SELF: if i use dnslookup, i should unset these envvars:
+    # CLASS DNSSEC EDNSOPT HTTP3 JSON PAD RRTYPE SUBNET TIMEOUT VERBOSE VERIFY
     REPLY="$(nslookup -type=TXT "$@" 2>/dev/null)"
     [ "${REPLY#Server:}" != "$REPLY" ] || return 2
     [ "${REPLY#*\"}" != "$REPLY" ] && REPLY="${REPLY#*\"}" || return 1
@@ -34,10 +36,10 @@ __asn_lookup() {
     local remote= ip= ish= REPLY= sep= asn= desc=
     remote=asn.cymru.com
     ip="${1:?missing argument}"
-    ish="${ip%.*}"
+    ish="${ip%.*}" # /24
     sep=' | '
 
-    __asn_rev "$ish"
+    __asn_rev "$ish" # keep the first 24 bits when querying (x.y.z.w => z.y.x)
     if [ -n "${__asn_replies["$ish"]}" ]; then
         REPLY="${__asn_replies["$ish"]}"
         [ "$REPLY" != "n/a" ] || return # as if __asn_txt below had returned 1

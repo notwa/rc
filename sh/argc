@@ -50,6 +50,7 @@ argc() { ### @- validate the number of arguments in a function.
         return 1;;
     esac
 
+    # FIXME: why doesn't oksh/loksh like this?
     if [ "$argc" "$cond" "$want" ] 2>/dev/null; then
         :
     else

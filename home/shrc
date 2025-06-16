@@ -12,7 +12,7 @@ promptpercent autopushd normstarsilent completealiases notify sharehistory \
 histignoredups kshtypeset nopromptsubst completeinword histexpiredupsfirst \
 menucomplete autocd; fi # in the event that .zshrc did not source at startup
 
-__prepare() {
+__prepare() { # there is a point where we needed to stop and we have clearly passed it
 pl() { printf '%s\n' "$@"; }; die() { pl >&2 "prepare: failed to $*"; exit 1; }
 trap 'echo /dev/null' INT EXIT && set +efuC && LC_ALL=C && unset IFS a s v x &&
 if is_zsh; then set -y +o NOMATCH +o FUNCTION_ARGZERO && 0=zsh; fi || die reset

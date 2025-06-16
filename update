@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-here="$(readlink -f "$0")" && here="${here%/*}" && CDPATH= cd "$here" || exit
+here="$(readlink -f "$0")" && here="${here%/*}" && CDPATH= cd -- "$here" || exit
 #remote="https://github.com/notwa/rc/archive/master.tar.gz"
 remote="https://eaguru.guru/git/notwa/rc/archive/master.tar.gz"
 

@@ -528,54 +528,6 @@ $ now '@1234567890'
 2009-02-13_84690000
 ```
 
-### [oshi](/sh/oshi#L4)
-
-upload files (or stdin) to [oshi.ec.](https://oshi.ec)
-this script exits with the number of failed uploads; up to 255 at once.
-directories are skipped. for now, file expiry is hard-coded at 2 weeks.
-
-```
-$ echo test | oshi
-MANAGE: https://oshi.ec/a/7809e5e8a8b5c28555b1e8cadc99b069d08a5d09
-DL: https://oshi.ec/ReTn/Dxzy
-
-$ oshi ~/play/{hey,you,fake,empty}
-MANAGE: https://oshi.ec/a/9b56e4c5843006d491fabe859ea5746a8f36760c
-DL: https://oshi.ec/obFf/hey
-oshi: expires in 14 days: /home/notwa/play/hey
-MANAGE: https://oshi.ec/a/f2dc46ae900ca7465a377d7a7942e722f87ff483
-DL: https://oshi.ec/JLBc/you
-oshi: expires in 14 days: /home/notwa/play/you
-oshi: no such file: /home/notwa/play/fake
-oshi: skipping directory: /home/notwa/play/empty
-oshi: successfully uploaded 2/4 files
-oshi: failed to upload 2/4 files
-```
-
-### [oxo](/sh/oxo#L14)
-
-upload files (or stdin) to [0x0.st.](https://0x0.st)
-this script exits with the number of failed uploads; up to 255 at once.
-file retention period (30 to 365 days) is only computed for arguments.
-directories are skipped. please review the terms of service
-[on the website](https://0x0.st) before uploading files.
-
-```
-$ echo test | oxo
-https://0x0.st/sj2.txt
-oxo: successfully uploaded 1/1 file
-
-$ oxo ~/play/{hey,you,fake,empty}
-https://0x0.st/-3rz.txt
-oxo: expires in 365 days: /home/notwa/play/hey
-https://0x0.st/-3ri.txt
-oxo: expires in 365 days: /home/notwa/play/you
-oxo: no such file: /home/notwa/play/fake
-oxo: skipping empty file: /home/notwa/play/empty
-oxo: successfully uploaded 2/4 files
-oxo: failed to upload 2/4 files
-```
-
 ### [pacbm](/sh/pacbm#L6)
 
 display and order installed pacman packages by their filesize ascending,
@@ -1005,7 +957,7 @@ WHOA but for C++ (specifically g++) only.
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [reload (zshrc)](/home/zshrc#L257)
+### [reload (zshrc)](/home/zshrc#L254)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
@@ -1090,8 +1042,6 @@ prepend entries to `$PATH` and remove their duplications.
 | [notice](#notice)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [now](#now)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [obtain](#obtain)                             |       *sh* | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    |
-| [oshi](#oshi)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    |
-| [oxo](#oxo)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [pause](#pause)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ⭕    | ✔️    | ✔️    | ✔️    |
 | [permit](#permit)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

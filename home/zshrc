@@ -208,9 +208,6 @@ alias -g WHOA='${whoa[@]}' ### @ WHOA - expand to several C/C++ flags to ease de
 alias -g WHEE='${whee[@]}' ### @ WHEE - WHOA but for C++ (specifically g++) only.
 alias -g WELP='${welp[@]}' ### @ WELP - expand to C++ flags to enable a C++-as-C facade.
 
-(( $+aliases[0x0.st] )) && unalias 0x0.st
-0x0.st() oxo "$@" # zsh hates the alias i set in .shrc, so use this instead
-
 function {
     # initialize prompts.
 

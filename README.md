@@ -821,89 +821,91 @@ reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
-### [aligntabs (sh/zzz)](/sh/zzz#L59)
+**TODO:** rename because POSIX.1-2024 reserves this name.
+
+### [aligntabs (sh/zzz)](/sh/zzz#L60)
 
 align tab-delimited fields in stdin.
 
-### [crawla (sh/zzz)](/sh/zzz#L70)
+### [crawla (sh/zzz)](/sh/zzz#L71)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (sh/zzz)](/sh/zzz#L73)
+### [crawlz (sh/zzz)](/sh/zzz#L74)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (sh/zzz)](/sh/zzz#L76)
+### [diff (sh/zzz)](/sh/zzz#L77)
 
 use git's diff subcommand for general diffing.
 
-### [gc (sh/zzz)](/sh/zzz#L79)
+### [gc (sh/zzz)](/sh/zzz#L80)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (sh/zzz)](/sh/zzz#L83)
+### [counts (sh/zzz)](/sh/zzz#L84)
 
 count files in the current directory, including files found recursively.
 
-### [exts (sh/zzz)](/sh/zzz#L86)
+### [exts (sh/zzz)](/sh/zzz#L87)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (sh/zzz)](/sh/zzz#L90)
+### [nocom (sh/zzz)](/sh/zzz#L91)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (sh/zzz)](/sh/zzz#L93)
+### [jrep (sh/zzz)](/sh/zzz#L94)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (sh/zzz)](/sh/zzz#L96)
+### [bomb (sh/zzz)](/sh/zzz#L97)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (sh/zzz)](/sh/zzz#L99)
+### [cleanse (sh/zzz)](/sh/zzz#L100)
 
 strip unprintable and non-ASCII characters.
 
-### [double (sh/zzz)](/sh/zzz#L102)
+### [double (sh/zzz)](/sh/zzz#L103)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (sh/zzz)](/sh/zzz#L107)
+### [katagana (sh/zzz)](/sh/zzz#L108)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (sh/zzz)](/sh/zzz#L111)
+### [makepkgf (sh/zzz)](/sh/zzz#L112)
 
 make the freakin' package!
 
-### [rakef (sh/zzz)](/sh/zzz#L114)
+### [rakef (sh/zzz)](/sh/zzz#L115)
 
 make the freakin' gem!
 
-### [relog (sh/zzz)](/sh/zzz#L117)
+### [relog (sh/zzz)](/sh/zzz#L118)
 
 log on again to refresh your unix groups, etc.
 
-### [carry (sh/zzz)](/sh/zzz#L120)
+### [carry (sh/zzz)](/sh/zzz#L121)
 
 copy files in a plain way using rsync. affected by umask.
 
-### [colors (sh/zzz)](/sh/zzz#L132)
+### [colors (sh/zzz)](/sh/zzz#L133)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L174)
+### [morecolors (sh/zzz)](/sh/zzz#L175)
 
 print all 256 colors that are available on most terminals.
 

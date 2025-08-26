@@ -54,6 +54,7 @@ revend() ### @- reverse the 4-byte endianness of a single file. *this is an in-p
   { objcopy -I binary -O binary --reverse-bytes=4 "$@"; }
 
 clone() ### @- invoke rsync suitably for creating virtually indistinguishable copies of files.
+### **TODO:** rename because POSIX.1-2024 reserves this name.
   { maybesudo rsync -aHA --info=progress2 --no-i-r "$@"; }
 
 aligntabs() ### @- align tab-delimited fields in stdin.

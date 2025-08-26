@@ -241,8 +241,9 @@ __notice_upload_to_moe_catbox_litterbox() {
 	target=litterbox.catbox.moe
 	# defaults: 1 hour, permanent
 	# configured: 3 days, permanent
-	# filenames are randomized. cannot manually delete nor specify expiry.
+	# filenames are randomized. cannot manually delete.
 	# SUPER fast. disallowed filetypes: .exe, .scr, .cpl, .doc*, .jar
+	# time (1h/12h/24h/72h), fileNameLength (6/16), reqtype (fileupload)
 	__notice_compute_form_limit "fileToUpload" "${1##*/}" "${bytes:-0}" 1000000000 || return 128
 	__notice_escape "$1" '\\"'
 	if [ "${1%.exe}" != "$1" ] || [ "${1%.scr}" != "$1" ]; then

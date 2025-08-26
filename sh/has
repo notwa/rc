@@ -2,7 +2,7 @@
 # compat: +ash +bash +dash -hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
 has() { ### @- like `which`, but faster. results go in `$REPLY`, unset if none.
-    [ $# = 1 ] || printf >&2 %s\\n "has: expected exactly 1 argument, got $#" || return 64
+    [ $# = 1 ] || { printf >&2 %s\\n "has: expected exactly 1 argument, got $#"; return 64; }
     unset REPLY || return 70 # readonly bullshit
     case "$1" in (*/*) [ -f "$1" ] && [ -x "$1" ] && REPLY="$1"; return; esac
     [ -z "$ZSH_VERSION" ] || setopt LOCAL_OPTIONS SH_WORD_SPLIT || return 70

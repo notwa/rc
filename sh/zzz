@@ -61,7 +61,7 @@ aligntabs() ### @- align tab-delimited fields in stdin.
   { column -t -s$'\t' "$@"; }
 
 __crawl() (
-    unset CDPATH && cd "${HOME:?\$HOME is unset}" || return
+    unset CDPATH && cd -- "${HOME:?\$HOME is unset}" || return
     [ -d .ssh ] || install -m700 -d .ssh || return # TODO: use umask instead?
     cd .ssh || return
     if ! [ -s crawl ]; then grab crawl && chmod 0600 crawl || return; fi

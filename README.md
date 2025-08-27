@@ -367,6 +367,10 @@ parse command-line arguments, mapping short-flags to variable names.
 select a file from a given or current directory using
 [`fzy`.](https://github.com/jhawthorn/fzy)
 
+### [flaunt](/sh/flaunt#L71)
+
+send diagnostic telemetry to a central server via [notice.](#notice)
+
 ### [ghmd](/sh/ghmd#L7)
 
 convert a markdown file to HTML in the style of GitHub.
@@ -513,6 +517,10 @@ act like [`echo2`,](#echo2) but use a bright color to stand out more.
 
 **NOTE:** there also exists a [note(1)](https://www.daemon.de/projects/note/)
 program provided by the *note* package that i don't use.
+
+### [notice](/sh/notice#L339)
+
+send messages or files to gotify and/or discord.
 
 ### [now](/sh/now#L4)
 
@@ -1022,6 +1030,7 @@ prepend entries to `$PATH` and remove their duplications.
 | [explore](#explore)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [feud](#feud)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ff](#ff)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [flaunt](#flaunt)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ghmd](#ghmd)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [glug](#glug)                                 |       dash | ✔️    | ✔️    | ✔️    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    | ✔️    |
 | [grab](#grab)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

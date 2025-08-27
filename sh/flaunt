@@ -41,7 +41,7 @@ __flaunt_hostname() {
 }
 
 __flaunt_uptime_raw() {
-    if [ -s /proc/uptime ]; then
+    if [ -f /proc/uptime ]; then
         read -r __flaunt_uptime_raw _ < /proc/uptime
     else
         false
@@ -53,6 +53,8 @@ __flaunt_uptime() {
         __t="$(exec uptime -p 2>/dev/null)"
         if [ "${__t#up }" = "$__t" ]; then
             __t="$(exec uptime)" && __t="${__t##* up }" __t="${__t%%,  *}"
+        else
+            __t="${__t#up }"
         fi && [ -n "$__t" ] && __flaunt_uptime="$__t"
     else
         false

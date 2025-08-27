@@ -82,7 +82,7 @@ __flaunt() { ### @flaunt
     if __f; then __g && sh=ash || sh=zsh; else __g && sh=bash || sh=dash; fi
 
     has busybox || has busybox-static
-    __flaunt_busybox="$REPLY" #"${__bb:-false}"
+    __flaunt_busybox="$REPLY"
     if __f && __g; then # only busybox exhibits this behavior
         __bb() { PATH=: busybox "$@"; } # only works within busybox shells
     else

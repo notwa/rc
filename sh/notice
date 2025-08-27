@@ -336,7 +336,7 @@ __notice_read_conf() {
 	done < "$1"
 }
 
-__notice() {
+__notice() { ### @ notice - send messages or files to gotify and/or discord.
 	unset LC_ALL REPLY aux code conf extras line message normal title token url
 	export LC_ALL=C
 	conf="${XDG_CONFIG_HOME:-"$HOME/.config"}/notice.conf"

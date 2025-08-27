@@ -367,7 +367,7 @@ parse command-line arguments, mapping short-flags to variable names.
 select a file from a given or current directory using
 [`fzy`.](https://github.com/jhawthorn/fzy)
 
-### [flaunt](/sh/flaunt#L71)
+### [flaunt](/sh/flaunt#L73)
 
 send diagnostic telemetry to a central server via [notice.](#notice)
 

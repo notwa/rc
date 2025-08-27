@@ -1,0 +1,118 @@
+#!/usr/bin/env sh
+# compat: +ash +bash +dash -hush +ksh +mksh +oksh +osh +posh +yash +zsh
+# NOTE: shell compatibility has not actually been manually checked yet.
+
+__flaunt_usage() {
+    printf 'usage: %s %s\n' "${1:-flaunt}" '{aws|boot}'
+}
+
+__flaunt_curl() {
+    if curl -q --no-progress-meter 127.255.255.255 >/dev/null 2>&1; [ $? = 2 ]
+    then __flaunt_curl() { curl -sS "$@"; }
+    else __flaunt_curl() { curl --no-progress-meter "$@"; }
+    fi
+    __flaunt_curl "$@"
+}
+
+__flaunt_aws() {
+    __ip=169.254.169.254 # yes, this is a bogon
+    __key=X-aws-ec2-metadata-token
+    __ver=2024-04-11
+    if __token="$(__flaunt_curl -f -X PUT -H "$__key-ttl-seconds: 5" http://$__ip/latest/api/token)"; then
+        __flaunt_id="$(__flaunt_curl -H "$__key: $__token" http://$__ip/$__ver/meta-data/instance-type)" &&
+        __flaunt_az="$(__flaunt_curl -H "$__key: $__token" http://$__ip/$__ver/meta-data/placement/availability-zone)" &&
+        __flaunt_ip="$(__flaunt_curl -H "$__key: $__token" http://$__ip/$__ver/meta-data/public-ipv4)"
+    else
+        false
+    fi || __flaunt_ip= __flaunt_az= __flaunt_ip='(ERROR)'
+    unset __ip __key __ver __token
+}
+
+__flaunt_hostname() {
+    if has hostname; then # pre-systemd & compat
+        __flaunt_hostname="$(exec hostname)"
+    elif has hostnamectl; then # systemd
+        __flaunt_hostname="$(exec hostnamectl hostname)"
+    elif [ -s /etc/hostname ]; then
+        read -r __flaunt_hostname _ < /etc/hostname
+    else
+        false
+    fi || __flaunt_hostname='(ERROR)'
+}
+
+__flaunt_uptime_raw() {
+    if [ -s /proc/uptime ]; then
+        read -r __flaunt_uptime_raw _ < /proc/uptime
+    else
+        false
+    fi || __flaunt_uptime_raw='(ERROR)'
+}
+
+__flaunt_uptime() {
+    if has uptime; then
+        __t="$(exec uptime -p 2>/dev/null)"
+        if [ "${__t#up }" = "$__t" ]; then
+            __t="$(exec uptime)" && __t="${__t##* up }" __t="${__t%%,  *}"
+        fi && [ -n "$__t" ] && __flaunt_uptime="$__t"
+    else
+        false
+    fi || __flaunt_uptime='(ERROR)'
+    unset __t
+}
+
+__flaunt_startup() {
+    if has systemd-analyze; then
+        __flaunt_startup="$(exec systemd-analyze)"
+    else
+        __flaunt_startup='(no systemd)'
+    fi || __flaunt_startup='(ERROR)'
+}
+
+__flaunt() { ### @flaunt
+    ### send diagnostic telemetry to a central server via [notice.](#notice)
+
+    LC_ALL=C && export LC_ALL && unset IFS || return
+    #[ $'' ] && cr="$(printf '\n\r')" || cr=$'\n\r'; lf="${cr%?}" cr="${cr#?}"
+
+    for arg; do if [ "$arg" = --help ]; then __flaunt_usage; return 0; fi; done
+    unset arg
+
+    # via ~/sh/recombine:
+    __f() { ! return 1; }; __g() { return 256; }
+    if __f; then __g && sh=ash || sh=zsh; else __g && sh=bash || sh=dash; fi
+
+    has busybox || has busybox-static
+    __flaunt_busybox="$REPLY" #"${__bb:-false}"
+    if __f && __g; then # only busybox exhibits this behavior
+        __bb() { PATH=: busybox "$@"; } # only works within busybox shells
+    else
+        __bb() { "${__flaunt_busybox:-false}" "$@"; }
+    fi
+
+    case "$1,$#" in
+
+    (aws,1)
+        __flaunt_aws # collects ip, id, az
+        notice "New instance ready" \
+"$__flaunt_ip is ${__flaunt_id:-unknown} at ${__flaunt_az:-unknown}"
+    ;;
+
+    (boot,1)
+        __flaunt_hostname
+        __flaunt_uptime_raw
+        __flaunt_uptime
+        __flaunt_startup
+        notice "Ready: $__flaunt_hostname" \
+"Booted $__flaunt_uptime_raw seconds ago ($__flaunt_uptime)
+$__flaunt_startup
+Detected shell: $sh"
+    ;;
+
+    (*) __flaunt_usage >&2; return 64;; # EX_USAGE
+    esac
+}
+
+flaunt()(__flaunt "$@")
+[ -n "${preload+-}" ] || . "${HOME:?}/sh/preload" || exit 2
+eval ${preload:-preload} has notice
+[ -n "${preload+-}" ] || __flaunt "$@"

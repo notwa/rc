@@ -71,7 +71,7 @@ __flaunt_startup() {
 }
 
 __flaunt() { ### @flaunt
-    ### send diagnostic telemetry to a central server via [notice.](#notice)
+    ### send diagnostic telemetry to a central server via [`notice`.](#notice)
 
     LC_ALL=C && export LC_ALL && unset IFS || return
     #[ $'' ] && cr="$(printf '\n\r')" || cr=$'\n\r'; lf="${cr%?}" cr="${cr#?}"

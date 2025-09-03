@@ -222,13 +222,25 @@ function {
     local curse=$s$'?25h' # show cursor (DECTCEM)
     local good=42 # green
     local  bad=41 # red
+    local fore=97 # bright white
 
-    case "${(L)HOST}" in
-    (neobanshee) good=46;; # cyan
-    (spectre)    good=47;; # white
-    (wraith)     good=43;; # yellow
-    (sabotage)   good=45;; # magenta
+    # $HOST :: hostname :: hostnamectl hostname :: /etc/hostname
+    local hostlike="${(L)HOST}"
+    ! [ -e /etc/centos-release ] || hostlike=century # includes armalinux
+    ! [ -e /usr/share/pixmaps/ubuntu-logo.svg ] || hostlike=wormwood
+    ! [ -e /etc/alpine-release ] || hostlike=apparatus
+    # /etc/arch-release :: /usr/share/pixmaps/archlinux-logo.svg
+
+    case "$hostlike" in
+    (spectre)   good=47;; # white (light gray)
+    (*banshee)  good=46;; # cyan (teal)
+    (wraith)    good=43;; # yellow (orange)
+    (phantom*)  good=102 bad=101 fore=30;; # brighter with black text
+    (century)   good=44;; # blue
+    (wormwood)  good=45;; # magenta
+    (apparatus) good=100;; # bright black (dark gray)
     esac
+    # for bg in {40..47} {100..107}; do printf '\e[%i;97m%%\e[m is %3i\n' $bg $bg; done
 
     local t="${TERM%%-*}"
     if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
@@ -248,7 +260,7 @@ function {
         return
     fi
 
-    PROMPT="%{$chset$curse$reset$s%(?.$good.$bad);97$e%}%#%{$reset%} "
+    PROMPT="%{$chset$curse$reset$s%(?.$good.$bad);$fore$e%}%#%{$reset%} "
 }
 
 reload() { ### @-

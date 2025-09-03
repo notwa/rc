@@ -116,7 +116,6 @@ if ! case "$LANG" in (en_US.UTF-8) :;; (en_CA.UTF-8) :;;
 fi
 
 # input prompt:
-#if ! is_zsh && [ -x /usr/bin/zsh ]; then echo >&2 'zsh is available.'; fi
 
 __conf() {
     if   [ -n "$ZSH_VERSION"  ]; then eval 'set -- "${(L)1}"'
@@ -134,10 +133,11 @@ __conf() {
     # for bg in {40..47} {100..107}; do printf '\e[%i;97m%%\e[m is %3i\n' $bg $bg; done
 }
 
-# there are certainly better ways of querying the active OS, but checking for the
-# presence of unique files from their respective filesystem packages is very fast.
+# there certainly are better ways of querying for the active distro, but checking
+# for the presence of files unique to the distro's filesystem package is adequate.
 if   [ -e /etc/centos-release                ]; then __conf century # includes armalinux
 elif [ -e /usr/share/pixmaps/ubuntu-logo.svg ]; then __conf wormwood
 elif [ -e /etc/alpine-release                ]; then __conf apparatus
 else __conf "${HOST:-${HOSTNAME}}"; fi
 # /etc/arch-release :: /usr/share/pixmaps/archlinux-logo.svg
+#if ! is_zsh && [ -x /usr/bin/zsh ]; then echo >&2 'zsh is available.'; fi

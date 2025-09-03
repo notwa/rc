@@ -225,7 +225,10 @@ function {
     local fore=97 # bright white
 
     # $HOST :: hostname :: hostnamectl hostname :: /etc/hostname
-    local hostlike="${(L)HOST}"
+    local hostlike="${(L)HOST}" # zsh-specific syntax for lowercasing a variable
+
+    # there are certainly better ways of querying the active OS, but checking for the
+    # presence of unique files from their respective filesystem packages is very fast.
     ! [ -e /etc/centos-release ] || hostlike=century # includes armalinux
     ! [ -e /usr/share/pixmaps/ubuntu-logo.svg ] || hostlike=wormwood
     ! [ -e /etc/alpine-release ] || hostlike=apparatus

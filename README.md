@@ -943,40 +943,40 @@ without consuming the prompt.
 use a fuzzy finder to select a recent directory in the directory stack
 and change to it without consuming the prompt.
 
-### [OMFG (zshrc)](/home/zshrc#L204)
+### [OMFG (zshrc)](/home/zshrc#L234)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L205)
+### [STFU (zshrc)](/home/zshrc#L235)
 
 silence stderr.
 
-### [SWAP (zshrc)](/home/zshrc#L206)
+### [SWAP (zshrc)](/home/zshrc#L236)
 
 swap stdout and stderr. uses fd 3 as an intermediary.
 
-### [WHOA (zshrc)](/home/zshrc#L207)
+### [WHOA (zshrc)](/home/zshrc#L237)
 
 expand to several C/C++ flags to ease development.
 
-### [WHEE (zshrc)](/home/zshrc#L208)
+### [WHEE (zshrc)](/home/zshrc#L238)
 
 WHOA but for C++ (specifically g++) only.
 
-### [WELP (zshrc)](/home/zshrc#L209)
+### [WELP (zshrc)](/home/zshrc#L239)
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [reload (zshrc)](/home/zshrc#L266)
+### [reload (zshrc)](/home/zshrc#L241)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L38)
+### [dummy (bashrc)](/home/bashrc#L39)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L41)
+### [reload (bashrc)](/home/bashrc#L42)
 
 **TODO:** respect initctl like in `.zshrc`.
 

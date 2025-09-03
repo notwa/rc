@@ -199,6 +199,36 @@ else
     hash -d py=~/Dropbox/py
 fi
 
+conflagrate() {
+    # initialize prompts.
+    # zsh adds a % symbol to newline-less output, so my bash prompt is overkill
+    # NOTE: i've started hardcoding escapes instead of relying on zsh
+    #       because detecting terminal features is too troublesome.
+    # https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Functions-using-CSI-_-ordered-by-the-final-character_s_
+    local chset=$'\033\050B\017' # set G0 to USASCII charset and "shift-in" to it
+    local s=$'\033\133' e=m # CSI and SGR
+    local reset=$s$e curse=$s$'?25h' # reset color, show cursor (DECTCEM)
+
+    local t="${TERM%%-*}"
+    precmd() {}
+    if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
+        # set window title
+        if [ "$t" = tmux ] # don't include host, tmux prepends it
+        then precmd() { print -Pn "\e]2;%~\a" }
+        else precmd() { print -Pn "\e]2;%M: %~\a" }
+        fi
+    elif [ "$t" = alacritty ]; then
+        # Alacritty-v0.15.0-portable.exe -t "MinGW x64" -e "usr/bin/env" PATH="/usr/local/sbin:/usr/local/bin:/usr/bin" MSYSTEM=MINGW64 TERM=alacritty shelly
+        chset= # displays as U+263C for some reason
+    else
+        # act dumb
+        PROMPT="%# "
+        return
+    fi
+
+    PROMPT="%{$chset$curse$reset$s%(?.${okay:-42}.${fail:-41});${fg:-97}$e%}%#%{$reset%} "
+}
+
 . ~/.shrc
 
 alias -g OMFG="1>/dev/null" ### @ OMFG - silence stdout.
@@ -207,64 +237,6 @@ alias -g SWAP="3>&1 1>&2 2>&3" ### @ SWAP - swap stdout and stderr. uses fd 3 as
 alias -g WHOA='${whoa[@]}' ### @ WHOA - expand to several C/C++ flags to ease development.
 alias -g WHEE='${whee[@]}' ### @ WHEE - WHOA but for C++ (specifically g++) only.
 alias -g WELP='${welp[@]}' ### @ WELP - expand to C++ flags to enable a C++-as-C facade.
-
-function {
-    # initialize prompts.
-
-    # zsh adds a % symbol to newline-less output, so my bash prompt is overkill
-    # NOTE: i've started hardcoding escapes instead of relying on zsh
-    #       because detecting terminal features is too troublesome.
-    # https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Functions-using-CSI-_-ordered-by-the-final-character_s_
-    local chset=$'\033\050B\017' # set G0 to USASCII charset and "shift-in" to it
-    local s=$'\033\133' # CSI
-    local e=m           # SGR
-    local reset=$s$e
-    local curse=$s$'?25h' # show cursor (DECTCEM)
-    local good=42 # green
-    local  bad=41 # red
-    local fore=97 # bright white
-
-    # $HOST :: hostname :: hostnamectl hostname :: /etc/hostname
-    local hostlike="${(L)HOST}" # zsh-specific syntax for lowercasing a variable
-
-    # there are certainly better ways of querying the active OS, but checking for the
-    # presence of unique files from their respective filesystem packages is very fast.
-    ! [ -e /etc/centos-release ] || hostlike=century # includes armalinux
-    ! [ -e /usr/share/pixmaps/ubuntu-logo.svg ] || hostlike=wormwood
-    ! [ -e /etc/alpine-release ] || hostlike=apparatus
-    # /etc/arch-release :: /usr/share/pixmaps/archlinux-logo.svg
-
-    case "$hostlike" in
-    (spectre)   good=47;; # white (light gray)
-    (*banshee)  good=46;; # cyan (teal)
-    (wraith)    good=43;; # yellow (orange)
-    (phantom*)  good=102 bad=101 fore=30;; # brighter with black text
-    (century)   good=44;; # blue
-    (wormwood)  good=45;; # magenta
-    (apparatus) good=100;; # bright black (dark gray)
-    esac
-    # for bg in {40..47} {100..107}; do printf '\e[%i;97m%%\e[m is %3i\n' $bg $bg; done
-
-    local t="${TERM%%-*}"
-    if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
-        # set window title
-        if [ "$t" = tmux ] # don't include host, tmux prepends it
-        then precmd() { print -Pn "\e]2;%~\a" }
-        else precmd() { print -Pn "\e]2;%M: %~\a" }
-        fi
-    elif [ "$t" = alacritty ]; then
-        # Alacritty-v0.13.2-portable.exe -t "MinGW x64" -e "usr/bin/env" PATH="/usr/local/sbin:/usr/local/bin:/usr/bin" MSYSTEM=MINGW64 TERM=alacritty shelly
-        precmd() {}
-        chset= # displays as U+263C for some reason
-    else
-        # act dumb
-        precmd() {}
-        PROMPT="%# "
-        return
-    fi
-
-    PROMPT="%{$chset$curse$reset$s%(?.$good.$bad);$fore$e%}%#%{$reset%} "
-}
 
 reload() { ### @-
     ### reload zsh by wiping temp files, recompiling rc files,

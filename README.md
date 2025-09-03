@@ -369,7 +369,7 @@ select a file from a given or current directory using
 
 ### [flaunt](/sh/flaunt#L73)
 
-send diagnostic telemetry to a central server via [notice.](#notice)
+send diagnostic telemetry to a central server via [`notice`.](#notice)
 
 ### [ghmd](/sh/ghmd#L7)
 
@@ -967,7 +967,7 @@ WHOA but for C++ (specifically g++) only.
 
 expand to C++ flags to enable a C++-as-C facade.
 
-### [reload (zshrc)](/home/zshrc#L254)
+### [reload (zshrc)](/home/zshrc#L266)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.

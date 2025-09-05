@@ -64,6 +64,8 @@ __flaunt_uptime() {
 
 __flaunt_startup() {
     if has systemd-analyze; then
+        while [ "$(exec systemctl is-active default.target)" = inactive ]
+        do sleep 0.5; done
         __flaunt_startup="$(exec systemd-analyze)"
     else
         __flaunt_startup='(no systemd)'

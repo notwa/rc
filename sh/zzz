@@ -38,11 +38,11 @@ rgn() ### @- invoke ripgrep without respecting `.gitignore` files.
 ryp()
   { rg -M99 -g '*.py' --sort=modified "$@"; }
 
-curls() ### @- invoke curl with less noise.
-  { curl -sS "$@"; }
-
-curLs()
-  { curl -L --no-progress-meter "$@"; }
+curls() ### @- be a little smarter with curl. (HTTPS only)
+  { curl --proto '=https' --tlsv1.2 --location --fail --connect-timeout 5 "$@"; }
+# --remote-time
+# CentOS-i-mean-AlmaLinux still predates --no-progress-meter.
+# --silent --show-error / --no-progress-meter
 
 ash()
   { PS1='$ ' busybox ash "$@"; }

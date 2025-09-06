@@ -102,8 +102,8 @@ __checkweb_with_httpie() {
 }
 
 __checkweb_with_busybox() {
-    # NOTE: it might be possible that this build of busybox is configured
-    #       such that --help does not return anything. i need to find out.
+    # NOTE: i think you can configure busybox such that it doesn't
+    #       respond to the --help flag, saving a couple kilobytes.
     if set -- $("$prog" --help 2>&1); then
         for token; do
             if __checkweb_is_version "${token#v}"; then

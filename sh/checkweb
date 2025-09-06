@@ -1,0 +1,397 @@
+#!/usr/bin/env sh
+# compat: +bash
+
+# via rust-lang/rustup, username x448:
+__checkweb_openssl_ciphersuites='TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
+__checkweb_gnutls_ciphersuites='SECURE128:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS-ALL:-CIPHER-ALL:-MAC-ALL:-KX-ALL:+AEAD:+ECDHE-ECDSA:+ECDHE-RSA:+AES-128-GCM:+CHACHA20-POLY1305:+AES-256-GCM'
+
+__checkweb_request() {
+    printf 'GET %s HTTP/1.0\r\nHost: %s\r\n\r\n' "${pathy:-/}" "${domain:?}"
+}
+
+__checkweb_by_hand() {
+    __checkweb_request | silently "$@" && __checkweb_okay || __checkweb_fail
+}
+
+__checkweb_no_pipe() {
+    silently "$@" && __checkweb_okay || __checkweb_fail
+}
+
+__checkweb_no_pipe_debug() {
+    "$prog" "$@" 1>&2 && __checkweb_okay || __checkweb_fail
+}
+
+__checkweb_is_version() {
+    case "$1" in (*[!0-9.]*) false;; (*.*) true;; (*) false;; esac
+}
+
+__checkweb_with_curl() {
+    if set -- $("$prog" --version 2>&1); then
+        for token; do
+            if __checkweb_is_version "${token##*/}"; then
+                printf '%s ' "$token"
+                break # delete this line for more verbosity (library versions)
+            fi
+        done
+        echo
+    else __checkweb_fail; return; fi
+
+    __checkweb_preface "(plain)"
+    __checkweb_no_pipe -s -m45 "$uri"
+
+    __checkweb_preface "(secure)" # used by rust and nix communities
+    if [ "$scheme" = https ]; then
+        __checkweb_no_pipe --proto '=https' --tlsv1.2 -LfsS -m45 "$uri"
+    else __checkweb_skip; fi
+
+    __checkweb_preface "(cypher-secure)" # NOTE: won't work with GnuTLS!
+    if [ "$scheme" = https ]; then
+        __checkweb_no_pipe --proto '=https' --tlsv1.2 \
+        --ciphers "$__checkweb_openssl_ciphersuites" -LfsS -m45 "$uri"
+    else __checkweb_skip; fi
+
+    __checkweb_preface "(telnet)"
+    if [ "$scheme" = http ]; then
+        __checkweb_by_hand -s -m45 "telnet://$domain:$port"
+    else __checkweb_skip; fi
+}
+
+__checkweb_with_wget() {
+    if set -- $("$prog" --version 2>&1); then
+        for token; do
+            if __checkweb_is_version "${token##*/}"; then
+                printf '%s ' "$token"
+                break # delete this line for more verbosity (library versions)
+            fi
+        done
+        echo
+    else __checkweb_fail; return; fi
+
+    __checkweb_preface "(plain)"
+    __checkweb_no_pipe -O- -q -t1 -T45 "$uri"
+
+    __checkweb_preface "(secure)"
+    if [ "$scheme" = https ]; then
+        __checkweb_no_pipe --https-only --secure-protocol=TLSv1_2 -O- -q -t1 -T45 "$uri"
+    else __checkweb_skip; fi
+
+    __checkweb_preface "(cypher-secure)" # NOTE: won't work with OpenSSL!
+    if [ "$scheme" = https ]; then
+        __checkweb_no_pipe --https-only --secure-protocol=TLSv1_2 \
+        --ciphers "$__checkweb_gnutls_ciphersuites" -O- -q -t1 -T45 "$uri"
+    else __checkweb_skip; fi
+}
+
+__checkweb_with_httpie() {
+    if   [ "$scheme" = https ]; then prog="${prog%ie}s"
+    elif [ "$scheme" = http  ]; then prog="${prog%ie}"
+    else __checkweb_skip; return; fi
+
+    if set -- $("$prog" --version 2>&1); then
+        for token; do
+            if __checkweb_is_version "$token"; then
+                printf '%s' "$token"
+                break
+            fi
+        done
+        echo
+    else __checkweb_fail; return; fi
+
+    __checkweb_preface "($scheme)"
+    __checkweb_no_pipe --timeout 45 "$hosty"
+}
+
+__checkweb_with_busybox() {
+    # NOTE: it might be possible that this build of busybox is configured
+    #       such that --help does not return anything. i need to find out.
+    if set -- $("$prog" --help 2>&1); then
+        for token; do
+            if __checkweb_is_version "${token#v}"; then
+                printf '%s\n' "${token#v}"
+                break
+            fi
+        done
+    else __checkweb_fail; return; fi
+
+    __checkweb_preface "(wget)"
+    __checkweb_no_pipe wget -O- -q -t1 -T45 "$uri"
+
+    # TODO: detect missing program instead of just saying "fail".
+    __checkweb_preface "(ssl_client)"
+    if [ "$scheme" = https ]; then
+        __checkweb_by_hand ssl_client "$domain"
+    else __checkweb_skip; fi
+
+    __checkweb_preface "(netcat)" # actually called nc here but whatever
+    if [ "$scheme" = http ]; then
+        __checkweb_by_hand nc -w45 "$domain" "$port"
+    else __checkweb_skip; fi
+}
+
+__checkweb_with_openssl() {
+    if [ "$scheme" = http ]; then __checkweb_skip; return; fi
+    # FIXME: -ignore_unexpected_eof -verify_quiet are not always available.
+    set -- -quiet -ign_eof -ignore_unexpected_eof -verify_quiet
+    __checkweb_by_hand s_client "$@" -connect "$domain:$port"
+}
+
+__checkweb_with_bash() {
+    if [ "$scheme" = https ]; then __checkweb_skip; return; fi
+    # TODO: assert return code is <400 as to match the other checks.
+    __checkweb_no_pipe - <<EOF
+exec 3<>"/dev/tcp/$domain/$port"
+printf 'GET %s HTTP/1.0\\r\\nHost: %s\\r\\n\\r\\n' "${pathy:-/}" "${domain:?}" >&3
+while IFS= read -r line _; do printf '%s\\n' "\${line%$'\\r'}"; done <&3
+exec 3>&-
+EOF
+}
+
+__checkweb_with_socat() {
+    if [ "$scheme" = https ]; then __checkweb_skip; return; fi
+    __checkweb_by_hand - "TCP:$domain:$port"
+}
+
+__checkweb_with_websocat() {
+    # NOTE: for some reason, websocat does not always play well with http.
+    #       it will often exit before reading the response from the server.
+    #       this seems to vary depending on the host and server being used.
+    #       there's an overhaul being developed that i suspect may fix this.
+    if   [ "$scheme" = https ]
+    then __checkweb_by_hand -b - "tls:tcp:$domain:$port"
+    else __checkweb_by_hand -b - "tcp:$domain:$port"
+    fi
+}
+
+__checkweb_python_version() {
+    set -- $("$prog" --version 2>&1) && __checkweb_is_version "$2" && python="$2"
+}
+
+__checkweb_python_import() {
+    for lib; do
+        "$prog" - <<EOF
+try: import $lib
+except ImportError: exit(123)
+except: exit(1)
+EOF
+        case $? in
+            (0) true;;
+            (123) __checkweb_miss; return 1;;
+            (*) __checkweb_fail; return 1;;
+        esac
+    done
+}
+
+__checkweb_with_python2() {
+    if [ "$python" ] || __checkweb_python_version; then
+        printf '%s\n' "$python"
+    else __checkweb_fail; return; fi
+    unset python
+
+    # TODO: assert return code is <400 as to match the other checks.
+    [ "$scheme" != https ] &&
+    __checkweb_preface "(socket)" &&
+    __checkweb_no_pipe - <<EOF
+import socket, sys
+try:
+ s = socket.socket()
+ s.connect(('$domain', $port))
+ s.sendall(("GET %s HTTP/1.0\\r\\nHost: %s\\r\\n\\r\\n" % ('${pathy:-/}', '$domain')))
+ list(map(sys.stdout.write, iter((lambda: s.recv(1024)), "")))
+finally: s.close()
+EOF
+    __checkweb_skip
+
+    __checkweb_preface "(urllib)"
+    __checkweb_no_pipe - <<EOF
+import sys, urllib
+sys.stdout.write(urllib.urlopen('$uri').read())
+EOF
+
+    __checkweb_preface "(urllib2)"
+    __checkweb_no_pipe - <<EOF
+import sys, urllib2
+sys.stdout.write(urllib2.urlopen('$uri').read())
+EOF
+
+    __checkweb_preface "(pip/urllib3)"
+    __checkweb_python_import pip &&
+    __checkweb_no_pipe - <<EOF
+import sys
+from pip._vendor.urllib3 import PoolManager
+sys.stdout.write(PoolManager().urlopen("GET", '$uri').data)
+EOF
+
+    __checkweb_preface "(pip/requests)"
+    __checkweb_python_import pip &&
+    __checkweb_no_pipe - <<EOF
+import sys
+from pip._vendor.requests import get
+sys.stdout.write(get('$uri').content)
+EOF
+
+    __checkweb_preface "(urllib3)"
+    __checkweb_python_import urllib3 &&
+    __checkweb_no_pipe - <<EOF
+import sys, urllib3
+sys.stdout.write(urllib3.PoolManager().urlopen("GET", '$uri').data)
+EOF
+}
+
+__checkweb_with_python3() {
+    if [ "$python" ] || __checkweb_python_version; then
+        printf '%s\n' "$python"
+    else __checkweb_fail; return; fi
+    unset python
+
+    # TODO: assert return code is <400 as to match the other checks.
+    [ "$scheme" != https ] &&
+    __checkweb_preface "(socket)" &&
+    __checkweb_no_pipe - <<EOF
+import socket, sys
+with socket.socket() as s:
+ s.connect(('$domain', $port))
+ s.sendall(("GET %s HTTP/1.0\\r\\nHost: %s\\r\\n\\r\\n" % ('${pathy:-/}', '$domain')).encode())
+ sum(map(sys.stdout.buffer.write, iter((lambda: s.recv(1024)), b"")))
+EOF
+
+    __checkweb_preface "(urllib)"
+    __checkweb_no_pipe - <<EOF
+import sys
+from urllib.request import urlopen
+sys.stdout.buffer.write(urlopen('$uri').read())
+EOF
+
+    __checkweb_preface "(pip/urllib3)"
+    __checkweb_python_import pip &&
+    __checkweb_no_pipe - <<EOF
+import sys
+from pip._vendor.urllib3 import PoolManager
+sys.stdout.buffer.write(PoolManager().urlopen("GET", '$uri').data)
+EOF
+
+    __checkweb_preface "(pip/requests)"
+    __checkweb_python_import pip &&
+    __checkweb_no_pipe - <<EOF
+import sys
+from pip._vendor.requests import get
+sys.stdout.buffer.write(get('$uri').content)
+EOF
+
+    # NOTE: this uses the new urllib3 2.0 interface; PoolManager still exists.
+    __checkweb_preface "(urllib3)"
+    __checkweb_python_import urllib3 &&
+    __checkweb_no_pipe - <<EOF
+import sys, urllib3
+sys.stdout.buffer.write(urllib3.request("GET", '$uri').data)
+EOF
+
+    __checkweb_preface "(requests)"
+    __checkweb_python_import requests &&
+    __checkweb_no_pipe - <<EOF
+import requests, sys
+sys.stdout.buffer.write(requests.get('$uri').content)
+EOF
+}
+
+__checkweb_with_python() {
+    if ! __checkweb_python_version; then __checkweb_fail; return; fi
+    if [ "${python#2.}" != "$python" ]; then
+        __checkweb_with_python2
+    elif [ "${python#3.}" != "$python" ]; then
+        __checkweb_with_python3
+    else __checkweb_fail; return; fi
+}
+
+__checkweb() {
+    [ $# != 0 ] || set -- httpbin.org/get # sane default
+    unset IFS || return
+
+    __checkweb_preface() { printf '\033[46;30m %24s \033[m  ' "$1"; }
+    __checkweb_okay() { printf '\033[42;97m okay \033[m\n'; }
+    __checkweb_fail() { printf '\033[41;97m fail \033[m\n'; }
+    __checkweb_miss() { printf '\033[43;97m miss \033[m\n'; }
+    __checkweb_skip() { printf '\033[0m skip \033[m\n'; }
+    __checkweb_warn() { printf '\033[103;30m# warning: %s\033[m\n' "$*"; }
+
+    silently() { "$prog" "$@"; } >/dev/null 2>&1
+
+    i=0; while [ $# != 0 ]; do uri=$1; : $((i+=1)); shift || return
+        if case $uri in (*[!!-~]*) true;; (*) false; esac then
+            __checkweb_warn "skipping $uri due to invalid characters"
+            continue
+        fi
+
+        etc=$uri scheme=${etc%%:*}
+        [ "$scheme" != "$etc" ] &&
+        [ "${scheme#[A-Za-z]}" != "$scheme" ] &&
+        [ "${scheme%[!A-Za-z0-9.+-]*}" = "$scheme" ] &&
+        etc=${etc#"$scheme"} etc=${etc#:} ||
+        scheme=
+
+        # note that this coerces an authority even if there is none.
+        # this is convenient for URLs, but breaks other URIs.
+        [ "${etc#//}" = "$etc" ] && pathy=$uri/ scheme= || pathy=${etc#//}/
+        authority=${pathy%%[/?#]*} pathy=${pathy#"$authority"} pathy=${pathy%/}
+
+        case $authority in (*@*) false; esac &&
+        location=$authority ||
+        location=${authority##*@} credentials=${authority%@*}
+
+        case $location in (*:*) false;; ([[]*[]]) false; esac &&
+        domain=$location port= ||
+        domain=${location%:*} port=${location##*:}
+
+        case $credentials in (*:*) false; esac &&
+        username=$credentials ||
+        username=${credentials%%:*} password=${credentials#*:}
+
+        hosty=${username}${password:+:}${password}${username:+@}${domain}
+        if [ -z "$domain" ]; then # no domain like file:///
+            true # nothing we can do
+        elif [ -z "$scheme" ]; then # no protocol specified
+            [ "$port" = 443 ] && scheme=https || scheme=http
+            if [ -z "$port" ]; then # if we can choose
+                port=80 # do http now, queue https next
+                set -- "https://$hosty:443$pathy" "$@"
+            fi
+        elif [ -z "$port" ]; then
+            [ "$scheme" = https ] && port=443 || port=80
+        fi
+
+        uri=${scheme}${scheme:+:}${authority+//}${hosty}${port:+:}${port}${pathy:-/}
+        #printf '<%s>\n' "$uri"
+        #printf '(%s)\n' "$authority"
+
+        printf '\033[1m# connecting to \033[m'
+        printf '\033[97m%s\033[90m%s' \
+        "${scheme:-ERROR}" :// "${domain:-ERROR}" : "${port:-ERROR}" /
+        printf '\033[m\n'
+
+        #: "${scheme:?}" "${domain:?}" "${port:?}"
+        if [ "${scheme:+-}${domain:+-}${port:+-}" != --- ]; then
+            __checkweb_warn "skipping $uri due to missing fields"
+            continue
+        fi
+
+        # TODO: vim?
+        prev=
+        for name in \
+            curl busybox wget httpie openssl bash socat websocat \
+            python python2 python3
+        do
+            prog="$(command -v "$name")"
+            #echo "? $prog = $prev"
+            if [ "$prog" -ef "$prev" ]; then continue; fi # for python2/3
+            __checkweb_preface "${prog:-$name}"
+            if [ -z "$prog" ]; then __checkweb_miss; continue; fi
+            sleep 0.1
+            __checkweb_with_$name
+            [ "$name" = python2 ] || prev="$prog" # allows skipping python3
+        done
+
+        [ $i != $# ] || echo # cleanly separate output
+    done
+}
+
+checkweb()(__checkweb "$@")
+[ -n "${preload+-}" ] || __checkweb "$@"

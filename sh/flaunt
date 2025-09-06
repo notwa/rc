@@ -72,6 +72,14 @@ __flaunt_startup() {
     fi || __flaunt_startup='(ERROR)'
 }
 
+__flaunt_self() {
+    if [ -e /proc/$$/exe ] && has readlink; then
+        __flaunt_self="$(readlink /proc/$$/exe)"
+    else
+        false
+    fi || __flaunt_self='(ERROR)'
+}
+
 __flaunt() { ### @flaunt
     ### send diagnostic telemetry to a central server via [`notice`.](#notice)
 
@@ -106,10 +114,11 @@ __flaunt() { ### @flaunt
         __flaunt_uptime_raw
         __flaunt_uptime
         __flaunt_startup
+        __flaunt_self
         notice "Ready: $__flaunt_hostname" \
 "Booted $__flaunt_uptime_raw seconds ago ($__flaunt_uptime)
 $__flaunt_startup
-Detected shell: $sh"
+Detected shell: $sh ($__flaunt_self)"
     ;;
 
     (*) __flaunt_usage >&2; return 64;; # EX_USAGE

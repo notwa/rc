@@ -367,7 +367,7 @@ parse command-line arguments, mapping short-flags to variable names.
 select a file from a given or current directory using
 [`fzy`.](https://github.com/jhawthorn/fzy)
 
-### [flaunt](/sh/flaunt#L73)
+### [flaunt](/sh/flaunt#L83)
 
 send diagnostic telemetry to a central server via [`notice`.](#notice)
 
@@ -819,7 +819,7 @@ invoke ripgrep without respecting `.gitignore` files.
 
 ### [curls (sh/zzz)](/sh/zzz#L41)
 
-invoke curl with less noise.
+be a little smarter with curl. (HTTPS only)
 
 ### [revend (sh/zzz)](/sh/zzz#L53)
 
@@ -1013,6 +1013,7 @@ prepend entries to `$PATH` and remove their duplications.
 | [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [burl](#burl)                                 |       bash | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [busiest](#busiest)                           |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
+| [checkweb](#checkweb)                         |       *sh* | ❔    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    |
 | [clash](#clash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [compile](#compile)                           |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [confirm](#confirm)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

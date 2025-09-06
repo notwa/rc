@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
-# compat: +bash
+# compat: +ash +bash +dash -hush +ksh +mksh +oksh +osh -posh +yash +zsh
+# posh doesn't like the -ef test.
 
 # via rust-lang/rustup, username x448:
 __checkweb_openssl_ciphersuites='TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
@@ -57,7 +58,7 @@ __checkweb_with_curl() {
 }
 
 __checkweb_with_wget() {
-    if set -- $("$prog" --version 2>&1); then
+    if set -- $("$prog" --version 2>&1); then # FIXME: this doesn't work from ash.
         for token; do
             if __checkweb_is_version "${token##*/}"; then
                 printf '%s ' "$token"

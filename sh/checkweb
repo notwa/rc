@@ -381,7 +381,11 @@ __checkweb() {
             curl busybox wget httpie openssl bash socat websocat \
             python python2 python3
         do
-            prog="$(command -v "$name")"
+            prog="$(command -v "$name")" ||
+            if [ "$name" = python ] && [ -f /usr/libexec/platform-python ]; then
+                # AlmaLinux ships with a barebones Python for internal use only.
+                prog=/usr/libexec/platform-python
+            fi
             #echo "? $prog = $prev"
             if [ "$prog" -ef "$prev" ]; then continue; fi # for python2/3
             __checkweb_preface "${prog:-$name}"

@@ -6,20 +6,31 @@
 __checkweb_openssl_ciphersuites='TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384'
 __checkweb_gnutls_ciphersuites='SECURE128:-VERS-SSL3.0:-VERS-TLS1.0:-VERS-TLS1.1:-VERS-DTLS-ALL:-CIPHER-ALL:-MAC-ALL:-KX-ALL:+AEAD:+ECDHE-ECDSA:+ECDHE-RSA:+AES-128-GCM:+CHACHA20-POLY1305:+AES-256-GCM'
 
+__checkweb_preface()    { printf '\033[46;30m %24s \033[m  ' "$*";          }
+__checkweb_okay()       { printf '\033[42;97m okay \033[m\n';               }
+__checkweb_fail()       { printf '\033[41;97m fail \033[m\n';               }
+__checkweb_miss()       { printf '\033[43;97m miss \033[m\n';               }
+__checkweb_skip()       { printf '\033[0m skip \033[m\n';                   }
+__checkweb_warn()       { printf '\033[103;30m# warning: %s\033[m\n' "$*";  }
+
 __checkweb_request() {
     printf 'GET %s HTTP/1.0\r\nHost: %s\r\n\r\n' "${pathy:-/}" "${domain:?}"
 }
 
-__checkweb_by_hand() {
-    __checkweb_request | silently "$@" && __checkweb_okay || __checkweb_fail
+__checkweb_stfu() {
+    "$prog" "$@" >/dev/null 2>&1
 }
 
 __checkweb_no_pipe() {
-    silently "$@" && __checkweb_okay || __checkweb_fail
+    __checkweb_stfu "$@" && __checkweb_okay || __checkweb_fail
 }
 
 __checkweb_no_pipe_debug() {
     "$prog" "$@" 1>&2 && __checkweb_okay || __checkweb_fail
+}
+
+__checkweb_by_hand() {
+    __checkweb_request | __checkweb_no_pipe
 }
 
 __checkweb_is_version() {
@@ -307,15 +318,6 @@ __checkweb_with_python() {
 __checkweb() {
     [ $# != 0 ] || set -- httpbin.org/get # sane default
     unset IFS || return
-
-    __checkweb_preface() { printf '\033[46;30m %24s \033[m  ' "$1"; }
-    __checkweb_okay() { printf '\033[42;97m okay \033[m\n'; }
-    __checkweb_fail() { printf '\033[41;97m fail \033[m\n'; }
-    __checkweb_miss() { printf '\033[43;97m miss \033[m\n'; }
-    __checkweb_skip() { printf '\033[0m skip \033[m\n'; }
-    __checkweb_warn() { printf '\033[103;30m# warning: %s\033[m\n' "$*"; }
-
-    silently() { "$prog" "$@"; } >/dev/null 2>&1
 
     i=0; while [ $# != 0 ]; do uri=$1; : $((i+=1)); shift || return
         if case $uri in (*[!!-~]*) true;; (*) false; esac then

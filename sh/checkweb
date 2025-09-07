@@ -189,9 +189,9 @@ __checkweb_with_python2() {
     unset python
 
     # TODO: assert return code is <400 as to match the other checks.
-    [ "$scheme" != https ] &&
-    __checkweb_preface "(socket)" &&
-    __checkweb_no_pipe - <<EOF ||
+    if [ "$scheme" != https ]; then
+        __checkweb_preface "(socket)"
+        __checkweb_no_pipe - <<EOF
 import socket, sys
 try:
  s = socket.socket()
@@ -200,7 +200,7 @@ try:
  list(map(sys.stdout.write, iter((lambda: s.recv(1024)), "")))
 finally: s.close()
 EOF
-    __checkweb_skip
+    else __checkweb_skip; fi
 
     __checkweb_preface "(urllib)"
     __checkweb_no_pipe - <<EOF
@@ -245,15 +245,16 @@ __checkweb_with_python3() {
     unset python
 
     # TODO: assert return code is <400 as to match the other checks.
-    [ "$scheme" != https ] &&
-    __checkweb_preface "(socket)" &&
-    __checkweb_no_pipe - <<EOF
+    if [ "$scheme" != https ]; then
+        __checkweb_preface "(socket)"
+        __checkweb_no_pipe - <<EOF
 import socket, sys
 with socket.socket() as s:
  s.connect(('$domain', $port))
  s.sendall(("GET %s HTTP/1.0\\r\\nHost: %s\\r\\n\\r\\n" % ('${pathy:-/}', '$domain')).encode())
  sum(map(sys.stdout.buffer.write, iter((lambda: s.recv(1024)), b"")))
 EOF
+    else __checkweb_skip; fi
 
     __checkweb_preface "(urllib)"
     __checkweb_no_pipe - <<EOF

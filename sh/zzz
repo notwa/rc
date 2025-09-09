@@ -50,6 +50,10 @@ ash()
 cort()
   { LC_ALL=C sort "$@"; }
 
+bylen() ### @- use perl to sort lines by length.
+# this is the fastest method, so says https://stackoverflow.com/a/40786477
+  { perl -e 'print sort { length($a) <=> length($b) } <>'; }
+
 revend() ### @- reverse the 4-byte endianness of a single file. *this is an in-place operation!*
   { objcopy -I binary -O binary --reverse-bytes=4 "$@"; }
 

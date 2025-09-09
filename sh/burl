@@ -6,7 +6,7 @@ burl() ( ### @-
     ### inspired by [hackshell.sh.](https://thc.org/hs)
     ### also works in most other shells thanks to netcat.
     ###
-    ### minimal/minified version: https://eaguru.guru/t/burl.sh (453 bytes)
+    ### minimal/minified version: https://eaguru.guru/t/burl.sh (441 bytes)
     ###
     ### ```
     ### $ burl httpbin.org/get

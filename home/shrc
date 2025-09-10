@@ -135,7 +135,7 @@ __conf() {
 
 # there certainly are better ways of querying for the active distro, but checking
 # for the presence of files unique to the distro's filesystem package is adequate.
-if   [ -e /etc/centos-release                ]; then __conf century # includes armalinux
+if   [ -e /etc/centos-release                ]; then __conf century # includes almalinux
 elif [ -e /usr/share/pixmaps/ubuntu-logo.svg ]; then __conf wormwood
 elif [ -e /etc/alpine-release                ]; then __conf apparatus
 else __conf "${HOST:-${HOSTNAME}}"; fi

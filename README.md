@@ -145,7 +145,7 @@ turn bash into a makeshift HTTP client.
 inspired by [hackshell.sh.](https://thc.org/hs)
 also works in most other shells thanks to netcat.
 
-minimal/minified version: https://eaguru.guru/t/burl.sh (469 bytes)
+minimal/minified version: https://eaguru.guru/t/burl.sh (441 bytes)
 
 ```
 $ burl httpbin.org/get
@@ -821,99 +821,103 @@ invoke ripgrep without respecting `.gitignore` files.
 
 be a little smarter with curl. (HTTPS only)
 
-### [revend (sh/zzz)](/sh/zzz#L53)
+### [bylen (sh/zzz)](/sh/zzz#L53)
+
+use perl to sort lines by length.
+
+### [revend (sh/zzz)](/sh/zzz#L57)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (sh/zzz)](/sh/zzz#L56)
+### [clone (sh/zzz)](/sh/zzz#L60)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
 **TODO:** rename because POSIX.1-2024 reserves this name.
 
-### [aligntabs (sh/zzz)](/sh/zzz#L60)
+### [aligntabs (sh/zzz)](/sh/zzz#L64)
 
 align tab-delimited fields in stdin.
 
-### [crawla (sh/zzz)](/sh/zzz#L71)
+### [crawla (sh/zzz)](/sh/zzz#L75)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (sh/zzz)](/sh/zzz#L74)
+### [crawlz (sh/zzz)](/sh/zzz#L78)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (sh/zzz)](/sh/zzz#L77)
+### [diff (sh/zzz)](/sh/zzz#L81)
 
 use git's diff subcommand for general diffing.
 
-### [gc (sh/zzz)](/sh/zzz#L80)
+### [gc (sh/zzz)](/sh/zzz#L84)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (sh/zzz)](/sh/zzz#L84)
+### [counts (sh/zzz)](/sh/zzz#L88)
 
 count files in the current directory, including files found recursively.
 
-### [exts (sh/zzz)](/sh/zzz#L87)
+### [exts (sh/zzz)](/sh/zzz#L91)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (sh/zzz)](/sh/zzz#L91)
+### [nocom (sh/zzz)](/sh/zzz#L95)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (sh/zzz)](/sh/zzz#L94)
+### [jrep (sh/zzz)](/sh/zzz#L98)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (sh/zzz)](/sh/zzz#L97)
+### [bomb (sh/zzz)](/sh/zzz#L101)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (sh/zzz)](/sh/zzz#L100)
+### [cleanse (sh/zzz)](/sh/zzz#L104)
 
 strip unprintable and non-ASCII characters.
 
-### [double (sh/zzz)](/sh/zzz#L103)
+### [double (sh/zzz)](/sh/zzz#L107)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (sh/zzz)](/sh/zzz#L108)
+### [katagana (sh/zzz)](/sh/zzz#L112)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (sh/zzz)](/sh/zzz#L112)
+### [makepkgf (sh/zzz)](/sh/zzz#L116)
 
 make the freakin' package!
 
-### [rakef (sh/zzz)](/sh/zzz#L115)
+### [rakef (sh/zzz)](/sh/zzz#L119)
 
 make the freakin' gem!
 
-### [relog (sh/zzz)](/sh/zzz#L118)
+### [relog (sh/zzz)](/sh/zzz#L122)
 
 log on again to refresh your unix groups, etc.
 
-### [carry (sh/zzz)](/sh/zzz#L121)
+### [carry (sh/zzz)](/sh/zzz#L125)
 
 copy files in a plain way using rsync. affected by umask.
 
-### [colors (sh/zzz)](/sh/zzz#L133)
+### [colors (sh/zzz)](/sh/zzz#L137)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L175)
+### [morecolors (sh/zzz)](/sh/zzz#L179)
 
 print all 256 colors that are available on most terminals.
 
@@ -1013,7 +1017,7 @@ prepend entries to `$PATH` and remove their duplications.
 | [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [burl](#burl)                                 |       bash | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [busiest](#busiest)                           |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
-| [checkweb](#checkweb)                         |       *sh* | ❔    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    |
+| [checkweb](#checkweb)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
 | [clash](#clash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [compile](#compile)                           |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [confirm](#confirm)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

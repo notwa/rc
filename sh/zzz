@@ -126,12 +126,12 @@ carry() ### @- copy files in a plain way using rsync. affected by umask.
   { rsync -HOlrt --no-p --no-g --chmod=ugo=rwX "$@"; }
 
 ytdl() {
-    if   has yt-dlp;     then yt-dlp     "$@"; return
-    elif has yt-dlc;     then yt-dlc     "$@"; return
-    elif has youtube-dl; then youtube-dl "$@"; return
+    if has yt-dlp || has yt-dlc || has youtube-dl; then
+        "$REPLY" "$@"
+    else
+        note bro where is your youtube-dl
+        return 69 # EX_UNAVAILABLE
     fi
-    echo "bro where is your youtube-dl" >&2
-    return 99
 }
 
 colors() ( ### @-

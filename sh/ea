@@ -45,7 +45,8 @@ __ea() { ### @ ea - **TODO:** document.
     (puts)
         for src; do
             dst="$EA_DOMAIN/$EA_AUTH/"
-            minisign -QSm "$src" || return
+            src="$(readlink -f -- "$src")" || return
+            (cd -- "${src%/*}" && minisign -QSm "${src##*/}") || return
             __ea_curl -g -n -T "$src" "$dst" || return
             __ea_curl -g -n -T "$src.minisig" "$dst" || return
             rm "$src.minisig"

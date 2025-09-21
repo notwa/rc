@@ -569,7 +569,7 @@ flags:
 * `-f` -- files: skip any arguments that are not regular files.
 * `-d` -- directories: skip any arguments that are not directories.
 * `-n` -- dry-run: don't actually change anything.
-* `-v` -- verbose: print changes before doing them.
+* `-v` -- verbose: print changes before making them.
 
 the `-e`, `-f`, and `-d` flags all override one another, and any of them
 can be combined with `-a`. arguments that are neither regular files nor
@@ -984,19 +984,19 @@ return 0, ignoring arguments.
 
 **TODO:** respect initctl like in `.zshrc`.
 
-### [pl (shrc)](/home/shrc#L57)
+### [pl (shrc)](/home/shrc#L58)
 
 print each argument on its own line.
 
-### [refresh (shrc)](/home/shrc#L58)
+### [refresh (shrc)](/home/shrc#L59)
 
 invoke `hash -r`.
 
-### [ADDPATH (shrc)](/home/shrc#L61)
+### [ADDPATH (shrc)](/home/shrc#L62)
 
 append a directory to `$PATH` if it isn't already present.
 
-### [PREPATH (shrc)](/home/shrc#L73)
+### [PREPATH (shrc)](/home/shrc#L74)
 
 prepend entries to `$PATH` and remove their duplications.
 

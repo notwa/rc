@@ -1,6 +1,6 @@
 #!/usr/bin/env dash
 
-NAME="$0"
+SELF="$0"
 
 echo2() {
     local IFS=' '
@@ -8,7 +8,7 @@ echo2() {
 }
 
 die() {
-    echo2 "$NAME:" "$@"
+    echo2 "$SELF:" "$@"
     exit 1
 }
 
@@ -19,22 +19,34 @@ backup() {
     mv "$1" "${1}~" || die 'failed to backup file' "$1"
 }
 
-self="$(readlink -f -- "$NAME")" || die 'failed to determine rc directory'
+has() {
+    REPLY="$(command -v "$1" 2>/dev/null)"
+}
+
+if [ -h /proc/$$/exe ]; then # prefer the current shell
+    eval "sh() { /proc/$$/exe \"\$@\"; }"
+elif has dash; then # try dash even without Linux /proc
+    eval "sh() { '$REPLY' \"\$@\"; }"
+else # last resort
+    : # simply run `sh` as a command and not a function
+fi
+
+self="$(readlink -f -- "$SELF")" || die 'failed to determine rc directory'
 CDPATH= cd -- "${self%/*}" || die 'failed to change directory'
 
 if ! command -v git >/dev/null 2>&1; then
     [ "$1" != commit ] || die 'git not found'
 
     # git unavailable. just document everything as it is.
-    dash ./sh/document || die 'failed to generate documentation'
+    sh ./sh/document || die 'failed to generate documentation'
     printf '%s\n' '' '## compatibility table' '' >> README.md~ || die 'failed to make room for compatibility table'
-    dash ./tableize >> README.md~ || die 'failed to generate compatibility table'
+    sh ./tableize >> README.md~ || die 'failed to generate compatibility table'
 
 elif [ "$1" = local ]; then
     # user requested to ignore git.
-    dash ./sh/document || die 'failed to generate documentation'
+    sh ./sh/document || die 'failed to generate documentation'
     printf '%s\n' '' '## compatibility table' '' >> README.md~ || die 'failed to make room for compatibility table'
-    dash ./tableize >> README.md~ || die 'failed to generate compatibility table'
+    sh ./tableize >> README.md~ || die 'failed to generate compatibility table'
 
 else
     # git available. document the most recent commit, without pending changes.
@@ -51,9 +63,9 @@ else
 
     # use new documentation-generating scripts on old shell scripts.
     cp -p README.md temp/README.md || die 'failed to copy existing readme'
-    dash ./sh/document temp || die 'failed to generate documentation'
+    sh ./sh/document temp || die 'failed to generate documentation'
     printf '%s\n' '' '## compatibility table' '' >> temp/README.md~ || die 'failed to make room for compatibility table'
-    dash ./tableize temp >> temp/README.md~ || die 'failed to generate compatibility table'
+    sh ./tableize temp >> temp/README.md~ || die 'failed to generate compatibility table'
 
     #[ ! -e README.md ] || backup README.md || die 'failed to backup existing readme'
     mv temp/README.md~ README.md~ || die 'failed to move generated readme'

@@ -35,35 +35,34 @@ will determine rc directory
 self="$(readlink -f -- "$SELF")" || die
 
 will change directory
-CDPATH= cd -- "${self%/*}" || die
+cd -- "${self%/*}" || die
 
-if ! has git; then
+will parse arguments
+[ $# = 0 ] || [ $# = 1 ] || die
+case ${1-auto} in
+(auto) has git && origin=public || origin=local;;
+(local) origin=local;;
+(public) origin=public;;
+(commit) origin=public;;
+(*) die;;
+esac
+
+if [ "$origin" = local ]; then
+    # ignore git and consider the local files as they are.
+    will generate documentation
+    sh ./sh/document || die
+
+    will make room for compatibility table
+    printf '%s\n' '' '## compatibility table' '' >> README.md~ || die
+
+    will generate compatibility table
+    sh ./tableize >> README.md~ || die
+
+elif [ "$origin" = public ]; then
+    # document the most recent commit without pending changes.
     will find git
-    [ "$1" != commit ] || die
+    has git || die
 
-    # git unavailable. just document everything as it is.
-    will generate documentation
-    sh ./sh/document || die
-
-    will make room for compatibility table
-    printf '%s\n' '' '## compatibility table' '' >> README.md~ || die
-
-    will generate compatibility table
-    sh ./tableize >> README.md~ || die
-
-elif [ "$1" = local ]; then
-    # user requested to ignore git.
-    will generate documentation
-    sh ./sh/document || die
-
-    will make room for compatibility table
-    printf '%s\n' '' '## compatibility table' '' >> README.md~ || die
-
-    will generate compatibility table
-    sh ./tableize >> README.md~ || die
-
-else
-    # git available. document the most recent commit, without pending changes.
     will backup existing temp archive
     ! [ -e temp.tar.gz ] || backup temp.tar.gz || die
 
@@ -81,10 +80,10 @@ else
     ln temp/home/shrc temp/.shrc || die
     ln temp/home/bashrc temp/.bashrc || die
 
-    # use new documentation-generating scripts on old shell scripts.
     will copy existing readme
     cp -p README.md temp/README.md || die
 
+    # use new documentation-generating scripts on old shell scripts.
     will generate documentation
     sh ./sh/document temp || die
 
@@ -106,7 +105,7 @@ else
     will clean up temp directory
     rm -r temp || die
 
-    if [ "$1" = commit ]; then
+    if [ "${1-public}" = commit ]; then
         will overwrite readme
         mv README.md~ README.md || die
 

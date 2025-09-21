@@ -2,25 +2,14 @@
 
 NAME="$0"
 
-note() {
-    local IFS=" "
-    printf '%s\n' "$*"
-}
-
-warn() {
-    note "$@" >&2
+echo2() {
+    local IFS=' '
+    printf '%s\n' "$*" >&2
 }
 
 die() {
-    warn "$NAME:" "$@"
-    #cleanup
+    echo2 "$NAME:" "$@"
     exit 1
-}
-
-cleanup() {
-    :
-    #[ ! -e temp.tar.gz ] || rm temp.tar.gz || die failed
-    #[ ! -d temp ] || rm -r temp || die failed
 }
 
 backup() {
@@ -30,11 +19,10 @@ backup() {
     mv "$1" "${1}~" || die 'failed to backup file' "$1"
 }
 
-rc="$(readlink -f "$(dirname "$NAME")" )"
-[ -d "$rc" ] || die 'failed to determine rc directory'
-cd "$rc" || die 'failed to change directory'
+self="$(readlink -f -- "$NAME")" || die 'failed to determine rc directory'
+CDPATH= cd -- "${self%/*}" || die 'failed to change directory'
 
-if ! which git >/dev/null 2>&1; then
+if ! command -v git >/dev/null 2>&1; then
     [ "$1" != commit ] || die 'git not found'
 
     # git unavailable. just document everything as it is.
@@ -57,7 +45,6 @@ else
     [ ! -e temp ] || backup temp || die 'failed to backup existing temp directory'
     tar -zxf temp.tar.gz || die 'failed to unarchive temp archive'
 
-    #( cd temp; HOME="$rc/temp" dash ./install )
     ln temp/home/zshrc temp/.zshrc || die 'failed to copy files'
     ln temp/home/shrc temp/.shrc || die 'failed to copy files'
     ln temp/home/bashrc temp/.bashrc || die 'failed to copy files'
@@ -79,7 +66,7 @@ else
         if ! git diff --no-patch --exit-code README.md; then
             git commit README.md -m 'regenerate readme' || die 'failed to commit'
         else
-            warn 'nothing to do'
+            echo2 'nothing to do'
         fi
     fi
 fi

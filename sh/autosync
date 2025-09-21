@@ -4,9 +4,9 @@
 # TODO: portable way of dodging aliases to allow other shell support?
 # TODO: rewrite to use entr instead of inotifywait.
 
-autosync() { ### @-
-    ### combine `inotifywait` and `rsync`.
-    ### this is sometimes nicer than `ssh`-ing into a server and running `vim` remotely.
+autosync() { #-- @-
+    #-- combine `inotifywait` and `rsync`.
+    #-- this is sometimes nicer than `ssh`-ing into a server and running `vim` remotely.
     target="$1"
     shift
     # as a reminder not to get the argument order mixed up:

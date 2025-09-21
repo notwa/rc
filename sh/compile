@@ -1,26 +1,26 @@
 #!/usr/bin/env zsh
 # compat: -ash -bash -dash +zsh
 
-setup_clang_ubuntu() { ### @-
-    ### print (but don't execute) the commands necessary to install
-    ### a fairly recent version of clang on ubuntu-based distros.
-    ###
-    ### ```sh
-    ### $ setup_clang_ubuntu noble
-    ### wget -O- http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-    ### echo > "/etc/apt/sources.list.d/llvm-toolchain-noble.list" \
-    ### "
-    ### deb http://apt.llvm.org/noble/ llvm-toolchain-noble main
-    ### # deb-src http://apt.llvm.org/noble/ llvm-toolchain-noble main
-    ### # 18
-    ### deb http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main
-    ### # deb-src http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main"
-    ### export DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1
-    ### apt-get update -y && apt-get install -y clang-18 lld-18
-    ### update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 1800
-    ### update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 1800
-    ### update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-18 1800
-    ### ```
+setup_clang_ubuntu() { #-- @-
+    #-- print (but don't execute) the commands necessary to install
+    #-- a fairly recent version of clang on ubuntu-based distros.
+    #--
+    #-- ```sh
+    #-- $ setup_clang_ubuntu noble
+    #-- wget -O- http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+    #-- echo > "/etc/apt/sources.list.d/llvm-toolchain-noble.list" \
+    #-- "
+    #-- deb http://apt.llvm.org/noble/ llvm-toolchain-noble main
+    #-- # deb-src http://apt.llvm.org/noble/ llvm-toolchain-noble main
+    #-- # 18
+    #-- deb http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main
+    #-- # deb-src http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main"
+    #-- export DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1
+    #-- apt-get update -y && apt-get install -y clang-18 lld-18
+    #-- update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 1800
+    #-- update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 1800
+    #-- update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-18 1800
+    #-- ```
 
     local site="http://apt.llvm.org"
     local name="$1"
@@ -44,41 +44,41 @@ setup_clang_ubuntu() { ### @-
     done
 }
 
-compile() { ### @-
-    ### compile single-file C and C++ programs, messily.
-    ###
-    ### supports gcc and clang on \*nix, and mingw64 gcc, msvc clang,
-    ### and regular msvc on Windows. tested on x86\_64 and on ARMv7 as well.
-    ### does not support MacOS, maybe someday…
-    ###
-    ### defaults to gnu11 and gnu++1z as C and C++ standards respectively.
-    ### defaults to clang, gcc, and msvc in that order.
-    ###
-    ### `compile` attempts to guess the most sane switches for any program, so that compilation may reduce to:
-    ###
-    ### ```sh
-    ### # debug build
-    ### compile rd.c
-    ### compile debug rd.c
-    ### # debug build with warning/error flags defined in ~/sh/arrays
-    ### # (requires .zshrc for global alias expansion)
-    ### compile WHOA rd.c
-    ### # likewise for C++
-    ### compile WHOA WELP rd.cc
-    ### compile WHOA WELP rd.cpp
-    ### # "derelease" build (release build with debug information)
-    ### compile derelease WHOA rd.c
-    ### # release build (with symbols stripped)
-    ### compile release WHOA rd.c
-    ### # hardened build (only useful on *nix)
-    ### compile hardened WHOA rd.c
-    ### # specifying compiler
-    ### compile gcc WHOA rd.c
-    ### compile msvc WHOA rd.c
-    ### compile release clang WHOA rd.c
-    ### # compile and execute (FIXME: writing to /tmp is a security concern)
-    ### compile derelease rd.c && /tmp/rd
-    ### ```
+compile() { #-- @-
+    #-- compile single-file C and C++ programs, messily.
+    #--
+    #-- supports gcc and clang on \*nix, and mingw64 gcc, msvc clang,
+    #-- and regular msvc on Windows. tested on x86\_64 and on ARMv7 as well.
+    #-- does not support MacOS, maybe someday…
+    #--
+    #-- defaults to gnu11 and gnu++1z as C and C++ standards respectively.
+    #-- defaults to clang, gcc, and msvc in that order.
+    #--
+    #-- `compile` attempts to guess the most sane switches for any program, so that compilation may reduce to:
+    #--
+    #-- ```sh
+    #-- # debug build
+    #-- compile rd.c
+    #-- compile debug rd.c
+    #-- # debug build with warning/error flags defined in ~/sh/arrays
+    #-- # (requires .zshrc for global alias expansion)
+    #-- compile WHOA rd.c
+    #-- # likewise for C++
+    #-- compile WHOA WELP rd.cc
+    #-- compile WHOA WELP rd.cpp
+    #-- # "derelease" build (release build with debug information)
+    #-- compile derelease WHOA rd.c
+    #-- # release build (with symbols stripped)
+    #-- compile release WHOA rd.c
+    #-- # hardened build (only useful on *nix)
+    #-- compile hardened WHOA rd.c
+    #-- # specifying compiler
+    #-- compile gcc WHOA rd.c
+    #-- compile msvc WHOA rd.c
+    #-- compile release clang WHOA rd.c
+    #-- # compile and execute (FIXME: writing to /tmp is a security concern)
+    #-- compile derelease rd.c && /tmp/rd
+    #-- ```
 
     # FIXME: compile gcc portrend.c -lsdl
     # this causes mayhem!

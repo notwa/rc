@@ -1,15 +1,15 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash +zsh YES_BB_AWK YES_OT_AWK
 
-countdiff() { ### @-
-    ### count the number of lines changed between two files.
-    ###
-    ### **TODO:** don't use git for this. also, use patience algorithm.
-    ###
-    ### ```
-    ### $ countdiff README-old.md README.md
-    ### 739
-    ### ```
+countdiff() { #-- @-
+    #-- count the number of lines changed between two files.
+    #--
+    #-- **TODO:** don't use git for this. also, use patience algorithm.
+    #--
+    #-- ```
+    #-- $ countdiff README-old.md README.md
+    #-- 739
+    #-- ```
 
     [ $# -gt 1 ] || { printf '%s\n' "$0: too few arguments" >&2; return 1; }
     [ $# -le 2 ] || { printf '%s\n' "$0: too many arguments" >&2; return 1; }

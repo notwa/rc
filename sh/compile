@@ -44,7 +44,20 @@ setup_clang_ubuntu() { #-- @-
     done
 }
 
-compile() { #-- @-
+compile() { ### @-
+    ### this command is no longer relevant.
+    ### [please use zig instead.](https://ziglang.org/)
+    ### zig can cross-compile C code in a single command.
+    ### here's how to compile a program for a Raspberry Pi 2 Model B:
+    ###
+    ### ```sh
+    ### printf %s\\n '#include <stdio.h>' 'int main() { puts("yo waddup"); }' >hello.c
+    ### zig cc --target=arm-linux-gnueabihf -mcpu=cortex_a7 -o hello -Os -s -Wall hello.c
+    ### file hello
+    ### ```
+    ###
+    ### > hello: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked,
+    ### > interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 2.0.0, stripped
     #-- compile single-file C and C++ programs, messily.
     #--
     #-- supports gcc and clang on \*nix, and mingw64 gcc, msvc clang,
@@ -53,32 +66,6 @@ compile() { #-- @-
     #--
     #-- defaults to gnu11 and gnu++1z as C and C++ standards respectively.
     #-- defaults to clang, gcc, and msvc in that order.
-    #--
-    #-- `compile` attempts to guess the most sane switches for any program, so that compilation may reduce to:
-    #--
-    #-- ```sh
-    #-- # debug build
-    #-- compile rd.c
-    #-- compile debug rd.c
-    #-- # debug build with warning/error flags defined in ~/sh/arrays
-    #-- # (requires .zshrc for global alias expansion)
-    #-- compile WHOA rd.c
-    #-- # likewise for C++
-    #-- compile WHOA WELP rd.cc
-    #-- compile WHOA WELP rd.cpp
-    #-- # "derelease" build (release build with debug information)
-    #-- compile derelease WHOA rd.c
-    #-- # release build (with symbols stripped)
-    #-- compile release WHOA rd.c
-    #-- # hardened build (only useful on *nix)
-    #-- compile hardened WHOA rd.c
-    #-- # specifying compiler
-    #-- compile gcc WHOA rd.c
-    #-- compile msvc WHOA rd.c
-    #-- compile release clang WHOA rd.c
-    #-- # compile and execute (FIXME: writing to /tmp is a security concern)
-    #-- compile derelease rd.c && /tmp/rd
-    #-- ```
 
     # FIXME: compile gcc portrend.c -lsdl
     # this causes mayhem!

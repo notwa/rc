@@ -75,11 +75,6 @@ this example requires zsh:
 1.9952623149688795
 ```
 
-### [autosync](/sh/autosync#L7)
-
-combine `inotifywait` and `rsync`.
-this is sometimes nicer than `ssh`-ing into a server and running `vim` remotely.
-
 ### [bak](/sh/bak#L4)
 
 backup files by creating copies and appending ".bak" to their names.
@@ -188,64 +183,21 @@ run a command through 12 different shells.
 
 only returns false when no arguments are given.
 
-### [setup_clang_ubuntu (sh/compile)](/sh/compile#L4)
-
-print (but don't execute) the commands necessary to install
-a fairly recent version of clang on ubuntu-based distros.
-
-```sh
-$ setup_clang_ubuntu noble
-wget -O- http://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-echo > "/etc/apt/sources.list.d/llvm-toolchain-noble.list" \
-"
-deb http://apt.llvm.org/noble/ llvm-toolchain-noble main
-# deb-src http://apt.llvm.org/noble/ llvm-toolchain-noble main
-# 18
-deb http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main
-# deb-src http://apt.llvm.org/noble/ llvm-toolchain-noble-18 main"
-export DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1
-apt-get update -y && apt-get install -y clang-18 lld-18
-update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 1800
-update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 1800
-update-alternatives --install /usr/bin/llvm-symbolizer llvm-symbolizer /usr/bin/llvm-symbolizer-18 1800
-```
-
 ### [compile](/sh/compile#L47)
 
-compile single-file C and C++ programs, messily.
-
-supports gcc and clang on \*nix, and mingw64 gcc, msvc clang,
-and regular msvc on Windows. tested on x86\_64 and on ARMv7 as well.
-does not support MacOS, maybe someday…
-
-defaults to gnu11 and gnu++1z as C and C++ standards respectively.
-defaults to clang, gcc, and msvc in that order.
-
-`compile` attempts to guess the most sane switches for any program, so that compilation may reduce to:
+this command is no longer relevant.
+[please use zig instead.](https://ziglang.org/)
+zig can cross-compile C code in a single command.
+here's how to compile a program for a Raspberry Pi 2 Model B:
 
 ```sh
-# debug build
-compile rd.c
-compile debug rd.c
-# debug build with warning/error flags defined in ~/sh/arrays
-# (requires .zshrc for global alias expansion)
-compile WHOA rd.c
-# likewise for C++
-compile WHOA WELP rd.cc
-compile WHOA WELP rd.cpp
-# "derelease" build (release build with debug information)
-compile derelease WHOA rd.c
-# release build (with symbols stripped)
-compile release WHOA rd.c
-# hardened build (only useful on *nix)
-compile hardened WHOA rd.c
-# specifying compiler
-compile gcc WHOA rd.c
-compile msvc WHOA rd.c
-compile release clang WHOA rd.c
-# compile and execute (FIXME: writing to /tmp is a security concern)
-compile derelease rd.c && /tmp/rd
+printf %s\\n '#include <stdio.h>' 'int main() { puts("yo waddup"); }' >hello.c
+zig cc --target=arm-linux-gnueabihf -mcpu=cortex_a7 -o hello -Os -s -Wall hello.c
+file hello
 ```
+
+> hello: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked,
+> interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 2.0.0, stripped
 
 ### [confirm](/sh/confirm#L4)
 
@@ -271,17 +223,6 @@ Continue? [y/N] y
  20 files changed, 406 insertions(+), 29 deletions(-)
 ```
 
-### [countdiff](/sh/countdiff#L4)
-
-count the number of lines changed between two files.
-
-**TODO:** don't use git for this. also, use patience algorithm.
-
-```
-$ countdiff README-old.md README.md
-739
-```
-
 ### [days](/sh/days#L4)
 
 compute the number of days since a given date.
@@ -305,17 +246,6 @@ the timestamps of subdirectories are ignored.
 ### [dedupe](/sh/dedupe#L4)
 
 copy a directory, but make hard/softlinks for identical files.
-
-### [dfu](/sh/dfu#L4)
-
-pretty-print `df` in GiB.
-
-```
-$ dfu
-Filesystem              Used     Max    Left    Misc
-/dev                    0.00    0.46    0.46    0.00
-/                      17.20   23.22    6.01    1.27
-```
 
 ### [document](/sh/document#L147)
 
@@ -958,18 +888,6 @@ silence stderr.
 ### [SWAP (zshrc)](/home/zshrc#L236)
 
 swap stdout and stderr. uses fd 3 as an intermediary.
-
-### [WHOA (zshrc)](/home/zshrc#L237)
-
-expand to several C/C++ flags to ease development.
-
-### [WHEE (zshrc)](/home/zshrc#L238)
-
-WHOA but for C++ (specifically g++) only.
-
-### [WELP (zshrc)](/home/zshrc#L239)
-
-expand to C++ flags to enable a C++-as-C facade.
 
 ### [reload (zshrc)](/home/zshrc#L241)
 

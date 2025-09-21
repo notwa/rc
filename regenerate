@@ -1,22 +1,22 @@
 #!/usr/bin/env dash
 
 SELF="$0"
+unset CDPATH IFS LC_ALL && export LC_ALL=C && umask 002 || exit 1
 
-echo2() {
-    local IFS=' '
-    printf '%s\n' "$*" >&2
+will() {
+    task=$*
 }
 
 die() {
-    echo2 "$SELF:" "$@"
+    printf 'failed to %s\n' "$task" >&2
     exit 1
 }
 
 backup() {
     if [ -e "${1}~" ]; then
-        backup "${1}~" || die 'failed to backup file' "$1"
+        backup "${1}~" || return # die 'failed to backup file' "$1"
     fi
-    mv "$1" "${1}~" || die 'failed to backup file' "$1"
+    mv "$1" "${1}~" || return # die 'failed to backup file' "$1"
 }
 
 has() {
@@ -31,54 +31,90 @@ else # last resort
     : # simply run `sh` as a command and not a function
 fi
 
-self="$(readlink -f -- "$SELF")" || die 'failed to determine rc directory'
-CDPATH= cd -- "${self%/*}" || die 'failed to change directory'
+will determine rc directory
+self="$(readlink -f -- "$SELF")" || die
 
-if ! command -v git >/dev/null 2>&1; then
-    [ "$1" != commit ] || die 'git not found'
+will change directory
+CDPATH= cd -- "${self%/*}" || die
+
+if ! has git; then
+    will find git
+    [ "$1" != commit ] || die
 
     # git unavailable. just document everything as it is.
-    sh ./sh/document || die 'failed to generate documentation'
-    printf '%s\n' '' '## compatibility table' '' >> README.md~ || die 'failed to make room for compatibility table'
-    sh ./tableize >> README.md~ || die 'failed to generate compatibility table'
+    will generate documentation
+    sh ./sh/document || die
+
+    will make room for compatibility table
+    printf '%s\n' '' '## compatibility table' '' >> README.md~ || die
+
+    will generate compatibility table
+    sh ./tableize >> README.md~ || die
 
 elif [ "$1" = local ]; then
     # user requested to ignore git.
-    sh ./sh/document || die 'failed to generate documentation'
-    printf '%s\n' '' '## compatibility table' '' >> README.md~ || die 'failed to make room for compatibility table'
-    sh ./tableize >> README.md~ || die 'failed to generate compatibility table'
+    will generate documentation
+    sh ./sh/document || die
+
+    will make room for compatibility table
+    printf '%s\n' '' '## compatibility table' '' >> README.md~ || die
+
+    will generate compatibility table
+    sh ./tableize >> README.md~ || die
 
 else
     # git available. document the most recent commit, without pending changes.
+    will backup existing temp archive
+    ! [ -e temp.tar.gz ] || backup temp.tar.gz || die
 
-    [ ! -e temp.tar.gz ] || backup temp.tar.gz || die 'failed to backup existing temp archive'
-    git archive --prefix=temp/ HEAD -o temp.tar.gz || die 'failed to create git archive'
+    will create git archive
+    git archive --prefix=temp/ HEAD -o temp.tar.gz || die
 
-    [ ! -e temp ] || backup temp || die 'failed to backup existing temp directory'
-    tar -zxf temp.tar.gz || die 'failed to unarchive temp archive'
+    will backup existing temp directory
+    ! [ -e temp ] || backup temp || die
 
-    ln temp/home/zshrc temp/.zshrc || die 'failed to copy files'
-    ln temp/home/shrc temp/.shrc || die 'failed to copy files'
-    ln temp/home/bashrc temp/.bashrc || die 'failed to copy files'
+    will unarchive temp archive
+    tar -zxf temp.tar.gz || die
+
+    will copy files
+    ln temp/home/zshrc temp/.zshrc || die
+    ln temp/home/shrc temp/.shrc || die
+    ln temp/home/bashrc temp/.bashrc || die
 
     # use new documentation-generating scripts on old shell scripts.
-    cp -p README.md temp/README.md || die 'failed to copy existing readme'
-    sh ./sh/document temp || die 'failed to generate documentation'
-    printf '%s\n' '' '## compatibility table' '' >> temp/README.md~ || die 'failed to make room for compatibility table'
-    sh ./tableize temp >> temp/README.md~ || die 'failed to generate compatibility table'
+    will copy existing readme
+    cp -p README.md temp/README.md || die
 
-    #[ ! -e README.md ] || backup README.md || die 'failed to backup existing readme'
-    mv temp/README.md~ README.md~ || die 'failed to move generated readme'
+    will generate documentation
+    sh ./sh/document temp || die
 
-    rm temp.tar.gz || die 'failed to clean up temp archive'
-    rm -r temp || die 'failed to clean up temp directory'
+    will make room for compatibility table
+    printf '%s\n' '' '## compatibility table' '' >> temp/README.md~ || die
+
+    will generate compatibility table
+    sh ./tableize temp >> temp/README.md~ || die
+
+    #will backup existing readme
+    #[ ! -e README.md ] || backup README.md || die
+
+    will move generated readme
+    mv temp/README.md~ README.md~ || die
+
+    will clean up temp archive
+    rm temp.tar.gz || die
+
+    will clean up temp directory
+    rm -r temp || die
 
     if [ "$1" = commit ]; then
-        mv README.md~ README.md || die 'failed to overwrite readme'
+        will overwrite readme
+        mv README.md~ README.md || die
+
         if ! git diff --no-patch --exit-code README.md; then
-            git commit README.md -m 'regenerate readme' || die 'failed to commit'
+            will commit
+            git commit README.md -m 'regenerate readme' || die
         else
-            echo2 'nothing to do'
+            printf '%s\n' "nothing to do" >&2
         fi
     fi
 fi

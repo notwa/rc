@@ -72,30 +72,30 @@ zmodload zsh/mathfunc
 dummy() : ### @- return 0, ignoring arguments.
 zle -N dummy
 
-dirprev() { ### @-
-    ### rotate and change to the previous directory in the directory stack
-    ### without consuming the prompt.
+dirprev() {
+    # rotate and change to the previous directory in the directory stack
+    # without consuming the prompt.
     pushd -q +1
     zle reset-prompt
     precmd
 }
-dirnext() { ### @-
-    ### rotate and change to the next directory in the directory stack
-    ### without consuming the prompt.
+dirnext() {
+    # rotate and change to the next directory in the directory stack
+    # without consuming the prompt.
     pushd -q -0
     zle reset-prompt
     precmd
 }
-dirup() { ### @-
-    ### change to the parent directory of the current working directory
-    ### without consuming the prompt.
+dirup() {
+    # change to the parent directory of the current working directory
+    # without consuming the prompt.
     cd ..
     zle reset-prompt
     precmd
 }
-dirview() { ### @-
-    ### use a fuzzy finder to select a recent directory in the directory stack
-    ### and change to it without consuming the prompt.
+dirview() {
+    # use a fuzzy finder to select a recent directory in the directory stack
+    # and change to it without consuming the prompt.
     local fuzzy="$(have fzy || print)"
     print
     if [ -n "$fuzzy" ]; then

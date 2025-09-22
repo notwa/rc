@@ -56,16 +56,16 @@ resolve(){
 IFS= read -r d && cd -- "${d:?}" && pwd -P
 }
 
-trap clean INT EXIT
 owd="${PWD:?unsupported}"
 
 will create temporary directory
 t="$(mktemp -d | resolve)" || die
 
 will check directory validity
-! {
-[ "${t#/}" = "$t" ] || [ "$t" -ef / ] || [ "$t" -ef "$owd" ]
-} || die
+if [ "${t#/}" = "$t" ] || [ "$t" -ef / ] || [ "$t" -ef "$owd" ]
+then die
+else trap clean INT EXIT
+fi
 
 will change directory
 cd -- "$t" || die

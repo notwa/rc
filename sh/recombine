@@ -22,13 +22,20 @@ case "$zero" in
 (yash)  SH=YASH sh=yash;;
 (zsh)   SH=ZSH  sh=zsh;;
 (sh)
-    f() { ! return 1; }
-    g() { return 256; }
+    f() { ! return 1; }; g() { return 256; }
     if f; then # (ash, hush) || (zsh)
         g && SH=ASH  sh=ash  || SH=ZSH  sh=zsh
     else # (bash, mksh, osh) || (dash, ksh, loksh, oksh, posh, yash)
         g && SH=BASH sh=bash || SH=DASH sh=dash
-    fi;;
+    fi
+
+    f() { x=2 g; return $x; }; g() { x=3; }
+    x=1 f || case $sh-$? in
+    (dash-1) SH=DASH sh=dash;; # (dash, posh)
+    (dash-2) SH=OKSH sh=oksh;; # (loksh, oksh)
+    (dash-3) SH=KSH  sh=ksh;;  # (ksh, yash)
+    esac
+    ;;
 (*)
     pl >&2 "unknown shell (\$0): $0"
     exit 1

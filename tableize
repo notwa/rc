@@ -61,6 +61,10 @@ tableize() {
                 continue
             fi
 
+            compat() { # be careful, we don't validate arguments
+                [ "${1#+}" != "$1" ] && eval "${1#+}"=yes || eval "${1#-}"=no
+            }
+
             check=0
             set -f
             IFS=' '
@@ -79,26 +83,8 @@ tableize() {
                 (NO_DASH) dash=no;;
                 (NO_ASH) ash=no;;
                 (compat:) check=1;;
-                (+ash)  [ "$check" = 0 ] || ash=yes;;
-                (+bash) [ "$check" = 0 ] || bash=yes;;
-                (+dash) [ "$check" = 0 ] || dash=yes;;
-                (+ksh)  [ "$check" = 0 ] || ksh=yes;;
-                (+mksh) [ "$check" = 0 ] || mksh=yes;;
-                (+oksh) [ "$check" = 0 ] || oksh=yes;;
-                (+osh)  [ "$check" = 0 ] || osh=yes;;
-                (+posh) [ "$check" = 0 ] || posh=yes;;
-                (+yash) [ "$check" = 0 ] || yash=yes;;
-                (+zsh)  [ "$check" = 0 ] || zsh=yes;;
-                (-ash)  [ "$check" = 0 ] || ash=no;;
-                (-bash) [ "$check" = 0 ] || bash=no;;
-                (-dash) [ "$check" = 0 ] || dash=no;;
-                (-ksh)  [ "$check" = 0 ] || ksh=no;;
-                (-mksh) [ "$check" = 0 ] || mksh=no;;
-                (-oksh) [ "$check" = 0 ] || oksh=no;;
-                (-osh)  [ "$check" = 0 ] || osh=no;;
-                (-posh) [ "$check" = 0 ] || posh=no;;
-                (-yash) [ "$check" = 0 ] || yash=no;;
-                (-zsh)  [ "$check" = 0 ] || zsh=no;;
+                ([+-][a-z]sh) [ "$check" = 0 ] || compat "$flag";;
+                ([+-][a-z][a-z]sh) [ "$check" = 0 ] || compat "$flag";;
                 ('#'*) break;;
             esac done
         done < "$f"

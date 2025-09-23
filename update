@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
-here="$(readlink -f "$0")" && here="${here%/*}" && CDPATH= cd -- "$here" || exit
+set -efuC
+here="$(readlink -f -- "$0")" && here="${here%/*}" && CDPATH= cd -- "$here" || exit
 #remote="https://github.com/notwa/rc/archive/master.tar.gz"
 remote="https://eaguru.guru/git/notwa/rc/archive/master.tar.gz"
 
@@ -134,7 +135,7 @@ backup() {
 }
 
 for d in home sh vim; do
-    discover "$d" > _new/hashes.txt ||
+    discover "$d" >| _new/hashes.txt ||
     die 'failed to find new files'
 
     different < _new/hashes.txt >> _new/updates.txt ||
@@ -144,20 +145,22 @@ done
 LC_ALL=C sort < _new/updates.txt > _new/sorted.txt ||
 die 'failed to sort file paths'
 
+failed=0
 while read -r f; do
     desire "$f" || continue
 
     if [ -f "_new/$f" ] && ! [ -f "$f" ]; then
         warn " +  $f"
-        cp -p -- "_new/$f" "$f"
+        [ -d "${f%/*}" ] || mkdir -p -- "${f%/*}" &&
+        cp -p -- "_new/$f" "$f" || failed=1
     elif ! [ -f "_new/$f" ] && [ -f "$f" ]; then
         warn " -  $f"
     elif [ "_new/$f" -nt "$f" ]; then
         # NOTE: this does not play well with git --patch.
         #       don't use this script when you have git!
         warn " *  $f"
-        backup "$f"
-        cp -p -- "_new/$f" "$f"
+        backup "$f" # hard failure
+        cp -p -- "_new/$f" "$f" || failed=1
     elif [ "_new/$f" -ot "$f" ]; then
         warn " /  $f"
     #else warn " =  $f"
@@ -165,3 +168,5 @@ while read -r f; do
 done < _new/sorted.txt
 
 clean
+[ "$failed" = 0 ] || warn 'update: some files failed to install'
+exit "$failed"

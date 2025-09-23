@@ -644,6 +644,8 @@ asses
 
 reconfigure your terminal's color scheme using a preset for [recolor.](#recolor)
 
+![subdue colors](https://eaguru.guru/t/subdue.png)
+
 ### [sum](/sh/sum#L4)
 
 compute the summation of its arguments without forking processes.

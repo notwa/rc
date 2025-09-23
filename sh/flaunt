@@ -92,12 +92,12 @@ __flaunt() { ### @flaunt
     # via ~/sh/recombine:
     __f() { ! return 1; }; __g() { return 256; }
     if __f; then __g && sh=ash || sh=zsh; else __g && sh=bash || sh=dash; fi
-    __f() { x=1 __g; return $x; }; __g() { x=2; }
-    x=0 __f || case $? in (1) sh=oksh;; (2) sh=ksh;; esac # narrow down dash
+    __1() { x=1 __2; return $x; }; __2() { x=2; }
+    x=0 __1 || case $? in (1) sh=oksh;; (2) sh=ksh;; esac # narrow down dash
 
     has busybox || has busybox-static
     __flaunt_busybox="$REPLY"
-    if __f && __g; then # only busybox exhibits this behavior
+    if [ $sh = ash ]; then # only busybox exhibits this behavior
         __bb() { PATH=: busybox "$@"; } # only works within busybox shells
     else
         __bb() { "${__flaunt_busybox:-false}" "$@"; }

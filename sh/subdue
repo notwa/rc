@@ -5,6 +5,10 @@ __subdue() { ### @subdue
     ### reconfigure your terminal's color scheme using a preset for [recolor.](#recolor)
     __recolor_install
 
+    # since we're already wrapped in a subshell,
+    # override recolor to avoid extra subshells.
+    recolor() { __recolor "$@"; }
+
     ForegroundColour '#ECECEC'
     BackgroundColour '#111111'
         CursorColour '#F9F9F9'

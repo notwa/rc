@@ -153,15 +153,11 @@ for d in sh .vim; do
     softlink "$d" "$rc/${d#.}"
 done
 
-# ensure that .bashrc gets executed
+# ensure that .bashrc gets executed:
 if ! [ -e .bash_profile ] || ! grep -qwF .bashrc .bash_profile; then
     pl '' '! [ -f ~/.bashrc ] || . ~/.bashrc' >>.bash_profile
 fi
 
-# delete any directory structure that may have been included with the OS.
-for d in bin Desktop Documents Downloads Music Pictures Public Templates Video Videos; do
-    ! [ -d "$d" ] || rmdir "$d"
-done
 
-# create instead my preferred directory structure.
+# create my preferred directory structure:
 mkdir -p .local/bin src work play || die "failed to create directories"

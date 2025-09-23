@@ -2,7 +2,7 @@
 set -efuC && unset CDPATH &&
 here="$(readlink -f -- "$0")" && here="${here%/*}" && cd -- "$here" || exit
 #remote="https://github.com/notwa/rc/archive/master.tar.gz"
-remote="https://eaguru.guru/git/notwa/rc/archive/master.tar.gz"
+remote="https://git.eaguru.guru/notwa/rc/archive/master.tar.gz"
 
 # NOTE: this script only updates files in subdirectories.
 #       it does not update itself!
@@ -30,7 +30,7 @@ die() {
 backup="backup-$(date -u +%s)" || die 'failed to determine date'
 
 if ! [ -e sh/obtain ]; then
-    url=https://eaguru.guru/git/notwa/rc/raw/branch/master/sh/obtain
+    url=https://git.eaguru.guru/notwa/rc/raw/branch/master/sh/obtain
     if   curl 2>&-; [ $? = 2 ]; then acquire() { curl -fsS -m45 -o- "$*"; }
     elif wget 2>&-; [ $? = 1 ]; then acquire() { wget -qt1 -T45 -O- "$*"; }
     else die '"sh/obtain" missing, curl and wget missing as well'

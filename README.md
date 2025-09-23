@@ -300,6 +300,7 @@ select a file from a given or current directory using
 ### [flaunt](/sh/flaunt#L83)
 
 send diagnostic telemetry to a central server via [`notice`.](#notice)
+currently, this is only used for reporting when servers come online.
 
 ### [ghmd](/sh/ghmd#L7)
 
@@ -856,26 +857,6 @@ print all 256 colors that are available on most terminals.
 ### [dummy (zshrc)](/home/zshrc#L72)
 
 return 0, ignoring arguments.
-
-### [dirprev (zshrc)](/home/zshrc#L75)
-
-rotate and change to the previous directory in the directory stack
-without consuming the prompt.
-
-### [dirnext (zshrc)](/home/zshrc#L82)
-
-rotate and change to the next directory in the directory stack
-without consuming the prompt.
-
-### [dirup (zshrc)](/home/zshrc#L89)
-
-change to the parent directory of the current working directory
-without consuming the prompt.
-
-### [dirview (zshrc)](/home/zshrc#L96)
-
-use a fuzzy finder to select a recent directory in the directory stack
-and change to it without consuming the prompt.
 
 ### [OMFG (zshrc)](/home/zshrc#L234)
 

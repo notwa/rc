@@ -24,22 +24,24 @@ __recolor_install() {
 }
 
 __recolor() {
-    # TODO: clean up and optimize the heck out of this, i.e.
-    #       don't require 19+ subshells to replace every color.
+    tmuxy=false screeny=false linuxy=false
+    case ${TERM:?} in
+    (tmux*) tmuxy=true;;
+    (screen*) tmuxy=true screeny=true;;
+    (linux*) linuxy=true;;
+    esac
+
+    # tmux might claim to be screen, try to handle that:
+    [ "${TMUX+-}" ] || [ "${SSH_TTY+-}" ] || tmuxy=false
+
     pre='\033]'
     post='\033\\'
-
-    tmuxy=0 screeny=0 linuxy=0
-    [ "${TERM#tmux}"   = "$TERM" ] || tmuxy=1
-    [ "${TERM#screen}" = "$TERM" ] || { tmuxy=1; screeny=1; }
-    [ "${TERM#linux}"  = "$TERM" ] || linuxy=1
-    [ -z "$TMUX" ] || tmuxy=0
-    [ "$tmuxy$screeny" = 00 ] || linuxy=0
-
-    if [ $tmuxy = 1 ]; then
-        pre='\033Ptmux;\033'"$pre"
-        post='\007'"$post"
-    elif [ $screeny = 1 ]; then
+    if $tmuxy; then
+        : # change nothing; only color the pane this command was run in.
+        # see: https://man.archlinux.org/man/tmux.1.en#allow-passthrough
+        #pre='\033Ptmux;\033'"$pre"
+        #post='\007'"$post"
+    elif $screeny; then
         pre='\033P\033'"$pre"
         post='\007'"$post"
     fi
@@ -49,85 +51,95 @@ __recolor() {
         exit 2
     }
 
-    byteranged() {
+    is_a_byte() {
         [ "$1" -ge 0 ] && [ "$1" -le 255 ]
     } 2>&-
 
     valid_rex() {
-        [ -z "${2#[0-9a-f][0-9a-f]/[0-9a-f][0-9a-f]/[0-9a-f][0-9a-f]}" ]
+        case $1 in
+        ([0-9a-f][0-9a-f]/[0-9a-f][0-9a-f]/[0-9a-f][0-9a-f]) true;;
+        (*) false;;
+        esac
     }
 
-    rex() {
-        byteranged "$1" || malarg rex 1 "$1"
-        valid_rex || malarg rex 2 "$2"
-        if [ $linuxy = 1 ]; then
-            #local IFS=/
-            #set -- $1 $2
-            set -- "${1%%/*}" "${2#*/}"
-            set -- "$1" "${2%%/*}"
-            [ "$1" -ge 16 ] || printf '\e]P%x%s%s%s' "$@"
+    apply() {
+        is_a_byte "$1" || malarg apply 1 "$1"
+        valid_rex "$2" || malarg apply 2 "$2"
+        if $linuxy; then
+            set -- "$1" "${2%/*}" "${2##*/}"
+            set -- "$1" "${2%%/*}" "${2##*/}" "$3"
+            [ "$1" -ge 16 ] || printf '\033]P%x%s%s%s' "$@"
         else
             printf "${pre}4;%s;rgb:%s${post}" "$1" "$2"
         fi
     }
 
-    rexr() {
-        byteranged "$1" || malarg rexr 1 "$1"
-        valid_rex || malarg rexr 2 "$2"
-        if [ $linuxy = 1 ]; then
+    apply_raw() {
+        is_a_byte "$1" || malarg apply_raw 1 "$1"
+        valid_rex "$2" || malarg apply_raw 2 "$2"
+        if $linuxy; then
             : # unsupported
         else
             printf "${pre}%s;rgb:%s${post}" "$1" "$2"
         fi
     }
 
-    colour_split() {
+    split_hex() {
         # use blue channel as a temporary variable.
         b="${c%??}" r="${b%??}" g="${b#??}" b="${c#????}"
     }
 
-    dirty=0 plus=0
-    n= r=ff g=ff b=ff a= c= i= raw=0
+    c_to_hex() { # in-place, hardcoded to use $c
+        if [ "$ZSH_VERSION" ] || [ "$BASH_VERSION" ]; then
+            printf -v c %02x "$c" # also supported by ksh and osh
+        else
+            c="$(printf %02x "$c")"
+        fi
+    }
 
-    if [ "$1" = RAW ]; then raw=1; shift; fi
+    n= r=ff g=ff b=ff a= c= i= raw=false
+
+    if [ "$1" = RAW ]; then raw=true; shift; fi
     n="$1"
 
-    byteranged "$n" || malarg recolor 1 "$c"
+    is_a_byte "$n" || malarg recolor 1 "$c"
 
-    if c="${2#\#}"; [ "$c" != "$2" ]; then
-        [ "${#c}" = 6 ] || malarg recolor 2 "$2"
-        v_lower c || return
-        colour_split || return
+    if c="${2#\#}"; [ "$c" != "$2" ]; then # handle #ABCDEF
+        [ ${#c} = 6 ] || malarg recolor 2 "$2"
+        v_lower c && split_hex || return
 
-    elif c="${2#0x}"; [ "$c" != "$2" ] && [ "${#c}" = 6 ]; then
-        v_lower c || return
-        colour_split || return
+    elif c="${2#0x}"; [ "$c" != "$2" ] && [ ${#c} = 6 ]; then # handle 0xABCDEF
+        v_lower c && split_hex || return
 
-    else
-        i=1
+    else # arguments like 10 20 120, some with 0x prefixes (does not handle #)
+        i=1 # NOT off by one!
         for a in "$2" "$3" "$4"; do
-            : $((i+=1))
-            if c="${a#0x}"; [ "$c" = "$a" ]; then
-                byteranged "$c" || malarg recolor $i "$c"
-                c="$(printf '%02x' "$c")" # TODO: avoid subshell.
+            : $((i+=1)) # start with the second argument (as does the for loop)
+            if c="${a#0x}"; [ "$c" = "$a" ]; then # handle no hex prefix case
+                is_a_byte "$c" || malarg recolor $i "$c"
+                c_to_hex
             fi
-            [ "${#c}" != 1 ] || c="0$c"
-            [ "${#c}" = 2 ] || malarg recolor $i "$c"
+
+            [ ${#c} != 1 ] || c="0$c" # pad to two digits
+            [ ${#c} = 2 ] || malarg recolor $i "$c"
             v_lower c || return
-            [ $i = 2 ] && r="$c" || [ $i = 3 ] && g="$c" || [ $i = 4 ] && b="$c"
+            case $i in
+            (2) r="$c";;
+            (3) g="$c";;
+            (4) b="$c";;
+            esac
         done
     fi
 
-    if [ $raw = 1 ]; then
-        rexr "$n" "$r/$g/$b"
+    if $raw; then
+        apply_raw "$n" "$r/$g/$b"
     else
-        rex "$n" "$r/$g/$b"
-        if [ "$n" -eq 21 ] && [ $plus = 1 ]; then
-            # use base16 "Bright White" for foreground as well.
-            rexr 10 "$r/$g/$b"
-        fi
+        apply "$n" "$r/$g/$b"
+        #if [ "$n" -eq 21 ]; then
+        #    # use base16 "Bright White" for foreground as well.
+        #    apply_raw 10 "$r/$g/$b"
+        #fi
     fi
-    dirty=1
 } >/dev/tty
 
 recolor()(__recolor "$@")

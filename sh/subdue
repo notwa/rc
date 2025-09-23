@@ -3,6 +3,8 @@
 
 __subdue() { ### @subdue
     ### reconfigure your terminal's color scheme using a preset for [recolor.](#recolor)
+    ###
+    ### ![subdue colors](https://eaguru.guru/t/subdue.png)
     __recolor_install
 
     # since we're already wrapped in a subshell,

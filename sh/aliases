@@ -6,12 +6,7 @@ alias pastel='pastel -f' # why would i want to use a color utility without color
 alias poo="pueue"
 alias rg="rg -M200"
 
-# TODO: remove this check, it should have nothing to do with colors.
-unset FANCY; _=: && [ -z $_ ] && FANCY=1 || FANCY=0 # detect bash, osh, and zsh
-if [ "$FANCY" = 1 ]; then
-    # busybox is smart enough to ignore --color flags when unsupported.
+if [ -f /usr/bin/dircolors ]; then # roughly detect the presence of GNU coreutils
     alias grep='grep --color=auto'
     alias ls='ls --color=auto'
-    alias lr="lr -G"
-    #alias make="$(have colormake || have make)"
 fi

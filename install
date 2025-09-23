@@ -144,7 +144,7 @@ backup_dir="$rc/backup-$(date -u +%s)" || die "failed to determine date"
 
 for f in \
     .shrc .bashrc .zshrc .prep .ls_colors \
-    .vimrc .inputrc .Xresources .screenrc .tmux.conf \
+    .vimrc .inputrc .Xresources .tmux.conf \
 ; do
     hardlink "$f" "$rc/home/${f#.}"
 done

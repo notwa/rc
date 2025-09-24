@@ -229,6 +229,8 @@ conflagrate() {
     PROMPT="%{$chset$curse$reset$s%(?.${okay:-42}.${fail:-41});${fg:-97}$e%}%#%{$reset%} "
 }
 
+unalias -a # prevents syntax errors when defining functions clobbering aliases
+
 . ~/.shrc
 
 alias -g OMFG="1>/dev/null" ### @ OMFG - silence stdout.

@@ -192,6 +192,7 @@ if has('autocmd')
     augroup tabs
         au!
         au BufRead,BufNewFile *.bt,*.1sc    call TabFour()
+        au BufRead,BufNewFile *.nix         call TabTwo()
         au BufRead,BufNewFile *.ys          call TabTwo()
         au BufRead,BufNewFile .gitconfig    call TabEight()
         au BufRead,BufNewFile PKGBUILD      call TabTwo()

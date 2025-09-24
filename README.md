@@ -514,17 +514,13 @@ directories are never recursed.
 dump all the `#define`s that `$CC $CPPFLAGS $CFLAGS $LDFLAGS` would result in.
 
 ```
-$ pre | shuf | head -n10
-#define __GNUC_MINOR__ 3
-#define __SIZEOF_LONG__ 4
-#define __UINT_LEAST16_TYPE__ short unsigned int
-#define __ORDER_BIG_ENDIAN__ 4321
-#define __SIZEOF_FLOAT__ 4
-#define __INTMAX_MAX__ 0x7fffffffffffffffLL
-#define __INT64_C(c) c ## LL
-#define __UINT16_MAX__ 0xffff
-#define __DEC64_MANT_DIG__ 16
-#define __DBL_HAS_INFINITY__ 1
+$ pre | grep char
+#define __UINT_LEAST8_TYPE__ unsigned char
+#define __UINT8_TYPE__ unsigned char
+#define __INT8_TYPE__ signed char
+#define __INT_LEAST8_TYPE__ signed char
+#define __INT_FAST8_TYPE__ signed char
+#define __UINT_FAST8_TYPE__ unsigned char
 ```
 
 ### [preload](/sh/preload#L7)

@@ -13,7 +13,7 @@ e() { ### @-
     ### **NOTE:** there also exists an e(1) program provided by
     ### the *e-wrapper* package that i don't use.
 
-    [ -z "$ZSH_OPTIONS" ] || setopt local_options sh_word_split
+    [ -z "$ZSH_SUBSHELL" ] || setopt local_options sh_word_split
     local d= f= temp= running= editor= needroot=0
 
     editor="${EDITOR%% *}"

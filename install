@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 # for busybox ash, dash, bash, and zsh.
-
-VERBOSE="${VERBOSE-1}"
+set -efuC && unset CDPATH IFS
 NAME="$0"
+VERBOSE="${VERBOSE-1}"
 
 die() {
     printf '%s:' "$NAME"
@@ -19,9 +19,9 @@ backup() {
     : "${1:?missing argument}"
     pl "backing up $1"
     set -- "$1" "${backup_dir:?backup_dir unset}" # shorthand for my own sanity
-    [ -d "$2" ] || mkdir "$2" || die "failed to create backup directory"
+    [ -d "$2" ] || mkdir -- "$2" || die "failed to create backup directory"
     if [ ${1%/*} != "$1" ]; then
-        mkdir -p "$2/${1%/*}" || die "failed to create backup directory"
+        mkdir -p -- "$2/${1%/*}" || die "failed to create backup directory"
     fi
     ! [ -e "$2/$1" ] || die "backup already exists: $2/$1"
     mv "$1" "$2/$1" || die "failed to backup $1"
@@ -50,7 +50,7 @@ softlink_nix() {
     : "${2:?missing argument}"
     if [ -e "$1" ]; then
         if [ -h "$1" ]; then
-            [ "$(readlink "$1")" != "$2" ] || return 0
+            [ "$(exec readlink -- "$1")" != "$2" ] || return 0
             pl "removing symbolic link $1"
             rm "$1" || die "failed to remove symbolic link"
         else
@@ -72,7 +72,7 @@ softlink_pseudo() (
     : "${1:?missing argument}"
     : "${2:?missing argument}"
     [ -d "$2" ] || die "$1 is not a directory to softlink"
-    [ -d "$1" ] || mkdir "$1" || die "failed to mkdir $1"
+    [ -d "$1" ] || mkdir -- "$1" || die "failed to mkdir $1"
 
     list_files "$2" | while read -r f; do
         d1="$1/$f"
@@ -123,7 +123,7 @@ find_new_files() (
 )
 
 softlink() {
-    if [ -n "$MSYSTEM" ]; then
+    if [ -n "${MSYSTEM-}" ]; then
         # MSYS2 does not have nor emulate symbolic links.
         softlink_pseudo "$@" || exit
         # to make up for git status not seeing new files:
@@ -134,12 +134,9 @@ softlink() {
 }
 
 readlink -f / >/dev/null || die 'failed sanity check (check your $PATH)'
-
-unset CDPATH
-rc="$(readlink -f "$0")" && rc="${rc%/*}" && cd "$rc" || die "failed to determine rc directory"
-cd "${HOME:?HOME variable empty or unset}" || die "failed to change directory"
-
-backup_dir="$rc/backup-$(date -u +%s)" || die "failed to determine date"
+rc="$(cd -- "${NAME%/*}/" && pwd -P)" || die "failed to determine rc directory"
+cd -- "${HOME:?parameter null or not set}" || die "failed to change directory"
+backup_dir="$rc/backup-$(exec date -u +%s)" || die "failed to determine date"
 ! [ -d "$backup_dir" ] || die "backup directory already exists"
 
 for f in \
@@ -157,7 +154,6 @@ done
 if ! [ -e .bash_profile ] || ! grep -qwF .bashrc .bash_profile; then
     pl '' '! [ -f ~/.bashrc ] || . ~/.bashrc' >>.bash_profile
 fi
-
 
 # create my preferred directory structure:
 mkdir -p .local/bin src work play || die "failed to create directories"

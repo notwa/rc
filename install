@@ -155,5 +155,11 @@ if ! [ -e .bash_profile ] || ! grep -qwF .bashrc .bash_profile; then
     pl '' '! [ -f ~/.bashrc ] || . ~/.bashrc' >>.bash_profile
 fi
 
+# ensure that .shrc gets executed:
+if ! [ -e .profile ] || ! grep -qwF .shrc .profile; then
+    # this trick with ENV works in: ash, dash, ksh, and loksh/oksh.
+    pl '' '! [ -f ~/.shrc ] || export ENV=~/.shrc' >>.profile
+fi
+
 # create my preferred directory structure:
 mkdir -p .local/bin src work play || die "failed to create directories"

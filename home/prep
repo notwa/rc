@@ -40,9 +40,9 @@ if [ -r /etc/msystem ]; then
     export CONFIG_SITE HOSTNAME INFOPATH LANG MANPATH ORIGINAL_TEMP ORIGINAL_TMP PATH PKG_CONFIG_PATH SHELL TEMP TMP TZ USER temp tmp
 
 elif [ -r /etc/profile ]; then
-    if [ -n "$ZSH_VERSION" ]; then
+    if [ "${PS1-}" = '%m%# ' ] && [ -n "${ZSH_VERSION-}" ]; then
         emulate sh -c "source /etc/profile"
-    else
+    elif [ "${PS1-}" = '$ ' ]; then
         . /etc/profile
     fi
 

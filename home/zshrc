@@ -45,7 +45,7 @@ if [ "$TERM_PROGRAM" = mintty ] && ! [[ "$TERM_PROGRAM_VERSION" < 2.7.6 ]]; then
     fi
 fi
 
-function {
+autotmux() {
     if [ "$SHLVL" -le 1 ] \
     && [ "${(L)HOST}" != spectre ] \
     && [ "${TERM#screen}" = "$TERM" ] \

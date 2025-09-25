@@ -1,5 +1,9 @@
-[ -z "$PS1" ] && return
-. ~/.prep # handle boring stuff like /etc/profile and $PATH
+if case $- in (*i*) [ ]; esac then
+    # a non-interactive shell. technically this isn't supposed to happen,
+    # as rc files are meant for interactive mode. however, due to legacy
+    # reasons, certain scenarios will cause .bashrc to be sourced anyway.
+    return # this prevents scp from blowing up or hanging
+fi
 
 HISTCONTROL=erasedups
 HISTSIZE=1000

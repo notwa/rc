@@ -1,9 +1,9 @@
 #!/usr/bin/env false
-# this script works in everything but hush, but hush is broken so whatever dude.
-
+# this script ought to work in any bourne-like shell except for busybox's hush.
 set +efuC; umask 022; unset CDPATH IFS # TODO: source /etc/profile in osh/yash.
 export LC_ALL=C # this is temporary; sane values are configured after __prepare
-unset LS_COLORS # this variable causes too much clutter with its massive value
+unset LS_COLORS # this variable's value can grow obscenely large (see ~/sh/zzz)
+unset ENV BASH_ENV # don't run twice if we used one of these tricks to get here
 
 __f() { ! return 1; } && __g() { return 256; } && is_zsh() { __f && ! __g; }
 if is_zsh && case $- in (im|ilm) :;; (?*) ! :;; (*) :; esac then emulate zsh
@@ -98,17 +98,12 @@ unset PREFIX CC CPP CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 unset AR RANLIB RC WINDRES OBJDUMP OBJCOPY
 unset LD_LIBRARY_PATH
 
-EA_AUTH="auth" EA_DIR="t" EA_DOMAIN="https://eaguru.guru"
-
-[ "$DESKTOP_SESSION" != xfce ] || export QT_QPA_PLATFORMTHEME="" # unhide menu bar
+[ "$DESKTOP_SESSION" != xfce ] || export QT_QPA_PLATFORMTHEME= # unhide menu bar
 #[ "$TERM" != vt102 ] || export TERM="xterm" # PuTTY over serial
 export EDITOR=vim
-export ENV="$HOME/.shrc" # for dash and ash
 export LESS='-QRSci'
 export PAGER=less
 export PYTHONIOENCODING=utf-8 # damnit python!
-export SSH_AUTH_SOCK=0 # more info: https://0x0.st/NUnw
-export TZ=':/etc/localtime' # more info: https://0x0.st/NUnv
 
 # $LANG has been my bane whenever i forget to set it properly, so check it.
 if ! case "$LANG" in (en_US.UTF-8) :;; (en_CA.UTF-8) :;;

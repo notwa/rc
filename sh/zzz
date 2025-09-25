@@ -1,16 +1,23 @@
 #!/usr/bin/env false
 # compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
-__attention()
-  { printf >&2 '\033[7m %s \033[m\n' "$@"; }
+if case $- in (*i*) true;; (*) false;; esac; then
+    # this is an interactive shell.
+    __attention()
+      { printf >&2 '\033[7m %s \033[m\n' "$@"; }
 
-! has sudo || has doas || doas()
-  { __attention 'warning: you ran sudo when you meant doas!'; sudo "$@"; }
-! has doas || has sudo || sudo()
-  { __attention 'warning: you ran doas when you meant sudo!'; doas "$@"; }
+    ! has sudo || has doas || doas()
+      { __attention 'warning: you ran sudo when you meant doas!'; sudo "$@"; }
+    ! has doas || has sudo || sudo()
+      { __attention 'warning: you ran doas when you meant sudo!'; doas "$@"; }
+
+    { alias ll=; unalias ll; } 2>&- # unalias without spitting an error
+    { alias ls=; unalias ls; } 2>&- # unalias without spitting an error
+else
+    . ~/sh/has # handle the non-interactive case wherein this was never sourced
+fi
 
 ### @ ll - list files verbosely, fancily, ordered, but not recursively.
-{ alias ll=; unalias ll; } 2>&- # unalias without spitting an error
 if has lr; then
     ll() { lr -1lshGG -o tev "$@" | less; }
 elif has lr.com; then # https://eaguru.guru/t/lr.com
@@ -206,7 +213,6 @@ indicator() { # colors like a litmus test
     printf '\033[0m\n'
 }
 
-unalias ls 2>/dev/null
 has dircolors && ls() { # busybox lacks dircolors but it's fine too
     # overriding `ls` as a function and not an executable allows us
     # to pass LS_COLORS without cluttering the caller's environment.

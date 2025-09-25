@@ -1,0 +1,37 @@
+# most POSIX shells (that aren't trying to be bash or zsh)
+# will likely source /etc/profile, followed by ~/.profile.
+# then, some shells will source the file at $ENV when set.
+
+# bash will ONLY source the first readable file of:
+# ~/.bash_profile and ~/.bash_login and ~/.profile.
+# zsh requires sh emulation and won't source these.
+
+# i recommend sourcing this file from both ~/.zprofile and ~/.bash_profile.
+# in doing so, most profile-related setup is consolidated to a single file.
+# do not define aliases. do not print to stdout. do not access /dev/tty.
+
+#export LANG=$(locale -uU) # set user-defined locale
+export SSH_AUTH_SOCK=0 # more info: https://0x0.st/NUnw
+export TZ=':/etc/localtime' # more info: https://0x0.st/NUnv
+
+EA_AUTH='auth' EA_DIR='t' EA_DOMAIN='https://eaguru.guru'
+
+if case $- in (*i*) true;; (*) false;; esac; then
+    # this is an interactive shell.
+
+    # this trick with ENV works in: ash, dash, ksh, and loksh/oksh.
+    # bash has $BASH_ENV, but it only runs in non-interactive mode.
+    ! [ -r ~/.shrc ] || export ENV=~/.shrc
+    ! [ -r ~/.bashrc ] || BASH_ENV=~/.bashrc # see ~/.bash_profile
+
+elif [ -n "${HOME++}" ]; then # post-cloud-init paranoia
+    # this is a non-interactive shell.
+
+    # add ~/sh/ to PATH so that those commands can be run from ssh et al.
+    # TODO: consider exporting EA_* variables, so that `ea` can work too.
+    PATH="$HOME/sh${PATH+:}$PATH"
+    if [ -r "$HOME/zzz" ]; then
+        # a script containing short functions that don't merit individual files:
+        . ~/sh/zzz
+    fi
+fi

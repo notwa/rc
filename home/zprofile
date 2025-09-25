@@ -1,0 +1,10 @@
+# the nature of this file is explained by ~/.profile and elaborated by ~/.zshrc.
+[ -z "${MSYSTEM-}" ] && # MSYS2 already runs /etc/profile for us
+[ -r /etc/profile ] && emulate sh -c 'source /etc/profile'
+[ -r ~/.profile   ] && emulate sh -c 'source ~/.profile'
+
+# ONLY configure options that affect syntax. everything else goes in ~/.zshrc!
+setopt brace_ccl                # for character ranges like {a-z}
+setopt extended_glob            # required for some of my scripts to function
+setopt ksh_typeset              # treat `local x=$(cmd)` and `local x="$(cmd)"` the same
+setopt rc_quotes                # 'it''s okay' becomes "it's okay"

@@ -140,8 +140,8 @@ backup_dir="$rc/backup-$(exec date -u +%s)" || die "failed to determine date"
 ! [ -d "$backup_dir" ] || die "backup directory already exists"
 
 for f in \
-    .shrc .bashrc .zshrc .prep .ls_colors \
-    .vimrc .inputrc .Xresources .tmux.conf \
+    .bash_profile .zprofile .profile .bashrc .zshrc .shrc \
+    .inputrc .ls_colors .tmux.conf .vimrc .Xresources \
 ; do
     hardlink "$f" "$rc/home/${f#.}"
 done
@@ -150,16 +150,7 @@ for d in sh .vim; do
     softlink "$d" "$rc/${d#.}"
 done
 
-# ensure that .bashrc gets executed:
-if ! [ -e .bash_profile ] || ! grep -qwF .bashrc .bash_profile; then
-    pl '' '! [ -f ~/.bashrc ] || . ~/.bashrc' >>.bash_profile
-fi
-
-# ensure that .shrc gets executed:
-if ! [ -e .profile ] || ! grep -qwF .shrc .profile; then
-    # this trick with ENV works in: ash, dash, ksh, and loksh/oksh.
-    pl '' '! [ -f ~/.shrc ] || export ENV=~/.shrc' >>.profile
-fi
-
-# create my preferred directory structure:
-mkdir -p .local/bin src work play || die "failed to create directories"
+# create standard XDG directories:
+mkdir -p .cache .config .local/bin .local/share .local/state &&
+# create my preferred directories:
+mkdir -p src work play || die "failed to create directories"

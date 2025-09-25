@@ -14,6 +14,7 @@ if case $- in (*i*) true;; (*) false;; esac; then
     { alias ll=; unalias ll; } 2>&- # unalias without spitting an error
     { alias ls=; unalias ls; } 2>&- # unalias without spitting an error
 else
+    preload=:
     . ~/sh/has # handle the non-interactive case wherein this was never sourced
 fi
 

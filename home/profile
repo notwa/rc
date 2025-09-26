@@ -1,14 +1,34 @@
+# this script might not be running in an interactive shell.
+# do not attempt to use aliases, /dev/tty, stdin or stdout.
+
 # most POSIX shells (that aren't trying to be bash or zsh)
 # will likely source /etc/profile, followed by ~/.profile.
-# then, some shells will source the file at $ENV when set.
+# then, interactive shells should source the file at $ENV.
 
 # bash will ONLY source the first readable file of:
 # ~/.bash_profile and ~/.bash_login and ~/.profile.
 # zsh requires sh emulation and won't source these.
 
-# i recommend sourcing this file from both ~/.zprofile and ~/.bash_profile.
-# in doing so, most profile-related setup is consolidated to a single file.
-# do not define aliases. do not print to stdout. do not access /dev/tty.
+# i suggest sourcing this file from both ~/.zprofile and ~/.bash_profile.
+# in doing so, most login-related setup is consolidated to a single file.
+
+# this handles the case where $USER and $HOME are not set,
+# as that occurs when env -i or cloud-init are being used.
+# really, this code would make more sense in /etc/profile.
+__pwd="$PWD"
+user() { ! case ${USER=} in (*[!A-Za-z0-9._-]*) true;; (?*) false; esac; }
+if ! user; then
+    USER="$(whoami 2>&-)" &&
+    user || unset USER # well, we tried
+fi; unset -f user
+home() { [ "${HOME=}" != "${HOME#/}" ] && cd -- "$HOME" 2>&-; }
+if ! home; then
+    for HOME in /root "${USER+/home/}${USER-}" /home/* ""; do
+        [ -d "$HOME" ] && [ -O "$HOME" ] && break
+    done
+    home || unset HOME # well, we tried
+fi; unset -f home
+cd -- "$__pwd"; unset __pwd
 
 #export LANG=$(locale -uU) # set user-defined locale
 export SSH_AUTH_SOCK=0 # more info: https://0x0.st/NUnw
@@ -24,7 +44,7 @@ if case $- in (*i*) true;; (*) false;; esac; then
     ! [ -r ~/.shrc ] || export ENV=~/.shrc
     ! [ -r ~/.bashrc ] || BASH_ENV=~/.bashrc # see ~/.bash_profile
 
-elif [ -n "${HOME++}" ]; then # post-cloud-init paranoia
+elif [ -n "${HOME++}" ]; then
     # this is a non-interactive shell.
 
     # add ~/sh/ to PATH so that those commands can be run from ssh et al.

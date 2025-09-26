@@ -30,7 +30,7 @@ elif [ -n "${HOME++}" ]; then # post-cloud-init paranoia
     # add ~/sh/ to PATH so that those commands can be run from ssh et al.
     # TODO: consider exporting EA_* variables, so that `ea` can work too.
     PATH="$HOME/sh${PATH+:}$PATH"
-    if [ -r "$HOME/zzz" ]; then
+    if [ -r "$HOME/sh/zzz" ]; then
         # a script containing short functions that don't merit individual files:
         . ~/sh/zzz
     fi

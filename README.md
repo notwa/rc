@@ -177,9 +177,13 @@ $ cd && busiest | head -n3
 21042 play
 ```
 
+### [bylen](/sh/bylen#L37)
+
+sort lines by length. several implementations are provided.
+
 ### [clash](/sh/clash#L4)
 
-run a command through 12 different shells.
+run a command through 11 different shells.
 
 only returns false when no arguments are given.
 
@@ -730,154 +734,150 @@ $ xxp ~/rc/install | head -n2
 68 0A 23 20 74 68 69 73 20 73 63 72 69 70 74 20
 ```
 
-### [ll (sh/zzz)](/sh/zzz#L12)
+### [ll (sh/zzz)](/sh/zzz#L21)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [gdp (sh/zzz)](/sh/zzz#L26)
+### [gdp (sh/zzz)](/sh/zzz#L34)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [gd (sh/zzz)](/sh/zzz#L32)
+### [gd (sh/zzz)](/sh/zzz#L40)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [rgn (sh/zzz)](/sh/zzz#L35)
+### [rgn (sh/zzz)](/sh/zzz#L43)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (sh/zzz)](/sh/zzz#L41)
+### [curls (sh/zzz)](/sh/zzz#L49)
 
 be a little smarter with curl. (HTTPS only)
 
-### [bylen (sh/zzz)](/sh/zzz#L53)
-
-use perl to sort lines by length.
-
-### [revend (sh/zzz)](/sh/zzz#L57)
+### [revend (sh/zzz)](/sh/zzz#L61)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (sh/zzz)](/sh/zzz#L60)
+### [clone (sh/zzz)](/sh/zzz#L64)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
 **TODO:** rename because POSIX.1-2024 reserves this name.
 
-### [aligntabs (sh/zzz)](/sh/zzz#L64)
+### [aligntabs (sh/zzz)](/sh/zzz#L68)
 
 align tab-delimited fields in stdin.
 
-### [crawla (sh/zzz)](/sh/zzz#L75)
+### [crawla (sh/zzz)](/sh/zzz#L79)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (sh/zzz)](/sh/zzz#L78)
+### [crawlz (sh/zzz)](/sh/zzz#L82)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (sh/zzz)](/sh/zzz#L81)
+### [diff (sh/zzz)](/sh/zzz#L85)
 
 use git's diff subcommand for general diffing.
 
-### [gc (sh/zzz)](/sh/zzz#L84)
+### [gc (sh/zzz)](/sh/zzz#L88)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (sh/zzz)](/sh/zzz#L88)
+### [counts (sh/zzz)](/sh/zzz#L92)
 
 count files in the current directory, including files found recursively.
 
-### [exts (sh/zzz)](/sh/zzz#L91)
+### [exts (sh/zzz)](/sh/zzz#L95)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (sh/zzz)](/sh/zzz#L95)
+### [nocom (sh/zzz)](/sh/zzz#L99)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (sh/zzz)](/sh/zzz#L98)
+### [jrep (sh/zzz)](/sh/zzz#L102)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (sh/zzz)](/sh/zzz#L101)
+### [bomb (sh/zzz)](/sh/zzz#L105)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (sh/zzz)](/sh/zzz#L104)
+### [cleanse (sh/zzz)](/sh/zzz#L108)
 
 strip unprintable and non-ASCII characters.
 
-### [double (sh/zzz)](/sh/zzz#L107)
+### [double (sh/zzz)](/sh/zzz#L111)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (sh/zzz)](/sh/zzz#L112)
+### [katagana (sh/zzz)](/sh/zzz#L116)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (sh/zzz)](/sh/zzz#L116)
+### [makepkgf (sh/zzz)](/sh/zzz#L120)
 
 make the freakin' package!
 
-### [rakef (sh/zzz)](/sh/zzz#L119)
+### [rakef (sh/zzz)](/sh/zzz#L123)
 
 make the freakin' gem!
 
-### [relog (sh/zzz)](/sh/zzz#L122)
+### [relog (sh/zzz)](/sh/zzz#L126)
 
 log on again to refresh your unix groups, etc.
 
-### [carry (sh/zzz)](/sh/zzz#L125)
+### [carry (sh/zzz)](/sh/zzz#L129)
 
 copy files in a plain way using rsync. affected by umask.
 
-### [colors (sh/zzz)](/sh/zzz#L137)
+### [colors (sh/zzz)](/sh/zzz#L141)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L179)
+### [morecolors (sh/zzz)](/sh/zzz#L183)
 
 print all 256 colors that are available on most terminals.
 
 ## miscellaneous
 
-### [dummy (zshrc)](/home/zshrc#L72)
+### [dummy (zshrc)](/home/zshrc#L83)
 
 return 0, ignoring arguments.
 
-### [OMFG (zshrc)](/home/zshrc#L234)
+### [OMFG (zshrc)](/home/zshrc#L247)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L235)
+### [STFU (zshrc)](/home/zshrc#L248)
 
 silence stderr.
 
-### [SWAP (zshrc)](/home/zshrc#L236)
+### [SWAP (zshrc)](/home/zshrc#L249)
 
 swap stdout and stderr. uses fd 3 as an intermediary.
 
-### [reload (zshrc)](/home/zshrc#L241)
+### [reload (zshrc)](/home/zshrc#L254)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L39)
+### [dummy (bashrc)](/home/bashrc#L43)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L42)
+### [reload (bashrc)](/home/bashrc#L46)
 
 **TODO:** respect initctl like in `.zshrc`.
 
@@ -914,6 +914,7 @@ prepend entries to `$PATH` and remove their duplications.
 | [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [burl](#burl)                                 |       bash | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [busiest](#busiest)                           |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
+| [bylen](#bylen)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
 | [checkweb](#checkweb)                         |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
 | [clash](#clash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [compile](#compile)                           |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |

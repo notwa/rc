@@ -1,17 +1,17 @@
 #!/usr/bin/env sh
 
 __bylen_python() (
-    argc $# -eq 0 bylen
+    argc $# -eq 0 bylen || return
     exec python3 -c 'import sys; sys.stdout.writelines(sorted(sys.stdin, key=len))'
 )
 
 __bylen_perl() (
-    argc $# -eq 0 bylen
+    argc $# -eq 0 bylen || return
     exec perl -e 'print sort { length($a) <=> length($b) } <>'
 )
 
 __bylen_pure() (
-    argc $# -eq 0 bylen
+    argc $# -eq 0 bylen || return
     export LC_ALL=C
 
     hi=0

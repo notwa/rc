@@ -12,6 +12,20 @@
 # i suggest sourcing this file from both ~/.zprofile and ~/.bash_profile.
 # in doing so, most login-related setup is consolidated to a single file.
 
+prepend() { # read permissions for PATH directories are not strictly necessary
+    [ -d "$1" ] && [ -x "$1" ] || return 0
+    case :${PATH-}: in (*":$1:"*) false; esac && PATH="$1${PATH:+:}${PATH-}"
+}
+if [ -z "${PATH-}" ] || ! command -v sh >&-; then
+    [ /bin -ef /usr/bin ] || prepend /bin
+    [ /sbin -ef /bin ] || [ /sbin -ef /usr/sbin ] || prepend /sbin
+    prepend /usr/bin
+    [ /usr/sbin -ef /usr/bin ] || prepend /usr/sbin
+    prepend /usr/local/bin
+    [ /usr/local/sbin -ef /usr/local/bin ] || prepend /usr/local/sbin
+fi
+export PATH
+
 # this handles the case where $USER and $HOME are not set,
 # as that occurs when env -i or cloud-init are being used.
 # really, this code would make more sense in /etc/profile.
@@ -47,11 +61,13 @@ if case $- in (*i*) true;; (*) false;; esac; then
 elif [ -n "${HOME++}" ]; then
     # this is a non-interactive shell.
 
+    prepend "$HOME/.local/bin"
     # add ~/sh/ to PATH so that those commands can be run from ssh et al.
     # TODO: consider exporting EA_* variables, so that `ea` can work too.
-    PATH="$HOME/sh${PATH+:}$PATH"
+    prepend "$HOME/sh"
     if [ -r "$HOME/sh/zzz" ]; then
         # a script containing short functions that don't merit individual files:
         . ~/sh/zzz
     fi
 fi
+unset -f prepend

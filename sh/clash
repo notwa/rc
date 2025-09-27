@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash +zsh
 
-clash() { ### @- run a command through 12 different shells.
+clash() { ### @- run a command through 11 different shells.
     ### only returns false when no arguments are given.
     [ $# != 0 ] || return
     for sh in `__clash_shells`; do
@@ -22,7 +22,7 @@ clash() { ### @- run a command through 12 different shells.
 }
 
 __clash_shells() {
-    echo ash bash dash hush ksh loksh mksh oksh osh posh yash zsh
+    echo ash bash dash ksh loksh mksh oksh osh posh yash zsh
 }
 
 [ -n "${preload+-}" ] || clash "$@"

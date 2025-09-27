@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+# compat: +ash +bash +dash -hush +ksh +mksh +oksh +osh -posh +yash +zsh
 
 __bylen_python() (
     argc $# -eq 0 bylen || return

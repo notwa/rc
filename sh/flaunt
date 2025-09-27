@@ -33,6 +33,8 @@ __flaunt_hostname() {
         __flaunt_hostname="$(exec hostname)"
     elif has hostnamectl; then # systemd
         __flaunt_hostname="$(exec hostnamectl hostname)"
+    elif has uname; then # coreutils
+        __flaunt_hostname="$(exec uname -n)"
     elif [ -s /etc/hostname ]; then
         read -r __flaunt_hostname _ < /etc/hostname
     else

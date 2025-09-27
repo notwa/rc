@@ -1,6 +1,8 @@
 #!/usr/bin/env false
 # this script ought to work in any bourne-like shell except for busybox's hush.
-set +efuC; umask 022; unset CDPATH IFS # TODO: source /etc/profile in osh/yash.
+set +efuC
+umask 002 # inheriting umask is dangerous. debian thinks they're smart with 022
+unset CDPATH IFS # CDPATH is basically a precursor to zoxide that kills scripts
 export LC_ALL=C # this is temporary; sane values are configured after __prepare
 unset LS_COLORS # this variable's value can grow obscenely large (see ~/sh/zzz)
 unset ENV BASH_ENV # don't run twice if we used one of these tricks to get here

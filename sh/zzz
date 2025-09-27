@@ -207,7 +207,7 @@ indicator() ( # colors like a litmus test
     clr;        for i; do fog ' %02d' $i $i; done; clr; echo
 )
 
-has dircolors && ls() { # busybox lacks dircolors but it's fine too
+has dircolors && ls() { # busybox lacks dircolors but it also works
     # overriding `ls` as a function and not an executable allows us
     # to pass LS_COLORS without cluttering the caller's environment.
 

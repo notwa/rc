@@ -3,47 +3,40 @@
 
 # some solutions via: https://stackoverflow.com/q/5917576
 
-__bylen_python() (
+__bylen_python() {
     # NOTE: does not respect LC_ALL -- but **does** respect PYTHONIOENCODING.
-    argc $# -eq 0 bylen || return
-    exec python3 -c 'import sys; sys.stdout.writelines(sorted(sys.stdin, key=len))'
-)
+    python3 -c 'import sys; sys.stdout.writelines(sorted(sys.stdin, key=len))'
+}
 
-__bylen_perl() (
+__bylen_perl() {
     # NOTE: does not respect LC_ALL -- always C.
-    argc $# -eq 0 bylen || return
-    exec perl -e 'print sort { length($a) <=> length($b) } <>'
-)
+    perl -e 'print sort { length($a) <=> length($b) } <>'
+}
 
-__bylen_raku() (
-    argc $# -eq 0 bylen || return
-    exec raku -e 'lines.sort({.chars}).join("\n").say'
-)
+__bylen_raku() {
+    raku -e 'lines.sort({.chars}).join("\n").say'
+}
 
-__bylen_awk() (
-    argc $# -eq 0 bylen || return
-    exec awk '
+__bylen_awk() {
+    awk '
 {c=length;m[c]=n[c]?m[c]RS$0:$0;n[c]++}
 END{for(i in n)h=h>i?h:i;for(i=0;i<=h;i++)if(n[i])print m[i]}'
-)
+}
 
-__bylen_bb_awk() (
+__bylen_bb_awk() {
     # NOTE: does not respect LC_ALL -- always C.
-    argc $# -eq 0 bylen || return
-    exec busybox awk '
+    busybox awk '
 {c=length;m[c]=n[c]?m[c]RS$0:$0;n[c]++}
 END{for(i in n)h=h>i?h:i;for(i=0;i<=h;i++)if(n[i])print m[i]}'
-)
+}
 
-__bylen_gawk() (
+__bylen_gawk() {
     # FIXME: joins multiple empty lines into one.
     # LC_CTYPE controls how lengths are calculated.
-    argc $# -eq 0 bylen || return
-    exec gawk '{c=length;m[c]=m[c]?m[c]RS$0:$0}END{for(c in m)print m[c]}'
-)
+    gawk '{c=length;m[c]=m[c]?m[c]RS$0:$0}END{for(c in m)print m[c]}'
+}
 
 __bylen_pure() (
-    argc $# -eq 0 bylen || return
     IFS=
 
     hi=0
@@ -65,18 +58,24 @@ __bylen_pure() (
     done
 )
 
+__bylen0() {
+    [ $# = 0 ] && return 0
+    printf >&2 '%s: %s %s\n' bylen 'expected exactly 0 arguments, got' $#
+    return 64
+}
+
 bylen() { ### @- sort lines by length. several implementations are provided.
-    if has python3; then    bylen() { __bylen_python    "$@"; }
-    elif has perl; then     bylen() { __bylen_perl      "$@"; }
-    elif has gawk; then     bylen() { __bylen_gawk      "$@"; }
-    elif has awk; then      bylen() { __bylen_awk       "$@"; }
-    elif has busybox; then  bylen() { __bylen_bb_awk    "$@"; }
-    else                    bylen() { __bylen_pure      "$@"; }
+    if has python3; then    bylen() { __bylen0 "$@" && __bylen_python;  }
+    elif has perl; then     bylen() { __bylen0 "$@" && __bylen_perl;    }
+    elif has gawk; then     bylen() { __bylen0 "$@" && __bylen_gawk;    }
+    elif has awk; then      bylen() { __bylen0 "$@" && __bylen_awk;     }
+    elif has busybox; then  bylen() { __bylen0 "$@" && __bylen_bb_awk;  }
+    else                    bylen() { __bylen0 "$@" && __bylen_pure;    }
     fi
     unset REPLY # from `has`
     bylen "$@"
 }
 
 [ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} argc has
+eval ${preload:-preload} has
 [ -n "${preload+-}" ] || bylen "$@"

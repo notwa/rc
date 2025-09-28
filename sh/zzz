@@ -31,14 +31,17 @@ if ! has busybox && has busybox-static; then
     busybox() { busybox-static "$@"; }
 fi
 
+getit() ### @- invoke `git clone` with `--single-branch --depth 1`.
+  { git clone --single-branch --depth 1 "$@"; }
+
+gd() ### @- invoke git's diff subcommand with fewer lines of context.
+  { git diff -U2 "$@"; }
+
 gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
     local commit="${1:-HEAD}"
     [ $# -le 1 ] || { printf '%s: %s\n' gdp "too many arguments" >&2; return 64; }
     gd "$commit~" "$commit"
 }
-
-gd() ### @- invoke git's diff subcommand with fewer lines of context.
-  { git diff -U2 "$@"; }
 
 rgn() ### @- invoke ripgrep without respecting `.gitignore` files.
   { rg -u "$@"; }

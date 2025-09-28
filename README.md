@@ -177,7 +177,7 @@ $ cd && busiest | head -n3
 21042 play
 ```
 
-### [bylen](/sh/bylen#L37)
+### [bylen](/sh/bylen#L67)
 
 sort lines by length. several implementations are provided.
 
@@ -301,7 +301,7 @@ parse command-line arguments, mapping short-flags to variable names.
 select a file from a given or current directory using
 [`fzy`.](https://github.com/jhawthorn/fzy)
 
-### [flaunt](/sh/flaunt#L83)
+### [flaunt](/sh/flaunt#L85)
 
 send diagnostic telemetry to a central server via [`notice`.](#notice)
 currently, this is only used for reporting when servers come online.
@@ -738,115 +738,123 @@ $ xxp ~/rc/install | head -n2
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [gdp (sh/zzz)](/sh/zzz#L34)
+### [getit (sh/zzz)](/sh/zzz#L34)
 
-invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
+invoke `git clone` with `--single-branch --depth 1`.
 
-### [gd (sh/zzz)](/sh/zzz#L40)
+### [gd (sh/zzz)](/sh/zzz#L37)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [rgn (sh/zzz)](/sh/zzz#L43)
+### [gdp (sh/zzz)](/sh/zzz#L40)
+
+invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
+
+### [rgn (sh/zzz)](/sh/zzz#L46)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (sh/zzz)](/sh/zzz#L49)
+### [curls (sh/zzz)](/sh/zzz#L52)
 
 be a little smarter with curl. (HTTPS only)
 
-### [revend (sh/zzz)](/sh/zzz#L61)
+### [revend (sh/zzz)](/sh/zzz#L64)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (sh/zzz)](/sh/zzz#L64)
+### [clone (sh/zzz)](/sh/zzz#L67)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
 **TODO:** rename because POSIX.1-2024 reserves this name.
 
-### [aligntabs (sh/zzz)](/sh/zzz#L68)
+### [aligntabs (sh/zzz)](/sh/zzz#L71)
 
 align tab-delimited fields in stdin.
 
-### [crawla (sh/zzz)](/sh/zzz#L79)
+### [crawla (sh/zzz)](/sh/zzz#L82)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (sh/zzz)](/sh/zzz#L82)
+### [crawlz (sh/zzz)](/sh/zzz#L85)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (sh/zzz)](/sh/zzz#L85)
+### [diff (sh/zzz)](/sh/zzz#L88)
 
 use git's diff subcommand for general diffing.
 
-### [gc (sh/zzz)](/sh/zzz#L88)
+### [gc (sh/zzz)](/sh/zzz#L91)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (sh/zzz)](/sh/zzz#L92)
+### [counts (sh/zzz)](/sh/zzz#L95)
 
 count files in the current directory, including files found recursively.
 
-### [exts (sh/zzz)](/sh/zzz#L95)
+### [exts (sh/zzz)](/sh/zzz#L98)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (sh/zzz)](/sh/zzz#L99)
+### [nocom (sh/zzz)](/sh/zzz#L102)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (sh/zzz)](/sh/zzz#L102)
+### [jrep (sh/zzz)](/sh/zzz#L105)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (sh/zzz)](/sh/zzz#L105)
+### [bomb (sh/zzz)](/sh/zzz#L108)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (sh/zzz)](/sh/zzz#L108)
+### [cleanse (sh/zzz)](/sh/zzz#L111)
 
 strip unprintable and non-ASCII characters.
 
-### [double (sh/zzz)](/sh/zzz#L111)
+### [double (sh/zzz)](/sh/zzz#L114)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (sh/zzz)](/sh/zzz#L116)
+### [katagana (sh/zzz)](/sh/zzz#L119)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (sh/zzz)](/sh/zzz#L120)
+### [makepkgf (sh/zzz)](/sh/zzz#L123)
 
 make the freakin' package!
 
-### [rakef (sh/zzz)](/sh/zzz#L123)
+### [rakef (sh/zzz)](/sh/zzz#L126)
 
 make the freakin' gem!
 
-### [relog (sh/zzz)](/sh/zzz#L126)
+### [relog (sh/zzz)](/sh/zzz#L129)
 
 log on again to refresh your unix groups, etc.
 
-### [carry (sh/zzz)](/sh/zzz#L129)
+### [shi7 (sh/zzz)](/sh/zzz#L132)
+
+invoke `sha1sum` but only output the first 7 characters of each hash, a la git.
+
+### [carry (sh/zzz)](/sh/zzz#L135)
 
 copy files in a plain way using rsync. affected by umask.
 
-### [colors (sh/zzz)](/sh/zzz#L141)
+### [colors (sh/zzz)](/sh/zzz#L147)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L183)
+### [morecolors (sh/zzz)](/sh/zzz#L189)
 
 print all 256 colors that are available on most terminals.
 
@@ -881,19 +889,19 @@ return 0, ignoring arguments.
 
 **TODO:** respect initctl like in `.zshrc`.
 
-### [pl (shrc)](/home/shrc#L58)
+### [pl (shrc)](/home/shrc#L60)
 
 print each argument on its own line.
 
-### [refresh (shrc)](/home/shrc#L59)
+### [refresh (shrc)](/home/shrc#L61)
 
 invoke `hash -r`.
 
-### [ADDPATH (shrc)](/home/shrc#L62)
+### [ADDPATH (shrc)](/home/shrc#L64)
 
 append a directory to `$PATH` if it isn't already present.
 
-### [PREPATH (shrc)](/home/shrc#L74)
+### [PREPATH (shrc)](/home/shrc#L76)
 
 prepend entries to `$PATH` and remove their duplications.
 

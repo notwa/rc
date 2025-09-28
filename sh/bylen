@@ -1,19 +1,50 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash -hush +ksh +mksh +oksh +osh -posh +yash +zsh
 
+# some solutions via: https://stackoverflow.com/q/5917576
+
 __bylen_python() (
+    # NOTE: does not respect LC_ALL -- but **does** respect PYTHONIOENCODING.
     argc $# -eq 0 bylen || return
     exec python3 -c 'import sys; sys.stdout.writelines(sorted(sys.stdin, key=len))'
 )
 
 __bylen_perl() (
+    # NOTE: does not respect LC_ALL -- always C.
     argc $# -eq 0 bylen || return
     exec perl -e 'print sort { length($a) <=> length($b) } <>'
 )
 
+__bylen_raku() (
+    argc $# -eq 0 bylen || return
+    exec raku -e 'lines.sort({.chars}).join("\n").say'
+)
+
+__bylen_awk() (
+    argc $# -eq 0 bylen || return
+    exec awk '
+{c=length;m[c]=n[c]?m[c]RS$0:$0;n[c]++}
+END{for(i in n)h=h>i?h:i;for(i=0;i<=h;i++)if(n[i])print m[i]}'
+)
+
+__bylen_bb_awk() (
+    # NOTE: does not respect LC_ALL -- always C.
+    argc $# -eq 0 bylen || return
+    exec busybox awk '
+{c=length;m[c]=n[c]?m[c]RS$0:$0;n[c]++}
+END{for(i in n)h=h>i?h:i;for(i=0;i<=h;i++)if(n[i])print m[i]}'
+)
+
+__bylen_gawk() (
+    # FIXME: joins multiple empty lines into one.
+    # LC_CTYPE controls how lengths are calculated.
+    argc $# -eq 0 bylen || return
+    exec gawk '{c=length;m[c]=m[c]?m[c]RS$0:$0}END{for(c in m)print m[c]}'
+)
+
 __bylen_pure() (
     argc $# -eq 0 bylen || return
-    export LC_ALL=C
+    IFS=
 
     hi=0
     while read -r line; do
@@ -35,12 +66,12 @@ __bylen_pure() (
 )
 
 bylen() { ### @- sort lines by length. several implementations are provided.
-    if has python3; then
-        bylen() { __bylen_python "$@"; }
-    elif has perl; then
-        bylen() { __bylen_perl "$@"; }
-    else
-        bylen() { __bylen_pure "$@"; }
+    if has python3; then    bylen() { __bylen_python    "$@"; }
+    elif has perl; then     bylen() { __bylen_perl      "$@"; }
+    elif has gawk; then     bylen() { __bylen_gawk      "$@"; }
+    elif has awk; then      bylen() { __bylen_awk       "$@"; }
+    elif has busybox; then  bylen() { __bylen_bb_awk    "$@"; }
+    else                    bylen() { __bylen_pure      "$@"; }
     fi
     unset REPLY # from `has`
     bylen "$@"

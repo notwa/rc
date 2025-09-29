@@ -114,6 +114,24 @@ let $PATH .= ':'.$HOME.'/sh'          " allow direct invocation of shell funcs
 
 " fun {{{1
 
+fu! Has(name)
+    silent let cmd_path = system('command -v ' . shellescape(a:name))
+    return v:shell_error == 0
+endf
+
+fu! GetDizzy(choice_command, vim_command)
+    " https://github.com/jhawthorn/fzy/#use-with-vim
+    try
+        let output = system(a:choice_command . " | fzy ")
+    catch /Vim:Interrupt/
+        " Swallow errors from ^C, allow redraw! below
+    endtry
+    redraw!
+    if v:shell_error == 0 && !empty(output)
+        exec a:vim_command . ' ' . output
+    endif
+endf
+
 fu! Colour(name)                      " go nuts. go wild.
     hi clear | syntax clear | syntax on " reset everything for sure (#4405)
     if has('termguicolors')
@@ -370,6 +388,10 @@ nn <Leader>p "0p
 nn <silent> <Leader>d :cd %:p:h<cr>:pwd<cr>
 
 vn <silent> & :call GlobalReplace()<cr>
+
+if Has('fzy') && Has('find')
+    nn <leader>e :call GetDizzy("find . -maxdepth 3 -type f '!' -path '*/.*/*'", ":e")<cr>
+endif
 
 " TODO:
 "nn ,, :call CommentLines()<cr>

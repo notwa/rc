@@ -97,8 +97,8 @@ if has('wildignore')
     " ignore files that typically aren't interesting to text editors like vim
     " FWIW, these lines don't need trailing commas
     set wildignore=""
-    set wildignore+=.git,.hg,.svn,pkg,tmp
-    set wildignore+=*.bak,*.cache,*.log,*.tmp
+    set wildignore+=.git,.hg,.svn,CVS,pkg,tmp,undo
+    set wildignore+=*.bak,*.cache,*.log,*.swo,*.swp,*.tmp
     set wildignore+=*.lnk,.DS_Store,Desktop.ini,Thumbs.db
     set wildignore+=*.7z,*.bz2,*.gz,*.tar,*.tar.*,*.tgz,*.xz,*.zip
     set wildignore+=*.pch,*.pdb,*.pgc,*.pgd,*.sln,*.suo

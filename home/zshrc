@@ -269,7 +269,7 @@ reload() { ### @-
               .prezto-compinit.zwc .prezto-compinit.zwc.old
         cd -- "$OLDPWD"
     fi
-    exec zsh # reload shell, inheriting environment
+    exec zsh -l # reload shell, inheriting environment
 }
 
 function {

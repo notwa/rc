@@ -43,7 +43,7 @@ conflagrate() {
 dummy() { :; } ### @- return 0, ignoring arguments.
 . ~/.shrc
 
-alias reload='exec bash' ### @- **TODO:** respect initctl like in `.zshrc`.
+alias reload='exec bash -l' ### @- **TODO:** respect initctl like in `.zshrc`.
 ! [ -e ~/.lol ] || . ~/.lol
 
 true

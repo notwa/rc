@@ -200,8 +200,8 @@ __checkweb_with_python2() {
     unset python
 
     # TODO: assert return code is <400 as to match the other checks.
+    __checkweb_preface "(socket)"
     if [ "$scheme" != https ]; then
-        __checkweb_preface "(socket)"
         __checkweb_no_pipe - <<EOF
 import socket, sys
 try:
@@ -256,8 +256,8 @@ __checkweb_with_python3() {
     unset python
 
     # TODO: assert return code is <400 as to match the other checks.
+    __checkweb_preface "(socket)"
     if [ "$scheme" != https ]; then
-        __checkweb_preface "(socket)"
         __checkweb_no_pipe - <<EOF
 import socket, sys
 with socket.socket() as s:

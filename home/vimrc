@@ -119,7 +119,56 @@ fu! Has(name)
     return v:shell_error == 0
 endf
 
-fu! GetDizzy(choice_command, vim_command)
+fun! DizzyFlagsNow()
+    silent let discard = system('find -maxdepth 0 -regextype posix-basic')
+    if v:shell_error == 0 " GNU find defaults to emacs
+        let flags = ' -regextype posix-basic'
+    else " busybox only supports posix-basic to begin with
+        let flags = ''
+    endif
+
+    let extensions = '\|'
+    let individual = '\|' " NOTE: currently unused.
+    for seg in split(&wildignore, ',')
+        if match(seg, '^\*\.\w\+$') == 0
+            let extensions = extensions .. seg[2:] .. '\|'
+        elseif match(seg, '^\*\.\w\+\.\*$') == 0
+            let extensions = '\|' .. seg[2:-3] .. '\..*' .. extensions
+        else
+            let individual = individual .. seg .. '\|'
+        endif
+    endfor
+
+    " TODO: make this conditional based on wildignore?
+    for ext in split('BIN COM DAT DLL EXE LIB WAD  BMP DDS GIF JPG PNG TGA WAV')
+        " these are common binary formats on DOS and early Windows.
+        " some are still common even to this day, like Capture.PNG.
+        let extensions = extensions .. ext .. '\|'
+    endfor
+
+    " TODO: make this conditional based on wildignore?
+    let flags = " '!' -regex '" .. '.*/\(\.git\|\.hg\|\.svn\|CVS\)/.*' .. "'"
+    "let flags = flags .. " '!' -path '*/.git/*"
+    "let flags = flags .. " '!' -path '*/.hg/*"
+    "let flags = flags .. " '!' -path '*/.svn/*"
+    "let flags = flags .. " '!' -path '*/CVS/*"
+
+    if ! (extensions ==# '\|')
+        let extensions = '.*\.\(' .. extensions[2:-3] .. '\)'
+        let flags = flags .. " '!' -regex '" .. extensions .. "'"
+    endif
+
+    return flags
+endfun
+
+fun! DizzyFlags()
+    if !exists('g:dizzyflags')
+        let g:dizzyflags = DizzyFlagsNow()
+    endif
+    return g:dizzyflags
+endfun
+
+fu! FuzzySelect(choice_command, vim_command)
     " https://github.com/jhawthorn/fzy/#use-with-vim
     try
         let output = system(a:choice_command . " | fzy ")
@@ -130,6 +179,10 @@ fu! GetDizzy(choice_command, vim_command)
     if v:shell_error == 0 && !empty(output)
         exec a:vim_command . ' ' . output
     endif
+endf
+
+fu! DizzySelect(vim_command)
+    call FuzzySelect('find . -maxdepth 3 -type f' . DizzyFlags(), a:vim_command)
 endf
 
 fu! Colour(name)                      " go nuts. go wild.
@@ -390,7 +443,7 @@ nn <silent> <Leader>d :cd %:p:h<cr>:pwd<cr>
 vn <silent> & :call GlobalReplace()<cr>
 
 if Has('fzy') && Has('find')
-    nn <leader>e :call GetDizzy("find . -maxdepth 3 -type f '!' -path '*/.*/*'", ":e")<cr>
+    nn <leader>e :call DizzySelect(":e")<cr>
 endif
 
 " TODO:

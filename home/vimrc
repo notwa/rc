@@ -10,11 +10,11 @@ if has('multi_byte')
     set encoding=utf-8                " and the default file is in it
 endif
 
-let g:rcvim=$HOME.'/.vim'
-let &backupdir=g:rcvim.'/backup'      " stash tilde files elsewhere
+let g:rcvim=$HOME..'/.vim'
+let &backupdir=g:rcvim..'/backup'     " stash tilde files elsewhere
 " using a double slash here enables file path inclusion for uniqueness:
-let &directory=g:rcvim.'/swp//'       " stash swap files too
-let &undodir=g:rcvim.'/undo/'         " undo files are cool
+let &directory=g:rcvim..'/swp//'      " stash swap files too
+let &undodir=g:rcvim..'/undo/'        " undo files are cool
 try | call mkdir(&backupdir, "p") | catch /E739/ | endtry
 try | call mkdir(&directory, "p") | catch /E739/ | endtry
 try | call mkdir(&undodir,   "p") | catch /E739/ | endtry
@@ -52,7 +52,7 @@ if has('gui_running')
         set guifont=Consolas\ 11
     else
         set guifont=Consolas:h9
-    end
+    endif
     set columns=84
     set lines=36
     cd $HOME                          " might not be ideal...
@@ -91,7 +91,7 @@ set nrformats=bin,hex,unsigned        " ctrl+a/x non-negative numbers, no octal
 set modeline modelines=5              " a file can specify its own vim settings
 if has('mksession')
     set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize,resize,winpos
-end
+endif
 
 if has('wildignore')
     " ignore files that typically aren't interesting to text editors like vim
@@ -111,14 +111,14 @@ if has('wildignore')
     set wildignore+=CMakeCache.txt,CMakeFiles,install_manifest.txt
 endif
 
-let $PATH .= ':'.$HOME.'/sh'          " allow direct invocation of shell funcs
+let $PATH ..= ':'..$HOME..'/sh'          " allow direct invocation of shell funcs
 
 " fun {{{1
 
-fu! Has(name)
-    silent let cmd_path = system('command -v ' . shellescape(a:name))
+fun! Has(name)
+    silent let cmd_path = system('command -v ' .. shellescape(a:name))
     return v:shell_error == 0
-endf
+endfun
 
 fun! DizzyFlagsNow()
     silent let discard = system('find -maxdepth 0 -regextype posix-basic')
@@ -132,11 +132,11 @@ fun! DizzyFlagsNow()
     let individual = '\|' " NOTE: currently unused.
     for seg in split(&wildignore, ',')
         if match(seg, '^\*\.\w\+$') == 0
-            let extensions = extensions .. seg[2:] .. '\|'
+            let extensions ..= seg[2:] .. '\|'
         elseif match(seg, '^\*\.\w\+\.\*$') == 0
             let extensions = '\|' .. seg[2:-3] .. '\..*' .. extensions
         else
-            let individual = individual .. seg .. '\|'
+            let individual ..= seg .. '\|'
         endif
     endfor
 
@@ -144,7 +144,7 @@ fun! DizzyFlagsNow()
     for ext in split('BIN COM DAT DLL EXE LIB WAD  BMP DDS GIF JPG PNG TGA WAV')
         " these are common binary formats on DOS and early Windows.
         " some are still common even to this day, like Capture.PNG.
-        let extensions = extensions .. ext .. '\|'
+        let extensions ..= ext .. '\|'
     endfor
 
     " TODO: make this conditional based on wildignore?
@@ -156,7 +156,7 @@ fun! DizzyFlagsNow()
 
     if ! (extensions ==# '\|')
         let extensions = '.*\.\(' .. extensions[2:-3] .. '\)'
-        let flags = flags .. " '!' -regex '" .. extensions .. "'"
+        let flags ..= " '!' -regex '" .. extensions .. "'"
     endif
 
     return flags
@@ -169,24 +169,24 @@ fun! DizzyFlags()
     return g:dizzyflags
 endfun
 
-fu! FuzzySelect(choice_command, vim_command)
+fun! FuzzySelect(choice_command, vim_command)
     " https://github.com/jhawthorn/fzy/#use-with-vim
     try
-        let output = system(a:choice_command . " | fzy ")
+        let output = system(a:choice_command .. " | fzy ")
     catch /Vim:Interrupt/
         " Swallow errors from ^C, allow redraw! below
     endtry
     redraw!
     if v:shell_error == 0 && !empty(output)
-        exec a:vim_command . ' ' . output
+        exec a:vim_command .. ' ' .. output
     endif
-endf
+endfun
 
-fu! DizzySelect(vim_command)
-    call FuzzySelect('find . -maxdepth 3 -type f' . DizzyFlags(), a:vim_command)
-endf
+fun! DizzySelect(vim_command)
+    call FuzzySelect('find . -maxdepth 3 -type f' .. DizzyFlags(), a:vim_command)
+endfun
 
-fu! Colour(name)                      " go nuts. go wild.
+fun! Colour(name)                     " go nuts. go wild.
     hi clear | syntax clear | syntax on " reset everything for sure (#4405)
     if has('termguicolors')
         if &term =~ "^tmux-256color"
@@ -195,48 +195,48 @@ fu! Colour(name)                      " go nuts. go wild.
             set termguicolors
         endif
     endif
-    exe "colo " . a:name
-endf
+    exe "colo " .. a:name
+endfun
 
 command! -nargs=* Colour call Colour(<f-args>)
 
 " lifted from BurntSushi:
-fu! GlobalReplace()
+fun! GlobalReplace()
     normal! gv"ry
-    let replacement = input("Replace " . @r . " with: ")
+    let replacement = input("Replace " .. @r .. " with: ")
     if replacement != ""
-        exe "%s/" . @r . "/" . replacement . "/g"
+        exe "%s/" .. @r .. "/" .. replacement .. "/g"
     endif
-endf
+endfun
 
 " lifted from BurntSushi:
-fu! StripTrailingWhitespace()
+fun! StripTrailingWhitespace()
     let l = line(".")
     let c = col(".")
     %s/\s\+$//e
     call cursor(l, c)
-endf
+endfun
 
-fu! TabEight()
+fun! TabEight()
     setlocal tabstop=8 shiftwidth=8 noexpandtab softtabstop=0
-endf
+endfun
 
-fu! TabFour()
+fun! TabFour()
     setlocal tabstop=8 shiftwidth=4 expandtab softtabstop=4
-endf
+endfun
 
-fu! TabTwo()
+fun! TabTwo()
     setlocal tabstop=2 shiftwidth=2 expandtab softtabstop=2
-endf
+endfun
 
-fu! TabBad()
+fun! TabBad()
     setlocal tabstop=4 shiftwidth=4 noexpandtab softtabstop=4
-endf
+endfun
 
 " set TabFour as default
 set tabstop=8 shiftwidth=4 expandtab softtabstop=4
 
-fu! DetectShebang()
+fun! DetectShebang()
     " vim has some rudimentary detection, but sometimes i want to override it.
     " vim's version is typically found here: /usr/share/vim/vim82/scripts.vim
     let l = getline(1)
@@ -256,7 +256,7 @@ fu! DetectShebang()
     if p ==# 'raku'    | setlocal ft=raku   | endif
     if p ==# 'sh'      | setlocal ft=bash   | endif
     if p ==# 'zsh'     | setlocal ft=zsh    | endif
-endf
+endfun
 
 " autocmd {{{1
 
@@ -310,19 +310,19 @@ if has('autocmd')
         au! BufReadCmd blkfs,*.scr call setline('1', split(join(readfile(expand('<afile>')), ''), '\%65c\zs'))
         " remove newlines when writing
         au! BufWriteCmd blkfs,*.scr call writefile([join(getline('^', '$'), '')], expand('<afile>'))
-    augroup end
+    augroup END
 
     augroup nobells                   " good lord vim you are archaic
         au!
         au GUIEnter * set vb t_vb=
     augroup END
 
-    fu! ResCur()                      " attempt to preserve cursor position
+    fun! ResCur()                     " attempt to preserve cursor position
         if line("'\"") > 1 && line("'\"") <= line("$")
             normal! g`"
             return 1
         endif
-    endf
+    endfun
     augroup resCur
         au!
     "   au BufWinEnter * call ResCur()
@@ -330,10 +330,10 @@ if has('autocmd')
 
     function! CheckFileEncoding()
         if exists('b:fenc_at_read') && &fileencoding != b:fenc_at_read
-            exec 'e! ++enc=' . &fileencoding
+            exec 'e! ++enc=' .. &fileencoding
             unlet b:fenc_at_read
         endif
-    endfunction
+    endfun
     augroup fenc
         au! BufRead     *.txt let b:fenc_at_read=&fileencoding
         au! BufWinEnter *.txt call CheckFileEncoding()
@@ -359,12 +359,12 @@ nn <s-tab> <<
 vn <silent> <tab> >gv
 vn <silent> <s-tab> <gv
 
-fu! Inn(q)
+fun! Inn(q)
     " bind both normal and insert modes
     let args=split(a:q, '^\s*\(<[^>]\+>\s\+\)\+\zs')
-    exec 'nn  '.args[0].'      '.args[1]
-    exec 'ino '.args[0].' <c-o>'.args[1]
-endf
+    exec 'nn  '..args[0]..'      '..args[1]
+    exec 'ino '..args[0]..' <c-o>'..args[1]
+endfun
 com! -nargs=+ Inn call Inn(<q-args>)
 
 Inn <F5>    :w<cr>
@@ -455,14 +455,14 @@ endif
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 
 " https://stackoverflow.com/a/58244921
-fu! SynStack()
+fun! SynStack()
     for i1 in synstack(line("."), col("."))
         let i2 = synIDtrans(i1)
         let n1 = synIDattr(i1, "name")
         let n2 = synIDattr(i2, "name")
         echo n1 "->" n2
     endfor
-endfunction
+endfun
 
 map gm :call SynStack()<CR>
 

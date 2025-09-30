@@ -128,11 +128,18 @@ fun! DizzyFlagsNow()
         let flags = ''
     endif
 
+    " these are common binary formats on DOS and early Windows.
+    " some are still common even to this day, like Capture.PNG.
+    let oldschool = split('BIN COM DAT DLL EXE LIB WAD  BMP DDS GIF JPG PNG TGA WAV')
+
     let extensions = '\|'
     let directories = '\|'
     let individual = '\|' " NOTE: currently unused.
     for seg in split(&wildignore, ',')
         if match(seg, '^\*\.\w\+$') == 0
+            if index(oldschool, seg[2:], 0, 1) != -1
+                let extensions ..= seg[2:]->toupper() .. '\|'
+            endif
             let extensions ..= seg[2:] .. '\|'
         elseif match(seg, '^\*\.\w\+\.\*$') == 0
             let extensions = '\|' .. seg[2:-3] .. '\..*' .. extensions
@@ -142,13 +149,6 @@ fun! DizzyFlagsNow()
         else
             let individual ..= seg .. '\|'
         endif
-    endfor
-
-    " TODO: make this conditional based on wildignore?
-    for ext in split('BIN COM DAT DLL EXE LIB WAD  BMP DDS GIF JPG PNG TGA WAV')
-        " these are common binary formats on DOS and early Windows.
-        " some are still common even to this day, like Capture.PNG.
-        let extensions ..= ext .. '\|'
     endfor
 
     if ! (directories ==# '\|')

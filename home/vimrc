@@ -129,12 +129,16 @@ fun! DizzyFlagsNow()
     endif
 
     let extensions = '\|'
+    let directories = '\|'
     let individual = '\|' " NOTE: currently unused.
     for seg in split(&wildignore, ',')
         if match(seg, '^\*\.\w\+$') == 0
             let extensions ..= seg[2:] .. '\|'
         elseif match(seg, '^\*\.\w\+\.\*$') == 0
             let extensions = '\|' .. seg[2:-3] .. '\..*' .. extensions
+        "elseif index(known_directories) != -1
+        elseif match(seg, '^\.\?\w\+$') == 0
+            let directories ..= seg .. '\|'
         else
             let individual ..= seg .. '\|'
         endif
@@ -147,12 +151,10 @@ fun! DizzyFlagsNow()
         let extensions ..= ext .. '\|'
     endfor
 
-    " TODO: make this conditional based on wildignore?
-    let flags = " '!' -regex '" .. '.*/\(\.git\|\.hg\|\.svn\|CVS\)/.*' .. "'"
-    "let flags = flags .. " '!' -path '*/.git/*"
-    "let flags = flags .. " '!' -path '*/.hg/*"
-    "let flags = flags .. " '!' -path '*/.svn/*"
-    "let flags = flags .. " '!' -path '*/CVS/*"
+    if ! (directories ==# '\|')
+        let directories = '.*/\(' .. directories[2:-3] .. '\)/.*'
+        let flags ..= " '!' -regex '" .. directories .. "'"
+    endif
 
     if ! (extensions ==# '\|')
         let extensions = '.*\.\(' .. extensions[2:-3] .. '\)'

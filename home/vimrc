@@ -102,9 +102,10 @@ if has('wildignore')
     set wildignore+=*.lnk,.DS_Store,Desktop.ini,Thumbs.db
     set wildignore+=*.7z,*.bz2,*.gz,*.tar,*.tar.*,*.tgz,*.xz,*.zip
     set wildignore+=*.pch,*.pdb,*.pgc,*.pgd,*.sln,*.suo
-    set wildignore+=*.a,*.bin,*.dll,*.elf,*.exe,*.lib,*.o,*.obj,*.out,*.so,*.so.*
+    set wildignore+=*.com,*.dat,*.dll,*.exe,*.lib
+    set wildignore+=*.a,*.bin,*.elf,*.o,*.obj,*.out,*.so,*.so.*
     set wildignore+=*.m4a,*.mkv,*.mp3,*.mp4,*.ogg,*.opus,*.wav
-    set wildignore+=*.bmp,*.dds,*.gif,*.jfif,*.jpeg,*.jpg,*.pdf,*.png,*.webp
+    set wildignore+=*.bmp,*.dds,*.gif,*.jfif,*.jpeg,*.jpg,*.pdf,*.png,*.tga,*.webp
     set wildignore+=*.h5,*.npy,*.npz,*.pkl,*.pyc,*.pyd,*.pyo,__pycache__
     set wildignore+=*.gem,.bundle
     set wildignore+=CMakeCache.txt,CMakeFiles,install_manifest.txt

@@ -20,13 +20,13 @@ try | call mkdir(&directory, "p") | catch /E739/ | endtry
 try | call mkdir(&undodir,   "p") | catch /E739/ | endtry
 
 " force colors on anything that looks reasonable
-if (&term =~ "^xterm") || (&term == "screen")
+if (&term =~# "^xterm") || (&term ==# "screen")
     let &t_Co=256
     "let &t_AF="\e[38;5;%dm"
     "let &t_AB="\e[48;5;%dm"
 endif
 
-if &term =~ '^tmux'
+if &term =~# '^tmux'
     " https://unix.stackexchange.com/a/34723
     " tmux will send xterm-style keys when xterm-keys is on
     exec "set <xUp>=\e[1;*A"
@@ -111,7 +111,7 @@ if has('wildignore')
     set wildignore+=CMakeCache.txt,CMakeFiles,install_manifest.txt
 endif
 
-let $PATH ..= ':'..$HOME..'/sh'          " allow direct invocation of shell funcs
+let $PATH ..= ':'..$HOME..'/sh'       " allow direct invocation of shell funcs
 
 " fun {{{1
 
@@ -128,8 +128,8 @@ fun! DizzyFlagsNow()
         let flags = ''
     endif
 
-    " these are common binary formats on DOS and early Windows.
-    " some are still common even to this day, like Capture.PNG.
+    " these extensions are commonly capitalized on DOS and early Windows.
+    " instead of checking every variation, only check the most prevalent:
     let oldschool = split('BIN COM DAT DLL EXE LIB WAD  BMP DDS GIF JPG PNG TGA WAV')
 
     let extensions = '\|'
@@ -151,12 +151,12 @@ fun! DizzyFlagsNow()
         endif
     endfor
 
-    if ! (directories ==# '\|')
+    if directories !=# '\|'
         let directories = '.*/\(' .. directories[2:-3] .. '\)/.*'
         let flags ..= " '!' -regex '" .. directories .. "'"
     endif
 
-    if ! (extensions ==# '\|')
+    if extensions !=# '\|'
         let extensions = '.*\.\(' .. extensions[2:-3] .. '\)'
         let flags ..= " '!' -regex '" .. extensions .. "'"
     endif
@@ -191,7 +191,7 @@ endfun
 fun! Colour(name)                     " go nuts. go wild.
     hi clear | syntax clear | syntax on " reset everything for sure (#4405)
     if has('termguicolors')
-        if &term =~ "^tmux-256color"
+        if &term =~# "^tmux-256color"
             let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
             let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
             set termguicolors

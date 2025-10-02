@@ -22,7 +22,8 @@ __ea_urlencode() {
 } 2>&- # send bash's complaints to the abyss
 
 __ea() { ### @ ea - **TODO:** document.
-    unset LC_ALL cmd dst src trg
+    set -fu +e
+    unset LC_ALL cmd dst src trg x
     export LC_ALL=C
     cmd="${1:?missing subcommand}"; shift
     case "$cmd" in
@@ -39,19 +40,29 @@ __ea() { ### @ ea - **TODO:** document.
     (put)
         src="${1:?missing source}"
         dst="$EA_DOMAIN/$EA_AUTH/"
-        __ea_curl -g -n -T "$src" "$dst"
+        __ea_curl -f -g -n -T "$src" "$dst"
         return;;
 
     (puts)
+        x=0
         for src; do
             dst="$EA_DOMAIN/$EA_AUTH/"
             src="$(readlink -f -- "$src")" || return
+            if [ "${src%.minisig}" != "$src" ]; then
+                printf >&2 '%s: skipping %s\n' ea "$src"
+                continue
+            fi
             (cd -- "${src%/*}" && minisign -QSm "${src##*/}") || return
-            __ea_curl -g -n -T "$src" "$dst" || return
-            __ea_curl -g -n -T "$src.minisig" "$dst" || return
+            __ea_curl -f -g -n -T "$src" -T "$src.minisig" "$dst" "$dst" ||
+            {
+                x=$?
+                rm "$src.minisig"
+                printf >&2 '%s: failed to upload %s\n' ea "${src##*/}"
+                continue
+            }
             rm "$src.minisig"
         done
-        return;;
+        return $x;;
 
     (move)
         src="$EA_DOMAIN/$EA_AUTH/${1:?missing source}"

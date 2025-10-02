@@ -61,6 +61,8 @@ __ea() { ### @ ea - **TODO:** document.
                 continue
             }
             rm "$src.minisig"
+            trg="$(__ea_urlencode "${src##*/}")" &&
+            printf >&2 '%s: uploaded %25s => %s\n' ea "${src##*/}" "$EA_DOMAIN/$EA_DIR/$trg"
         done
         return $x;;
 

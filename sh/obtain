@@ -9,28 +9,28 @@ __obtain_reset() {
 }
 
 __obtain_die() {
-	__obtain_code="$?"
+	__obtain_code=$?
 	printf >&2 'obtain: %s\n' "$*"
 	[ "$__obtain_code" = 0 ] && exit 2 || exit "$__obtain_code"
 }
 
 __obtain_escape_arg() {
-	a="$1"
+	a=$1
 	until [ -z "$a" ]; do
 		case "$a" in
 		(\'*) printf "'\"'\"'";;
 		(*) printf %.1s "$a";;
 		esac
-		a="${a#?}"
+		a=${a#?}
 	done
 }
 
-__obtain_burl() ( # eaguru.guru/t/burl.sh specialized for this script. 343 bytes
+__obtain_burl() ( # eaguru.guru/t/burl.sh specialized for this script. 333 bytes
 	# both methods exhibit a 45 second timeout on my machine.
 	X(){ printf %s\\r\\n "GET /${Q#/} HTTP/1.0" "Host: $D" '';}
 	Y(){ while IFS=$R read -r A B;[ "$A" ];do :;done;cat;}
-	U="${1#http://}" H="${U%%/*}" Q="${U#"$H"}" D="${H%:*}"
-	[ "$H" = "${D:?}" ]&&P=80||P="${H##*:}";R=$(printf \\r)
+	U=${1#http://} H=${U%%/*} Q=${U#"$H"} D=${H%:*}
+	[ "$H" = "${D:?}" ]&&P=80||P=${H##*:};R=$(printf \\r)
 	if (: </dev/udp/localhost/0)2>&-;then exec 3<>"/dev/tcp/$D/$P"&&X>&3&&Y<&3
 	else X|/usr/bin/env nc -- "$D" "$P"|Y;fi
 )
@@ -77,7 +77,7 @@ __obtain_bootstrap() {
 
 	! [ -d /C ] || arch="$arch.exe"
 
-	umask 0077 && mkdir -p ~/play/bootstrap && cd ~/play/bootstrap ||
+	umask 0077 && mkdir -p ~/play/bootstrap && cd -- ~/play/bootstrap ||
 	__obtain_die "failed to make bootstrap directory"
 
 	__obtain_url t.glorp.wang/minisign."$arch" > minisign ||
@@ -110,7 +110,7 @@ __obtain_bootstrap() {
 	__obtain_public_key=RWQo7HxrRBmGLN2s7OuAYwGyeuDH0hEaCxsTBvseux8awYNbmP3b5rCg
 	__obtain_signed cacert.pem cacert.pem
 
-	curl="$(readlink -f "curl")" && cert="$(readlink -f "cacert.pem")" ||
+	curl="$(exec readlink -f curl)" && cert="$(exec readlink -f cacert.pem)" ||
 	__obtain_die "failed to determine paths to bootstrap files"
 
 	curl="$(__obtain_escape_arg "$curl")"

@@ -443,6 +443,8 @@ nn <Leader>p "0p
 "nn <Leader>x :system('chmod +x %') | e
 nn <silent> <Leader>d :cd %:p:h<cr>:pwd<cr>
 
+nn <Leader>l Odef<space>lament(*args,<space>**kwargs):<cr><space><space><space><space>print(*args,<space>flush=True,<space>file=sys.stderr,<space>**kwargs)<cr><Esc>
+
 vn <silent> & :call GlobalReplace()<cr>
 
 if Has('fzy') && Has('find')

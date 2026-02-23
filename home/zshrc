@@ -272,14 +272,25 @@ reload() { ### @-
     exec zsh -l # reload shell, inheriting environment
 }
 
+is_this_anything() {
+    [ $# = 1 ] || return
+    (( ${+aliases[$1]} | ${+functions[$1]} | ${+commands[$1]} ))
+    return
+}
+
 function {
     local x=
-    # deprecated `for` syntax; who cares?
-    for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm
-        alias $x="nocorrect ${aliases[$x][@]:-$x}"
+    for x in ack cd cp ebuild gcc gist grep ln man mkdir mv rm; do
+        if is_this_anything $x; then
+            alias $x="nocorrect ${aliases[$x][@]:-$x}"
+        fi
+    done
     for x in ai arith curl fc find ftp hex history let locate \
-             rsync scp sftp tw twitch wget yt yt-dlp ytdl ytg
-        alias $x="noglob ${aliases[$x][@]:-$x}"
+             rsync scp sftp tw twitch wget yt yt-dlp ytdl ytg; do
+        if is_this_anything $x; then
+            alias $x="noglob ${aliases[$x][@]:-$x}"
+        fi
+    done
 }
 
 #zmodload zsh/complist               # need all this

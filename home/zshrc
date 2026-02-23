@@ -273,9 +273,7 @@ reload() { ### @-
 }
 
 is_this_anything() {
-    [ $# = 1 ] || return
-    (( ${+aliases[$1]} | ${+functions[$1]} | ${+commands[$1]} ))
-    return
+    [ $# = 1 ] && (( ${+aliases[$1]} | ${+functions[$1]} | ${+commands[$1]} ))
 }
 
 function {

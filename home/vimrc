@@ -354,6 +354,17 @@ if has('wildmenu') | set wildmenu | endif
 "map <Esc>[Z <s-tab>
 "ounmap <Esc>[Z
 
+for s:i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    let s:c=nr2char(s:i + 48) " ASCII digits
+    let s:o=nr2char(s:i + 112) " ASCII lowercase (starting from 'p')
+    " fix mintty jank: (tmux may involved)
+    exec "set t_n"..s:c.."=\<Esc>[1;5"..s:o
+    exec "ino <t_n"..s:c.."> <Nop>"
+    " NOTE: Ctrl+2 doesn't work because it sends NUL.
+    " NOTE: Ctrl+5 doesn't work because i have no clue.
+    " NOTE: Ctrl+6 doesn't work because it sends RS.
+endfor
+
 " easy indent/unindent
 nn <tab> >>
 nn <s-tab> <<

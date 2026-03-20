@@ -117,7 +117,6 @@ __notice_log() {
 
 # __notice_upload_to_...
 # (slow) io_file              2000000000-200-4-x or 1907 MiB (untested)
-#        sh_envs               536870912-200-4-x or  512 MiB (untested)
 #        se_uguu                67108864-200-7-x or   64 MiB (tested)
 #        org_c_net_paste        50000000         or   47 MiB (tested)
 #        net_filebin           unlimited?
@@ -213,28 +212,12 @@ __notice_upload_to_se_uguu() {
 	target=uguu.se
 	# defaults: 3 hours, permanent
 	# filenames are randomized. cannot manually delete nor specify expiry.
-	# TODO: use fixed filename to squeeze a couple more bytes out of the limit?
-	__notice_compute_form_limit "files[]" "${1##*/}" "${bytes:-0}" 67108864 || return 128
-	__notice_escape "$1" '\\"'
-	raw="$(__notice_curl -F "files[]=@\"$REPLY\"" "https://$target/upload?output=text")" || return
+	# disallowed extensions: exe, scr, com, vbs, bat, cmd, htm, html, jar, msi, apk, phtml, svg
+	# banned MIME types: application/java, application/java-archive, application/msword, application/x-dosexec, application/x-executable, application/x-mach-binary, image/svg+xml, text/html
+	__notice_compute_form_limit "files[]" a "${bytes:-0}" 67108864 || return 128
+	raw="$(__notice_curl -F "files[]=@\"$filepath\";filename=a" "https://$target/upload?output=text")" || return
 	normal="$raw"
 	aux="$normal"
-}
-
-__notice_upload_to_sh_envs() {
-	target=envs.sh
-	# defaults: 365 days, permanent
-	# configured: 14 days, permanent
-	# note that file retention decreases as file size increases.
-	# 512 MiB files are kept for up to 30 days, and 0 byte files are kept for up to 365 days.
-	# does not remember filenames in any capacity, BUT we can tack on our own to the URL.
-	# you can delete files if you extract the X-Token field from the response HTTP headers.
-	# banned MIME types: application/java-archive, application/java-vm
-	__notice_compute_form_limit "file" "${1##*/}" "${bytes:-0}" 536870912 || return 128
-	__notice_escape "$1" '\\"'
-	raw="$(__notice_curl -F "file=@\"$REPLY\"" -Fsecret= -Fexpires=336 -Agithub.com/notwa/rc "https://$target")" || return
-	aux="$raw"
-	normal="$raw/${1##*/}"
 }
 
 __notice_upload_to_moe_catbox_litterbox() {
@@ -303,7 +286,6 @@ __notice_upload() {
 	__notice_fancify "$bytes" || return 2; fancy="$REPLY"
 
 	REPLY=
-	__notice_upload_to_sh_envs              "$file" || __notice_retrying ||
 	__notice_upload_to_moe_catbox_litterbox "$file" || __notice_retrying ||
 	__notice_upload_to_net_filebin          "$file" || __notice_retrying ||
 	__notice_upload_to_org_c_net_paste      "$file" || __notice_retrying ||

@@ -11,8 +11,10 @@ if case $- in (*i*) true;; (*) false;; esac; then
     ! has doas || has sudo || sudo()
       { __attention 'warning: you ran doas when you meant sudo!'; doas "$@"; }
 
-    { alias ll=; unalias ll; } 2>&- # unalias without spitting an error
-    { alias ls=; unalias ls; } 2>&- # unalias without spitting an error
+    # unalias without spitting errors:
+    { alias diff=; unalias diff; } 2>&-
+    { alias ll=; unalias ll; } 2>&-
+    { alias ls=; unalias ls; } 2>&-
 else
     preload=:
     . ~/sh/has # handle the non-interactive case wherein this was never sourced
@@ -85,8 +87,11 @@ crawla() ### @- play Dungeon Crawl: Stone Soup through ssh on the akrasiac serve
 crawlz() ### @- play Dungeon Crawl: Stone Soup through ssh on the develz server.
   { __crawl crawl@crawl.develz.org "$@"; }
 
+has git &&
 diff() ### @- use git's diff subcommand for general diffing.
-  { git diff --color=auto --no-ext-diff --no-index --no-prefix "$@"; }
+  { git diff --color=auto --no-ext-diff --no-index --no-prefix "$@"; } ||
+diff() # shoddy fallback
+  { if [ -t 1 ]; then command diff -U3 "$@" | "${PAGER:-less}"; else command diff -U3 "$@"; fi; }
 
 gc() ### @- columnize text by using git's column subcommand.
 ### **TODO:** consider renaming because gc(1) already exists.

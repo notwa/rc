@@ -141,6 +141,7 @@ __conf() {
     (century)   okay=44  conflagrate;; # blue
     (wormwood)  okay=45  conflagrate;; # magenta
     (apparatus) okay=100 conflagrate;; # bright black (dark gray)
+    (gentle)    okay=100 conflagrate;; # bright black (dark gray)
     esac
     # for bg in {40..47} {100..107}; do printf '\e[%i;97m%%\e[m is %3i\n' $bg $bg; done
 }
@@ -150,6 +151,7 @@ __conf() {
 if   [ -e /etc/centos-release                ]; then __conf century # includes almalinux
 elif [ -e /usr/share/pixmaps/ubuntu-logo.svg ]; then __conf wormwood
 elif [ -e /etc/alpine-release                ]; then __conf apparatus
+elif [ -n "${CONFIG_PROTECT_MASK+-}"         ]; then __conf gentle
 else __conf "${HOST:-${HOSTNAME}}"; fi
 # /etc/arch-release :: /usr/share/pixmaps/archlinux-logo.svg
 #if ! is_zsh && [ -x /usr/bin/zsh ]; then echo >&2 'zsh is available.'; fi

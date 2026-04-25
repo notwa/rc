@@ -95,7 +95,6 @@ if [ -d "$HOME/opt/local/bin" ]; then # still in use on some machines
     ADDPATH "$HOME/opt/local/bin"
 fi
 
-do_clean() { printf >&2 'Warning: $%s is set. Run `clean` to unset it.\n' "$@"; }
 clean() {
     for x in CFLAGS CXXFLAGS CPPFLAGS C_EXTRA_FLAGS CXX_EXTRA_FLAGS; do
         # this is fine, don't complain about it: (it gets set again later)
@@ -112,7 +111,8 @@ clean() {
     ; do eval "[ -z \"\$$x\" ]" || do_clean "$x"; done
     unset x
 }
-clean && do_clean() { unset "$@"; } # next time clean gets run, actually clean
+do_clean() { printf >&2 'Warning: $%s is set. Run `clean` to unset it.\n' "$@"; }
+clean && do_clean() { unset "$@"; } # perform cleaning the next time clean is run
 
 [ "$DESKTOP_SESSION" != xfce ] || export QT_QPA_PLATFORMTHEME= # unhide menu bar
 #[ "$TERM" != vt102 ] || export TERM="xterm" # PuTTY over serial

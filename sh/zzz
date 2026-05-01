@@ -48,8 +48,11 @@ gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults
 rgn() ### @- invoke ripgrep without respecting `.gitignore` files.
   { rg -u "$@"; }
 
+rgm()
+  { rg --sort=modified "$@"; }
+
 ryp()
-  { rg -M99 -g '*.py' --sort=modified "$@"; }
+  { rgm -M99 -g '*.py' "$@"; }
 
 curls() ### @- be a little smarter with curl. (HTTPS only)
   { curl --proto '=https' --tlsv1.2 --location --fail --connect-timeout 5 "$@"; }

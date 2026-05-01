@@ -43,7 +43,9 @@ conflagrate() {
 dummy() { :; } ### @- return 0, ignoring arguments.
 . ~/.shrc
 
-alias reload='exec bash -l' ### @- **TODO:** respect initctl like in `.zshrc`.
+reload() { ### @- reload the current shell -- runs initctl when passed arguments.
+    if [ $# -gt 0 ]; then command reload "$@"; else exec bash -l; fi
+}
 ! [ -e ~/.lol ] || . ~/.lol
 
 true

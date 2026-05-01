@@ -5,16 +5,11 @@ if case $- in (*i*) [ ]; esac then
     return # this prevents scp from blowing up or hanging
 fi
 
-HISTCONTROL=erasedups
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=1000 HISTFILESIZE=2000 HISTCONTROL=erasedups
 
-set +o histexpand # disable expansion of ! characters
-set -o hashall # enable hash command
-set -o physical # chaselinks
-shopt -s autocd
-shopt -s checkwinsize
-shopt -s histappend
+shopt -s autocd checkwinsize histappend
+shopt -s -o hashall physical # enable hash and CHASE_LINKS
+shopt -u -o histexpand # disable expansion of ! characters
 
 conflagrate() {
     local t="${TERM%%-*}" title=

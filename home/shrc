@@ -116,9 +116,7 @@ clean && do_clean() { unset "$@"; } # perform cleaning the next time clean is ru
 
 [ "$DESKTOP_SESSION" != xfce ] || export QT_QPA_PLATFORMTHEME= # unhide menu bar
 #[ "$TERM" != vt102 ] || export TERM="xterm" # PuTTY over serial
-export EDITOR=vim
-export LESS='-QRSci'
-export PAGER=less
+export EDITOR=vim LESS='-QRSci' PAGER=less
 export PYTHONIOENCODING=utf-8 # damnit python!
 
 # $LANG has been my bane whenever i forget to set it properly, so check it.

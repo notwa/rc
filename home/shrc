@@ -85,7 +85,24 @@ PREPATH() { ### @- prepend entries to `$PATH` and remove their duplications.
     unset IFS p q s; set +f
 }
 
+pathable() {
+    [ -d "$1" ] && [ -x "$1" ] && case :${PATH-}: in (*":$1:"*) false; esac
+}
+
+findsbin() { ### @- automatically append sbin directories after bin directories.
+    ! is_zsh || setopt LOCAL_OPTIONS SH_WORD_SPLIT || return
+    set -f; IFS=: p= q= s=
+    for s in $PATH; do
+        p="$p${p:+:}$s" q="${s%/bin}/sbin"
+        if [ "${s%/bin}" != "$s" ] && pathable "$q"; then p="$p:$q"; fi
+    done
+    export PATH="$p"
+    unset IFS p q s; set +f
+}
+
 # configurations:
+
+findsbin
 
 # NOTE: XDG_BIN_HOME is not actually part of any XDG specification.
 [ -d "$XDG_BIN_HOME" ] && PREPATH "$XDG_BIN_HOME" # __prepare sets this

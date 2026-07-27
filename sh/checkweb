@@ -158,6 +158,17 @@ exec 3>&-
 EOF
 }
 
+__checkweb_with_gawk() {
+    if [ "$scheme" = https ]; then __checkweb_skip; return; fi
+    # TODO: assert return code is <400 as to match the other checks.
+    __checkweb_no_pipe -v l="${pathy:-/}" -v h="${domain:?}" -v p="$port" 'BEGIN{
+RS="\r\n";s="/inet/tcp/0/"h"/"p
+printf "GET %s HTTP/1.0"RS"Host: %s"RS RS,l,h|&s
+while(s|&getline){if(ORS){print>"/dev/stderr";if(!length)ORS=""}else print}
+close(s)
+    }'
+}
+
 __checkweb_with_socat() {
     if [ "$scheme" = https ]; then __checkweb_skip; return; fi
     __checkweb_by_hand - "TCP:$domain:$port"

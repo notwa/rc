@@ -117,7 +117,7 @@ __notice_log() {
 
 # __notice_upload_to_...
 # (slow) io_file              2000000000-200-4-x or 1907 MiB (untested)
-#        se_uguu                67108864-200-7-x or   64 MiB (tested)
+#        se_uguu               134217728-200-7-x or  128 MiB (tested)
 #        org_c_net_paste        50000000         or   47 MiB (tested)
 #        net_filebin           unlimited?
 #        com_bashupload      50000000000         or   47 GiB (untested)
@@ -214,7 +214,7 @@ __notice_upload_to_se_uguu() {
 	# filenames are randomized. cannot manually delete nor specify expiry.
 	# disallowed extensions: exe, scr, com, vbs, bat, cmd, htm, html, jar, msi, apk, phtml, svg
 	# banned MIME types: application/java, application/java-archive, application/msword, application/x-dosexec, application/x-executable, application/x-mach-binary, image/svg+xml, text/html
-	__notice_compute_form_limit "files[]" a "${bytes:-0}" 67108864 || return 128
+	__notice_compute_form_limit "files[]" a "${bytes:-0}" 134217728 || return 128
 	raw="$(__notice_curl -F "files[]=@\"$filepath\";filename=a" "https://$target/upload?output=text")" || return
 	normal="$raw"
 	aux="$normal"

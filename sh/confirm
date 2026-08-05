@@ -27,7 +27,7 @@
 if [ -n "$ZSH_VERSION" ]; then
     confirm() {
         [ $# -eq 0 ] || { printf '%s\n' "$0: too many arguments" >&2; return 2; }
-        local c=
+        local c= ret=
         read -q '?Continue? [y/N] ' c
         ret=$?
         echo >/dev/tty

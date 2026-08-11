@@ -25,6 +25,7 @@ __ea() { ### @ ea - **TODO:** document.
     set -fu +e
     unset LC_ALL cmd dst src trg x
     export LC_ALL=C
+    : "${EA_AUTH:?}" "${EA_DIR:?}" "${EA_DOMAIN:?}"
     cmd="${1:?missing subcommand}"; shift
     case "$cmd" in
     (head)

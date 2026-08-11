@@ -15,17 +15,18 @@ conflagrate() {
     local t="${TERM%%-*}" title=
     local hide='\\[' show='\\]' prompt='\\$' cwd='\\w' host='\\H'
     local ESC='\E' BEL='\a' SI='\017' SO='\016' # SI/SO: switch to G0/G1 charset
-    local CSI="$ESC[" OSC="$ESC]"
+    local CSI="$ESC[" OSC="$ESC]" # first parts of a control sequence
+    local DECSET="h" SGR="m" # final characters of a control sequence
     local G0="(" G1=")" # change G0/G1 charset
     local USASCII="B" SPECIAL="0" # charsets: sane default & line drawing
-    local DECTCEM="25"
-    local DECSET="h" SGR="m" # final characters of a command sequence
-    local sanity="$CSI?$DECTCEM$DECSET"
-    local color1="$CSI;--$SGR" color2="$CSI--;${fg:-97}$SGR" reset="$hide$CSI$SGR$show"
+    local DECTCEM="25" # private mode: show the cursor
+    local sanity="$CSI?$DECTCEM$DECSET" # show the cursor
+    local color1="$CSI;--$SGR" color2="$CSI--;${fg:-97}$SGR"
+    local reset="$hide$CSI$SGR$show"
     if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
         [ "$t" = tmux ] && title="$cwd" || title="$host: $cwd"
-        title="${OSC}2;$title$BEL"
-        sanity="$ESC$G0$USASCII$SI$sanity"
+        title="${OSC}2;$title$BEL" # set the terminal title
+        sanity="$ESC$G0$USASCII$SI$sanity" # reset charsets
     fi
     local line1="$hide$title$sanity$color1$show $reset"
     local line2="$hide$color2$show$prompt$reset "

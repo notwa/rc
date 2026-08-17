@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
 
+entrypoint() {
+    depends argc
+    execute grop "$@"
+}
+
 # TODO: check for existence of grep -P; write a perl-based fallback.
 grop() { ### @- invoke grep with `-oP`.
     ### **NOTE:** there also exists a grop(1) program provided by
@@ -9,6 +14,4 @@ grop() { ### @- invoke grep with `-oP`.
     /usr/bin/env grep -oP -- "$@"
 }
 
-[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} argc
-[ -n "${preload+-}" ] || grop "$@"
+${preload+:} . ~/sh/bootstrap

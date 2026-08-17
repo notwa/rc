@@ -3,6 +3,11 @@
 
 # some solutions via: https://stackoverflow.com/q/5917576
 
+entrypoint() {
+    depends has
+    execute bylen "$@"
+}
+
 __bylen_python() {
     # NOTE: does not respect LC_ALL -- but **does** respect PYTHONIOENCODING.
     python3 -c 'import sys; sys.stdout.writelines(sorted(sys.stdin, key=len))'
@@ -76,6 +81,4 @@ bylen() { ### @- sort lines by length. several implementations are provided.
     bylen "$@"
 }
 
-[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} has
-[ -n "${preload+-}" ] || bylen "$@"
+${preload+:} . ~/sh/bootstrap

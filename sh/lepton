@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash -hush -ksh +mksh +oksh +osh +posh +yash +zsh
 
+entrypoint() {
+    depends confirm
+    execute __lepton "$@"
+}
+
 __lepton() {
     unset CDPATH IFS LC_ALL || exit 1
     export LC_ALL=C
@@ -88,7 +93,4 @@ __lepton() {
 }
 
 lepton()(__lepton "$@")
-
-[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} confirm
-[ -n "${preload+-}" ] || lepton "$@"
+${preload+:} . ~/sh/bootstrap

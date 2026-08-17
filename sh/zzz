@@ -20,6 +20,14 @@ else
     . ~/sh/has # handle the non-interactive case wherein this was never sourced
 fi
 
+if has sudo; then
+    maybesudo() { sudo "$@"; }
+elif has doas; then
+    maybesudo() { doas "$@"; }
+else
+    maybesudo() (__maybesudo "$@")
+fi
+
 ### @ ll - list files verbosely, fancily, ordered, but not recursively.
 if has lr; then
     ll() { lr -1lshGG -o tev "$@" | less; }

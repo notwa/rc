@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash +zsh
 
+entrypoint() {
+    depends argc echo2 note
+    execute stfu "$@"
+}
+
 stfu() { ### @-
     ### invoke a command, silencing stdout and stderr *unless* the command fails.
     ###
@@ -91,6 +96,4 @@ stfu() { ### @-
     return $ret
 }
 
-[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} argc echo2 note
-[ -n "${preload+-}" ] || stfu "$@"
+${preload+:} . ~/sh/bootstrap

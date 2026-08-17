@@ -133,17 +133,5 @@ __maybesudo() { ### @maybesudo
     exec env "$@"
 }
 
-maybesudo_()(__maybesudo "$@") # deprecated
-
-[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} has
-
-if has sudo; then
-    maybesudo() { sudo "$@"; }
-elif has doas; then
-    maybesudo() { doas "$@"; }
-else
-    maybesudo() (__maybesudo "$@")
-fi
-
-[ -n "${preload+-}" ] || __maybesudo "$@"
+maybesudo()(__maybesudo "$@") # deprecated
+${preload+:} __maybesudo "$@"

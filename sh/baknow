@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 # compat: -ash +bash +dash -hush -ksh +mksh -oksh +osh +posh +yash +zsh
+entrypoint() {
+    depends argc now
+    execute baknow "$@"
+}
 
 baknow() { ### @- backup files by appending their timestamps given by [`now`.](#now)
     ### ```
@@ -20,6 +24,4 @@ baknow() { ### @- backup files by appending their timestamps given by [`now`.](#
     return $ret
 }
 
-[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} argc now
-[ -n "${preload+-}" ] || baknow "$@"
+${preload+:} . ~/sh/bootstrap

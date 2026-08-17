@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash +zsh
 
+entrypoint() {
+    depends argc has
+    execute scount "$@"
+}
+
 scount() { ### @-
     ### perform `sort | uniq -c | sort -n`, preferring GNU awk when available.
     if has gawk; then
@@ -17,6 +22,4 @@ scount() { ### @-
     scount "$@"
 }
 
-[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} argc has
-[ -n "${preload+-}" ] || scount "$@"
+${preload+:} . ~/sh/bootstrap

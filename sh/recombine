@@ -66,3 +66,4 @@ for f in *; do
 done
 pl
 [ $# = 0 ] || cat -- "$@"
+pl 'entrypoint() { :; }' 'unset -f entrypoint'

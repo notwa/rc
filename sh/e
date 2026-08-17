@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash -hush -ksh +mksh +oksh +osh +posh +yash +zsh
 
+entrypoint() {
+    depends running confirm pause
+    execute e "$@"
+}
+
 e() { ### @-
     ### wrap around `$EDITOR` to run it as root if necessary.
     ### this still needs some work to detect root-owned directories.
@@ -62,6 +67,4 @@ e() { ### @-
     fi
 }
 
-[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} running confirm pause
-[ -n "${preload+-}" ] || e "$@"
+${preload+:} . ~/sh/bootstrap

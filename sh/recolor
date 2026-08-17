@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash -hush +zsh
 
+entrypoint() {
+    depends v_lower v_upper
+    execute __recolor "$@"
+}
+
 __recolor_install() {
     ForegroundColour() { recolor RAW 10 "$@"; }
     BackgroundColour() { recolor RAW 11 "$@"; }
@@ -143,6 +148,4 @@ __recolor() {
 } >/dev/tty
 
 recolor()(__recolor "$@")
-[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} v_lower v_upper
-[ -n "${preload+-}" ] || __recolor "$@"
+${preload+:} . ~/sh/bootstrap

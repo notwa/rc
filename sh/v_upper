@@ -1,6 +1,11 @@
 #!/usr/bin/env sh
 # compat: +ash +bash +dash -hush -ksh +mksh -oksh +osh +posh +yash +zsh
 
+entrypoint() {
+    depends argc v_domap
+    execute v_upper "$@"
+}
+
 v_upper() { ### @- transform the contents of a variable to uppercase.
     argc $# -eq 1 "$0" || return
     map() {
@@ -14,6 +19,4 @@ v_upper() { ### @- transform the contents of a variable to uppercase.
     v_domap "$1"
 }
 
-[ -n "${preload+-}" ] || . ~/sh/preload || exit 2
-eval ${preload:-preload} argc v_domap
-[ -n "${preload+-}" ] || v_upper "$@"
+${preload+:} . ~/sh/bootstrap

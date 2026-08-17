@@ -1,0 +1,79 @@
+#!/usr/bin/env false
+# FAKE_COMPAT
+
+__dependencies= # don't touch!
+__entrypoint_error=
+
+if [ "$preload" = depends ]; then # guard from accidental re-inclusion
+    __entrypoint_error="bootstrap sourced twice"
+    entrypoint() {
+        printf >&2 '~/sh/bootstrap: %s\n' "$__entrypoint_error"
+        return 70
+    }
+fi
+
+__valid_identifier() {
+    case "$1" in
+    (*[!A-Za-z0-9_]*) false;;
+    ([0-9]*) false;;
+    (?*) true;;
+    (*) false;;
+    esac
+}
+
+__mark() { # argument must be a valid identifier
+    [ $(( __loaded_$1+=1 )) = 1 ] # dash does not support postfix increment
+}
+
+depends() {
+    if [ -n "$__entrypoint_error" ]; then
+        return 70
+    fi
+    until [ $# = 0 ]; do
+        if __valid_identifier "$1"; then
+            __dependencies="$__dependencies$1:" # must end with a colon
+        else
+            __entrypoint_error="invalid dependency name: $1"
+            return 70
+        fi
+        shift
+    done
+}
+
+execute() {
+    execute() { # limit recursive entrypoints to only loading dependencies
+        if [ -n "$__entrypoint_error" ]; then
+            return 70
+        fi
+    }
+
+    if [ -n "$__entrypoint_error" ]; then
+        return 70
+    elif [ $# = 0 ]; then
+        __entrypoint_error="execute requires at least one argument"
+    elif ! __valid_identifier "$1"; then
+        __entrypoint_error="invalid entrypoint name: $1"
+    fi
+
+    __mark "$1" # the script that sourced us is already loaded
+
+    # checking this instead of a null string should prevent most infinite loops:
+    until [ "${__dependencies%:}" = "$__dependencies" ]; do
+        entrypoint() { :; } # not every dependency defines an entrypoint
+        if __mark "${__dependencies%%:*}"; then
+            . ~/sh/"${__dependencies%%:*}"
+            entrypoint
+        fi
+        __dependencies="${__dependencies#*:}"
+        if [ -n "$__entrypoint_error" ]; then
+            return 70
+        fi
+    done
+
+    unset -f __valid_identifier __mark entrypoint depends execute
+    unset preload
+    "$@"
+}
+
+preload=depends # backwards compatibility
+entrypoint "$@"

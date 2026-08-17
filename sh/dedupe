@@ -44,4 +44,4 @@ sort -k2 <"$t~" >>"$t" && awk -v D="$D" -v h="$h" -F'  ' "$program" <"$t"; x=$?
 ! [ -d "$t" ] || rm -r "$t" && [ $x = 0 ] || die $x 'exiting after failure'
 )
 
-[ -n "${preload+-}" ] || dedupe "$@"
+${preload+:} dedupe "$@"

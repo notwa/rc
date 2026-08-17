@@ -49,4 +49,4 @@ now() { ### @-
     echo "${F}_${ms}"
 }
 
-[ -n "${preload+-}" ] || now "$@"
+${preload+:} now "$@"

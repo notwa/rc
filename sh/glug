@@ -346,4 +346,4 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
 
 ) 1<>/dev/tty <&1 # ensure this interacts with a terminal instead of a pipe
 
-[ -n "${preload+-}" ] || glug "$@"
+${preload+:} glug "$@"

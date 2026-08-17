@@ -17,4 +17,4 @@ pre() { ### @-
     ${CC:-gcc} -dM -E - ${CPPFLAGS-} ${CFLAGS-} ${LDFLAGS-} < /dev/null
 }
 
-[ -n "${preload+-}" ] || pre "$@"
+${preload+:} pre "$@"

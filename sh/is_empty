@@ -11,4 +11,4 @@ is_empty() { ### @-
     return 0
 }
 
-[ -n "${preload+-}" ] || is_empty "$@"
+${preload+:} is_empty "$@"

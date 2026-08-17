@@ -342,4 +342,4 @@ compile() { ### @-
     $compiler $std ${final_flags[@]} $file ${libraries[@]} ${warnings[@]} $outflag $out
 }
 
-[ -n "${preload+-}" ] || compile "$@"
+${preload+:} compile "$@"

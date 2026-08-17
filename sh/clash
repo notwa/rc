@@ -25,4 +25,4 @@ __clash_shells() {
     echo ash bash dash ksh loksh mksh oksh osh posh yash zsh
 }
 
-[ -n "${preload+-}" ] || clash "$@"
+${preload+:} clash "$@"

@@ -27,4 +27,4 @@ bak() { ### @-
     return $ret
 }
 
-[ -n "${preload+-}" ] || bak "$@"
+${preload+:} bak "$@"

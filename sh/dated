@@ -13,4 +13,4 @@ dated() {
     done
 }
 
-[ -n "${preload+-}" ] || dated "$@"
+${preload+:} dated "$@"

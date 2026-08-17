@@ -19,4 +19,4 @@ sum() { ### @-
     echo "$sum"
 }
 
-[ -n "${preload+-}" ] || sum "$@"
+${preload+:} sum "$@"

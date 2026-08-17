@@ -6,4 +6,4 @@ join2() { ### @- join every other line.
     paste -d" " - -
 }
 
-[ -n "${preload+-}" ] || join2 "$@"
+${preload+:} join2 "$@"

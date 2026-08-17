@@ -84,4 +84,4 @@ shcom() { ### @-
     return $ret
 }
 
-[ -n "${preload+-}" ] || shcom "$@"
+${preload+:} shcom "$@"

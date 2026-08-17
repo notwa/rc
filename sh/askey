@@ -25,4 +25,4 @@ askey() {
 '
 }
 
-[ -n "${preload+-}" ] || askey "$@"
+${preload+:} askey "$@"

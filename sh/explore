@@ -7,4 +7,4 @@ explore() { ### @- open a single directory in `explorer.exe`, defaulting to `$PW
     explorer "$(cygpath -w "${1:-.}")"
 }
 
-[ -n "${preload+-}" ] || explore "$@"
+${preload+:} explore "$@"

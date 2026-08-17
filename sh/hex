@@ -19,4 +19,4 @@ hex() { ### @-
     printf '%08X\n' "$(($@))"
 }
 
-[ -n "${preload+-}" ] || hex "$@"
+${preload+:} hex "$@"

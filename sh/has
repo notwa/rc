@@ -14,4 +14,4 @@ has() { ### @- like `which`, but faster. results go in `$REPLY`, unset if none.
     unset REPLY IFS; set +f; return 1
 }
 
-[ -n "${preload+-}" ] || has "$@"
+${preload+:} has "$@"

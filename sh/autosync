@@ -16,4 +16,4 @@ autosync() { #-- @-
     done
 }
 
-[ -n "${preload+-}" ] || autosync "$@"
+${preload+:} autosync "$@"

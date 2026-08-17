@@ -21,4 +21,4 @@ busiest() { ### @-
     [ -z $d ] && return 1
 }
 
-[ -n "${preload+-}" ] || busiest "$@"
+${preload+:} busiest "$@"

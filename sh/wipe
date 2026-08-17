@@ -19,4 +19,4 @@ wipe() { ### @-
     printf '\033[0m\n\n'
 }
 
-[ -n "${preload+-}" ] || wipe "$@"
+${preload+:} wipe "$@"

@@ -16,4 +16,4 @@ similar() { ### @-
     }'
 }
 
-[ -n "${preload+-}" ] || similar "$@"
+${preload+:} similar "$@"

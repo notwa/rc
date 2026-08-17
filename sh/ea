@@ -91,4 +91,4 @@ __ea() { ### @ ea - **TODO:** document.
 }
 
 ea()(__ea "$@")
-[ -n "${preload+-}" ] || __ea "$@"
+${preload+:} __ea "$@"

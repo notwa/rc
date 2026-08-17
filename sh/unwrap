@@ -5,4 +5,4 @@ unwrap() { ### @- join paragraphs into one line each.
     awk 'BEGIN{RS="\n\n";FS="\n"}{for(i=1;i<=NF;i++)printf "%s ",$i;print "\n"}'
 }
 
-[ -n "${preload+-}" ] || unwrap "$@"
+${preload+:} unwrap "$@"

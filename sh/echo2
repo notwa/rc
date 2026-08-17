@@ -15,4 +15,4 @@ echo2() { ### @-
     printf '%s\n' "$*" >&2
 }
 
-[ -n "${preload+-}" ] || echo2 "$@"
+${preload+:} echo2 "$@"

@@ -16,4 +16,4 @@ psbm() { ### @-
     ' | sort -n
 }
 
-[ -n "${preload+-}" ] || psbm "$@"
+${preload+:} psbm "$@"

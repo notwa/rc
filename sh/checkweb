@@ -414,4 +414,4 @@ __checkweb() {
 }
 
 checkweb()(__checkweb "$@")
-[ -n "${preload+-}" ] || __checkweb "$@"
+${preload+:} __checkweb "$@"

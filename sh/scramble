@@ -18,4 +18,4 @@ scramble() { ### @-
     -e 's/@//g'
 }
 
-[ -n "${preload+-}" ] || scramble "$@"
+${preload+:} scramble "$@"

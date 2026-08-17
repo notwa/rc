@@ -105,4 +105,4 @@ asn() {
     fi
 }
 
-[ -n "${preload+-}" ] || asn "$@"
+${preload+:} asn "$@"

@@ -8,4 +8,4 @@ ff() { ### @-
     find "${1:-.}" -type f | fzy -l 23
 }
 
-[ -n "${preload+-}" ] || ff "$@"
+${preload+:} ff "$@"

@@ -17,4 +17,4 @@ countdiff() { #-- @-
     | awk ' /changed/{print $4+$6;a=1}END{if(!a)print 0}'
 }
 
-[ -n "${preload+-}" ] || countdiff "$@"
+${preload+:} countdiff "$@"

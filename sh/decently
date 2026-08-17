@@ -57,4 +57,4 @@ decently() ( ### @-
     return $fails
 )
 
-[ -n "${preload+-}" ] || decently "$@"
+${preload+:} decently "$@"

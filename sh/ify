@@ -17,4 +17,4 @@ ify() { ### @-
     "$@" | "$ex"
 }
 
-[ -n "${preload+-}" ] || ify "$@"
+${preload+:} ify "$@"

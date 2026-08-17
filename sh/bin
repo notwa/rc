@@ -18,4 +18,4 @@ bin() { ### @-
     printf '%08X\n' "$a"
 }
 
-[ -n "${preload+-}" ] || bin "$@"
+${preload+:} bin "$@"

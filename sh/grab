@@ -133,4 +133,4 @@ trap - INT EXIT
 }
 
 grab()(__grab "$@")
-[ -n "${preload+-}" ] || __grab "$@"
+${preload+:} __grab "$@"

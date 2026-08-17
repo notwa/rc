@@ -60,4 +60,4 @@ minutemaid() { ### @-
     fi
 }
 
-[ -n "${preload+-}" ] || minutemaid "$@"
+${preload+:} minutemaid "$@"

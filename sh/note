@@ -10,4 +10,4 @@ note() { ### @-
     printf '\033[1m%s\033[0m\n' "$*" >&2
 }
 
-[ -n "${preload+-}" ] || note "$@"
+${preload+:} note "$@"

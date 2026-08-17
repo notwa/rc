@@ -401,7 +401,7 @@ __notice_push_to_discord() {
 }
 
 notice()(__notice "$@")
-[ -n "${preload+-}" ] || __notice "$@"
+${preload+:} __notice "$@"
 
 # cursed modeline:
 # vim:ft=bash ts=3 sw=3 noet sts=3

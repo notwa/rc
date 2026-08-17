@@ -38,4 +38,4 @@ running() { ### @- WIP
     '
 }
 
-[ -n "${preload+-}" ] || running "$@"
+${preload+:} running "$@"

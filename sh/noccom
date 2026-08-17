@@ -51,4 +51,4 @@ EOF
     perl ~/.local/bin/noccom "$@"
 }
 
-[ -n "${preload+-}" ] || noccom "$@"
+${preload+:} noccom "$@"

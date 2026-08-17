@@ -176,4 +176,4 @@ document() { ### @-
     esac
 }
 
-[ -n "${preload+-}" ] || document "$@"
+${preload+:} document "$@"

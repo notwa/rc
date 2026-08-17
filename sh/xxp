@@ -18,4 +18,4 @@ xxp() { ### @-
     hexdump -v -e '15 1 "%02X " 1 1 " %02X\n"' -- "$@"
 }
 
-[ -n "${preload+-}" ] || xxp "$@"
+${preload+:} xxp "$@"

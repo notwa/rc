@@ -203,7 +203,7 @@ feud_cleanup() { # optional
 	feud_match_flag() { false; }
 }
 
-[ -n "${preload+-}" ] || feud "$@"
+${preload+:} feud "$@"
 
 # cursed modeline:
 # vim:ft=bash ts=3 sw=3 noet sts=3

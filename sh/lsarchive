@@ -65,4 +65,4 @@ EOF
     done
 }
 
-[ -n "${preload+-}" ] || lsarchive "$@"
+${preload+:} lsarchive "$@"

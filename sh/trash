@@ -14,4 +14,4 @@ trash() { ### @-
     dd status=none if=/dev/random bs=1 count="${1:?missing count argument}"
 }
 
-[ -n "${preload+-}" ] || trash "$@"
+${preload+:} trash "$@"

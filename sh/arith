@@ -18,4 +18,4 @@ arith() { ### @-
     printf '%s\n' "$(($@))"
 }
 
-[ -n "${preload+-}" ] || arith "$@"
+${preload+:} arith "$@"

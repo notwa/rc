@@ -18,4 +18,4 @@ slit() { ### @-
     #awk "{ print ${(j:,:):-\$${^@}} }"
 }
 
-[ -n "${preload+-}" ] || slit "$@"
+${preload+:} slit "$@"

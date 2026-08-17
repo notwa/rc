@@ -95,4 +95,4 @@ permit() { ### @- conditionally set executable permissions on each of its argume
     return "$__permit_x"
 }
 
-[ -n "${preload+-}" ] || permit "$@"
+${preload+:} permit "$@"

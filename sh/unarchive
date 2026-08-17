@@ -114,4 +114,4 @@ EOF
     done
 }
 
-[ -n "${preload+-}" ] || unarchive "$@"
+${preload+:} unarchive "$@"

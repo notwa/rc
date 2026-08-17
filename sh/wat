@@ -36,4 +36,4 @@ wat() { ### @-
     )
 }
 
-[ -n "${preload+-}" ] || wat "$@"
+${preload+:} wat "$@"

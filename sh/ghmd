@@ -28,4 +28,4 @@ ghmd() { ### @-
     return $ret
 }
 
-[ -n "${preload+-}" ] || ghmd "$@"
+${preload+:} ghmd "$@"

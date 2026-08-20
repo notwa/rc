@@ -92,7 +92,7 @@ total 0
 -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.bak.bak
 ```
 
-### [baknow](/sh/baknow#L4)
+### [baknow](/sh/baknow#L9)
 
 backup files by appending their timestamps given by [`now`.](#now)
 
@@ -107,7 +107,7 @@ total 0
 -rw-r--r-- 1 notwa None 0 Dec 25  2001 butts.2001-12-26_01800000.bak
 ```
 
-### [baks](/sh/baks#L5)
+### [baks](/sh/baks#L10)
 
 backup files by copying each and appending *the current* date-time,
 irrespective of when the files were modified or created.
@@ -177,7 +177,7 @@ $ cd && busiest | head -n3
 21042 play
 ```
 
-### [bylen](/sh/bylen#L67)
+### [bylen](/sh/bylen#L72)
 
 sort lines by length. several implementations are provided.
 
@@ -257,7 +257,7 @@ generate a markdown file out of docstrings in shell scripts.
 
 **TODO:** describe. i have a rough outline written in my scrap file.
 
-### [e](/sh/e#L4)
+### [e](/sh/e#L9)
 
 wrap around `$EDITOR` to run it as root if necessary.
 this still needs some work to detect root-owned directories.
@@ -301,7 +301,7 @@ parse command-line arguments, mapping short-flags to variable names.
 select a file from a given or current directory using
 [`fzy`.](https://github.com/jhawthorn/fzy)
 
-### [flaunt](/sh/flaunt#L85)
+### [flaunt](/sh/flaunt#L90)
 
 send diagnostic telemetry to a central server via [`notice`.](#notice)
 currently, this is only used for reporting when servers come online.
@@ -322,7 +322,7 @@ this script utilizes the CSS provided at
 
 download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 
-### [grop](/sh/grop#L5)
+### [grop](/sh/grop#L10)
 
 invoke grep with `-oP`.
 
@@ -337,7 +337,7 @@ the *grop* package that i don't use.
 
 like `which`, but faster. results go in `$REPLY`, unset if none.
 
-### [have](/sh/have#L4)
+### [have](/sh/have#L9)
 
 print the result of `which` if the program is found, else simply return 1.
 
@@ -559,7 +559,7 @@ the *bsdgames* and *hxtools* packages that i don't use.
 
 WIP
 
-### [scount](/sh/scount#L4)
+### [scount](/sh/scount#L9)
 
 perform `sort | uniq -c | sort -n`, preferring GNU awk when available.
 
@@ -607,7 +607,7 @@ this version of `slit` uses tabs for its field separators.
 
 sort lines numerically by IPv4 segments.
 
-### [stfu](/sh/stfu#L4)
+### [stfu](/sh/stfu#L9)
 
 invoke a command, silencing stdout and stderr *unless* the command fails.
 
@@ -640,7 +640,7 @@ asses
 
 ```
 
-### [subdue](/sh/subdue#L4)
+### [subdue](/sh/subdue#L9)
 
 reconfigure your terminal's color scheme using a preset for [recolor.](#recolor)
 
@@ -690,11 +690,11 @@ borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
 
 join paragraphs into one line each.
 
-### [v_lower](/sh/v_lower#L4)
+### [v_lower](/sh/v_lower#L9)
 
 transform the contents of a variable to lowercase.
 
-### [v_upper](/sh/v_upper#L4)
+### [v_upper](/sh/v_upper#L9)
 
 transform the contents of a variable to uppercase.
 
@@ -734,127 +734,127 @@ $ xxp ~/rc/install | head -n2
 68 0A 23 20 74 68 69 73 20 73 63 72 69 70 74 20
 ```
 
-### [ll (sh/zzz)](/sh/zzz#L23)
+### [ll (sh/zzz)](/sh/zzz#L31)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [getit (sh/zzz)](/sh/zzz#L36)
+### [getit (sh/zzz)](/sh/zzz#L44)
 
 invoke `git clone` with `--single-branch --depth 1`.
 
-### [gd (sh/zzz)](/sh/zzz#L39)
+### [gd (sh/zzz)](/sh/zzz#L47)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [gdp (sh/zzz)](/sh/zzz#L42)
+### [gdp (sh/zzz)](/sh/zzz#L50)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [rgn (sh/zzz)](/sh/zzz#L48)
+### [rgn (sh/zzz)](/sh/zzz#L56)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (sh/zzz)](/sh/zzz#L57)
+### [curls (sh/zzz)](/sh/zzz#L65)
 
 be a little smarter with curl. (HTTPS only)
 
-### [revend (sh/zzz)](/sh/zzz#L69)
+### [revend (sh/zzz)](/sh/zzz#L77)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (sh/zzz)](/sh/zzz#L72)
+### [clone (sh/zzz)](/sh/zzz#L80)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
 **TODO:** rename because POSIX.1-2024 reserves this name.
 
-### [aligntabs (sh/zzz)](/sh/zzz#L76)
+### [aligntabs (sh/zzz)](/sh/zzz#L84)
 
 align tab-delimited fields in stdin.
 
-### [crawla (sh/zzz)](/sh/zzz#L87)
+### [crawla (sh/zzz)](/sh/zzz#L95)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (sh/zzz)](/sh/zzz#L90)
+### [crawlz (sh/zzz)](/sh/zzz#L98)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (sh/zzz)](/sh/zzz#L94)
+### [diff (sh/zzz)](/sh/zzz#L102)
 
 use git's diff subcommand for general diffing.
 
-### [gc (sh/zzz)](/sh/zzz#L99)
+### [gc (sh/zzz)](/sh/zzz#L107)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (sh/zzz)](/sh/zzz#L103)
+### [counts (sh/zzz)](/sh/zzz#L111)
 
 count files in the current directory, including files found recursively.
 
-### [exts (sh/zzz)](/sh/zzz#L106)
+### [exts (sh/zzz)](/sh/zzz#L114)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (sh/zzz)](/sh/zzz#L110)
+### [nocom (sh/zzz)](/sh/zzz#L118)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (sh/zzz)](/sh/zzz#L113)
+### [jrep (sh/zzz)](/sh/zzz#L121)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (sh/zzz)](/sh/zzz#L116)
+### [bomb (sh/zzz)](/sh/zzz#L124)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (sh/zzz)](/sh/zzz#L119)
+### [cleanse (sh/zzz)](/sh/zzz#L127)
 
 strip unprintable and non-ASCII characters.
 
-### [double (sh/zzz)](/sh/zzz#L122)
+### [double (sh/zzz)](/sh/zzz#L130)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (sh/zzz)](/sh/zzz#L127)
+### [katagana (sh/zzz)](/sh/zzz#L135)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (sh/zzz)](/sh/zzz#L131)
+### [makepkgf (sh/zzz)](/sh/zzz#L139)
 
 make the freakin' package!
 
-### [rakef (sh/zzz)](/sh/zzz#L134)
+### [rakef (sh/zzz)](/sh/zzz#L142)
 
 make the freakin' gem!
 
-### [relog (sh/zzz)](/sh/zzz#L137)
+### [relog (sh/zzz)](/sh/zzz#L145)
 
 log on again to refresh your unix groups, etc.
 
-### [shi7 (sh/zzz)](/sh/zzz#L140)
+### [shi7 (sh/zzz)](/sh/zzz#L148)
 
 invoke `sha1sum` but only output the first 7 characters of each hash, a la git.
 
-### [carry (sh/zzz)](/sh/zzz#L143)
+### [carry (sh/zzz)](/sh/zzz#L151)
 
 copy files in a plain way using rsync. affected by umask.
 
-### [colors (sh/zzz)](/sh/zzz#L155)
+### [colors (sh/zzz)](/sh/zzz#L163)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L197)
+### [morecolors (sh/zzz)](/sh/zzz#L205)
 
 print all 256 colors that are available on most terminals.
 
@@ -881,11 +881,11 @@ swap stdout and stderr. uses fd 3 as an intermediary.
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L38)
+### [dummy (bashrc)](/home/bashrc#L39)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L41)
+### [reload (bashrc)](/home/bashrc#L42)
 
 reload the current shell -- runs initctl when passed arguments.
 
@@ -924,6 +924,7 @@ automatically append sbin directories after bin directories.
 | [baknow](#baknow)                             |       *sh* | ⭕    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [baks](#baks)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [bin](#bin)                                   |        zsh | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [bootstrap](#bootstrap)                       |  **false** | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [burl](#burl)                                 |       bash | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [busiest](#busiest)                           |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
 | [bylen](#bylen)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |

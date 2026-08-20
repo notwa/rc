@@ -55,7 +55,8 @@ execute() {
         __entrypoint_error="invalid entrypoint name: $1"
     fi
 
-    __mark "$1" # the script that sourced us is already loaded
+    # NOTE: some scripts do `execute __myscript` to avoid a subshell.
+    __mark "${1#__}" # the script that sourced us is already loaded
 
     # checking this instead of a null string should prevent most infinite loops:
     until [ "${__dependencies%:}" = "$__dependencies" ]; do

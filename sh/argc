@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +hush -ksh +mksh -oksh +osh +posh +yash +zsh
+# compat: +ash +bash +dash +hush -ksh +mksh +oksh +osh +posh +yash +zsh
 
 argc() { ### @- validate the number of arguments in a function.
     ### ```sh
@@ -17,7 +17,7 @@ argc() { ### @- validate the number of arguments in a function.
     local usage='usage: myfunc() { %s $# -(eq|le|ge) [0-9] "$0" || return; }\n'
 
     # note that $zero can be empty, but must be set.
-    if [ $# -ne 4 ] || [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+    if [ $# != 4 ] || [ "${1:++}${2:++}${3:++}" = +++ ]; then
         printf "$usage" argc >&2
         return 1
     fi
@@ -50,7 +50,6 @@ argc() { ### @- validate the number of arguments in a function.
         return 1;;
     esac
 
-    # FIXME: why doesn't oksh/loksh like this?
     if [ "$argc" "$cond" "$want" ] 2>/dev/null; then
         :
     else

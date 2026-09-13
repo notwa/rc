@@ -1,0 +1,239 @@
+#!/usr/bin/env sh
+# compat: +ash +bash +dash -hush +ksh +mksh +oksh +osh -posh +yash +zsh
+# posh doesn't like the -ef test.
+
+persist__cry() { printf >&2 %s\\n "$@"; }
+persist__debug() { printf >&2 '\033[33m%s\033[m\n' "$*"; }
+persist__failed_to() { persist__cry "failed to $*"; }
+
+persist__do_where() {
+    # ASIDE: mkdir'ing XDG base dirs puts the user at the mercy of umask.
+    #        this might be undesirable... https://stackoverflow.com/a/36808456
+    if [ -z "${PERSIST_AT++}" ]; then # if it's unset
+        if [ -z "${XDG_STATE_HOME++}" ]; then
+            if [ -z "${HOME++}" ]; then
+                return 10
+            fi
+            if ! [ -d "$HOME" ]; then
+                return 11
+            fi
+            if ! [ -d "$HOME/.local" ]; then
+                mkdir -- "$HOME/.local" || return 12
+            fi
+            if ! [ -d "$HOME/.local/persistence" ]; then
+                mkdir -- "$HOME/.local/persistence" || return 13
+            fi
+            PERSIST_AT="$HOME/.local/persistence"
+        else
+            if ! [ -d "$XDG_STATE_HOME" ]; then
+                mkdir -- "$XDG_STATE_HOME" || return 22
+            fi
+            if ! [ -d "$XDG_STATE_HOME/persistence" ]; then
+                mkdir -- "$XDG_STATE_HOME/persistence" || return 23
+            fi
+            PERSIST_AT="$XDG_STATE_HOME/persistence"
+        fi
+    elif [ -z "${PERSIST_AT:++}" ]; then # if it's empty
+        return 0 # not an error, persistence is turned off
+    fi
+
+    if [ "${PERSIST_AT:-/}" -ef / ]; then
+        return 2
+    fi
+    PERSIST_AT="$(exec readlink -f -- "$PERSIST_AT")" || return 3
+    touch -- "$PERSIST_AT/.lock" || return 4
+}
+
+persist__where() {
+    if persist__do_where; then
+        :
+    else
+        case $? in
+        # TODO: these error messages are bad and need rewriting.
+        (2) persist__failed_to 'ensure $PERSIST_AT is not /';;
+        (3) persist__failed_to 'determine absolute path of $PERSIST_AT';;
+        (4) persist__failed_to 'access lock file';;
+        (10) persist__failed_to 'find $HOME';;
+        (11) persist__failed_to 'find a valid $HOME directory';;
+        (12) persist__failed_to 'create a $HOME/.local directory';;
+        (13) persist__failed_to 'create a $HOME/.local/persistence directory';;
+        (22) persist__failed_to 'create a $XDG_STATE_HOME directory';;
+        (23) persist__failed_to 'create a $XDG_STATE_HOME/persistence directory';;
+        (*) persist__failed_to 'do something (FIXME)';;
+        esac
+        return 1
+    fi
+}
+
+persist__load_file() {
+    [ $# = 2 ] || return
+    # n.b. read perms are unnecessary for directories, only executable perms.
+    [ "${1%/*}" != "$1" ] && [ -x "${1%/*}" ] || return # permissions error
+    [ -s "$1" ] || return 0 # not an error, nothing to load
+    __no=0
+    while read -r __line; do
+        : $((__no+=1))
+        __line="${__line#${__line%%[! ]*}}" # ltrim
+        case $__line in # NOTE: we don't support tabs... rip.
+        (\#*) continue;; # TODO: consider using "@$timestamp $$" and ignoring that.
+        (*[!\ -~]*) persist__cry "invalid characters at $1:$__no"; continue;;
+        (?*=*) __key="${__line%%=*}" __value="${__line#*=}";;
+        (*) persist__cry "skipping unknown line at $1:$__no"; continue;;
+        esac
+
+        if case $__key in
+        (*[!0-9A-Z_a-z]*) false;;
+        ([0-9]*) false;;
+        esac; then
+            eval "persist__$2__$__key=\$__value"
+        else
+            persist__cry "skipping invalid key at $1:$__no"
+        fi
+    done < "${1:?}"
+}
+
+persist__preload() {
+    : "${__timestamp:?}"
+    while [ $# != 0 ]; do
+        # TODO: relax the syntax a bit.
+        #       i'm restricting arguments to the full var=name@namespace syntax.
+        #       i've spent too long mulling over this and need to move on for now.
+        case ${1:--} in
+        (*[!0-9=@A-Z_a-z]*) break;;
+        (*__*) break;; # otherwise namespaces alone could overlap with variables
+        (*=*=*|*@*@*) break;;
+        ([0-9]*|*=[0-9]*|*@[0-9]*) break;;
+        (*=*@*) :;;
+        (*) break;
+        esac
+
+        __alias=${1%%=*} __variable=$1 __namespace=${1##*@}
+        __variable=${__variable#$__alias=}
+        __variable=${__variable%@$__namespace}
+        shift
+
+        if [ -z "$__alias" ] || [ -z "$__variable" ] || [ -z "$__namespace" ]; then
+            # TODO: give a proper message when this fails:
+            persist__failed_to 'missing field'
+            return 1
+        fi
+
+        case ",${persist__ance=}" in
+        (*",$__alias="*)
+            # TODO: put persist in an error state? or, something gentler...
+            persist__failed_to "ensure unique alias: $__alias"
+            return 1;;
+        (*"=$__variable@$__namespace,"*)
+            # TODO: put persist in an error state? or, something gentler...
+            persist__failed_to "ensure unique variable: $__variable@$__namespace"
+            return 1;;
+        (*) # TODO: don't use this one anymore:
+            persist__ance="$persist__ance$__alias=$__variable@$__namespace,"
+            eval "persist__${__namespace}_pairs=\"\${persist__${__namespace}_pairs-}$__alias=$__variable \""
+            # NOTE: pairs and queue need to be iterated in lockstep!
+            persist__queue="${persist__queue-}$__alias "
+        esac
+
+        if eval "[ \"\${persist__${__namespace}_when=0}\" = 0 ]" && [ -n "${PERSIST_AT:++}" ]; then
+            # TODO: give a proper message when this fails:
+            persist__load_file "$PERSIST_AT/$__namespace" "$__namespace" || return
+            persist__loaded="${persist__loaded-}$__namespace " # not a part of load_file in case there is no file
+            : $((persist__${__namespace}_when=$__timestamp))
+        fi
+    done
+
+    if [ $# != 0 ]; then
+        persist__failed_to "parse argument: $1"
+        return 1
+    fi
+}
+
+persist__load() {
+    for __namespace in ${persist__loaded=}; do
+        eval "__pairs=\$persist__${__namespace}_pairs"
+        for __pair in $__pairs; do
+            [ "${__pair%=*}" = "${persist__queue%% *}" ] || continue
+            persist__queue="${persist__queue#* }"
+            __alias="${__pair%=*}" __variable="${__pair#*=}"
+            __key="persist__${__namespace:?}__${__variable:?}"
+            if eval "[ \"\${$__key++}\" = + ]"; then
+                persist__debug "setting $__alias"
+                eval "$__alias=\$$__key" # skips having to set __value
+            else
+                persist__debug "unsetting $__alias"
+                unset "$__alias"
+            fi
+        done
+    done
+}
+
+persist__save() {
+    : "${__timestamp:?}"
+    for __namespace in ${persist__loaded=}; do
+        set -- "# $__timestamp:$$"
+        eval "__pairs=\$persist__${__namespace}_pairs"
+        for __pair in $__pairs; do
+            __alias="${__pair%=*}" __variable="${__pair#*=}"
+            __key="persist__${__namespace:?}__${__variable:?}" __value=
+            # NOTE: no support for unsetting variables yet.
+            #       unsetting just creates an empty string.
+            #       also, if \$$__key is unset, it is treated as empty.
+            if eval "[ \"\$$__alias\" != \"\${$__key-}\" ]"; then
+                eval "__value=\$$__alias"
+                eval "$__key=\$__value"
+                set -- "$@" "$__variable=$__value"
+            fi
+        done
+        if [ $# != 1 ] && [ -n "${PERSIST_AT:++}" ]; then
+            persist__debug "appending to $__namespace"
+            # TODO: detect potential write failure here:
+            printf %s\\n "$@" >>"$PERSIST_AT/$__namespace"
+        fi
+    done
+}
+
+__persist() {
+    persist__where || return
+
+    # note that time may pass since setting this variable.
+    # this is only set at the start of each invocation.
+    __timestamp="$(exec date +%s)" || return
+
+    if [ $# = 0 ]; then
+        persist__save || return
+    else
+        persist__preload "$@" && persist__load || return
+    fi
+}
+
+persist() {
+    [ -z "${ZSH_VERSION++}" ] || setopt LOCAL_OPTIONS SH_WORD_SPLIT || return 70
+
+    # reset, also checks for readonly issues:
+    __alias= __key= __line= __namespace= __no= __pair= __pairs= __timestamp= __value= __variable= || return
+    __ifs=$IFS IFS=' ' || return
+
+    __persist "$@" && true # prevent `set -e` from exiting early here
+    set -- $?
+    IFS=$__ifs
+    unset __alias __ifs __key __line __namespace __no __pair __pairs __timestamp __value __variable
+    return $1
+}
+
+persist__self_test() {
+    # dash -c 'set -efuC; . ~/sh/persist; set | grep "^[a-z_]"'
+
+    if persist alpha=alpha@persistence beta=beta@persistence gamma=gamma@persistence; then
+        printf '%s=%s\n' alpha "${alpha-}" beta "${beta-}" gamma "${gamma-}"
+        alpha="hello world"
+        beta="doot=doot!"
+        gamma=$$
+        persist # this should write out gamma at minimum
+        gamma=alt
+        persist # this should write out gamma
+    else
+        return # otherwise $? will get clobbered
+    fi
+}
+
+${preload+:} persist__self_test

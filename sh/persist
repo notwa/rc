@@ -20,10 +20,13 @@ persist__do_where() {
             if ! [ -d "$HOME/.local" ]; then
                 mkdir -- "$HOME/.local" || return 12
             fi
-            if ! [ -d "$HOME/.local/persistence" ]; then
-                mkdir -- "$HOME/.local/persistence" || return 13
+            if ! [ -d "$HOME/.local/state" ]; then
+                mkdir -- "$HOME/.local/state" || return 13
             fi
-            PERSIST_AT="$HOME/.local/persistence"
+            if ! [ -d "$HOME/.local/state/persistence" ]; then
+                mkdir -- "$HOME/.local/state/persistence" || return 14
+            fi
+            PERSIST_AT="$HOME/.local/state/persistence"
         else
             if ! [ -d "$XDG_STATE_HOME" ]; then
                 mkdir -- "$XDG_STATE_HOME" || return 22
@@ -56,7 +59,8 @@ persist__where() {
         (10) persist__failed_to 'find $HOME';;
         (11) persist__failed_to 'find a valid $HOME directory';;
         (12) persist__failed_to 'create a $HOME/.local directory';;
-        (13) persist__failed_to 'create a $HOME/.local/persistence directory';;
+        (13) persist__failed_to 'create a $HOME/.local/state directory';;
+        (14) persist__failed_to 'create a $HOME/.local/state/persistence directory';;
         (22) persist__failed_to 'create a $XDG_STATE_HOME directory';;
         (23) persist__failed_to 'create a $XDG_STATE_HOME/persistence directory';;
         (*) persist__failed_to 'do something (FIXME)';;

@@ -914,7 +914,7 @@ automatically append sbin directories after bin directories.
 | script                                        | preference | ash | bash | dash | ksh | mksh | oksh | osh | posh | yash | zsh |
 | --------------------------------------------- | ---------- | --- | ---- | ---- | --- | ---- | ---- | --- | ---- | ---- | --- |
 | [aliases](#aliases)                           |  **false** | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
-| [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [argc](#argc)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arith](#arith)                               |        zsh | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [arrays](#arrays)                             |  **false** | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    |
 | [askey](#askey)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -972,6 +972,7 @@ automatically append sbin directories after bin directories.
 | [pacbm](#pacbm)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [pause](#pause)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ⭕    | ✔️    | ✔️    | ✔️    |
 | [permit](#permit)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [persist](#persist)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
 | [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [preload](#preload)                           |  **false** | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

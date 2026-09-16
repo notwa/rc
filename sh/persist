@@ -5,35 +5,22 @@
 persist__cry() { printf >&2 %s\\n "$@"; }
 persist__debug() { printf >&2 '\033[33m%s\033[m\n' "$*"; }
 persist__failed_to() { persist__cry "failed to $*"; }
+persist__mkdir() { if ! [ -d "$1" ]; then mkdir -- "$1"; fi; }
 
 persist__do_where() {
     # ASIDE: mkdir'ing XDG base dirs puts the user at the mercy of umask.
     #        this might be undesirable... https://stackoverflow.com/a/36808456
     if [ -z "${PERSIST_AT++}" ]; then # if it's unset
         if [ -z "${XDG_STATE_HOME++}" ]; then
-            if [ -z "${HOME++}" ]; then
-                return 10
-            fi
-            if ! [ -d "$HOME" ]; then
-                return 11
-            fi
-            if ! [ -d "$HOME/.local" ]; then
-                mkdir -- "$HOME/.local" || return 12
-            fi
-            if ! [ -d "$HOME/.local/state" ]; then
-                mkdir -- "$HOME/.local/state" || return 13
-            fi
-            if ! [ -d "$HOME/.local/state/persistence" ]; then
-                mkdir -- "$HOME/.local/state/persistence" || return 14
-            fi
+            [ -n "${HOME++}" ]                                  || return 10
+            [ -d "$HOME" ]                                      || return 11
+            persist__mkdir "$HOME/.local"                       || return 12
+            persist__mkdir "$HOME/.local/state"                 || return 13
+            persist__mkdir "$HOME/.local/state/persistence"     || return 14
             PERSIST_AT="$HOME/.local/state/persistence"
         else
-            if ! [ -d "$XDG_STATE_HOME" ]; then
-                mkdir -- "$XDG_STATE_HOME" || return 22
-            fi
-            if ! [ -d "$XDG_STATE_HOME/persistence" ]; then
-                mkdir -- "$XDG_STATE_HOME/persistence" || return 23
-            fi
+            persist__mkdir "$XDG_STATE_HOME"                    || return 23
+            persist__mkdir "$XDG_STATE_HOME/persistence"        || return 24
             PERSIST_AT="$XDG_STATE_HOME/persistence"
         fi
     elif [ -z "${PERSIST_AT:++}" ]; then # if it's empty
@@ -61,8 +48,8 @@ persist__where() {
         (12) persist__failed_to 'create a $HOME/.local directory';;
         (13) persist__failed_to 'create a $HOME/.local/state directory';;
         (14) persist__failed_to 'create a $HOME/.local/state/persistence directory';;
-        (22) persist__failed_to 'create a $XDG_STATE_HOME directory';;
-        (23) persist__failed_to 'create a $XDG_STATE_HOME/persistence directory';;
+        (23) persist__failed_to 'create a $XDG_STATE_HOME directory';;
+        (24) persist__failed_to 'create a $XDG_STATE_HOME/persistence directory';;
         (*) persist__failed_to 'do something (FIXME)';;
         esac
         return 1

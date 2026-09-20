@@ -121,7 +121,7 @@ __obtain_bootstrap() {
 
 	curl="$(__obtain_escape_arg "$curl")"
 	cert="$(__obtain_escape_arg "$cert")"
-	eval "__obtain_url() { '$curl' --cacert '$cert' -qsfL -m45 -o- \"\$*\" ;}"
+	eval "__obtain_url() { '$curl' --cacert '$cert' --no-progress-meter -qfLgm45 -o- \"\$*\" ;}"
 	#__obtain_url https://ipinfo.io
 
 	# FIXME? curl is still accessing these files:

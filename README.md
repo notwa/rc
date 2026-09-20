@@ -183,7 +183,7 @@ sort lines by length. several implementations are provided.
 
 ### [clash](/sh/clash#L4)
 
-run a command through 11 different shells.
+run a command through 10 different shells.
 
 only returns false when no arguments are given.
 
@@ -881,11 +881,11 @@ swap stdout and stderr. uses fd 3 as an intermediary.
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L39)
+### [dummy (bashrc)](/home/bashrc#L41)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L42)
+### [reload (bashrc)](/home/bashrc#L44)
 
 reload the current shell -- runs initctl when passed arguments.
 

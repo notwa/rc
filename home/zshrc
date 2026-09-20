@@ -7,9 +7,9 @@
 # 5. zlogout  -- /etc/zlogout  <-- ${ZDOTDIR-$HOME}/.zlogout  (login shell)
 # note that /etc/zlogout is run last, and may be skipped by running `exec`.
 
-HISTFILE=~/.histfile
-HISTSIZE=99999
-SAVEHIST=99999
+# NOTE: history file settings have been moved to shrc.
+unset HISTFILE HISTSIZE SAVEHIST # do not save history if shrc is missing
+
 TIMEFMT=$'\e[93m%*U/%*E cpu/real (%P), %MM mem:\e[36m %J\e[0m'
 DIRSTACKSIZE=24
 

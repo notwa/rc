@@ -142,6 +142,27 @@ if ! case "$LANG" in (en_US.UTF-8) :;; (en_CA.UTF-8) :;;
     printf >&2 'Warning: LANG is %s\n' "${LANG:-empty!}"
 fi
 
+# we clear export flags to prevent spawned shells from truncating shell history.
+if [ -n "$ZSH_VERSION"  ]; then
+    typeset +x HISTFILE HISTFILESIZE HISTSIZE SAVEHIST
+    HISTFILE=~/.histfile
+    HISTSIZE=99999 # TODO: reduce to 10000?
+    SAVEHIST=99999 # TODO: reduce to 50000?
+elif [ -n "$BASH_VERSION" ]; then
+    typeset +x HISTFILE HISTFILESIZE HISTSIZE SAVEHIST
+    HISTFILE=~/.bash_history
+    HISTFILESIZE=2000
+    HISTSIZE=1000
+else
+    # even without setting HISTFILE, ash will use one if it finds a $HOME.
+    # this happens *after* .profile and $ENV have loaded.
+    h="$HISTFILE"
+    unset HISTFILE HISTFILESIZE HISTSIZE SAVEHIST # no other way to clear flags
+    [ -z "$h" ] || HISTFILE="$h"
+    HISTFILESIZE=2000 HISTSIZE=1000 SAVEHIST=2000
+    unset h
+fi
+
 # input prompt:
 
 __conf() {

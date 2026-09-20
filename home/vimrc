@@ -185,7 +185,7 @@ fun! FuzzySelect(choice_command, vim_command)
 endfun
 
 fun! DizzySelect(vim_command)
-    call FuzzySelect('find . -maxdepth 3 -type f' .. DizzyFlags(), a:vim_command)
+    call FuzzySelect('find . -maxdepth 5 -type f' .. DizzyFlags(), a:vim_command)
 endfun
 
 fun! Colour(name)                     " go nuts. go wild.

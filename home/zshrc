@@ -56,7 +56,7 @@ if [ "$TERM_PROGRAM" = mintty ] && ! [[ "$TERM_PROGRAM_VERSION" < 2.7.6 ]]; then
     fi
 fi
 
-autotmux() {
+autotmux() { # used to run automatically; not used much anymore
     if [ "$SHLVL" -le 1 ] \
     && [ "${(L)HOST}" != spectre ] \
     && [ "${TERM#screen}" = "$TERM" ] \
@@ -229,7 +229,7 @@ conflagrate() {
         else precmd() { print -Pn "\e]2;%M: %~\a" }
         fi
     elif [ "$t" = alacritty ]; then
-        # Alacritty-v0.15.0-portable.exe -t "MinGW x64" -e "usr/bin/env" PATH="/usr/local/sbin:/usr/local/bin:/usr/bin" MSYSTEM=MINGW64 TERM=alacritty shelly
+        # Alacritty-v0.17.0-portable.exe -t "MinGW x64" -e "usr/bin/env" PATH="/usr/local/sbin:/usr/local/bin:/usr/bin" MSYSTEM=MINGW64 TERM=alacritty shelly
         chset= # displays as U+263C for some reason
     else
         # act dumb
@@ -283,8 +283,8 @@ function {
             alias $x="nocorrect ${aliases[$x][@]:-$x}"
         fi
     done
-    for x in ai arith curl fc find ftp hex history let locate \
-             rsync scp sftp tw twitch wget yt yt-dlp ytdl ytg; do
+    for x in arith curl curls fc find ftp hex history let \
+             locate rsync scp sftp wget yt-dlp ytdl; do
         if is_this_anything $x; then
             alias $x="noglob ${aliases[$x][@]:-$x}"
         fi

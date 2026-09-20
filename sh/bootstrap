@@ -4,7 +4,7 @@
 __dependencies= # don't touch!
 __entrypoint_error=
 
-if [ "$preload" = depends ]; then # guard from accidental re-inclusion
+if [ "${preload-}" = depends ]; then # guard from accidental re-inclusion
     __entrypoint_error="bootstrap sourced twice"
     entrypoint() {
         printf >&2 '~/sh/bootstrap: %s\n' "$__entrypoint_error"

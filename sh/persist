@@ -68,20 +68,18 @@ persist__lock() {
     until [ $((__no+=1)) = 60 ]; do # technically this only runs 59 times
         # NOTE: this assumes `set -C` was run at some point!
         if { printf %s-%s\\n "$__line" $$ > "$1"; } 2>/dev/null; then
-            persist__debug lock created
-            break
+            break # lock created
         elif { IFS=- read -r __boot __proc < "$1"; } 2>/dev/null; then
             # TODO: switch-case to ensure values are valid?
             if [ "$__boot" != "$__line" ]; then
-                persist__debug lock removed from previous boot
+                # remove lock from previous boot.
                 rm -- "$1" && continue # fails loudly
             elif [ "$__proc" = $$ ]; then
-                persist__debug lock reacquired
-                break # already holding the lock but we lost track at some point
+                persist__debug lock reacquired # but this shouldn't happen
+                break
             elif [ -d "/proc/$__proc" ]; then
                 : # waiting for ongoing process
             else
-                persist__debug lock removed from previous process
                 rm -- "$1" && continue # fails loudly
             fi
             sleep 1
@@ -202,10 +200,8 @@ persist__load() {
             __alias="${__pair%=*}" __variable="${__pair#*=}"
             __key="persist__${__namespace:?}__${__variable:?}"
             if eval "[ \"\${$__key++}\" = + ]"; then
-                persist__debug "setting $__alias"
                 eval "$__alias=\$$__key" # skips having to set __value
             else
-                persist__debug "unsetting $__alias"
                 unset "$__alias"
             fi
         done
@@ -230,7 +226,6 @@ persist__save() {
             fi
         done
         if [ $# != 1 ] && [ -n "${PERSIST_AT:++}" ]; then
-            persist__debug "appending to $__namespace"
             # TODO: detect potential write failure here:
             printf %s\\n "$@" >>"$PERSIST_AT/$__namespace"
         fi

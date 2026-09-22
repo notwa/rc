@@ -77,9 +77,8 @@ persist__lock() {
             elif [ "$__proc" = $$ ]; then
                 persist__debug lock reacquired # but this shouldn't happen
                 break
-            elif [ -d "/proc/$__proc" ]; then
-                : # waiting for ongoing process
-            else
+            elif ! [ -d "/proc/$__proc" ]; then
+                # remove lock from previous process.
                 rm -- "$1" && continue # fails loudly
             fi
             sleep 1

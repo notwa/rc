@@ -73,19 +73,18 @@ persist__lock() {
         elif { IFS=- read -r __boot __proc < "$1"; } 2>/dev/null; then
             # TODO: switch-case to ensure values are valid?
             if [ "$__boot" != "$__line" ]; then
-                rm -- "$1" || sleep 1 # fails loudly
                 persist__debug lock removed from previous boot
-                continue
+                rm -- "$1" && continue # fails loudly
             elif [ "$__proc" = $$ ]; then
                 persist__debug lock reacquired
                 break # already holding the lock but we lost track at some point
             elif [ -d "/proc/$__proc" ]; then
-                #persist__debug waiting for ongoing process
-                sleep 1
+                : # waiting for ongoing process
             else
-                rm -- "$1" || sleep 1 # fails loudly
                 persist__debug lock removed from previous process
+                rm -- "$1" && continue # fails loudly
             fi
+            sleep 1
         else
             persist__debug lock file anomaly # or harmless race condition
             # in the event that the user lacks permissions to access the file,

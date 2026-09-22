@@ -80,13 +80,6 @@ persist__lock() {
                 persist__debug lock reacquired
                 break # already holding the lock but we lost track at some point
             elif [ -d "/proc/$__proc" ]; then
-                if { read -r _ parens status < "/proc/$__proc/stat"; } 2>/dev/null; then
-                    # XXX edge case: zombie process containing spaces won't be detected!
-                    case $parens in ('('*')') case $status in (Z)
-                        persist__debug lock removed from zombie process
-                        rm -- "$1" || true # fails loudly
-                    esac esac
-                fi
                 #persist__debug waiting for ongoing process
                 sleep 1
             else

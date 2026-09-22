@@ -60,6 +60,57 @@ persist__where() {
     fi
 }
 
+persist__lock() {
+    __no=0 # re-using this variable name from persist__load_file
+    [ -d /C/ ] && __line=/C/swapfile.sys || __line=/dev/null # temp
+    __line="$(exec stat -c %Y "$__line" 2>/dev/null)" && true # not temp
+    case ${__line:-0} in (*[!0-9]*) false;; (0) false;; esac || return
+    until [ $((__no+=1)) = 60 ]; do # technically this only runs 59 times
+        # NOTE: this assumes `set -C` was run at some point!
+        if { printf %s-%s\\n "$__line" $$ > "$1"; } 2>/dev/null; then
+            persist__debug lock created
+            break
+        elif { IFS=- read -r __boot __proc < "$1"; } 2>/dev/null; then
+            # TODO: switch-case to ensure values are valid?
+            if [ "$__boot" != "$__line" ]; then
+                rm -- "$1" || sleep 1 # fails loudly
+                persist__debug lock removed from previous boot
+                continue
+            elif [ "$__proc" = $$ ]; then
+                persist__debug lock reacquired
+                break # already holding the lock but we lost track at some point
+            elif [ -d "/proc/$__proc" ]; then
+                if { read -r _ parens status < "/proc/$__proc/stat"; } 2>/dev/null; then
+                    # XXX edge case: zombie process containing spaces won't be detected!
+                    case $parens in ('('*')') case $status in (Z)
+                        persist__debug lock removed from zombie process
+                        rm -- "$1" || true # fails loudly
+                    esac esac
+                fi
+                #persist__debug waiting for ongoing process
+                sleep 1
+            else
+                rm -- "$1" || sleep 1 # fails loudly
+                persist__debug lock removed from previous process
+            fi
+        else
+            persist__debug lock file anomaly # or harmless race condition
+            # in the event that the user lacks permissions to access the file,
+            # it's better to fail fast, so there's no `sleep 1` here.
+        fi
+    done
+    [ $__no != 60 ]
+}
+
+persist__unlock() {
+    # note that, unlike the lock function, this only makes a single attempt.
+    [ -d /C/ ] && __line=/C/swapfile.sys || __line=/dev/null # temp
+    __line="$(exec stat -c %Y "$__line" 2>/dev/null)" &&
+    IFS=- read -r __boot __proc < "$1" &&
+    [ "$__boot" = "$__line" ] && [ "$__proc" = $$ ] &&
+    rm -- "$1"
+}
+
 persist__load_file() {
     [ $# = 2 ] || return
     # n.b. read perms are unnecessary for directories, only executable perms.
@@ -130,8 +181,15 @@ persist__preload() {
         esac
 
         if eval "[ \"\${persist__${__namespace}_when=0}\" = 0 ]" && [ -n "${PERSIST_AT:++}" ]; then
-            # TODO: give a proper message when this fails:
-            persist__load_file "$PERSIST_AT/$__namespace" "$__namespace" || return
+            if ! persist__lock "$PERSIST_AT/$__namespace.lock"; then
+                persist__failed_to "lock file: $PERSIST_AT/$__namespace"
+                return 1
+            fi
+            if ! persist__load_file "$PERSIST_AT/$__namespace" "$__namespace"; then
+                persist__failed_to "load file: $PERSIST_AT/$__namespace"
+                persist__unlock "$PERSIST_AT/$__namespace.lock"
+                return 1
+            fi
             persist__loaded="${persist__loaded-}$__namespace " # not a part of load_file in case there is no file
             : $((persist__${__namespace}_when=$__timestamp))
         fi
@@ -205,13 +263,25 @@ persist() {
     [ -z "${ZSH_VERSION++}" ] || setopt LOCAL_OPTIONS SH_WORD_SPLIT || return 70
 
     # reset, also checks for readonly issues:
-    __alias= __key= __line= __namespace= __no= __pair= __pairs= __timestamp= __value= __variable= || return
+    __alias= __boot= __key= __line= __namespace= __no= __pair= __pairs= \
+    __proc= __timestamp= __value= __variable= || return
+
     __ifs=$IFS IFS=' ' || return
 
-    __persist "$@" && true # prevent `set -e` from exiting early here
-    set -- $?
+    case $- in
+    (*C*)
+        __persist "$@" && true # prevent `set -e` from exiting early here
+        set -- $?
+    ;;
+    (*)
+        set -C
+        __persist "$@" && true
+        set +C -- $?
+    esac
+
     IFS=$__ifs
-    unset __alias __ifs __key __line __namespace __no __pair __pairs __timestamp __value __variable
+    unset __alias __boot __ifs __key __line __namespace __no __pair __pairs \
+    __proc __timestamp __value __variable
     return $1
 }
 

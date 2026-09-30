@@ -1,0 +1,85 @@
+#!/usr/bin/env sh
+# compat: +ash +bash +dash -hush -ksh +mksh +oksh +osh -posh +yash +zsh
+
+rcdiff() (
+    set -Ceu +f
+    unset CDPATH
+    cd -- ~/rc
+    local d=0 f= line= tab=
+
+    if [ $# = 0 ]; then
+        for f in backup-*; do
+            [ -d "$f" ] || continue
+            #[ "${#f}" = 17 ] || continue
+            #[ "$d" '<' "$f" ] || continue # zsh hates this!
+            [ "${d#backup-}" -lt "${f#backup-}" ] 2>/dev/null || continue
+            d=$f
+        done
+    else
+        d=${1:?}
+        if [ "$d" -ge 0 ] 2>/dev/null; then
+            # given only a number, expand it to a directory.
+            d=backup-$d
+        fi
+    fi
+
+    if ! [ -d "$d" ]; then
+        printf >&2 %s\\n 'failed to find a backup to compare against'
+        return 1
+    fi
+
+    printf '' >| .rcdiff # truncate file to avoid invoking `rm`
+    [ $'' ] && tab=$(printf \\t) || tab=$'\t' # avoid subshell whenever possible
+
+    diff_or_one() {
+        # diff gets overloaded by aliases etc, so use env to avoid that.
+        if env diff "$@"; then
+            return
+        else
+            [ $? = 1 ]
+        fi
+    }
+
+    if [ -d "$d/home/" ]; then
+        for f in "$d/home/"*; do
+            [ -f "$f" ] || continue
+            diff_or_one -U3 "$f" ~/."${f##*/}" >> .rcdiff
+        done
+    fi
+
+    if [ -d "$d/sh/" ]; then
+        for f in "$d/sh/"*; do
+            [ -f "$f" ] || continue
+            diff_or_one -U3 "$f" ~/sh/"${f##*/}" >> .rcdiff
+        done
+    fi
+
+    header() {
+        local color= rest= item= file= desc=
+        color=${1:?} rest=${2:?}
+        item=${rest%% *} rest=${rest#* }
+        file=${rest%%$tab*} desc=${rest#*$tab}
+        if [ -z ${desc:++} ]; then
+            printf '\033[%s;7m%s\033[m \033[1m%40s\n' "$1" "$item" "$file"
+        else
+            printf '\033[%s;7m%s\033[m \033[1m%40s\t\033[0;90m%s\033[m\n' "$1" "$item" "$file" "$desc"
+        fi
+    }
+
+    if [ -t 1 ] && [ -s .rcdiff ]; then
+        while IFS= read -r line; do
+            case $line in
+            (+++*) header 32 "$line";;
+            (---*) header 31 "$line";;
+            (@*) printf '\033[35m%s\n' "$line";;
+            (+*) printf '\033[32m%s\n' "$line";;
+            (-*) printf '\033[31m%s\n' "$line";;
+            (*) printf '\033[m%s\n' "$line";;
+            esac
+        done < .rcdiff | less
+    else # else what?
+        printf %s\\n ~/.rcdiff # TODO: print something more meaningful.
+    fi
+)
+
+${preload+:} rcdiff "$@"

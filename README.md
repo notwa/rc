@@ -137,7 +137,7 @@ $ bin 123
 ### [burl](/sh/burl#L4)
 
 turn bash into a makeshift HTTP client.
-inspired by [hackshell.sh.](https://thc.org/hs)
+inspired by [hackshell.](https://github.com/hackerschoice/hackshell/)
 also works in most other shells thanks to netcat.
 
 minimal/minified version: https://eaguru.guru/t/burl.sh (441 bytes)
@@ -976,6 +976,7 @@ automatically append sbin directories after bin directories.
 | [pre](#pre)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [preload](#preload)                           |  **false** | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [psbm](#psbm)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [rcdiff](#rcdiff)                             |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
 | [recolor](#recolor)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [recombine](#recombine)                       |  **false** | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [rot13](#rot13)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

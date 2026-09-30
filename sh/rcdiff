@@ -59,14 +59,18 @@ rcdiff() (
         color=${1:?} rest=${2:?}
         item=${rest%% *} rest=${rest#* }
         file=${rest%%$tab*} desc=${rest#*$tab}
-        if [ -z ${desc:++} ]; then
+        if [ "$color" = 0 ]; then
+            printf '%s %40s\t%s\n' "$item" "$file" "$desc"
+        elif [ -z ${desc:++} ]; then
             printf '\033[%s;7m%s\033[m \033[1m%40s\n' "$1" "$item" "$file"
         else
             printf '\033[%s;7m%s\033[m \033[1m%40s\t\033[0;90m%s\033[m\n' "$1" "$item" "$file" "$desc"
         fi
     }
 
-    if [ -t 1 ] && [ -s .rcdiff ]; then
+    if ! [ -s .rcdiff ]; then
+        printf >&2 %s\\n 'rcdiff: no differences found'
+    elif [ -t 1 ]; then
         while IFS= read -r line; do
             case $line in
             (+++*) header 32 "$line";;
@@ -77,8 +81,14 @@ rcdiff() (
             (*) printf '\033[m%s\n' "$line";;
             esac
         done < .rcdiff | less
-    else # else what?
-        printf %s\\n ~/.rcdiff # TODO: print something more meaningful.
+    else
+        while IFS= read -r line; do
+            case $line in
+            (+++*) header 0 "$line";;
+            (---*) header 0 "$line";;
+            (*) printf %s\\n "$line";;
+            esac
+        done < .rcdiff
     fi
 )
 

@@ -22,7 +22,7 @@ __valid_identifier() {
 }
 
 __mark() { # argument must be a valid identifier
-    [ $(( __loaded_$1+=1 )) = 1 ] # dash does not support postfix increment
+    eval "__loaded_$1=\${__loaded_$1-}+ && [ \"\${#__loaded_$1}\" = 1 ]"
 }
 
 depends() {
@@ -56,7 +56,7 @@ execute() {
     fi
 
     # NOTE: some scripts do `execute __myscript` to avoid a subshell.
-    __mark "${1#__}" # the script that sourced us is already loaded
+    __mark "${1#__}" && true # the script that sourced us is already loaded
 
     # checking this instead of a null string should prevent most infinite loops:
     until [ "${__dependencies%:}" = "$__dependencies" ]; do

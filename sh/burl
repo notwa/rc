@@ -31,14 +31,15 @@ burl() ( ### @-
     ### }
     ### ```
 
-    # shells with /dev/tcp and /dev/udp support: bash, ksh, yash.
-
     ! (set -o pipefail) 2>&- || set -o pipefail
-    (: </dev/udp/localhost/0) 2>&- && net=y || net=
     [ $'' ] && r=$(printf \\r) || r=$'\r'
 
+    # shells commonly built with /dev/tcp and /dev/udp support: bash, ksh, yash.
+    net=
+    if </dev/udp/localhost/0
+    then net=y
     # nc.traditional needs the -- or else it waits for input.
-    if /usr/bin/env nc --; [ $? = 1 ] # needs absolute path to env thanks to busybox
+    elif /usr/bin/env nc --; [ $? = 1 ] # needs absolute path to env thanks to busybox
     then wrapped() { process /usr/bin/env nc -- "$@" ;}
     elif netcat; [ $? = 1 ]
     then wrapped() { process netcat -- "$@" ;}
@@ -53,7 +54,7 @@ burl() ( ### @-
     elif curl; [ $? = 2 ]
     then wrapped() { process curl "telnet://$1:$2" ;}
     else return 127
-    fi 2>&-
+    fi 2>/dev/null
 
     request() { printf 'GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' "${query#/}" "$dom" ;}
     receive() { while IFS=$r read -r l _; [ "$l" ]; do printf %s\\n "$l"; done; echo ;} >&2

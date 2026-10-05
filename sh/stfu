@@ -1,9 +1,47 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash +zsh
+# compat: +ash +bash +dash -ksh +mksh +oksh +osh -posh +yash +zsh
 
-entrypoint() {
-    depends argc echo2 note
-    execute stfu "$@"
+__stfu_echo() {
+    local IFS=' '
+    printf '%s\n' "$*"
+}
+
+__stfu_note() {
+    local IFS=' '
+    if [ -t 2 ]; then
+        printf '\033[1m%s\033[m\n' "$*" >&2
+    elif [ -t 1 ]; then
+        printf '\033[1m%s\033[m\n' "$*"
+    else
+        printf '%s\n' "$*"
+    fi
+}
+
+__stfu_mkdirs() (
+    umask 077
+    for d; do
+        [ -d "$d" ] || mkdir -- "$d" || return
+    done
+)
+
+__stfu_cry() {
+    local x=$?
+    __stfu_echo >&2 "stfu:" "$@" # no longer using "$0"
+    [ "$x" = 0 ] && return 0 || return "$x"
+}
+
+__stfu_parse_time() {
+    [ -e "$1" ] || return 1
+    while IFS= read -r line; do
+        line=${line%%[!!-~]*} # stop at any control characters
+        case $line in
+        (*=*=*) false;;
+        (*=*[!0-9]) false;;
+        (SystemUpTime=*) id=${line#*=}; return 0;;
+        (*) false;;
+        esac
+    done <"$1"
+    return 1
 }
 
 stfu() { ### @-
@@ -23,75 +61,112 @@ stfu() { ### @-
     ### command failed with exit status 1:
     ### 7z a butts.7z asses
     ###
-    ### $ tail -n 5 /tmp/stfu.CoJ0vmJsqA/out_1627942118
+    ### $ tail -n 5 -- /dev/shm/stfu.4VzxjXEiWs/out_1790826272
     ### Scan WARNINGS for files and folders:
     ###
-    ### asses : The system cannot find the file specified.
+    ### asses : errno=2 : No such file or directory
     ### ----------------
     ### Scan WARNINGS: 1
     ###
-    ### $ tail -n 5 /tmp/stfu.CoJ0vmJsqA/err_1627942118
+    ### $ tail -n 5 -- /dev/shm/stfu.4VzxjXEiWs/err_1790826272
     ###
-    ### WARNING: The system cannot find the file specified.
+    ### WARNING: errno=2 : No such file or directory
     ### asses
     ###
-    ###
     ### ```
-    argc $# -ge 1 "$0" || return
-    local dirty= err= out= perms= realtemp= ret= tail= temp= time=
 
-    dirty=0 temp="${STFU_DIR-}"
-    if [ -z "${temp:++}" ]; then
-        temp="$(exec mktemp -dt stfu.XXXXXXXXXX)" ||
-        { printf >&2 %s\\n "$0: failed create temporary directory"; return 1; }
-        dirty=1
-    fi
+    [ $# != 0 ] || __stfu_cry 'expected at least 1 argument, got 0' || return 64
 
-    # NOTE: this stat command will not work on BSD-likes,
-    #       but it will work with GNU coreutils and busybox.
-    perms="$(exec stat -c %a -- "$temp")"
-    realtemp="$(exec readlink -f -- "$temp")"
-    [ -x /msys2.exe ] && perms=700 # MSYS2 is insecure, oh well.
+    local boot= cache= err= id= iref= line= link= opts= &&
+    local out= ret= stfu= tail= time= TMPDIR= || return
 
-    if [ -d "$temp" ] && [ "$realtemp" = "$temp" ] && [ "$perms" = 700 ]; then
-        if [ $dirty -ne 0 ]; then
-            export STFU_DIR="$temp"
-        fi
+    tail=${STFU_TAIL:-20}
+    [ "$tail" -ge 0 ] 2>/dev/null ||
+    __stfu_cry 'tail length must be a non-negative integer' || return
+
+    if [ "${STFU_DIR-}" ]; then
+        [ -d "$STFU_DIR" ] || __stfu_mkdirs "$STFU_DIR" && stfu=$STFU_DIR ||
+        __stfu_cry 'STFU_DIR is not a valid directory' || return
     else
-        if [ -n "$STFU_DIR" ]; then
-            printf >&2 %s\\n "$0: invalid temporary directory, please unset STFU_DIR"
-        else
-            printf >&2 %s\\n "$0: something went horribly wrong, maybe you can tell?" "$perms" "$realtemp"
-        fi
-        return 1
+        cache=${XDG_CACHE_HOME-${HOME:?}/.cache}
+        [ -d "$cache/stfu" ] || __stfu_mkdirs "$cache" "$cache/stfu" ||
+        __stfu_cry 'failed to create cache directories' || return
     fi
 
-    time="$(exec date +%s)" ||
-    { printf >&2 %s\\n "$0: failed to get current time"; return 1; }
+    if [ "$stfu" ]; then
+        :
+    elif { IFS=- read -r _ _ _ _ id _ < /proc/sys/kernel/random/boot_id; } 2>/dev/null; then
+        # avoid creating too many directories by using an ID that resets every reboot.
+        # NOTE: $XDG_RUNTIME_DIR is an option here, but complicates logic when absent.
+        link=$cache/stfu/boot-$id
+    elif [ -d /C/Windows ]; then # Windows XP and above?
+        # wmic is slow as balls. avoid calling it by caching its result.
+        boot=$cache/stfu/boot
+        if [ /C/Windows -nt "$boot" ] || ! __stfu_parse_time "$boot"; then
+            # Unicode text, UTF-16, little-endian text, with CRLF line terminators
+            wmic path Win32_PerfRawData_PerfOS_System get systemuptime -value >"$boot~~" &&
+            tr -d '\0\r' <"$boot~~" >"$boot~" && rm -- "$boot~~" || # i hate this
+            __stfu_cry 'failed to retrieve boot time from wmic' || return
+            __stfu_parse_time "$boot~" && mv -- "$boot~" "$boot" ||
+            __stfu_cry 'failed to parse boot time from wmic' || return
+        fi
+        iref=$cache/stfu/boot-$id
+    fi
 
-    mkdir -p "$temp" ||
-    { printf >&2 %s\\n "$0: failed to create temp directory"; return 1; }
+    # this can happen for few different reasons,
+    # usually an OS task cleaning up temp files.
+    if [ -h "$link" ]; then
+        stfu=$(cd -- "$link" && pwd -P) ||
+        __stfu_cry 'removing corrupt symbolic link in cache' || rm -- "$link"
+    elif [ -s "$iref" ]; then
+        { read -r stfu <"$iref"; } 2>/dev/null && [ -d "$stfu" ] ||
+        __stfu_cry 'removing corrupt reference in cache' || rm -- "$iref"
+    fi || __stfu_cry 'failed to fix cache' || return
 
-    while [ -e "$temp/out_$time" ] || [ -e "$temp/err_$time" ]; do time=$((time+1)); done
-    out="$temp/out_$time"
-    err="$temp/err_$time"
+    if ! [ -d "$stfu" ]; then
+        [ -k /dev/shm ] && TMPDIR=/dev/shm || TMPDIR=/tmp
+        stfu=$(TMPDIR=$TMPDIR exec mktemp -dt stfu.XXXXXXXXXX) ||
+        __stfu_cry 'failed to create temporary directory' || return
+        if [ "$link" ]; then
+            ln -s -- "$stfu" "$link" ||
+            __stfu_cry 'failed to create symbolic link' || return
+        elif [ "$iref" ]; then
+            printf '%s\n' "$stfu" >"$iref" ||
+            __stfu_cry 'failed to create reference' || return
+        fi
+    fi
 
-    touch -- "$out" "$err" ||
-    { printf >&2 %s\\n "$0: failed to create temp files"; return 1; }
+    time=$(exec date +%s) ||
+    __stfu_cry 'failed to get current timestamp' || return
 
-    ret=0 tail="${STFU_TAIL:-20}"
-    "$@" >| "$out" 2>| "$err" || ret=$?
-    if [ $ret != 0 ]; then
-        printf 'command failed with exit status %s:\n' $ret >&2
-        echo2 "$@"
-        echo2
-        note '$ tail -n' "$tail" "$out"
-        tail -n "$tail" "$out" >&2
-        echo2
-        note '$ tail -n' "$tail" "$err"
-        tail -n "$tail" "$err" >&2
+    opts=$-; set -C
+    # FIXME: when $stfu becomes inaccessible, this iterates forever!
+    until >$stfu/out_$time >$stfu/err_$time # `:` doesn't work in all shells
+    do : $((time+=1)); done </dev/null 2>/dev/null # zsh attempts to read stdin
+    case $opts in (*C*) :;; (*) set +C; esac
+
+    out=$stfu/out_$time err=$stfu/err_$time
+    if "$@" >|"$out" 2>|"$err"; then
+        ret=0
+    else
+        ret=$?
+        {
+            __stfu_echo "command failed with exit status $ret:"
+            __stfu_echo "$@"
+            __stfu_echo
+            if [ "$tail" = 0 ]; then
+                __stfu_note "\$ tail -- $out"
+                __stfu_note "\$ tail -- $err"
+            else
+                __stfu_note "\$ tail -n $tail -- $out"
+                tail -n "$tail" -- "$out" && true
+                __stfu_echo
+                __stfu_note "\$ tail -n $tail -- $err"
+                tail -n "$tail" -- "$err" && true
+            fi
+        } >&2
     fi
     return $ret
 }
 
-${preload+:} . ~/sh/bootstrap
+${preload+:} stfu "$@"

@@ -607,7 +607,7 @@ this version of `slit` uses tabs for its field separators.
 
 sort lines numerically by IPv4 segments.
 
-### [stfu](/sh/stfu#L9)
+### [stfu](/sh/stfu#L47)
 
 invoke a command, silencing stdout and stderr *unless* the command fails.
 
@@ -625,18 +625,17 @@ $ stfu 7z a butts.7z asses
 command failed with exit status 1:
 7z a butts.7z asses
 
-$ tail -n 5 /tmp/stfu.CoJ0vmJsqA/out_1627942118
+$ tail -n 5 -- /dev/shm/stfu.4VzxjXEiWs/out_1790826272
 Scan WARNINGS for files and folders:
 
-asses : The system cannot find the file specified.
+asses : errno=2 : No such file or directory
 ----------------
 Scan WARNINGS: 1
 
-$ tail -n 5 /tmp/stfu.CoJ0vmJsqA/err_1627942118
+$ tail -n 5 -- /dev/shm/stfu.4VzxjXEiWs/err_1790826272
 
-WARNING: The system cannot find the file specified.
+WARNING: errno=2 : No such file or directory
 asses
-
 
 ```
 
@@ -989,7 +988,7 @@ automatically append sbin directories after bin directories.
 | [slit](#slit)                                 |       dash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [slitt](#slitt)                               |       dash | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [sortip](#sortip)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
-| [stfu](#stfu)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [stfu](#stfu)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
 | [subdue](#subdue)                             |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [sum](#sum)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

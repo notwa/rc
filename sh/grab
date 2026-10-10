@@ -5,7 +5,7 @@
 __grab() { ### @grab - download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 [ -z "${ZSH_VERSION}" ] || emulate sh
 #!/usr/bin/env sh
-unset CDPATH f fn fx hd IFS LC_ALL owd pub remote t task x || exit
+unset CDPATH f fn fx hd IFS LC_ALL pub remote t task x || exit
 
 pub=RWQdYTxDsppw5ZFpYZFoF6IoPS0okMKlOiz9MwTl0NUoP41r57sf9dI1
 remote=eaguru.guru/t
@@ -52,23 +52,12 @@ else exec hexdump -ve '1 1 "%02x"' -n4 -- "$@"
 fi
 }
 
-resolve(){
-IFS= read -r d && cd -- "${d:?}" && pwd -P
-}
-
-owd=${PWD:?unsupported}
-
 will create temporary directory
-t=$(mktemp -d | resolve) || die
-
-will check directory validity
-if [ "${t#/}" = "$t" ] || [ "$t" -ef / ] || [ "$t" -ef "$owd" ]
-then die
-else trap clean INT EXIT
-fi
+t=$(exec mktemp -d) || die
 
 will change directory
-cd -- "$t" || die
+cd -- "$t" && ! [ "$PWD" -ef "$OLDPWD" ] || die
+trap clean INT EXIT
 
 for f
 do
@@ -124,10 +113,10 @@ esac
 done
 
 will return files to original directory
-find . -type f -exec mv -- {} "$owd/" \; || die
+find . -type f -exec mv -- {} "$OLDPWD/" \; || die
 
 will remove temporary directory # assuming it's now emptied
-cd -- "$owd" && rmdir -- "$t" || die
+cd -- "$OLDPWD" && rmdir -- "$t" || die
 
 trap - INT EXIT
 }

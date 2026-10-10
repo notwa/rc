@@ -24,8 +24,8 @@ exit ${x:-1}
 }
 
 esc(){
-while [ -n "$1" ]
-do case "$1" in
+while [ "$1" ]
+do case $1 in
 ([\!\"$\&-\>@-~]*) printf %.1s "$1";;
 (*) printf %%%02X "'$1";;
 esac
@@ -56,10 +56,10 @@ resolve(){
 IFS= read -r d && cd -- "${d:?}" && pwd -P
 }
 
-owd="${PWD:?unsupported}"
+owd=${PWD:?unsupported}
 
 will create temporary directory
-t="$(mktemp -d | resolve)" || die
+t=$(mktemp -d | resolve) || die
 
 will check directory validity
 if [ "${t#/}" = "$t" ] || [ "$t" -ef / ] || [ "$t" -ef "$owd" ]
@@ -72,12 +72,12 @@ cd -- "$t" || die
 
 for f
 do
-fn="${f##*/}"
-fn="${fn%%\?*}" # for shame, wget
-fn="${fn%%#*}"
+fn=${f##*/}
+fn=${fn%%\?*} # for shame, wget
+fn=${fn%%#*}
 
 will ensure filename is valid
-case "$fn" in
+case $fn in
 (.) false;;
 (..) false;;
 ([!\ -~]) false;;
@@ -87,8 +87,8 @@ case "$fn" in
 esac && touch -- "$fn" || die
 
 will ensure supported protocols # busybox restricts this
-fx="$(esc "$fn")"
-case "$f" in
+fx=$(esc "$fn")
+case $f in
 (http://*);;
 (https://*);;
 (ftp://*);;
@@ -97,24 +97,24 @@ case "$f" in
 printf 'unsupported protocol: %s\n' "${f%%:*}" >&2
 die;;
 (*)
-f="https://$remote/$fx";;
+f=https://$remote/$fx;;
 esac
 
-will download "$fn" from "$f"
+will "download $fn from $f"
 get "$fn" -- "$f" || die
 
-will download "$fn.minisig" from "$f.minisig"
+will "download $fn.minisig from $f.minisig"
 get "$fn.minisig" -- "$f.minisig" || die
 
-will verify file integrity of "$fn"
+will "verify file integrity of $fn"
 minisign -QVm "$fn" -P "$pub" || die
 
 will clean up the signature file
 rm -- "$fn.minisig" || die
 
 will determine basic file type
-x4="$(hex "$fn")" || die
-x2="${x4%????}"
+x4=$(hex "$fn") || die
+x2=${x4%????}
 if [ "$x4" = 7f454c46 ] || [ "$x2" = 2321 ] || [ "$x2" = 4d5a ]
 then
 will set executable permission

@@ -34,7 +34,7 @@ done
 } 2>&-
 
 get(){
-if [ -f /usr/bin/curl ]
+if [ -x /usr/bin/curl ]
 then curl -sSfLgm5 -o "$@"
 else wget -qt1 -T5 -O "$@"
 fi
@@ -46,7 +46,7 @@ will clean up temporary files
 }
 
 hex(){
-if [ -f /usr/bin/xxd ]
+if [ -x /usr/bin/xxd ]
 then exec xxd -p -l4 -- "$@"
 else exec hexdump -ve '1 1 "%02x"' -n4 -- "$@"
 fi

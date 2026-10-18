@@ -7,7 +7,7 @@ export LC_ALL=C # this is temporary; sane values are configured after __prepare
 unset LS_COLORS # this variable's value can grow obscenely large (see ~/sh/zzz)
 unset ENV BASH_ENV # don't run twice if we used one of these tricks to get here
 
-__f() { ! return 1; } && __g() { return 256; } && is_zsh() { __f && ! __g; }
+is_zsh() { test ${ZSH_VERSION:++}; }; is_bash() { test ${BASH_VERSION:++}; }
 if is_zsh && case $- in (im|ilm) :;; (?*) ! :;; (*) :; esac then emulate zsh
 setopt histverify rcquotes histsavenodups chaselinks braceccl extendedglob \
 histignorespace histreduceblanks alwaystoend noflowcontrol pathdirs nobeep \
@@ -143,12 +143,12 @@ if ! case "$LANG" in (en_US.UTF-8) :;; (en_CA.UTF-8) :;;
 fi
 
 # we clear export flags to prevent spawned shells from truncating shell history.
-if [ -n "$ZSH_VERSION"  ]; then
+if is_zsh; then
     typeset +x HISTFILE HISTFILESIZE HISTSIZE SAVEHIST
     HISTFILE=~/.histfile
     HISTSIZE=99999 # TODO: reduce to 10000?
     SAVEHIST=99999 # TODO: reduce to 50000?
-elif [ -n "$BASH_VERSION" ]; then
+elif is_bash; then
     typeset +x HISTFILE HISTFILESIZE HISTSIZE SAVEHIST
     HISTFILE=~/.bash_history
     HISTFILESIZE=2000
@@ -166,8 +166,8 @@ fi
 # input prompt:
 
 __conf() {
-    if   [ -n "$ZSH_VERSION"  ]; then eval 'set -- "${(L)1}"'
-    elif [ -n "$BASH_VERSION" ]; then eval 'set -- "${1,,}"'
+    if   is_zsh;  then eval 'set -- "${(L)1}"'
+    elif is_bash; then eval 'set -- "${1,,}"'
     else return; fi # no support for other shells as of yet
     case "$1" in
     (spectre)   okay=47  conflagrate;; # white (light gray)

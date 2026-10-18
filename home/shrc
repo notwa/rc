@@ -30,8 +30,8 @@ xdg() { set -- "XDG_$1" "$HOME/$2" && export "$1" && eval "[ -d \"\$$1\" ] &&
 mkdirs "$HOME/.local" && xdg CACHE_HOME .cache && xdg STATE_HOME .local/state &&
 xdg BIN_HOME .local/bin && xdg DATA_HOME .local/share && xdg CONFIG_HOME .config
 
-sqj() { a=; for s; do a="$a$x$s"; done; a=${a#"$x-"} a=${a%-}; }
-esc() { set -f; IFS=\' x="'\\''"; sqj -$*-; unset IFS; set +f; }
+sqj() { a=; for s; do a=$a$sq$s; done; a=${a#"$sq-"}; a=${a%-}; }
+esc() { set -f; IFS=\' sq="'\\''"; sqj -$*-; unset IFS; set +f; }
 cache="$XDG_CACHE_HOME/shrc/sh-$$" && mkdirs "${cache%/*}" && esc "$cache" &&
 __shrc_cache="$a" && pl '#!/usr/bin/env false' > "$cache" || die create cache
 printf %s "$cache" && trap - INT EXIT && exec >> "$cache" || die enable cache

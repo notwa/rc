@@ -4,41 +4,52 @@
 [ -z "${IFS+-}" ] || { echo >&2 this script must be sourced from shrc; exit 1; }
 cd -- "${HOME:?}/sh" || exit
 
-case "$0" in (-*) zero="${0#-}";; (/*) zero="${0##*/}";; (*) zero="$0";; esac
+query_inv() { ! return 1; }
+query_big() { return 256; }
+query_one() { x=1 query_two; }
+query_two() { x=2 query_xxx; return $x; }
+query_xxx() { x=3; }
 
-[ "$zero" != recombine ] || zero=zsh # only zsh does this (AFAIK)
-
-case "$zero" in
-(ash)   SH=ASH  sh=ash;;
-(bash)  SH=BASH sh=bash;;
-(dash)  SH=DASH sh=dash;;
-(hush)  SH=HUSH sh=hush;;
-(ksh)   SH=KSH  sh=ksh;;
-(loksh) SH=OKSH sh=oksh;; # similar enough to oksh to use the same compatibility flag
-(mksh)  SH=MKSH sh=mksh;;
-(oksh)  SH=OKSH sh=oksh;;
-(osh)   SH=OSH  sh=osh;;
-(posh)  SH=POSH sh=posh;;
-(yash)  SH=YASH sh=yash;;
-(zsh)   SH=ZSH  sh=zsh;;
-(sh)
-    f() { ! return 1; }; g() { return 256; }
-    if f; then # (ash, hush) || (zsh)
-        g && SH=ASH  sh=ash  || SH=ZSH  sh=zsh
-    else # (bash, mksh, osh) || (dash, ksh, loksh, oksh, posh, yash)
-        g && SH=BASH sh=bash || SH=DASH sh=dash
-    fi
-
-    f() { x=2 g; return $x; }; g() { x=3; }
-    x=1 f || case $sh-$? in
-    (dash-1) SH=DASH sh=dash;; # (dash, posh)
-    (dash-2) SH=OKSH sh=oksh;; # (loksh, oksh)
-    (dash-3) SH=KSH  sh=ksh;;  # (ksh, yash)
+scrute() {
+    case $0 in
+    (/*) zero=${0##*/};;
+    (-*) zero=${0#-};;
+    (*) zero=$0
     esac
-    ;;
-(*)
-    pl >&2 "unknown shell (\$0): $0"
-    exit 1
+    case $zero in
+    (scrute) like=zsh;;
+    (loksh) like=oksh;;
+    (???) like=_$zero;;
+    (??) like=__$zero;;
+    (*) like=$zero
+    esac
+    query_inv && like=$like:0 || like=$like:1
+    query_big && like=$like:0 || like=$like:1
+    query_one || like=$like:$? # never truthy
+}
+scrute
+
+# similar: (ash) (net-sh/zsh) (bash/mksh/osh) (dash/posh) (oksh) (ksh+m/yash)
+case $like in
+(__sh:0:0:1) SH=ASH  sh=ash;;
+(__sh:0:1:1) SH=NET  sh=net;;
+(__sh:1:0:1) SH=BASH sh=bash;;
+(__sh:1:1:1) SH=DASH sh=dash;;
+(__sh:1:1:2) SH=OKSH sh=oksh;;
+(__sh:1:1:3) SH=KSH  sh=ksh;;
+(_ash:0:0:1) SH=ASH  sh=ash;;
+(_ksh:1:0:1) SH=MKSH sh=mksh;;
+(_ksh:1:1:2) SH=OKSH sh=oksh;;
+(_ksh:1:1:3) SH=KSH  sh=ksh;;
+(_osh:1:0:1) SH=OSH  sh=osh;;
+(_zsh:0:1:1) SH=ZSH  sh=zsh;;
+(bash:1:0:1) SH=BASH sh=bash;;
+(dash:1:1:1) SH=DASH sh=dash;;
+(mksh:1:0:1) SH=MKSH sh=mksh;;
+(oksh:1:1:2) SH=OKSH sh=oksh;;
+(posh:1:1:1) SH=POSH sh=posh;;
+(yash:1:1:3) SH=YASH sh=yash;;
+(*) pl >&2 "unknown shell (\$0): $0"; exit 1
 esac
 
 pl '[ -n "$preload" ] || exit 1'
@@ -49,7 +60,7 @@ for f in *; do
         [ "$i" != 10 ] || case "${line%%[!!-~]*}" in (\#!*sh) ! :; esac || x=0
         check=0
         for word in $line; do
-            case "$word" in (YES_$SH) ok=1;; (NO_$SH) ok=0;; (compat:) check=1;; esac
+            case $word in (YES_$SH) ok=1;; (NO_$SH) ok=0;; (compat:) check=1;; esac
             [ "$check" != 1 ] || case "$word" in (+$sh) ok=1;; (-$sh) ok=0;; esac
         done
         [ "$((i-=1))" != 0 ] || break # act like head -n10
@@ -58,7 +69,7 @@ for f in *; do
     if [ "$x" = 1 ] && [ "$ok" = 0 ]; then
         esc "$HOME/sh/$f"
         # ensure $f is a valid function name/identifier in all shells:
-        case "${f:-:}" in ([!A-Z_a-z]*) ! :;; (*[!0-9A-Z_a-z]*) ! :;; esac &&
+        case ${f:-:} in ([!A-Z_a-z]*) ! :;; (*[!0-9A-Z_a-z]*) ! :;; esac &&
         pl "$f() { '${a:-! :}' \"\$@\"; }"
     fi
 

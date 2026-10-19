@@ -35,8 +35,7 @@ __stfu_parse_time() {
     while IFS= read -r line; do
         line=${line%%[!!-~]*} # stop at any control characters
         case $line in
-        (*=*=*) false;;
-        (*=*[!0-9]) false;;
+        (*=*[!0-9]*) false;;
         (SystemUpTime=*) id=${line#*=}; return 0;;
         (*) false;;
         esac

@@ -607,7 +607,7 @@ this version of `slit` uses tabs for its field separators.
 
 sort lines numerically by IPv4 segments.
 
-### [stfu](/sh/stfu#L47)
+### [stfu](/sh/stfu#L46)
 
 invoke a command, silencing stdout and stderr *unless* the command fails.
 
@@ -846,14 +846,22 @@ invoke `sha1sum` but only output the first 7 characters of each hash, a la git.
 
 copy files in a plain way using rsync. affected by umask.
 
-### [colors (sh/zzz)](/sh/zzz#L163)
+### [xxl (sh/zzz)](/sh/zzz#L154)
+
+dump a file with `xxd` and view it in `less`. includes colors.
+
+### [xxl1 (sh/zzz)](/sh/zzz#L157)
+
+like `xxl`, but don't group bytes by two.
+
+### [colors (sh/zzz)](/sh/zzz#L169)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L205)
+### [morecolors (sh/zzz)](/sh/zzz#L211)
 
 print all 256 colors that are available on most terminals.
 
@@ -863,19 +871,19 @@ print all 256 colors that are available on most terminals.
 
 return 0, ignoring arguments.
 
-### [OMFG (zshrc)](/home/zshrc#L247)
+### [OMFG (zshrc)](/home/zshrc#L249)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L248)
+### [STFU (zshrc)](/home/zshrc#L250)
 
 silence stderr.
 
-### [SWAP (zshrc)](/home/zshrc#L249)
+### [SWAP (zshrc)](/home/zshrc#L251)
 
 swap stdout and stderr. uses fd 3 as an intermediary.
 
-### [reload (zshrc)](/home/zshrc#L254)
+### [reload (zshrc)](/home/zshrc#L256)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
@@ -982,6 +990,7 @@ automatically append sbin directories after bin directories.
 | [running](#running)                           |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [scount](#scount)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [scramble](#scramble)                         |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
+| [scrute](#scrute)                             |  **false** | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [shcom](#shcom)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [shelly](#shelly)                             |   **perl** | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    | *n/a*    |
 | [similar](#similar)                           |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |

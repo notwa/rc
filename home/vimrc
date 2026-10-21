@@ -380,7 +380,8 @@ fun! Inn(q)
 endfun
 com! -nargs=+ Inn call Inn(<q-args>)
 
-Inn <F5>    :w<cr>
+nn  <F5>      :w<cr>
+ino <F5> <Esc>:w<cr>
 Inn <F6>    :Next<cr>
 Inn <F7>    :next<cr>
 Inn <F8>    :e %<cr>

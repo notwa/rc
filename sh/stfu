@@ -123,7 +123,7 @@ stfu() { ### @-
     fi || __stfu_cry 'failed to fix cache' || return
 
     if ! [ -d "$stfu" ]; then
-        [ -k /dev/shm ] && TMPDIR=/dev/shm || TMPDIR=/tmp
+        for TMPDIR in /dev/shm /var/shm /tmp; do [ -k "$TMPDIR" ] && break; done
         stfu=$(TMPDIR=$TMPDIR exec mktemp -dt stfu.XXXXXXXXXX) ||
         __stfu_cry 'failed to create temporary directory' || return
         if [ "$link" ]; then

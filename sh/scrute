@@ -1,0 +1,71 @@
+#!/usr/bin/env false
+# compat: +ash +bash -bsh +dash +ksh +mksh +net +oksh +osh +posh +yash +zsh
+
+scrute__inv() { ! return 1; }
+scrute__big() { return 256; }
+scrute__one() { x=1 scrute__two; }
+scrute__two() { x=2 scrute__xxx; return $x; }
+scrute__xxx() { x=3; }
+scrute__order() { b=0; a=$b b=1 c=$b
+                  case $a$c in (00) x=0;; (01) x=1;; (10) x=2;; (*) x=3; esac; }
+
+scrute_match() {
+    # conflated shells:
+    # - bash, mksh, osh (prefer bash)
+    # - dash, posh (prefer dash)
+    # - ksh93u+m, yash (prefer ksh)
+    case $like in
+    (__sh:0:0:1:1) SH=ASH  sh=ash;; # busybox sh
+    (__sh:0:1:1:0) SH=NET  sh=net;; # NetBSD sh
+    (__sh:1:0:1:1) SH=BASH sh=bash;;
+    (__sh:1:1:1:1) SH=DASH sh=dash;;
+    (__sh:1:1:2:1) SH=OKSH sh=oksh;; # OpenBSD ksh
+    (__sh:1:1:3:1) SH=KSH  sh=ksh;; # ksh93u+m
+    (__sh:1:1:3:2) SH=BSH  sh=bsh;; # Bourne shell (maybe can't run this script)
+    (_ash:0:0:1:1) SH=ASH  sh=ash;;
+    (_jsh:1:1:3:2) SH=BSH  sh=bsh;; # Bourne shell with job control
+    (_ksh:1:0:1:1) SH=MKSH sh=mksh;; # MirBSD ksh
+    (_ksh:1:1:2:1) SH=OKSH sh=oksh;;
+    (_ksh:1:1:3:1) SH=KSH  sh=ksh;;
+    (_osh:1:0:1:1) SH=OSH  sh=osh;; # Oils
+    (_zsh:0:1:1:1) SH=ZSH  sh=zsh;;
+    (bash:1:0:1:1) SH=BASH sh=bash;;
+    (dash:1:1:1:1) SH=DASH sh=dash;;
+    (mksh:1:0:1:1) SH=MKSH sh=mksh;;
+    (oksh:1:1:2:1) SH=OKSH sh=oksh;;
+    (posh:1:1:1:1) SH=POSH sh=posh;;
+    (yash:1:1:3:1) SH=YASH sh=yash;;
+    (*) printf >&2 %s\\n "unknown shell ($like)" "\$0=$0" "\$zero=$zero"
+        return 1
+    esac
+}
+
+scrute() {
+    # NOTE: this interface leaks the following variables: like SH sh zero
+    case $0 in
+    (*/scrute) zero=sh;;
+    (/*) zero=${0##*/};;
+    (-*) zero=${0#-};;
+    (*) zero=$0
+    esac
+    case $zero in
+    (scrute) like=_zsh;;
+    (loksh) like=oksh;;
+    (???) like=_$zero;;
+    (??) like=__$zero;;
+    (*) like=$zero
+    esac
+    scrute__inv && like=$like:0 || like=$like:1
+    scrute__big && like=$like:0 || like=$like:1
+    scrute__one || like=$like:$? # never truthy
+    scrute__order; like=$like:$x
+    unset a b c x
+    [ "$1" != match ] || scrute_match
+}
+
+scrutinize() {
+    scrute "$@" || return
+    [ "$1" = match ] && printf %s\\n "${sh:?}" || printf %s\\n "${like:?}"
+}
+
+${preload+:} scrutinize "$@"

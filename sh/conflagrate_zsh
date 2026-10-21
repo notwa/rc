@@ -1,0 +1,36 @@
+#!/usr/bin/env false
+# compat: +zsh
+
+conflagrate() {
+    # initialize prompts.
+    # zsh adds a % symbol to newline-less output, so my bash prompt is overkill
+    # NOTE: i've started hardcoding escapes instead of relying on zsh
+    #       because detecting terminal features is too troublesome.
+    # https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Functions-using-CSI-_-ordered-by-the-final-character_s_
+    local chset=$'\033\050B\017' # set G0 to USASCII charset and "shift-in" to it
+    local s=$'\033\133' e=m # CSI and SGR
+    local reset=$s$e curse=$s$'?25h' # reset color, show cursor (DECTCEM)
+
+    local t="${TERM%%-*}"
+    precmd() {}
+    if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
+        # set window title
+        if [ "$t" = tmux ] # don't include host, tmux prepends it
+        then precmd() { print -Pn "\e]2;%~\a" }
+        else precmd() { print -Pn "\e]2;%M: %~\a" }
+        fi
+    elif [ "$t" = alacritty ]; then
+        # Alacritty-v0.17.0-portable.exe -t "MinGW x64" -e "usr/bin/env" PATH="/usr/local/sbin:/usr/local/bin:/usr/bin" MSYSTEM=MINGW64 TERM=alacritty shelly
+        chset= # displays as U+263C for some reason
+    elif [ "$t" = vt100 ]; then
+        PROMPT="%{${s}0;1;%(?.32.31);7${e}%}%#%{$reset%} "
+    else
+        # act dumb
+        PROMPT="%# "
+        return
+    fi
+
+    PROMPT="%{$chset$curse$reset$s%(?.${okay:-42}.${fail:-41});${fg:-97}$e%}%#%{$reset%} "
+}
+
+${preload+:} conflagrate "$@"

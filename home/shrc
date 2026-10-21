@@ -166,10 +166,9 @@ fi
 # input prompt:
 
 __conf() {
-    if   is_zsh;  then eval 'set -- "${(L)1}"'
-    elif is_bash; then eval 'set -- "${1,,}"'
-    else return; fi # no support for other shells as of yet
-    case "$1" in
+    is_zsh && eval 'set -- "${(L)1}"'
+    is_bash && eval 'set -- "${1,,}"'
+    case $1 in # NOTE: not every shell supports custom colors yet.
     (spectre)   okay=47  conflagrate;; # white (light gray)
     (*banshee)  okay=46  conflagrate;; # cyan (teal)
     (wraith)    okay=43  conflagrate;; # yellow (orange)
@@ -178,6 +177,7 @@ __conf() {
     (wormwood)  okay=45  conflagrate;; # magenta
     (apparatus) okay=100 conflagrate;; # bright black (dark gray)
     (gentle)    okay=100 conflagrate;; # bright black (dark gray)
+    (*) conflagrate # defaults to okay=42 fail=41 (unless TERM=vt100)
     esac
     # for bg in {40..47} {100..107}; do printf '\e[%i;97m%%\e[m is %3i\n' $bg $bg; done
 }

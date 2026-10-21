@@ -34,17 +34,19 @@ scrute
 
 # similar: (ash) (net-sh/zsh) (bash/mksh/osh) (dash/posh) (oksh) (ksh+m/yash)
 case $like in
-(__sh:0:0:1:1) SH=ASH  sh=ash;;
-(__sh:0:1:1:2) SH=NET  sh=net;;
+(__sh:0:0:1:1) SH=ASH  sh=ash;; # busybox sh
+(__sh:0:1:1:0) SH=NET  sh=net;; # NetBSD sh
 (__sh:1:0:1:1) SH=BASH sh=bash;;
 (__sh:1:1:1:1) SH=DASH sh=dash;;
-(__sh:1:1:2:1) SH=OKSH sh=oksh;;
-(__sh:1:1:3:1) SH=KSH  sh=ksh;;
+(__sh:1:1:2:1) SH=OKSH sh=oksh;; # OpenBSD ksh
+(__sh:1:1:3:1) SH=KSH  sh=ksh;; # ksh93u+m
+(__sh:1:1:3:2) SH=BSH  sh=bsh;; # Bourne shell (probably can't run this script)
 (_ash:0:0:1:1) SH=ASH  sh=ash;;
-(_ksh:1:0:1:1) SH=MKSH sh=mksh;;
+(_jsh:1:1:3:2) SH=BSH  sh=bsh;; # Bourne shell with job control
+(_ksh:1:0:1:1) SH=MKSH sh=mksh;; # MirBSD ksh
 (_ksh:1:1:2:1) SH=OKSH sh=oksh;;
 (_ksh:1:1:3:1) SH=KSH  sh=ksh;;
-(_osh:1:0:1:1) SH=OSH  sh=osh;;
+(_osh:1:0:1:1) SH=OSH  sh=osh;; # Oils
 (_zsh:0:1:1:1) SH=ZSH  sh=zsh;;
 (bash:1:0:1:1) SH=BASH sh=bash;;
 (dash:1:1:1:1) SH=DASH sh=dash;;

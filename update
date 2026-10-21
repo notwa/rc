@@ -27,7 +27,7 @@ die() {
 ! [ -d .git ] || die "you don't need this script when you have .git!"
 ! [ -e _new ] || die '"_new" already exists, please remove it before updating'
 
-backup="backup-$(date -u +%s)" || die 'failed to determine date'
+backup="backup-$(exec date +%s)" || die 'failed to determine date'
 
 if ! [ -e sh/obtain ]; then
     url=https://git.eaguru.guru/notwa/rc/raw/branch/master/sh/obtain
@@ -130,7 +130,7 @@ backup() {
             die 'failed to create backup directory'
         fi
         ! [ -f "$backup/$f" ] || die 'backup file already exists'
-        cp -- "$f" "$backup/$f" || die 'failed to create backup file'
+        cp -p -- "$f" "$backup/$f" || die 'failed to create backup file'
     done
 }
 

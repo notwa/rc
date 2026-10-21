@@ -336,17 +336,17 @@ __checkweb() {
             continue
         fi
 
-        etc=$uri scheme=${etc%%:*}
+        etc=$uri; scheme=${etc%%:*}
         [ "$scheme" != "$etc" ] &&
         [ "${scheme#[A-Za-z]}" != "$scheme" ] &&
         [ "${scheme%[!A-Za-z0-9.+-]*}" = "$scheme" ] &&
-        etc=${etc#"$scheme"} etc=${etc#:} ||
+        { etc=${etc#"$scheme"}; etc=${etc#:}; } ||
         scheme=
 
         # note that this coerces an authority even if there is none.
         # this is convenient for URLs, but breaks other URIs.
         [ "${etc#//}" = "$etc" ] && pathy=$uri/ scheme= || pathy=${etc#//}/
-        authority=${pathy%%[/?#]*} pathy=${pathy#"$authority"} pathy=${pathy%/}
+        authority=${pathy%%[/?#]*}; pathy=${pathy#"$authority"}; pathy=${pathy%/}
 
         case $authority in (*@*) false; esac &&
         location=$authority ||

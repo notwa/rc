@@ -61,9 +61,11 @@ burl() ( ### @-
     process() { request | "$@" | { receive && cat ;} ;}
 
     for url; do
-        proto="${url%%:*}" proto="${proto##*[!a-z0-9-]*}"
-        [ "$proto" ] && url="${url#$proto://}" || url="${url#//}"
-        host="${url%%/*}" query="${url#"$host"}" dom="${host%:*}"
+        proto=${url%%:*}
+        proto=${proto##*[!a-z0-9-]*}
+        [ "$proto" ] && url=${url#$proto://} || url=${url#//}
+        host=${url%%/*}
+        query=${url#"$host"} dom=${host%:*}
         [ "$host" = "${dom:?}" ] && PORT="${PORT:-80}" || PORT="${host##*:}"
         if [ "$net" ]; then
             exec 3<>"/dev/tcp/$dom/$PORT" &&

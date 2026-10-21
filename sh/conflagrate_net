@@ -1,0 +1,17 @@
+#!/usr/bin/env false
+# compat: +net
+
+conflagrate() {
+    PSlit=$'\001'
+    if [ "${TERM-vt100}" = vt100 ]; then
+        local one=$'\001\033[0;1;$(($??31:32));7m\001 \001\033[m\001\n'
+        local two=$'\001\033[1;$(($??31:32));7m\001\\$\001\033[m\001 '
+    else
+        local one=$'\001\033[0;$(($??41:42))m\001 \001\033[m\001\n'
+        local two=$'\001\033[$(($??41:42));97m\001\\$\001\033[m\001 '
+    fi
+    PS1=$one$two
+    set +o promptcmds # don't need this (yet)
+}
+
+${preload+:} conflagrate "$@"

@@ -871,28 +871,28 @@ print all 256 colors that are available on most terminals.
 
 return 0, ignoring arguments.
 
-### [OMFG (zshrc)](/home/zshrc#L249)
+### [OMFG (zshrc)](/home/zshrc#L218)
 
 silence stdout.
 
-### [STFU (zshrc)](/home/zshrc#L250)
+### [STFU (zshrc)](/home/zshrc#L219)
 
 silence stderr.
 
-### [SWAP (zshrc)](/home/zshrc#L251)
+### [SWAP (zshrc)](/home/zshrc#L220)
 
 swap stdout and stderr. uses fd 3 as an intermediary.
 
-### [reload (zshrc)](/home/zshrc#L256)
+### [reload (zshrc)](/home/zshrc#L225)
 
 reload zsh by wiping temp files, recompiling rc files,
 and replacing the current process with a new zsh process.
 
-### [dummy (bashrc)](/home/bashrc#L41)
+### [dummy (bashrc)](/home/bashrc#L16)
 
 return 0, ignoring arguments.
 
-### [reload (bashrc)](/home/bashrc#L44)
+### [reload (bashrc)](/home/bashrc#L20)
 
 reload the current shell -- runs initctl when passed arguments.
 
@@ -939,6 +939,11 @@ automatically append sbin directories after bin directories.
 | [clash](#clash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [compile](#compile)                           |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [confirm](#confirm)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [conflagrate-ash](#conflagrate-ash)           |  **false** | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    |
+| [conflagrate-bash](#conflagrate-bash)         |  **false** | ❔    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    |
+| [conflagrate-net](#conflagrate-net)           |  **false** | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    |
+| [conflagrate-oksh](#conflagrate-oksh)         |  **false** | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    | ❔    | ❔    | ❔    | ❔    |
+| [conflagrate-zsh](#conflagrate-zsh)           |  **false** | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [countdiff](#countdiff)                       |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [cutv](#cutv)                                 |        zsh | ⭕    | ⭕    | ⭕    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [dated](#dated)                               |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

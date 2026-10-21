@@ -41,7 +41,7 @@ ex() { for v; do give "$v"; done; export "$@" && pl "export $*" || die export; }
 ex HOME XDG_BIN_HOME XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
 unset combo a s v x && unset -f die && pl preload=: || die clean up state
-if combo="$HOME/sh/recombine" && [ -s "$combo" ]; then . "$combo" || exit
+if combo="$HOME/sh/recombine" && [ -f "$combo" ]; then . "$combo" || exit
 else pl 'printf >&2 %s\\n "prepare: missing script: sh/recombine"'; fi &&
 pl 'unset preload' && pl "rm -- '$__shrc_cache'"
 }

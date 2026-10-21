@@ -9,6 +9,8 @@ query_big() { return 256; }
 query_one() { x=1 query_two; }
 query_two() { x=2 query_xxx; return $x; }
 query_xxx() { x=3; }
+query_order() { b=0; a=$b b=1 c=$b
+                case $a$c in (00) x=0;; (01) x=1;; (10) x=2;; (*) x=3; esac; }
 
 scrute() {
     case $0 in
@@ -26,29 +28,30 @@ scrute() {
     query_inv && like=$like:0 || like=$like:1
     query_big && like=$like:0 || like=$like:1
     query_one || like=$like:$? # never truthy
+    query_order; like=$like:$x
 }
 scrute
 
 # similar: (ash) (net-sh/zsh) (bash/mksh/osh) (dash/posh) (oksh) (ksh+m/yash)
 case $like in
-(__sh:0:0:1) SH=ASH  sh=ash;;
-(__sh:0:1:1) SH=NET  sh=net;;
-(__sh:1:0:1) SH=BASH sh=bash;;
-(__sh:1:1:1) SH=DASH sh=dash;;
-(__sh:1:1:2) SH=OKSH sh=oksh;;
-(__sh:1:1:3) SH=KSH  sh=ksh;;
-(_ash:0:0:1) SH=ASH  sh=ash;;
-(_ksh:1:0:1) SH=MKSH sh=mksh;;
-(_ksh:1:1:2) SH=OKSH sh=oksh;;
-(_ksh:1:1:3) SH=KSH  sh=ksh;;
-(_osh:1:0:1) SH=OSH  sh=osh;;
-(_zsh:0:1:1) SH=ZSH  sh=zsh;;
-(bash:1:0:1) SH=BASH sh=bash;;
-(dash:1:1:1) SH=DASH sh=dash;;
-(mksh:1:0:1) SH=MKSH sh=mksh;;
-(oksh:1:1:2) SH=OKSH sh=oksh;;
-(posh:1:1:1) SH=POSH sh=posh;;
-(yash:1:1:3) SH=YASH sh=yash;;
+(__sh:0:0:1:1) SH=ASH  sh=ash;;
+(__sh:0:1:1:2) SH=NET  sh=net;;
+(__sh:1:0:1:1) SH=BASH sh=bash;;
+(__sh:1:1:1:1) SH=DASH sh=dash;;
+(__sh:1:1:2:1) SH=OKSH sh=oksh;;
+(__sh:1:1:3:1) SH=KSH  sh=ksh;;
+(_ash:0:0:1:1) SH=ASH  sh=ash;;
+(_ksh:1:0:1:1) SH=MKSH sh=mksh;;
+(_ksh:1:1:2:1) SH=OKSH sh=oksh;;
+(_ksh:1:1:3:1) SH=KSH  sh=ksh;;
+(_osh:1:0:1:1) SH=OSH  sh=osh;;
+(_zsh:0:1:1:1) SH=ZSH  sh=zsh;;
+(bash:1:0:1:1) SH=BASH sh=bash;;
+(dash:1:1:1:1) SH=DASH sh=dash;;
+(mksh:1:0:1:1) SH=MKSH sh=mksh;;
+(oksh:1:1:2:1) SH=OKSH sh=oksh;;
+(posh:1:1:1:1) SH=POSH sh=posh;;
+(yash:1:1:3:1) SH=YASH sh=yash;;
 (*) pl >&2 "unknown shell (\$0): $0"; exit 1
 esac
 

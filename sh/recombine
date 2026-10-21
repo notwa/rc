@@ -1,11 +1,9 @@
 #!/usr/bin/env false
 # FAKE_COMPAT
 
-[ -z "${IFS+-}" ] || { echo >&2 this script must be sourced from shrc; exit 1; }
-cd -- "${HOME:?}/sh" || exit
-preload=:
-. ./scrute
-scrute match
+[ ${combo:++} ] || { echo >&2 this script must be sourced from shrc; exit 1; }
+cd -- "${combo%/*}" || exit
+preload=:; . ./scrute && scrute match || exit
 
 pl '[ -n "$preload" ] || exit 1'
 for f in *; do
@@ -22,7 +20,7 @@ for f in *; do
     done < "$f"
 
     if [ "$x" = 1 ] && [ "$ok" = 0 ]; then
-        esc "$HOME/sh/$f"
+        esc "${combo%/*}/$f"
         # ensure $f is a valid function name/identifier in all shells:
         case ${f:-:} in ([!A-Z_a-z]*) ! :;; (*[!0-9A-Z_a-z]*) ! :;; esac &&
         pl "$f() { '${a:-! :}' \"\$@\"; }"

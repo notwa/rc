@@ -151,6 +151,12 @@ shi7() ### @- invoke `sha1sum` but only output the first 7 characters of each ha
 carry() ### @- copy files in a plain way using rsync. affected by umask.
   { rsync -HOlrt --no-p --no-g --chmod=ugo=rwX "$@"; }
 
+xxl() ### @- dump a file with `xxd` and view it in `less`. includes colors.
+  { xxd -R always -- "$1" | less; }
+
+xxl1() ### @- like `xxl`, but don't group bytes by two.
+  { xxd -g1 -R always -- "$1" | less; }
+
 ytdl() {
     if has yt-dlp || has yt-dlc || has youtube-dl; then
         "$REPLY" "$@"

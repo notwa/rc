@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-set -efuC && unset CDPATH &&
+set -Cefu && unset CDPATH &&
 here="$(readlink -f -- "$0")" && here="${here%/*}" && cd -- "$here" || exit
 #remote="https://github.com/notwa/rc/archive/master.tar.gz"
 remote="https://git.eaguru.guru/notwa/rc/archive/master.tar.gz"

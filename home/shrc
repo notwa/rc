@@ -1,6 +1,6 @@
 #!/usr/bin/env false
 # this script ought to work in any bourne-like shell except for busybox's hush.
-set +efuC
+set +Cefu
 [ -d /stand ] && umask 022 || umask 002 # NetBSD scrubs group write permissions
 unset CDPATH IFS # CDPATH is basically a precursor to zoxide that kills scripts
 export LC_ALL=C # this is temporary; sane values are configured after __prepare
@@ -17,7 +17,7 @@ menucomplete autocd; echo >&2 "warning: .zshrc didn't source at startup"; fi
 
 __prepare() { # there is a point where we needed to stop and we have clearly passed it
 pl() { printf '%s\n' "$@"; }; die() { pl >&2 "prepare: failed to $*"; exit 1; }
-trap 'echo /dev/null' INT EXIT && set +efuC && LC_ALL=C && unset IFS a s v x &&
+trap 'echo /dev/null' INT EXIT && set +Cefu && LC_ALL=C && unset IFS a s v x &&
 if is_zsh; then set -y +o NOMATCH +o FUNCTION_ARGZERO && 0=zsh; fi || die reset
 
 mkdirs() { for a; do [ -d "$a" ] || mkdir "$a" || die 'make directory'; done; }

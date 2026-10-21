@@ -272,7 +272,7 @@ persist() {
 }
 
 persist__self_test() {
-    # dash -c 'set -efuC; . ~/sh/persist; set | grep "^[a-z_]"'
+    # dash -c 'set -Cefu; . ~/sh/persist; set | grep "^[a-z_]"'
 
     if persist alpha=alpha@persistence beta=beta@persistence gamma=gamma@persistence; then
         printf '%s=%s\n' alpha "${alpha-}" beta "${beta-}" gamma "${gamma-}"

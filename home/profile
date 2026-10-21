@@ -16,11 +16,16 @@ prepend() { # read permissions for PATH directories are not strictly necessary
     [ -d "$1" ] && [ -x "$1" ] || return 0
     case :${PATH-}: in (*":$1:"*) false; esac && PATH="$1${PATH:+:}${PATH-}"
 }
+# NOTE: this command check will always be true for most builds of busybox ash.
 if [ -z "${PATH-}" ] || ! command -v sh >/dev/null 2>&1; then
     [ /bin -ef /usr/bin ] || prepend /bin
     [ /sbin -ef /bin ] || [ /sbin -ef /usr/sbin ] || prepend /sbin
     prepend /usr/bin
     [ /usr/sbin -ef /usr/bin ] || prepend /usr/sbin
+    prepend /usr/X11R7/bin
+    prepend /usr/games
+    prepend /usr/pkg/bin
+    prepend /usr/pkg/sbin
     prepend /usr/local/bin
     [ /usr/local/sbin -ef /usr/local/bin ] || prepend /usr/local/sbin
 fi

@@ -1,0 +1,19 @@
+#!/usr/bin/env false
+# compat: +oksh
+
+conflagrate() {
+    # NOTE: NetBSD's ksh has less features than oksh.
+    #       in particular, \[ and \] are unavailable.
+    # FIXME: the carriage return isn't acting quite how i'd like it to.
+    #        for instance, `printf hey` will get partially overwritten.
+    if [ "${TERM-vt100}" = vt100 ]; then
+        local one='\001\r\001\033[0;1;$(($??31:32));7m\001 \001\033[m\001\n'
+        local two='\001\033[1;$(($??31:32));7m\001\\$\001\033[m\001 '
+    else
+        local one='\001\r\001\033[0;$(($??41:42))m\001 \001\033[m\001\n'
+        local two='\001\033[$(($??41:42));97m\001\\$\001\033[m\001 '
+    fi
+    PS1=$(printf "$one$two")
+}
+
+${preload+:} conflagrate "$@"

@@ -250,9 +250,9 @@ persist() {
 
     # reset, also checks for readonly issues:
     __alias= __boot= __key= __line= __namespace= __no= __pair= __pairs= \
-    __proc= __timestamp= __value= __variable= || return
+    __proc= __timestamp= __value= __variable=
 
-    __ifs=$IFS IFS=' ' || return
+    __ifs=$IFS IFS=' '
 
     case $- in
     (*C*)

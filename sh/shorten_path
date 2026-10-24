@@ -1,11 +1,10 @@
 #!/usr/bin/env sh
-# compat: +ash +bash -bsh +dash -ksh +mksh +net -oksh +osh -posh +yash +zsh
+# compat: +ash +bash -bsh +dash -ksh +mksh +net +oksh +osh +posh +yash +zsh
 
 shorten_path() {
-    # FIXME: leading slashes do not work properly in oksh and posh!
     ! [ ${ZSH_VERSION++} ] || setopt LOCAL_OPTIONS SH_WORD_SPLIT || return 70
     local IFS=/ d="${1:?}" n="${2:?}" i= prefix= pair= head= tail= part=
-    set -- ${d%/} # perform word expansion
+    d=${d%/}; set -- $d # perform word splitting
     [ $# = 0 ] && REPLY=/ && return
     ! [ "$1" ] && shift && prefix=/
     for pair in 2:2 1:2 2:1 1:1; do

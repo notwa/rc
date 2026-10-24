@@ -50,6 +50,13 @@ __flaunt_hostname() {
 __flaunt_uptime_raw() {
     if [ -f /proc/uptime ]; then
         read -r __flaunt_uptime_raw _ < /proc/uptime
+    elif [ -f /kern/boottime ] && [ -f /kern/time ]; then
+        read -r __b _ < /kern/boottime &&
+        read -r __a _ < /kern/time &&
+        __flaunt_uptime_raw=$((__a-__b))
+    elif has sysctl && __b="$(exec sysctl -n kern.boottime 2>/dev/null)"; then
+        __a="$(exec date +%s)" &&
+        __flaunt_uptime_raw=$((__a-__b))
     else
         false
     fi || __flaunt_uptime_raw='(ERROR)'
@@ -59,7 +66,7 @@ __flaunt_uptime() {
     if has uptime; then
         __t="$(exec uptime -p 2>/dev/null)"
         if [ "${__t#up }" = "$__t" ]; then
-            __t="$(exec uptime)" && __t="${__t##* up }" __t="${__t%%,  *}"
+            __t="$(exec uptime)" && __t="${__t##* up }" && __t="${__t%%, *}"
         else
             __t="${__t#up }"
         fi && [ -n "$__t" ] && __flaunt_uptime="$__t"
@@ -90,6 +97,10 @@ __flaunt_self() {
 __flaunt() { ### @flaunt
     ### send diagnostic telemetry to a central server via [`notice`.](#notice)
     ### currently, this is only used for reporting when servers come online.
+
+    # NOTE: on NetBSD, make sure everything is mounted first:
+    #mount_kernfs /kern /kern
+    #mount_procfs /proc /proc
 
     LC_ALL=C && export LC_ALL && unset IFS || return
     #[ $'' ] && cr="$(printf '\n\r')" || cr=$'\n\r'; lf="${cr%?}" cr="${cr#?}"

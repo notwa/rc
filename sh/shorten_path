@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+# compat: +ash +bash -bsh +dash -ksh +mksh +net -oksh +osh -posh +yash +zsh
+
+shorten_path() {
+    # FIXME: leading slashes do not work properly in oksh and posh!
+    ! [ ${ZSH_VERSION++} ] || setopt LOCAL_OPTIONS SH_WORD_SPLIT || return 70
+    local IFS=/ d="${1:?}" n="${2:?}"
+    local i= prefix= head= tail= pair= part=
+    set -- ${d%/} # perform word expansion
+    [ $# = 0 ] && REPLY=/ && return
+    ! [ "$1" ] && shift && prefix=/
+    for pair in 2:2 1:2 2:1 1:1; do
+        head=${pair%:?} tail=${pair#?:}
+        tail=$((${#}-tail)) # intentionally off by one
+        [ "$((tail-head))" -gt 0 ] && gap=$tail || gap=0
+        REPLY=$prefix
+        i=0; for part; do : $((i+=1))
+            if   [ "$i" = "$gap" ]
+            then REPLY="$REPLY**/"
+            elif [ "$i" -gt "$tail" ]
+            then REPLY=$REPLY$part/
+            elif [ "$i" -le "$head" ]
+            then REPLY=$REPLY$part/
+            fi
+        done
+        [ "${#REPLY}" -le "$n" ] && return
+    done
+    # $part should now contain the final path component left over from the loop.
+    REPLY="/**/$part/"
+    [ "${#REPLY}" -le "$n" ] || { REPLY=$part/; return 1; }
+}
+
+${preload+:} shorten_path "$@"

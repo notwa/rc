@@ -47,7 +47,7 @@ getit() ### @- invoke `git clone` with `--single-branch --depth 1`.
 gd() ### @- invoke git's diff subcommand with fewer lines of context.
   { git diff -U2 "$@"; }
 
-uno() ### @- invoke git's status subcommand without untracked files.
+uno() ### @- invoke git's status subcommand, skipping untracked files.
   { git status -uno "$@"; }
 
 gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".

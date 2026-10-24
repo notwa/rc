@@ -42,7 +42,7 @@ scrute_match() {
 
 scrute() {
     # NOTE: this interface leaks the following variables: like SH sh zero
-    case $0 in
+    [ "$zero" ] || case $0 in
     (*/scrute) zero=sh;;
     (/*) zero=${0##*/};;
     (-*) zero=${0#-};;

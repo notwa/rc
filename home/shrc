@@ -164,10 +164,8 @@ else
 fi
 
 if [ "${TERM:-dumb}" = dumb ] && [ -t 0 ] && [ -t 1 ] && [ -t 2 ]; then
-    # if is_zsh || is_bash; then
-    printf >&2 'Warning: TERM is %s' "${TERM:-unset}"
-    printf >&2 '. Consider:\n$ TERM=%s\n' xterm-256color
-    # fi
+    printf >&2 'Warning: TERM is %s\n' "${TERM:-unset}"
+    printf >&2 'Consider: TERM=%s\n' xterm-256color
 fi
 
 if [ -O "$HOME" ] && ! [ -s ~/.gitconfig ]; then

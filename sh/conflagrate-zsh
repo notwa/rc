@@ -24,6 +24,7 @@ conflagrate() {
         chset= # displays as U+263C for some reason
     elif [ "$t" = vt100 ]; then
         PROMPT="%{${s}0;1;%(?.32.31);7${e}%}%#%{$reset%} "
+        return
     else
         # act dumb
         PROMPT="%# "

@@ -98,6 +98,13 @@ stfu() { ### @-
         # avoid creating too many directories by using an ID that resets every reboot.
         # NOTE: $XDG_RUNTIME_DIR is an option here, but complicates logic when absent.
         link=$cache/stfu/boot-$id
+    elif [ -f /netbsd ]; then # this code path only provides second granularity!
+        if ! { read -r time _ < /kern/boottime; } 2>/dev/null; then
+            # /kern isn't always mounted. sysctl can still provide the data.
+            time=$(exec sysctl -n kern.boottime 2>/dev/null) ||
+            __stfu_cry 'failed to retrieve boot time from sysctl' || return
+        fi
+        link=$cache/stfu/boot-$time
     elif [ -d /C/Windows ]; then # Windows XP and above?
         # wmic is slow as balls. avoid calling it by caching its result.
         boot=$cache/stfu/boot

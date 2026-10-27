@@ -41,6 +41,9 @@ if ! has busybox && has busybox-static; then
     busybox() { busybox-static "$@"; }
 fi
 
+git() # machines may span timezones, but my heart remains in one place
+  { TZ=America/Vancouver command git "$@"; } # NOTE: DST is always on!
+
 getit() ### @- invoke `git clone` with `--single-branch --depth 1`.
   { git clone --single-branch --depth 1 "$@"; }
 

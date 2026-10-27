@@ -612,10 +612,11 @@ sort lines numerically by IPv4 segments.
 invoke a command, silencing stdout and stderr *unless* the command fails.
 
 **NOTE:** don't use `stfu` for handling sensitive data or commands!
-use it for 7zip.
+there is no guarantee that its output is unreadable to other users,
+and in the absence of tmpfs mounts, it may write to a disk as well.
 
-note that the tail commands in the example below are from `stfu` itself;
-they are echoed to reveal the temp paths for any further investigation.
+upon command failure, `stfu` exposes its own temporary path
+as seen below, allowing the failing command to be inspected.
 
 ```
 $ touch butts
@@ -737,135 +738,135 @@ $ xxp ~/rc/install | head -n2
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [getit (sh/zzz)](/sh/zzz#L44)
+### [getit (sh/zzz)](/sh/zzz#L47)
 
 invoke `git clone` with `--single-branch --depth 1`.
 
-### [gd (sh/zzz)](/sh/zzz#L47)
+### [gd (sh/zzz)](/sh/zzz#L50)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [uno (sh/zzz)](/sh/zzz#L50)
+### [uno (sh/zzz)](/sh/zzz#L53)
 
 invoke git's status subcommand, skipping untracked files.
 
-### [gdp (sh/zzz)](/sh/zzz#L53)
+### [gdp (sh/zzz)](/sh/zzz#L56)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [rgn (sh/zzz)](/sh/zzz#L59)
+### [rgn (sh/zzz)](/sh/zzz#L62)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (sh/zzz)](/sh/zzz#L68)
+### [curls (sh/zzz)](/sh/zzz#L71)
 
 be a little smarter with curl. (HTTPS only)
 
-### [revend (sh/zzz)](/sh/zzz#L80)
+### [revend (sh/zzz)](/sh/zzz#L83)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (sh/zzz)](/sh/zzz#L83)
+### [clone (sh/zzz)](/sh/zzz#L86)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
 **TODO:** rename because POSIX.1-2024 reserves this name.
 
-### [aligntabs (sh/zzz)](/sh/zzz#L87)
+### [aligntabs (sh/zzz)](/sh/zzz#L90)
 
 align tab-delimited fields in stdin.
 
-### [crawla (sh/zzz)](/sh/zzz#L98)
+### [crawla (sh/zzz)](/sh/zzz#L101)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (sh/zzz)](/sh/zzz#L101)
+### [crawlz (sh/zzz)](/sh/zzz#L104)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (sh/zzz)](/sh/zzz#L105)
+### [diff (sh/zzz)](/sh/zzz#L108)
 
 use git's diff subcommand for general diffing.
 
-### [gc (sh/zzz)](/sh/zzz#L110)
+### [gc (sh/zzz)](/sh/zzz#L113)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (sh/zzz)](/sh/zzz#L114)
+### [counts (sh/zzz)](/sh/zzz#L117)
 
 count files in the current directory, including files found recursively.
 
-### [exts (sh/zzz)](/sh/zzz#L117)
+### [exts (sh/zzz)](/sh/zzz#L120)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (sh/zzz)](/sh/zzz#L121)
+### [nocom (sh/zzz)](/sh/zzz#L124)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (sh/zzz)](/sh/zzz#L124)
+### [jrep (sh/zzz)](/sh/zzz#L127)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (sh/zzz)](/sh/zzz#L127)
+### [bomb (sh/zzz)](/sh/zzz#L130)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (sh/zzz)](/sh/zzz#L130)
+### [cleanse (sh/zzz)](/sh/zzz#L133)
 
 strip unprintable and non-ASCII characters.
 
-### [double (sh/zzz)](/sh/zzz#L133)
+### [double (sh/zzz)](/sh/zzz#L136)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (sh/zzz)](/sh/zzz#L138)
+### [katagana (sh/zzz)](/sh/zzz#L141)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (sh/zzz)](/sh/zzz#L142)
+### [makepkgf (sh/zzz)](/sh/zzz#L145)
 
 make the freakin' package!
 
-### [rakef (sh/zzz)](/sh/zzz#L145)
+### [rakef (sh/zzz)](/sh/zzz#L148)
 
 make the freakin' gem!
 
-### [relog (sh/zzz)](/sh/zzz#L148)
+### [relog (sh/zzz)](/sh/zzz#L151)
 
 log on again to refresh your unix groups, etc.
 
-### [shi7 (sh/zzz)](/sh/zzz#L151)
+### [shi7 (sh/zzz)](/sh/zzz#L154)
 
 invoke `sha1sum` but only output the first 7 characters of each hash, a la git.
 
-### [carry (sh/zzz)](/sh/zzz#L154)
+### [carry (sh/zzz)](/sh/zzz#L157)
 
 copy files in a plain way using rsync. affected by umask.
 
-### [xxl (sh/zzz)](/sh/zzz#L157)
+### [xxl (sh/zzz)](/sh/zzz#L160)
 
 dump a file with `xxd` and view it in `less`. includes colors.
 
-### [xxl1 (sh/zzz)](/sh/zzz#L160)
+### [xxl1 (sh/zzz)](/sh/zzz#L163)
 
 like `xxl`, but don't group bytes by two.
 
-### [colors (sh/zzz)](/sh/zzz#L172)
+### [colors (sh/zzz)](/sh/zzz#L175)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L214)
+### [morecolors (sh/zzz)](/sh/zzz#L217)
 
 print all 256 colors that are available on most terminals.
 

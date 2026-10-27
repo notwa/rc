@@ -163,6 +163,13 @@ else
     unset h
 fi
 
+if [ -O "$HOME" ] && ! [ -s ~/.gitconfig ]; then
+    # git often spits out a lot of warnings unless configured not to.
+    printf >~/.gitconfig '[%s]\n\t%s\n' init 'defaultBranch = main' \
+    user 'email = nobody@localhost' user 'name = Shell Script' \
+    push 'default = simple' pull 'rebase = true' advice 'detachedHead = false'
+fi
+
 # input prompt:
 
 __conf() {

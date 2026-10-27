@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# compat: +ash +bash +dash -ksh +mksh +oksh +osh -posh +yash +zsh
+# compat: +ash +bash +dash -ksh +mksh +net +oksh +osh -posh +yash +zsh
 
 __stfu_echo() {
     local IFS=' '
@@ -124,7 +124,7 @@ stfu() { ### @-
 
     if ! [ -d "$stfu" ]; then
         for TMPDIR in /dev/shm /var/shm /tmp; do [ -k "$TMPDIR" ] && break; done
-        stfu=$(TMPDIR=$TMPDIR exec mktemp -dt stfu.XXXXXXXXXX) ||
+        stfu=$(exec mktemp -dp "$TMPDIR" stfu.XXXXXXXXXX) ||
         __stfu_cry 'failed to create temporary directory' || return
         if [ "$link" ]; then
             ln -s -- "$stfu" "$link" ||

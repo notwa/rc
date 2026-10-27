@@ -47,10 +47,11 @@ stfu() { ### @-
     ### invoke a command, silencing stdout and stderr *unless* the command fails.
     ###
     ### **NOTE:** don't use `stfu` for handling sensitive data or commands!
-    ### use it for 7zip.
+    ### there is no guarantee that its output is unreadable to other users,
+    ### and in the absence of tmpfs mounts, it may write to a disk as well.
     ###
-    ### note that the tail commands in the example below are from `stfu` itself;
-    ### they are echoed to reveal the temp paths for any further investigation.
+    ### upon command failure, `stfu` exposes its own temporary path
+    ### as seen below, allowing the failing command to be inspected.
     ###
     ### ```
     ### $ touch butts

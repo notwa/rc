@@ -81,7 +81,7 @@ stfu() { ### @-
 
     tail=${STFU_TAIL:-20}
     [ "$tail" -ge 0 ] 2>/dev/null ||
-    __stfu_cry 'tail length must be a non-negative integer' || return
+    __stfu_cry 'STFU_TAIL must be a non-negative integer' || return
 
     if [ "${STFU_DIR-}" ]; then
         [ -d "$STFU_DIR" ] || __stfu_mkdirs "$STFU_DIR" && stfu=$STFU_DIR ||

@@ -3,15 +3,13 @@
 # posh complains about test -ef
 
 __grab() { ### @grab - download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
-[ -z "${ZSH_VERSION}" ] || emulate sh
+[ "$ZSH_VERSION" ] && emulate sh
 #!/usr/bin/env sh
 unset CDPATH f fn fx hd IFS LC_ALL pub remote t task x || exit
 
 pub=RWQdYTxDsppw5ZFpYZFoF6IoPS0okMKlOiz9MwTl0NUoP41r57sf9dI1
 remote=eaguru.guru/t
 export LC_ALL=C
-
-umask 002
 
 will(){
 task=$*
@@ -33,12 +31,16 @@ set -- "${1#?}"
 done
 } 2>&-
 
-get(){
-if [ -x /usr/bin/curl ]
-then curl -sSfLgm5 -o "$@"
-else wget -qt1 -T5 -O "$@"
-fi
+pick(){
+command -v "$1" 2>/dev/null >&2 &&
+exec "$@"
 }
+
+get()(
+pick curl -sSfLgm5 -o "$@" ||
+pick wget -qt1 -T5 -O "$@" ||
+pick timeout 5 ftp -o "$@"
+)
 
 clean(){
 will clean up temporary files
@@ -46,10 +48,8 @@ will clean up temporary files
 }
 
 hex(){
-if [ -x /usr/bin/xxd ]
-then exec xxd -p -l4 -- "$@"
-else exec hexdump -ve '1 1 "%02x"' -n4 -- "$@"
-fi
+pick xxd -p -l4 -- "$@" ||
+pick hexdump -ve '"%02x"' -n4 -- "$@"
 }
 
 will create temporary directory

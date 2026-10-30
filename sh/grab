@@ -25,7 +25,7 @@ esc(){
 while [ "$1" ]
 do case $1 in
 ([\!\"$\&-\>@-~]*) printf %.1s "$1";;
-(*) printf %%%02X "'$1";;
+(*) printf %%%02X "'$1"
 esac
 set -- "${1#?}"
 done
@@ -53,7 +53,9 @@ pick hexdump -ve '"%02x"' -n4 -- "$@"
 }
 
 will create temporary directory
-for t in /dev/shm /var/shm /tmp; do [ -k "$t" ] && break; done
+for t in /dev/shm /var/shm /tmp
+do [ -k "$t" ] && break
+done
 t=$(exec mktemp -dp "$t" grab.XXXXXXXXXX) || die
 
 will change directory
@@ -68,13 +70,10 @@ fn=${fn%%#*}
 
 will ensure filename is valid
 case $fn in
-(.) false;;
-(..) false;;
-([!\ -~]) false;;
-([\":\<\>?\\\|]) false;;
-(?*) true;;
-(*) false;;
-esac && touch -- "$fn" || die
+(.|..|*[!\ -~]*|*[\":\<\>?\\\|]*) [ ];;
+(?*);;
+(*) [ ]
+esac && >>"$fn" </dev/null || die
 
 will ensure supported protocols
 fx=$(esc "$fn")

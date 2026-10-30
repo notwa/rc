@@ -49,7 +49,7 @@ will clean up temporary files
 
 hex(){
 pick xxd -p -l4 -- "$@" ||
-pick hexdump -ve '"%02x"' -n4 -- "$@"
+pick hexdump -ve '1/1 "%02x"' -n4 -- "$@"
 }
 
 will create temporary directory

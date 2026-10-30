@@ -75,18 +75,15 @@ case $fn in
 (*) false;;
 esac && touch -- "$fn" || die
 
-will ensure supported protocols # busybox restricts this
+will ensure supported protocols
 fx=$(esc "$fn")
 case $f in
-(http://*);;
-(https://*);;
-(ftp://*);;
-(ftps://*);; # buggy
+(http://*|https://*|ftp://*);;
 (*:*)
 printf 'unsupported protocol: %s\n' "${f%%:*}" >&2
 die;;
 (*)
-f=https://$remote/$fx;;
+f=https://$remote/$fx
 esac
 
 will "download $fn from $f"

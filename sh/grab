@@ -5,7 +5,7 @@
 __grab() { ### @grab - download a file from my site and verify its integrity by its [minisign](https://github.com/jedisct1/minisign/) signature.
 [ "$ZSH_VERSION" ] && emulate sh
 #!/usr/bin/env sh
-unset CDPATH f fn fx hd IFS LC_ALL pub remote t task x || exit
+unset CDPATH e f fn fx hd IFS LC_ALL pub remote t task x || exit
 
 pub=RWQdYTxDsppw5ZFpYZFoF6IoPS0okMKlOiz9MwTl0NUoP41r57sf9dI1
 remote=eaguru.guru/t
@@ -86,11 +86,11 @@ die;;
 f=https://$remote/$fx
 esac
 
-will "download $fn from $f"
-get "$fn" -- "$f" || die
-
-will "download $fn.minisig from $f.minisig"
-get "$fn.minisig" -- "$f.minisig" || die
+for e in '' .minisig
+do
+will "download $fn$e from $f$e"
+get "$fn$e" -- "$f$e" || die
+done
 
 will "verify file integrity of $fn"
 minisign -QVm "$fn" -P "$pub" || die

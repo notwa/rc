@@ -37,9 +37,9 @@ exec "$@"
 }
 
 get()(
-pick curl -sSfLgm5 -o "$@" ||
-pick wget -qt1 -T5 -O "$@" ||
-pick timeout 5 ftp -o "$@"
+pick curl -sSfLgm15 -o "$@" ||
+pick wget -qt1 -T15 -O "$@" ||
+pick timeout 15 ftp -o "$@"
 )
 
 clean(){

@@ -90,9 +90,10 @@ __feud_dispatch() {
 }
 
 __feud_dispatch_both() {
-	# FIXME? on shells that don't support locals (ksh), IFS never gets reset.
+	OIFS=$IFS
 	__feud_c=feud_add_option IFS=, __feud_dispatch "$1"
 	__feud_c=feud_add_switch IFS=, __feud_dispatch "$2"
+	IFS=$OIFS
 	return $__feud_error
 }
 

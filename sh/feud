@@ -5,7 +5,7 @@
 ### **NOTE:** the API is still experimental and will undergo major changes.
 
 __feud_invalid() {
-	case $1 in (*[!_A-Za-z0-9]*) true;; ([_A-Za-z]*) false;; (*) true;; esac
+	case $1 in (*[!_A-Za-z0-9]*) true;; ([_A-Za-z]*) false;; esac
 }
 
 __feud_alert() {
@@ -176,14 +176,12 @@ feud() {
 				__feud_help >&2
 				return 64;;
 			(*)
-				if case $__feud_f in
-				(-["$__feud_options"]*) true;;
-				(*) false;;
-				esac; then
+				case $__feud_f in
+				(-["$__feud_options"]*)
 					set -- "${__feud_f%"${__feud_f#-?}"}" "${__feud_f#-?}" "$@"
-				else
+				(*)
 					set -- "${__feud_f%"${__feud_f#-?}"}" "-${__feud_f#-?}" "$@"
-				fi
+				esac
 				: $((__feud_n+=2))
 				continue;;
 			esac;;

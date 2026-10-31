@@ -43,7 +43,7 @@ feud_add_option() {
 }
 
 feud_add_switch() {
-	if { [ $# != 2 ] && [ $# != 3 ] ;} || [ ${#1} != 1 ] || [ ${#2} = 0 ]; then
+	if { [ $# != 2 ] && [ $# != 3 ]; } || [ ${#1} != 1 ] || [ ${#2} = 0 ]; then
 		# TODO: improve error message, especially when running from __feud_dispatch!
 		[ ${#1}  = 1 ] || __feud_alert feud_add_switch "invalid argument: \"$1\""
 		[ ${#2} != 0 ] || __feud_alert feud_add_switch "invalid argument: \"$2\""
@@ -137,7 +137,7 @@ feud() {
 		__feud_alert feud "missing initialization -- call feud_new_program first!"
 		return 64
 	fi
-	eval "feud_match_flag() { case \$1 in $__feud_matches (*) false; esac ;}"
+	eval "feud_match_flag() { case \$1 in $__feud_matches (*) false; esac; }"
 
 	__feud_n=$#
 	while [ $((__feud_n-=1)) -ge 0 ]; do

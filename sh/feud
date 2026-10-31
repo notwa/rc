@@ -5,8 +5,7 @@
 ### **NOTE:** the API is still experimental and will undergo major changes.
 
 __feud_invalid() {
-	#v(){ case "$1" in (*[!_A-Za-z0-9]*) :;;([_A-Za-z]*) [ ];esac;}
-	case "$1" in (*[!_A-Za-z0-9]*) true;; ([_A-Za-z]*) false;; (*) true;; esac
+	case $1 in (*[!_A-Za-z0-9]*) true;; ([_A-Za-z]*) false;; (*) true;; esac
 }
 
 __feud_alert() {
@@ -22,15 +21,15 @@ feud_new_program() {
 		return 64
 	fi
 
-	__feud_program="$1" __feud_callback="$2"
+	__feud_program=$1 __feud_callback=$2
 	__feud_switches= __feud_options= __feud_matches=
 }
 
 feud_add_option() {
-	if [ $# != 2 ] || [ "${#1}" != 1 ] || [ "${#2}" = 0 ]; then
+	if [ $# != 2 ] || [ ${#1} != 1 ] || [ ${#2} = 0 ]; then
 		# TODO: improve error message, especially when running from __feud_dispatch!
-		[ "${#1}"  = 1 ] || __feud_alert feud_add_option "invalid argument: \"$1\""
-		[ "${#2}" != 0 ] || __feud_alert feud_add_option "invalid argument: \"$2\""
+		[ ${#1}  = 1 ] || __feud_alert feud_add_option "invalid argument: \"$1\""
+		[ ${#2} != 0 ] || __feud_alert feud_add_option "invalid argument: \"$2\""
 		__feud_alert usage "feud_add_option {single character} {variable name}"
 		return 64
 	elif __feud_invalid "$2"; then
@@ -39,15 +38,15 @@ feud_add_option() {
 		return 64
 	fi
 
-	__feud_options="$__feud_options$1"
+	__feud_options=$__feud_options$1
 	__feud_matches="$__feud_matches ($1) $2=\"\$2\";;"
 }
 
 feud_add_switch() {
-	if { [ $# != 2 ] && [ $# != 3 ] ;} || [ "${#1}" != 1 ] || [ "${#2}" = 0 ]; then
+	if { [ $# != 2 ] && [ $# != 3 ] ;} || [ ${#1} != 1 ] || [ ${#2} = 0 ]; then
 		# TODO: improve error message, especially when running from __feud_dispatch!
-		[ "${#1}"  = 1 ] || __feud_alert feud_add_switch "invalid argument: \"$1\""
-		[ "${#2}" != 0 ] || __feud_alert feud_add_switch "invalid argument: \"$2\""
+		[ ${#1}  = 1 ] || __feud_alert feud_add_switch "invalid argument: \"$1\""
+		[ ${#2} != 0 ] || __feud_alert feud_add_switch "invalid argument: \"$2\""
 		__feud_alert usage "feud_add_switch {single character} {variable name} [value]"
 		return 64
 	elif __feud_invalid "$2"; then
@@ -60,7 +59,7 @@ feud_add_switch() {
 		return 64
 	fi
 
-	__feud_switches="$__feud_switches$1"
+	__feud_switches=$__feud_switches$1
 	if [ $# = 2 ]; then
 		eval "$2=0"
 		__feud_matches="$__feud_matches ($1) : \$(($2+=1));;"
@@ -74,7 +73,7 @@ __feud_dispatch() {
 	case $- in (*f*) set -- $1${1:+,};; (*) set -f; set -- $1${1:+,}; set +f;; esac
 	for arg; do
 		set -- "${arg##*-}" "${arg%-*}"
-		case "$arg" in
+		case $arg in
 		(?*=?*-?*)
 			"$__feud_c" "$1" "${2%%=*}" "${2#*=}";;
 		(?*-?*)
@@ -104,7 +103,7 @@ feud_configure() {
 		return 64
 	fi
 
-	case "$1" in
+	case $1 in
 	(*:*:*)
 		__feud_alert feud_configure 'too many colons, expected one'
 		__feud_alert feud_configure '(hint) "switch,switch:option,option"'
@@ -116,9 +115,9 @@ feud_configure() {
 	esac
 
 	__feud_error=0 \
-	__feud_old_options="$__feud_options" \
-	__feud_old_switches="$__feud_switches" \
-	__feud_old_matches="$__feud_matches" \
+	__feud_old_options=$__feud_options \
+	__feud_old_switches=$__feud_switches \
+	__feud_old_matches=$__feud_matches \
 	__feud_dispatch_both "${1%:*}" "${1#*:}"
 }
 
@@ -137,12 +136,12 @@ feud() {
 		__feud_alert feud "missing initialization -- call feud_new_program first!"
 		return 64
 	fi
-	eval "feud_match_flag() { case \"\$1\" in $__feud_matches (*) false; esac ;}"
+	eval "feud_match_flag() { case \$1 in $__feud_matches (*) false; esac ;}"
 
 	__feud_n=$#
 	while [ $((__feud_n-=1)) -ge 0 ]; do
-		__feud_f="$1"
-		case "$__feud_f" in
+		__feud_f=$1
+		case $__feud_f in
 
 		# TODO: don't check for -h here if the user configured their own.
 		(/\?|-h|-help|--help)
@@ -159,7 +158,7 @@ feud() {
 
 		(-*)
 			shift
-			case "${__feud_f#-}" in
+			case ${__feud_f#-} in
 			(["$__feud_switches"])
 				feud_match_flag "${__feud_f#-}" || __feud_alert feud "internal error"
 				:;;
@@ -177,7 +176,7 @@ feud() {
 				__feud_help >&2
 				return 64;;
 			(*)
-				if case "$__feud_f" in
+				if case $__feud_f in
 				(-["$__feud_options"]*) true;;
 				(*) false;;
 				esac; then

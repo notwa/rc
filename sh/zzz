@@ -59,6 +59,9 @@ gdp() { ### @- invoke `gd` to diff a commit from its parent. the commit defaults
     gd "$commit~" "$commit"
 }
 
+glo() ### @- navigate git's commit tree succinctly.
+  { git log --graph --decorate --pretty=oneline --abbrev-commit --all "$@"; }
+
 rgn() ### @- invoke ripgrep without respecting `.gitignore` files.
   { rg -u "$@"; }
 

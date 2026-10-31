@@ -13,6 +13,7 @@ export LC_ALL=C
 
 will(){
 task=$*
+[ "${VERBOSE:-0}" = 0 ] || printf 'going to %s\n' "$task" >&2
 }
 
 die(){

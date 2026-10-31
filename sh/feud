@@ -66,8 +66,7 @@ feud_add_switch() {
 }
 
 __feud_dispatch() {
-	# NOTE: temporarily using 2>/dev/null instead of 2>&- until OSH bug gets fixed.
-	PATH=: setopt local_options sh_word_split 2>/dev/null
+	[ "$ZSH_SUBSHELL" ] && setopt local_options sh_word_split
 	case $- in (*f*) set -- $1${1:+,};; (*) set -f; set -- $1${1:+,}; set +f;; esac
 	for arg; do
 		set -- "${arg##*-}" "${arg%-*}"
@@ -167,7 +166,7 @@ feud() {
 					return 64
 				fi
 				: $((__feud_n-=1))
-				feud_match_flag "${__feud_f#-}" "$1" || printf '%s: %s\n' feud "internal error"
+				feud_match_flag "${__feud_f#-}" "$1" || printf >&2 '%s: %s\n' feud "internal error"
 				shift;;
 			(-*|?)
 				printf >&2 '%s: %s\n' "$__feud_program" "unknown flag: $__feud_f"

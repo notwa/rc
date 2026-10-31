@@ -9,12 +9,16 @@ __feud_invalid() {
 	case "$1" in (*[!_A-Za-z0-9]*) true;; ([_A-Za-z]*) false;; (*) true;; esac
 }
 
+__feud_alert() {
+	printf >&2 '%s: %s\n' "$@"
+}
+
 feud_new_program() {
 	if [ $# != 2 ]; then
-		printf >&2 %s\\n "usage: feud_new_program {program name} {callback name}"
+		__feud_alert usage "feud_new_program {program name} {callback name}"
 		return 64
 	elif __feud_invalid "$2"; then
-		printf >&2 %s\\n "feud_new_program: callback name must be a valid identifier"
+		__feud_alert feud_new_program "callback name must be a valid identifier"
 		return 64
 	fi
 
@@ -25,13 +29,13 @@ feud_new_program() {
 feud_add_option() {
 	if [ $# != 2 ] || [ "${#1}" != 1 ] || [ "${#2}" = 0 ]; then
 		# TODO: improve error message, especially when running from __feud_dispatch!
-		[ "${#1}"  = 1 ] || printf >&2 %s\\n "feud_add_option: invalid argument: \"$1\""
-		[ "${#2}" != 0 ] || printf >&2 %s\\n "feud_add_option: invalid argument: \"$2\""
-		printf >&2 %s\\n "usage: feud_add_option {single character} {variable name}"
+		[ "${#1}"  = 1 ] || __feud_alert feud_add_option "invalid argument: \"$1\""
+		[ "${#2}" != 0 ] || __feud_alert feud_add_option "invalid argument: \"$2\""
+		__feud_alert usage "feud_add_option {single character} {variable name}"
 		return 64
 	elif __feud_invalid "$2"; then
-		printf >&2 %s\\n "feud_add_option: invalid argument: \"$2\""
-		printf >&2 %s\\n "feud_add_option: variable name must be a valid identifier"
+		__feud_alert feud_add_option "invalid argument: \"$2\""
+		__feud_alert feud_add_option "variable name must be a valid identifier"
 		return 64
 	fi
 
@@ -42,17 +46,17 @@ feud_add_option() {
 feud_add_switch() {
 	if { [ $# != 2 ] && [ $# != 3 ] ;} || [ "${#1}" != 1 ] || [ "${#2}" = 0 ]; then
 		# TODO: improve error message, especially when running from __feud_dispatch!
-		[ "${#1}"  = 1 ] || printf >&2 %s\\n "feud_add_switch: invalid argument: \"$1\""
-		[ "${#2}" != 0 ] || printf >&2 %s\\n "feud_add_switch: invalid argument: \"$2\""
-		printf >&2 %s\\n "usage: feud_add_switch {single character} {variable name} [value]"
+		[ "${#1}"  = 1 ] || __feud_alert feud_add_switch "invalid argument: \"$1\""
+		[ "${#2}" != 0 ] || __feud_alert feud_add_switch "invalid argument: \"$2\""
+		__feud_alert usage "feud_add_switch {single character} {variable name} [value]"
 		return 64
 	elif __feud_invalid "$2"; then
-		printf >&2 %s\\n "feud_add_switch: invalid argument: \"$2\""
-		printf >&2 %s\\n "feud_add_switch: variable name must be a valid identifier"
+		__feud_alert feud_add_switch "invalid argument: \"$2\""
+		__feud_alert feud_add_switch "variable name must be a valid identifier"
 		return 64
 	elif [ $# = 3 ] && [ -z "${3##*[!0-9]*}" ]; then
 		# TODO: lift this restriction?
-		printf >&2 %s\\n "feud_add_switch: value must be a non-negative integer"
+		__feud_alert feud_add_switch "value must be a non-negative integer"
 		return 64
 	fi
 
@@ -77,11 +81,11 @@ __feud_dispatch() {
 			"$__feud_c" "$1" "$2";;
 		# TODO: handle (*=*) to give a contextual error message.
 		(*) # TODO: catch this case as well: "c=-d"
-			printf >&2 %s\\n "feud_configure: expected two hyphen-separated parameters: \"$arg\""
+			__feud_alert feud_configure "expected two hyphen-separated parameters: \"$arg\""
 			__feud_error=64;;
 		esac || {
 			__feud_error=$?
-			printf >&2 %s\\n "feud_configure: the above error is due to this substring: \"$arg\""
+			__feud_alert feud_configure "the above error is due to this substring: \"$arg\""
 		}
 	done
 }
@@ -95,19 +99,19 @@ __feud_dispatch_both() {
 
 feud_configure() {
 	if [ $# != 1 ]; then
-		printf >&2 %s\\n 'usage: feud_configure {string of options:switches}'
-		printf >&2 %s\\n 'example: `feud_configure input-i,output-o:always-a,yes-y`'
+		__feud_alert usage 'feud_configure {string of options:switches}'
+		__feud_alert example '`feud_configure input-i,output-o:always-a,yes-y`'
 		return 64
 	fi
 
 	case "$1" in
 	(*:*:*)
-		printf >&2 %s\\n 'feud_configure: too many colons, expected one'
-		printf >&2 %s\\n 'feud_configure: (hint) "switch,switch:option,option"'
+		__feud_alert feud_configure 'too many colons, expected one'
+		__feud_alert feud_configure '(hint) "switch,switch:option,option"'
 		return 64;;
 	(*:*) :;; # no-op
 	(*)
-		printf >&2 %s\\n 'feud_configure: expected one colon'
+		__feud_alert feud_configure 'expected one colon'
 		return 64;;
 	esac
 
@@ -130,7 +134,7 @@ feud() {
 	# locals: __feud_n, __feud_f
 
 	if [ -z "$__feud_callback" ]; then
-		printf >&2 %s\\n "feud: missing initialization -- call feud_new_program first!"
+		__feud_alert feud "missing initialization -- call feud_new_program first!"
 		return 64
 	fi
 	eval "feud_match_flag() { case \"\$1\" in $__feud_matches (*) false; esac ;}"
@@ -157,19 +161,19 @@ feud() {
 			shift
 			case "${__feud_f#-}" in
 			(["$__feud_switches"])
-				feud_match_flag "${__feud_f#-}" || printf >&2 '%s: %s\n' feud "internal error"
+				feud_match_flag "${__feud_f#-}" || __feud_alert feud "internal error"
 				:;;
 			(["$__feud_options"])
 				if [ $__feud_n = 0 ]; then
-					printf >&2 '%s: %s\n' "$__feud_program" "missing argument for $__feud_f"
+					__feud_alert "$__feud_program" "missing argument for $__feud_f"
 					__feud_help >&2
 					return 64
 				fi
 				: $((__feud_n-=1))
-				feud_match_flag "${__feud_f#-}" "$1" || printf >&2 '%s: %s\n' feud "internal error"
+				feud_match_flag "${__feud_f#-}" "$1" || __feud_alert feud "internal error"
 				shift;;
 			(-*|?)
-				printf >&2 '%s: %s\n' "$__feud_program" "unknown flag: $__feud_f"
+				__feud_alert "$__feud_program" "unknown flag: $__feud_f"
 				__feud_help >&2
 				return 64;;
 			(*)

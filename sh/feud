@@ -53,7 +53,7 @@ feud_add_switch() {
 		__feud_alert feud_add_switch "invalid argument: \"$2\""
 		__feud_alert feud_add_switch "variable name must be a valid identifier"
 		return 64
-	elif [ $# = 3 ] && [ -z "${3##*[!0-9]*}" ]; then
+	elif [ $# = 3 ] && ! [ "${3##*[!0-9]*}" ]; then
 		# TODO: lift this restriction?
 		__feud_alert feud_add_switch "value must be a non-negative integer"
 		return 64
@@ -69,7 +69,7 @@ feud_add_switch() {
 }
 
 __feud_dispatch() {
-	[ "$ZSH_SUBSHELL" ] && setopt local_options sh_word_split
+	[ ${ZSH_SUBSHELL++} ] && setopt local_options sh_word_split
 	case $- in (*f*) set -- $1${1:+,};; (*) set -f; set -- $1${1:+,}; set +f;; esac
 	for arg; do
 		set -- "${arg##*-}" "${arg%-*}"
@@ -133,7 +133,7 @@ __feud_help() {
 feud() {
 	# locals: __feud_n, __feud_f
 
-	if [ -z "$__feud_callback" ]; then
+	if ! [ ${__feud_callback++} ]; then
 		__feud_alert feud "missing initialization -- call feud_new_program first!"
 		return 64
 	fi

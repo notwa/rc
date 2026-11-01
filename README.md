@@ -754,119 +754,123 @@ invoke git's status subcommand, skipping untracked files.
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [rgn (sh/zzz)](/sh/zzz#L62)
+### [glo (sh/zzz)](/sh/zzz#L62)
+
+navigate git's commit tree succinctly.
+
+### [rgn (sh/zzz)](/sh/zzz#L65)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (sh/zzz)](/sh/zzz#L71)
+### [curls (sh/zzz)](/sh/zzz#L74)
 
 be a little smarter with curl. (HTTPS only)
 
-### [revend (sh/zzz)](/sh/zzz#L83)
+### [revend (sh/zzz)](/sh/zzz#L86)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (sh/zzz)](/sh/zzz#L86)
+### [clone (sh/zzz)](/sh/zzz#L89)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
 **TODO:** rename because POSIX.1-2024 reserves this name.
 
-### [aligntabs (sh/zzz)](/sh/zzz#L90)
+### [aligntabs (sh/zzz)](/sh/zzz#L93)
 
 align tab-delimited fields in stdin.
 
-### [crawla (sh/zzz)](/sh/zzz#L101)
+### [crawla (sh/zzz)](/sh/zzz#L104)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (sh/zzz)](/sh/zzz#L104)
+### [crawlz (sh/zzz)](/sh/zzz#L107)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (sh/zzz)](/sh/zzz#L108)
+### [diff (sh/zzz)](/sh/zzz#L111)
 
 use git's diff subcommand for general diffing.
 
-### [gc (sh/zzz)](/sh/zzz#L113)
+### [gc (sh/zzz)](/sh/zzz#L116)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (sh/zzz)](/sh/zzz#L117)
+### [counts (sh/zzz)](/sh/zzz#L120)
 
 count files in the current directory, including files found recursively.
 
-### [exts (sh/zzz)](/sh/zzz#L120)
+### [exts (sh/zzz)](/sh/zzz#L123)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (sh/zzz)](/sh/zzz#L124)
+### [nocom (sh/zzz)](/sh/zzz#L127)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (sh/zzz)](/sh/zzz#L127)
+### [jrep (sh/zzz)](/sh/zzz#L130)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (sh/zzz)](/sh/zzz#L130)
+### [bomb (sh/zzz)](/sh/zzz#L133)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (sh/zzz)](/sh/zzz#L133)
+### [cleanse (sh/zzz)](/sh/zzz#L136)
 
 strip unprintable and non-ASCII characters.
 
-### [double (sh/zzz)](/sh/zzz#L136)
+### [double (sh/zzz)](/sh/zzz#L139)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (sh/zzz)](/sh/zzz#L141)
+### [katagana (sh/zzz)](/sh/zzz#L144)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (sh/zzz)](/sh/zzz#L145)
+### [makepkgf (sh/zzz)](/sh/zzz#L148)
 
 make the freakin' package!
 
-### [rakef (sh/zzz)](/sh/zzz#L148)
+### [rakef (sh/zzz)](/sh/zzz#L151)
 
 make the freakin' gem!
 
-### [relog (sh/zzz)](/sh/zzz#L151)
+### [relog (sh/zzz)](/sh/zzz#L154)
 
 log on again to refresh your unix groups, etc.
 
-### [shi7 (sh/zzz)](/sh/zzz#L154)
+### [shi7 (sh/zzz)](/sh/zzz#L157)
 
 invoke `sha1sum` but only output the first 7 characters of each hash, a la git.
 
-### [carry (sh/zzz)](/sh/zzz#L157)
+### [carry (sh/zzz)](/sh/zzz#L160)
 
 copy files in a plain way using rsync. affected by umask.
 
-### [xxl (sh/zzz)](/sh/zzz#L160)
+### [xxl (sh/zzz)](/sh/zzz#L163)
 
 dump a file with `xxd` and view it in `less`. includes colors.
 
-### [xxl1 (sh/zzz)](/sh/zzz#L163)
+### [xxl1 (sh/zzz)](/sh/zzz#L166)
 
 like `xxl`, but don't group bytes by two.
 
-### [colors (sh/zzz)](/sh/zzz#L175)
+### [colors (sh/zzz)](/sh/zzz#L178)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L217)
+### [morecolors (sh/zzz)](/sh/zzz#L220)
 
 print all 256 colors that are available on most terminals.
 

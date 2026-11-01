@@ -1,0 +1,73 @@
+#!/usr/bin/env sh
+# compat: +ash -bsh +bash +dash +ksh +mksh +net +oksh +osh -posh +yash +zsh
+# this kinda works in posh, but it trips up on `[ -k ]`, so it always uses /tmp.
+
+mkdirt() { ### @-
+    ### **m**a**k**e a **dir**ectory for **t**emporary files, usually in memory.
+    ### building upon `mktemp -d`, `mkdirt` prefers to find common tmpfs mounts,
+    ### and avoids a couple inconsistencies in templates between Linux and BSDs.
+    ### it can be loaded as a library to set variables without echoing anything.
+    ###
+    ### ```
+    ### $ ~/sh/mkdirt
+    ### /dev/shm/tmp.BmDj9BrmTY
+    ### $ preload=:; . ~/sh/mkdirt
+    ### $ mkdirt this=that garbage=junk
+    ### $ printf '%s\n' "$this" "$garbage"
+    ### /dev/shm/that.Bp536YvkXi
+    ### /dev/shm/junk.0ymIZXsU8G
+    ### ```
+
+    # be cautious with variable names here. since we use eval, the user
+    # could (in theory) overwrite one of our local variables by mistake.
+    [ ${ZSH_VERSION++} ] && setopt LOCAL_OPTIONS SH_WORD_SPLIT
+
+    x= # return value (leaked)
+    mk_suf=XXXXXXXXXX # more X's are more secure, but this is already plenty
+
+    for mk_tmpdir in /dev/shm /var/shm /tmp; do
+        [ -k "$mk_tmpdir" ] && break
+    done
+
+    if [ $# = 0 ]; then
+        mktemp -dp "$mk_tmpdir" "tmp.$mk_suf" || x=$?
+        unset mk_suf mk_tmpdir
+        return $x
+    fi
+
+    for mk_arg; do
+        case $mk_arg in
+        (*[!0-9=A-Z_a-z-]*);;
+        (*=*=*);;
+        (*-*=*);;
+        (*?=?*) continue;;
+        (*)
+        esac
+        printf >&2 '%s: %s\n' mkdirt "invalid argument: $mk_arg"
+        printf >&2 '%s: %s\n' mkdirt "expected format: variable=prefix"
+        return 64
+    done
+
+    for mk_arg; do
+        shift
+        [ $x ] && continue
+        mk_var=${mk_arg%=*}
+        mk_pre=${mk_arg#*=}
+        mk_out=$(exec mktemp -dp "$mk_tmpdir" "$mk_pre.$mk_suf") &&
+        set -- "$@" "$mk_var=$mk_out" || x=$?
+    done
+
+    if [ $x ]; then
+        for mk_arg; do
+            rmdir -- "${mk_arg#*=}"
+        done
+    else
+        for mk_arg; do
+            eval "${mk_arg%%=*}=\${mk_arg#*=}"
+        done
+    fi
+    unset mk_arg mk_out mk_pre mk_suf mk_tmpdir mk_var
+    return $x
+}
+
+${preload+:} mkdirt "$@"

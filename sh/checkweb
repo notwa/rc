@@ -37,6 +37,57 @@ __checkweb_is_version() {
     case "$1" in (*[!0-9.]*) false;; (*.*) true;; (*) false;; esac
 }
 
+__checkweb_parse() {
+    # input: (a single argument)
+    # output: uri next authority location credentials hosty
+    # output: scheme username password domain port pathy
+    # overwritten: etc
+
+    [ $# = 1 ] || return
+    uri=${1:?} next=
+
+    etc=$uri; scheme=${etc%%:*}
+    [ "$scheme" != "$etc" ] &&
+    [ "${scheme#[A-Za-z]}" != "$scheme" ] &&
+    [ "${scheme%[!A-Za-z0-9.+-]*}" = "$scheme" ] &&
+    { etc=${etc#"$scheme"}; etc=${etc#:}; } ||
+    scheme=
+
+    # note that this coerces an authority even if there is none.
+    # this is convenient for URLs, but breaks other URIs.
+    [ "${etc#//}" = "$etc" ] && pathy=$uri/ scheme= || pathy=${etc#//}/
+    authority=${pathy%%[/?#]*}; pathy=${pathy#"$authority"}; pathy=${pathy%/}
+
+    case $authority in (*@*) false; esac &&
+    location=$authority ||
+    location=${authority##*@} credentials=${authority%@*}
+
+    case $location in (*:*) false;; ([[]*[]]) false; esac &&
+    domain=$location port= ||
+    domain=${location%:*} port=${location##*:}
+
+    case $credentials in (*:*) false; esac &&
+    username=$credentials ||
+    username=${credentials%%:*} password=${credentials#*:}
+
+    hosty=${username}${password:+:}${password}${username:+@}${domain}
+    if [ -z "$domain" ]; then # no domain like file:///
+        true # nothing we can do
+    elif [ -z "$scheme" ]; then # no protocol specified
+        [ "$port" = 443 ] && scheme=https || scheme=http
+        if [ -z "$port" ]; then # if we can choose
+            port=80 # do http now, queue https next
+            next=https://$hosty:443$pathy
+        fi
+    elif [ -z "$port" ]; then
+        [ "$scheme" = https ] && port=443 || port=80
+    fi
+
+    uri=${scheme}${scheme:+:}${authority+//}${hosty}${port:+:}${port}${pathy:-/}
+
+    unset etc
+}
+
 __checkweb_with_curl() {
     if set -- $("$prog" --version 2>&1); then
         for token; do
@@ -336,53 +387,14 @@ __checkweb() {
             continue
         fi
 
-        etc=$uri; scheme=${etc%%:*}
-        [ "$scheme" != "$etc" ] &&
-        [ "${scheme#[A-Za-z]}" != "$scheme" ] &&
-        [ "${scheme%[!A-Za-z0-9.+-]*}" = "$scheme" ] &&
-        { etc=${etc#"$scheme"}; etc=${etc#:}; } ||
-        scheme=
-
-        # note that this coerces an authority even if there is none.
-        # this is convenient for URLs, but breaks other URIs.
-        [ "${etc#//}" = "$etc" ] && pathy=$uri/ scheme= || pathy=${etc#//}/
-        authority=${pathy%%[/?#]*}; pathy=${pathy#"$authority"}; pathy=${pathy%/}
-
-        case $authority in (*@*) false; esac &&
-        location=$authority ||
-        location=${authority##*@} credentials=${authority%@*}
-
-        case $location in (*:*) false;; ([[]*[]]) false; esac &&
-        domain=$location port= ||
-        domain=${location%:*} port=${location##*:}
-
-        case $credentials in (*:*) false; esac &&
-        username=$credentials ||
-        username=${credentials%%:*} password=${credentials#*:}
-
-        hosty=${username}${password:+:}${password}${username:+@}${domain}
-        if [ -z "$domain" ]; then # no domain like file:///
-            true # nothing we can do
-        elif [ -z "$scheme" ]; then # no protocol specified
-            [ "$port" = 443 ] && scheme=https || scheme=http
-            if [ -z "$port" ]; then # if we can choose
-                port=80 # do http now, queue https next
-                set -- "https://$hosty:443$pathy" "$@"
-            fi
-        elif [ -z "$port" ]; then
-            [ "$scheme" = https ] && port=443 || port=80
-        fi
-
-        uri=${scheme}${scheme:+:}${authority+//}${hosty}${port:+:}${port}${pathy:-/}
-        #printf '<%s>\n' "$uri"
-        #printf '(%s)\n' "$authority"
+        __checkweb_parse "$uri"
+        [ "$next" ] && set -- "$next" "$@"
 
         printf '\033[1m# connecting to \033[m'
         printf '\033[97m%s\033[90m%s' \
         "${scheme:-ERROR}" :// "${domain:-ERROR}" : "${port:-ERROR}" /
         printf '\033[m\n'
 
-        #: "${scheme:?}" "${domain:?}" "${port:?}"
         if [ "${scheme:+-}${domain:+-}${port:+-}" != --- ]; then
             __checkweb_warn "skipping $uri due to missing fields"
             continue

@@ -38,23 +38,27 @@ if ! [ "${PATH:+}" ] || ! command -v sh >&2; then
 fi 2>/dev/null # this silences any older shells that are lacking the `-ef` test
 export PATH
 
-# this handles the case where $USER and $HOME are not set,
-# as that occurs when env -i or cloud-init are being used.
-# really, this code would make more sense in /etc/profile.
-__pwd="$PWD"
+# this next section handles the scenario where $USER and $HOME
+# are unset, as that can occur when using env -i or cloud-init.
+__pwd=$PWD
+
 user() { ! case ${USER=} in (*[!A-Za-z0-9._-]*) true;; (?*) false; esac; }
 if ! user; then
-    USER="$(whoami 2>&-)" &&
+    USER=$(whoami 2>&-) &&
     user || unset USER # well, we tried
-fi; unset -f user
+fi
+
 home() { [ "${HOME=}" != "${HOME#/}" ] && cd -- "$HOME" 2>&-; }
 if ! home; then
     for HOME in /root "${USER+/home/}${USER-}" /home/* ""; do
         [ -d "$HOME" ] && [ -O "$HOME" ] && break
     done
     home || unset HOME # well, we tried
-fi; unset -f home
-cd -- "$__pwd"; unset __pwd
+fi
+
+unset -f user home
+cd -- "$__pwd"
+unset __pwd
 
 #export LANG=$(locale -uU) # set user-defined locale
 export SSH_AUTH_SOCK=0 # more info: https://0x0.st/NUnw
@@ -70,7 +74,7 @@ if case $- in (*i*) true;; (*) false;; esac; then
     ! [ -r ~/.shrc ] || export ENV=~/.shrc
     ! [ -r ~/.bashrc ] || BASH_ENV=~/.bashrc # see ~/.bash_profile
 
-elif [ -n "${HOME++}" ]; then
+elif [ "${HOME++}" ]; then
     # this is a non-interactive shell.
 
     prepend "$HOME/.local/bin"
@@ -78,8 +82,7 @@ elif [ -n "${HOME++}" ]; then
     # TODO: consider exporting EA_* variables, so that `ea` can work too.
     prepend "$HOME/sh"
     if [ -r "$HOME/sh/zzz" ]; then
-        # a script containing short functions that don't merit individual files:
-        . ~/sh/zzz
+        . ~/sh/zzz # contains short functions that don't merit individual files
     fi
 fi
 unset -f prepend

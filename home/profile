@@ -38,6 +38,14 @@ if ! [ "${PATH:+}" ] || ! command -v sh >&2; then
 fi 2>/dev/null # this silences any older shells that are lacking the `-ef` test
 export PATH
 
+if [ -f /netbsd ] && ! [ "${PKG_PATH:+}" ]; then
+    __cv=$(exec uname -rp)
+    PKG_PATH=https://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD
+    PKG_PATH=$PKG_PATH/${__cv##* }/${__cv% *}/All
+    export PKG_PATH
+    unset __cv
+fi
+
 # this next section handles the scenario where $USER and $HOME
 # are unset, as that can occur when using env -i or cloud-init.
 __pwd=$PWD

@@ -79,8 +79,8 @@ if case $- in (*i*) true;; (*) false;; esac; then
 
     # this trick with ENV works in: ash, dash, ksh, and loksh/oksh.
     # bash has $BASH_ENV, but it only runs in non-interactive mode.
-    ! [ -r ~/.shrc ] || export ENV=~/.shrc
-    ! [ -r ~/.bashrc ] || BASH_ENV=~/.bashrc # see ~/.bash_profile
+    [ -r ~/.shrc ] && export ENV=~/.shrc
+    [ -r ~/.bashrc ] && BASH_ENV=~/.bashrc # see ~/.bash_profile
 
 elif [ "${HOME++}" ]; then
     # this is a non-interactive shell.

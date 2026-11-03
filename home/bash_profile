@@ -1,2 +1,2 @@
 [ -r ~/.profile ] && . ~/.profile
-[ -n "${BASH_ENV++}" ] && . "$BASH_ENV"
+[ ${BASH_ENV++} ] && . "$BASH_ENV"

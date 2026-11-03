@@ -18,6 +18,11 @@ prepend() {
     case :${PATH-}: in (*":$1:"*) false; esac && PATH=$1${PATH:+:}${PATH-}
 }
 
+case $PATH in # check for default PATHs and reset them to be more comprehensive
+(/usr/sbin:/usr/bin:/sbin:/bin) unset PATH;;
+(/usr/bin:/bin:/usr/pkg/bin:/usr/local/bin) unset PATH;;
+esac
+
 # NOTE: busybox always claims `sh` is present, making the second condition moot.
 if ! [ "${PATH:+}" ] || ! command -v sh >&2; then
     [ /bin -ef /usr/bin ] || prepend /bin

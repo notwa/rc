@@ -1,0 +1,100 @@
+#!/usr/bin/env sh
+# FAKE_COMPAT
+
+entrypoint() {
+    depends checkweb
+    execute httpssl "$@"
+}
+
+httpssl() { ### @- a very crude HTTPS/1.0 client using only OpenSSL.
+    ### affected by the `TIMEOUT` and `REDIRECTS` variables.
+    ### **NOTE:** you really don't want to run this directly.
+    ### this is used as a fallback in other scripts.
+
+    # warning: this makes a mess of the working directory and the environment.
+    # you really should be running it in a temporary directory and a subshell.
+
+    [ $'' ] && r=$(printf \\r) || r=$'\r'
+
+    warn() {
+        printf >&2 '%s: %s\n' httpssl "$*"
+    }
+
+    produce() {
+        __checkweb_parse "$1"
+        [ "$next" ] && return 1 # URI looks like HTTP but we can only do HTTPS
+        method=GET
+        printf '%s\r\n' "$method $pathy HTTP/1.0" "Host: $domain" ''
+    }
+
+    connect() {
+        # this should use the -ignore_unexpected_eof flag, but v1.1.1 lacks it.
+        set -- openssl s_client -quiet -ign_eof -verify_quiet -connect "$@"
+        if [ "${TIMEOUT:=45}" != 0 ] # you must set TIMEOUT to 0...
+        then timeout "$TIMEOUT" "$@" # ...if you don't have this
+        else "$@"
+        fi
+    }
+
+    process() {
+        code= redirect=
+        # TODO: restore IFS in bad shells that don't understand scoping?
+        while IFS=$r read -r line _; [ "$line" ]; do
+            if ! [ "$line" ]; then
+                break
+            elif ! [ "$code" ]; then
+                trim=${line#HTTP/1.[01] }
+                if [ "$trim" = "$line" ]; then
+                    warn "received something that wasn't HTTP"; return 1
+                fi
+                code=${trim%% *}
+                case $code in
+                (200|301|302);;
+                (*) warn 'received unhandled HTTP code: %s\n' "$code"; return 1
+                esac
+            else
+                case $line in
+                (Location:\ *) case $code in (301|302) redirect=${line#* }; esac;;
+                (*:\ *);;
+                (*) warn 'received an invalid HTTP header'; return 1
+                esac
+            fi
+        done
+
+        case ${1-} in
+        (hash) openssl sha256 -r;;
+        (file) openssl enc -none;;
+        (?*) warn 'internal error: unknown mode (%s)\n' "$1"; return 1
+        # do nothing in the wildcard case
+        esac
+    }
+
+    if [ $# != 1 ]; then
+        printf >&2 'usage: %s\n' "httpssl {URL}"
+        return 2
+    fi
+
+    following=${REDIRECTS:-5}
+    while [ "$following" -gt 0 ]; do
+        produce "$1" >|.http-request || { warn 'invalid URL'; return 1; }
+        connect "$domain:$port" <.http-request >|.http-response
+        process <.http-response >|.http-body || return
+        if [ "$redirect" ]; then
+            : $((following-=1))
+            case $redirect in
+            (https://*);;
+            (http://*) redirect=https://${redirect#http://};;
+            (*) warn "received an invalid redirect URL: $redirect"; return 1
+            esac
+            set -- "$redirect" "$@"
+            unset redirect
+        else
+            break
+        fi
+    done
+    #warn 'redirect chain (end to start):' "$@"
+
+    process file <.http-response >|.http-body
+}
+
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

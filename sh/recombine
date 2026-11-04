@@ -1,11 +1,11 @@
 #!/usr/bin/env false
 # FAKE_COMPAT
 
-[ ${combo:++} ] || { echo >&2 this script must be sourced from shrc; exit 1; }
-cd -- "${combo%/*}" || exit
+[ ${SH:++} ] || { echo >&2 this script must be sourced from shrc; exit 1; }
+cd -- "$SH" || exit
 preload=:; . ./scrute && scrute match || exit
 
-pl '[ -n "$preload" ] || exit 1'
+pl 'preload=:'
 for f in *; do
     [ -n "${f##*.*}" ] && [ -f "$f" ] || continue
     ! [ -x "$f" ]; x=$? i=10 ok=
@@ -20,7 +20,7 @@ for f in *; do
     done < "$f"
 
     if [ "$x" = 1 ] && [ "$ok" = 0 ]; then
-        esc "${combo%/*}/$f"
+        esc "$SH/$f"
         # ensure $f is a valid function name/identifier in all shells:
         case ${f:-:} in ([!A-Z_a-z]*) ! :;; (*[!0-9A-Z_a-z]*) ! :;; esac &&
         pl "$f() { '${a:-! :}' \"\$@\"; }"
@@ -30,4 +30,4 @@ for f in *; do
 done
 pl
 [ $# = 0 ] || cat -- "$@"
-pl 'entrypoint() { :; }' 'unset -f entrypoint'
+pl 'entrypoint() { :; }' 'unset -f entrypoint' 'unset preload'

@@ -5,7 +5,6 @@ set +Cefu
 unset CDPATH IFS # CDPATH is basically a precursor to zoxide that kills scripts
 export LC_ALL=C # this is temporary; sane values are configured after __prepare
 unset LS_COLORS # this variable's value can grow obscenely large (see ~/sh/zzz)
-unset ENV BASH_ENV # don't run twice if we used one of these tricks to get here
 
 is_zsh() { test ${ZSH_VERSION:++}; }; is_bash() { test ${BASH_VERSION:++}; }
 if is_zsh && case $- in (im|ilm) :;; (?*) ! :;; (*) :; esac then emulate zsh
@@ -17,37 +16,45 @@ menucomplete autocd; echo >&2 "warning: .zshrc didn't source at startup"; fi
 
 __prepare() { # there is a point where we needed to stop and we have clearly passed it
 pl() { printf '%s\n' "$@"; }; die() { pl >&2 "prepare: failed to $*"; exit 1; }
-trap 'echo /dev/null' INT EXIT && set +Cefu && LC_ALL=C && unset IFS a s v x &&
+trap 'echo /dev/null; trap - EXIT; exit' INT EXIT && unset IFS a rc s sq v x &&
 if is_zsh; then set -y +o NOMATCH +o FUNCTION_ARGZERO && 0=zsh; fi || die reset
 
-mkdirs() { for a; do [ -d "$a" ] || mkdir "$a" || die 'make directory'; done; }
+sqj() { a=; for s; do a=$a$sq$s; done; a=${a#"$sq-"}; a=${a%-}; }
+esc() { set -f; IFS=\' sq="'\\''"; sqj -$*-; unset IFS; set +f; }
+
 if home() { [ "${HOME#/}" != "$HOME" ] && cd -- "$HOME" 2>&-; } && ! home; then
 for HOME in /root /home/* -; do [ -d "$HOME" ] && [ -O "$HOME" ] && break; done
-fi; if ! home; then HOME="$(mktemp -d)" && home || die 'set home directory'; fi
+fi; if ! home; then HOME=$(mktemp -d) && home || die 'setup home directory'; fi
 
+mkdirs() { for a; do [ -d "$a" ] || mkdir -- "$a" || die "create $a"; done; }
 xdg() { set -- "XDG_$1" "$HOME/$2" && export "$1" && eval "[ -d \"\$$1\" ] &&
 [ -w \"\$$1\" ] || { $1=\"\$2\" && mkdirs \"\$$1\"; }" || die allocate XDG; }
 mkdirs "$HOME/.local" && xdg CACHE_HOME .cache && xdg STATE_HOME .local/state &&
 xdg BIN_HOME .local/bin && xdg DATA_HOME .local/share && xdg CONFIG_HOME .config
 
-sqj() { a=; for s; do a=$a$sq$s; done; a=${a#"$sq-"}; a=${a%-}; }
-esc() { set -f; IFS=\' sq="'\\''"; sqj -$*-; unset IFS; set +f; }
-cache="$XDG_CACHE_HOME/shrc/sh-$$" && mkdirs "${cache%/*}" && esc "$cache" &&
-__shrc_cache="$a" && pl '#!/usr/bin/env false' > "$cache" || die create cache
-printf %s "$cache" && trap - INT EXIT && exec >> "$cache" || die enable cache
+cache=$XDG_CACHE_HOME/shrc/sh-$$ && mkdirs "${cache%/*}" || die prepare cache
+esc "$cache" && pl '#!/usr/bin/env false' > "$cache" || die create cache file
+printf %s "$cache" && trap - INT EXIT && exec >> "$cache" || die incite cache
 
-give() { eval "esc \"\$$v\" && pl \"$v='\$a'\"" || die give variable to cache; }
+[ ${ENV++} ] && [ -f "$ENV" ] || ENV=$HOME/.shrc
+for rc in "${ENV%/.shrc}/rc" "${ENV%/*}" "$HOME"
+do [ -d "$rc/sh" ] && break; done; __sh_cache=$a
+
+give() { eval "esc \"\$$1\" && pl \"$1='\$a'\"" || die give variable to cache; }
 ex() { for v; do give "$v"; done; export "$@" && pl "export $*" || die export; }
 ex HOME XDG_BIN_HOME XDG_CACHE_HOME XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME
 
-unset combo a s v x && unset -f die && pl preload=: || die clean up state
-if combo="$HOME/sh/recombine" && [ -f "$combo" ]; then . "$combo" || exit
-else pl 'printf >&2 %s\\n "prepare: missing script: sh/recombine"'; fi &&
-pl 'unset preload' && pl "rm -- '$__shrc_cache'"
+SH=$rc/sh && give SH && unset a rc s sq v x &&
+if ! [ -f "$SH/recombine" ]; then esc "$SH" &&
+pl "printf >&2 'prepare: missing: %s\\n' '$a'"
+else unset -f die && . "$SH/recombine" || exit
+fi || pl "rm -- '$__sh_cache'" || die finalize
 }
 
 . "$(__prepare)" || printf >&2 %s\\n "prepare: source returned failure"
 [ -z "$preload" ] || printf >&2 %s\\n "prepare: script ended abruptly"
+
+unset ENV BASH_ENV # don't run twice if we used one of these tricks to get here
 
 export LC_CTYPE=C.UTF-8
 [ -n "$LANG" ] || LANG=en_US.UTF-8

@@ -35,4 +35,4 @@ baks() { ### @-
     return $ret
 }
 
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

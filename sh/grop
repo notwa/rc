@@ -14,4 +14,4 @@ grop() { ### @- invoke grep with `-oP`.
     /usr/bin/env grep -oP -- "$@"
 }
 
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

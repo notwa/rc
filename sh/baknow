@@ -25,4 +25,4 @@ baknow() { ### @- backup files by appending their timestamps given by [`now`.](#
     return $ret
 }
 
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

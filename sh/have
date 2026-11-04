@@ -13,4 +13,4 @@ have() { ### @- print the result of `which` if the program is found, else simply
     has "$@" && printf %s\\n "$REPLY"
 }
 
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

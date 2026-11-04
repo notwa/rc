@@ -22,4 +22,4 @@ scount() { ### @-
     scount "$@"
 }
 
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

@@ -21,4 +21,4 @@ v_domap() {
     eval "$_k_=\"\$_new_\""
 }
 
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

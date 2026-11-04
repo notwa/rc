@@ -92,4 +92,4 @@ __lepton() {
 }
 
 lepton()(__lepton "$@")
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

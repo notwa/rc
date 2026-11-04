@@ -19,4 +19,4 @@ v_lower() { ### @- transform the contents of a variable to lowercase.
     v_domap "$1"
 }
 
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

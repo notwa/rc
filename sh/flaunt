@@ -144,4 +144,4 @@ Detected shell: $sh ($__flaunt_self)"
 }
 
 flaunt()(__flaunt "$@")
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

@@ -81,4 +81,4 @@ bylen() { ### @- sort lines by length. several implementations are provided.
     bylen "$@"
 }
 
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

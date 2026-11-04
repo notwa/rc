@@ -40,4 +40,4 @@ __subdue() { ### @subdue
 }
 
 subdue()(__subdue "$@")
-${preload+:} . ~/sh/bootstrap
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

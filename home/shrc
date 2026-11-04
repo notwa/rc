@@ -51,6 +51,8 @@ else unset -f die && . "$SH/recombine" || exit
 fi || pl "rm -- '$__sh_cache'" || die finalize
 }
 
+conflagrate() { :; } # this gets loaded per-shell, but not all shells have one
+
 . "$(__prepare)" || printf >&2 %s\\n "prepare: source returned failure"
 [ -z "$preload" ] || printf >&2 %s\\n "prepare: script ended abruptly"
 

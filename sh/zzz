@@ -1,5 +1,6 @@
 #!/usr/bin/env false
 # compat: +ash +bash +dash +hush +ksh +mksh +oksh +osh +posh +yash +zsh
+: "${SH:=$HOME/sh}"
 
 if case $- in (*i*) true;; (*) false;; esac; then
     # this is an interactive shell.
@@ -17,7 +18,7 @@ if case $- in (*i*) true;; (*) false;; esac; then
     { alias ls=; unalias ls; } 2>&-
 else
     preload=:
-    . ~/sh/has # handle the non-interactive case wherein this was never sourced
+    . "$SH/has" # handle the non-interactive case wherein this was never sourced
 fi
 
 if has sudo; then
@@ -255,7 +256,7 @@ has dircolors && ls() { # busybox lacks dircolors but it also works
         __ls_line="${__ls_line##*[! -~]}"
         __ls_line="${__ls_line%%[! -~]*}"
         __ls_colors="$__ls_colors${__ls_colors+:}$__ls_line"
-    done < ~/.ls_colors
+    done < "$SH/../home/ls_colors"
 
     LS_COLORS="$__ls_colors" command ls --color=auto "$@"
     __ls_x=$?

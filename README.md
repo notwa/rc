@@ -430,6 +430,23 @@ while minutemaid 1; do sleep 1; done
 echo this will never happen
 ```
 
+### [mkdirt](/sh/mkdirt#L5)
+
+**m**a**k**e a **dir**ectory for **t**emporary files, usually in memory.
+building upon `mktemp -d`, `mkdirt` prefers to find common tmpfs mounts,
+and avoids a couple inconsistencies in templates between Linux and BSDs.
+it can be loaded as a library to set variables without echoing anything.
+
+```
+$ ~/sh/mkdirt
+/dev/shm/tmp.BmDj9BrmTY
+$ preload=:; . ~/sh/mkdirt
+$ mkdirt this=that garbage=junk
+$ printf '%s\n' "$this" "$garbage"
+/dev/shm/that.Bp536YvkXi
+/dev/shm/junk.0ymIZXsU8G
+```
+
 ### [monitor](/sh/monitor#L4)
 
 this is [watch(1)](https://www.man7.org/linux/man-pages/man1/watch.1.html)
@@ -734,143 +751,143 @@ $ xxp ~/rc/install | head -n2
 68 0A 23 20 74 68 69 73 20 73 63 72 69 70 74 20
 ```
 
-### [ll (sh/zzz)](/sh/zzz#L31)
+### [ll (sh/zzz)](/sh/zzz#L32)
 
 list files verbosely, fancily, ordered, but not recursively.
 
-### [getit (sh/zzz)](/sh/zzz#L47)
+### [getit (sh/zzz)](/sh/zzz#L48)
 
 invoke `git clone` with `--single-branch --depth 1`.
 
-### [gd (sh/zzz)](/sh/zzz#L50)
+### [gd (sh/zzz)](/sh/zzz#L51)
 
 invoke git's diff subcommand with fewer lines of context.
 
-### [uno (sh/zzz)](/sh/zzz#L53)
+### [uno (sh/zzz)](/sh/zzz#L54)
 
 invoke git's status subcommand, skipping untracked files.
 
-### [gdp (sh/zzz)](/sh/zzz#L56)
+### [gdp (sh/zzz)](/sh/zzz#L57)
 
 invoke `gd` to diff a commit from its parent. the commit defaults to "HEAD".
 
-### [glo (sh/zzz)](/sh/zzz#L62)
+### [glo (sh/zzz)](/sh/zzz#L63)
 
 navigate git's commit tree succinctly.
 
-### [rgn (sh/zzz)](/sh/zzz#L65)
+### [rgn (sh/zzz)](/sh/zzz#L66)
 
 invoke ripgrep without respecting `.gitignore` files.
 
-### [curls (sh/zzz)](/sh/zzz#L74)
+### [curls (sh/zzz)](/sh/zzz#L75)
 
 be a little smarter with curl. (HTTPS only)
 
-### [revend (sh/zzz)](/sh/zzz#L86)
+### [revend (sh/zzz)](/sh/zzz#L87)
 
 reverse the 4-byte endianness of a single file. *this is an in-place operation!*
 
-### [clone (sh/zzz)](/sh/zzz#L89)
+### [clone (sh/zzz)](/sh/zzz#L90)
 
 invoke rsync suitably for creating virtually indistinguishable copies of files.
 
 **TODO:** rename because POSIX.1-2024 reserves this name.
 
-### [aligntabs (sh/zzz)](/sh/zzz#L93)
+### [aligntabs (sh/zzz)](/sh/zzz#L94)
 
 align tab-delimited fields in stdin.
 
-### [crawla (sh/zzz)](/sh/zzz#L104)
+### [crawla (sh/zzz)](/sh/zzz#L105)
 
 play Dungeon Crawl: Stone Soup through ssh on the akrasiac server.
 
-### [crawlz (sh/zzz)](/sh/zzz#L107)
+### [crawlz (sh/zzz)](/sh/zzz#L108)
 
 play Dungeon Crawl: Stone Soup through ssh on the develz server.
 
-### [diff (sh/zzz)](/sh/zzz#L111)
+### [diff (sh/zzz)](/sh/zzz#L112)
 
 use git's diff subcommand for general diffing.
 
-### [gc (sh/zzz)](/sh/zzz#L116)
+### [gc (sh/zzz)](/sh/zzz#L117)
 
 columnize text by using git's column subcommand.
 
 **TODO:** consider renaming because gc(1) already exists.
 
-### [counts (sh/zzz)](/sh/zzz#L120)
+### [counts (sh/zzz)](/sh/zzz#L121)
 
 count files in the current directory, including files found recursively.
 
-### [exts (sh/zzz)](/sh/zzz#L123)
+### [exts (sh/zzz)](/sh/zzz#L124)
 
 count and sort file extensions in the current directory, including files found recursively.
 
-### [nocom (sh/zzz)](/sh/zzz#L127)
+### [nocom (sh/zzz)](/sh/zzz#L128)
 
 strip single-line C-like and shell-like comments.
 
-### [jrep (sh/zzz)](/sh/zzz#L130)
+### [jrep (sh/zzz)](/sh/zzz#L131)
 
 extract strings comprised of basic ASCII or Japanese codepoints.
 
-### [bomb (sh/zzz)](/sh/zzz#L133)
+### [bomb (sh/zzz)](/sh/zzz#L134)
 
 add a Byte-Order Mark to a file.
 
-### [cleanse (sh/zzz)](/sh/zzz#L136)
+### [cleanse (sh/zzz)](/sh/zzz#L137)
 
 strip unprintable and non-ASCII characters.
 
-### [double (sh/zzz)](/sh/zzz#L139)
+### [double (sh/zzz)](/sh/zzz#L140)
 
 print every line twice. <br/> print every line twice.
 
 **NOTE:** there also exists a double(1) program provided by
 the *plotutils* package that i don't use.
 
-### [katagana (sh/zzz)](/sh/zzz#L144)
+### [katagana (sh/zzz)](/sh/zzz#L145)
 
 convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (sh/zzz)](/sh/zzz#L148)
+### [makepkgf (sh/zzz)](/sh/zzz#L149)
 
 make the freakin' package!
 
-### [rakef (sh/zzz)](/sh/zzz#L151)
+### [rakef (sh/zzz)](/sh/zzz#L152)
 
 make the freakin' gem!
 
-### [relog (sh/zzz)](/sh/zzz#L154)
+### [relog (sh/zzz)](/sh/zzz#L155)
 
 log on again to refresh your unix groups, etc.
 
-### [shi7 (sh/zzz)](/sh/zzz#L157)
+### [shi7 (sh/zzz)](/sh/zzz#L158)
 
 invoke `sha1sum` but only output the first 7 characters of each hash, a la git.
 
-### [carry (sh/zzz)](/sh/zzz#L160)
+### [carry (sh/zzz)](/sh/zzz#L161)
 
 copy files in a plain way using rsync. affected by umask.
 
-### [xxl (sh/zzz)](/sh/zzz#L163)
+### [xxl (sh/zzz)](/sh/zzz#L164)
 
 dump a file with `xxd` and view it in `less`. includes colors.
 
-### [xxl1 (sh/zzz)](/sh/zzz#L166)
+### [xxl1 (sh/zzz)](/sh/zzz#L167)
 
 like `xxl`, but don't group bytes by two.
 
-### [colors (sh/zzz)](/sh/zzz#L178)
+### [colors (sh/zzz)](/sh/zzz#L179)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L220)
+### [morecolors (sh/zzz)](/sh/zzz#L221)
 
 print all 256 colors that are available on most terminals.
 
@@ -905,23 +922,23 @@ return 0, ignoring arguments.
 
 reload the current shell -- runs initctl when passed arguments.
 
-### [pl (shrc)](/home/shrc#L60)
+### [pl (shrc)](/home/shrc#L69)
 
 print each argument on its own line.
 
-### [refresh (shrc)](/home/shrc#L61)
+### [refresh (shrc)](/home/shrc#L70)
 
 invoke `hash -r`.
 
-### [ADDPATH (shrc)](/home/shrc#L64)
+### [ADDPATH (shrc)](/home/shrc#L74)
 
 append a directory to `$PATH` if it isn't already present.
 
-### [PREPATH (shrc)](/home/shrc#L76)
+### [PREPATH (shrc)](/home/shrc#L86)
 
 prepend entries to `$PATH` and remove their duplications.
 
-### [findsbin (shrc)](/home/shrc#L92)
+### [findsbin (shrc)](/home/shrc#L102)
 
 automatically append sbin directories after bin directories.
 
@@ -984,6 +1001,7 @@ automatically append sbin directories after bin directories.
 | [lsarchive](#lsarchive)                       |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
 | [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [mkdirt](#mkdirt)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
 | [monitor](#monitor)                           |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
 | [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

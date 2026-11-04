@@ -68,6 +68,7 @@ unset LC_ALL LC_NUMERIC LC_TIME LC_MONETARY LC_MESSAGES
 
 pl() { printf '%s\n' "$@"; } ### @ pl - print each argument on its own line.
 refresh() { hash -r; } ### @ refresh - invoke `hash -r`.
+load() { preload=:; for s; do . "${SH:=$HOME/sh}/$s"; done; unset s preload; }
 
 BADPATH() { printf >&2 'ADDPATH: %s\n' "$2"; return "$1"; }
 ADDPATH() { ### @- append a directory to `$PATH` if it isn't already present.

@@ -359,6 +359,14 @@ $ hex 0x221EA8-0x212020
 **NOTE:** there also exists a hex(1) program provided by
 the *basez* package that i don't use.
 
+### [httpssl](/sh/httpssl#L9)
+
+a very crude HTTPS/1.0 client using only OpenSSL.
+
+affected by the `TIMEOUT` and `REDIRECTS` variables.
+**NOTE:** you really don't want to run this directly.
+this is used as a fallback in other scripts.
+
 ### [ify](/sh/ify#L4)
 
 pipe one command through another, so you can still pass arguments to the former.
@@ -993,6 +1001,7 @@ automatically append sbin directories after bin directories.
 | [has](#has)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [have](#have)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [hex](#hex)                                   |        zsh | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [httpssl](#httpssl)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ify](#ify)                                   |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [is_empty](#is_empty)                         |       bash | ⭕    | ✔️    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    | ⭕    | ⭕    | ✔️    |
 | [isup](#isup)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

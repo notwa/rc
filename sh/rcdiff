@@ -42,15 +42,17 @@ rcdiff() (
 
     if [ -d "$d/home/" ]; then
         for f in "$d/home/"*; do
-            [ -f "$f" ] || continue
-            diff_or_one -U3 "$f" ~/."${f##*/}" >> .rcdiff
+            g=~/."${f##*/}"
+            [ -f "$f" ] && [ -f "$g" ] || continue
+            diff_or_one -U3 "$f" "$g" >> .rcdiff
         done
     fi
 
     if [ -d "$d/sh/" ]; then
         for f in "$d/sh/"*; do
-            [ -f "$f" ] || continue
-            diff_or_one -U3 "$f" ~/sh/"${f##*/}" >> .rcdiff
+            g=~/sh/"${f##*/}"
+            [ -f "$f" ] && [ -f "$g" ] || continue
+            diff_or_one -U3 "$f" "$g" >> .rcdiff
         done
     fi
 

@@ -5,7 +5,7 @@ rcdiff() (
     set -Ceu +f
     unset CDPATH
     cd -- ~/rc
-    local d=0 f= line= tab=
+    d=0 f= g= line= tab=
 
     if [ $# = 0 ]; then
         for f in backup-*; do
@@ -55,7 +55,7 @@ rcdiff() (
     fi
 
     header() {
-        local color= rest= item= file= desc=
+        color= rest= item= file= desc=
         color=${1:?} rest=${2:?}
         item=${rest%% *} rest=${rest#* }
         file=${rest%%$tab*} desc=${rest#*$tab}

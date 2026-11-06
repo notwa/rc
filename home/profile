@@ -12,6 +12,8 @@
 # i suggest sourcing this file from both ~/.zprofile and ~/.bash_profile.
 # in doing so, most login-related setup is consolidated to a single file.
 
+cmd() { command -v "$@" 2>/dev/null >&2; }
+
 prepend() {
     # n.b. read permissions for directories in PATH are not strictly necessary.
     [ -d "$1" ] && [ -x "$1" ] || return 0 # don't bother checking `-r`
@@ -24,7 +26,7 @@ case $PATH in # check for default PATHs and reset them to be more comprehensive
 esac
 
 # NOTE: busybox always claims `sh` is present, making the second condition moot.
-if ! [ "${PATH:+}" ] || ! command -v sh >&2; then
+if ! [ "${PATH:+}" ] || ! cmd sh; then
     [ /bin -ef /usr/bin ] || prepend /bin
     [ /sbin -ef /bin ] || [ /sbin -ef /usr/sbin ] || prepend /sbin
     prepend /usr/bin
@@ -68,11 +70,15 @@ unset -f user home
 cd -- "$__pwd"
 unset __pwd
 
-#export LANG=$(locale -uU) # set user-defined locale
-export SSH_AUTH_SOCK=0 # more info: https://0x0.st/NUnw
-export TZ=':/etc/localtime' # more info: https://0x0.st/NUnv
-
-EA_AUTH='auth' EA_DIR='t' EA_DOMAIN='https://eaguru.guru'
+cmd vi && export EDITOR=vi
+cmd vim && export EDITOR=vim
+cmd less && export PAGER=less
+export SSH_AUTH_SOCK=0 # info: https://0x0.st/NUnw
+export PYTHONIOENCODING=utf-8 # damnit python!
+export LESS=-QRSci LESS_UNSUPPORT=-eEFX
+export EA_AUTH=auth EA_DIR=t EA_DOMAIN=https://eaguru.guru
+[ -e /etc/localtime ] && export TZ=:/etc/localtime # info: https://0x0.st/NUnv
+[ "$DESKTOP_SESSION" = xfce ] && export QT_QPA_PLATFORMTHEME= # unhide menu bar
 
 if case $- in (*i*) true;; (*) false;; esac; then
     # this is an interactive shell.
@@ -87,13 +93,12 @@ elif [ "${HOME++}" ]; then
 
     prepend "$HOME/.local/bin"
     # add ~/sh/ to PATH so that those commands can be run from ssh et al.
-    # TODO: consider exporting EA_* variables, so that `ea` can work too.
     prepend "$HOME/sh"
     if [ -r "$HOME/sh/zzz" ]; then
         . ~/sh/zzz # contains short functions that don't merit individual files
     fi
 fi
-unset -f prepend
+unset -f prepend cmd
 
 # if all goes well, you should now be able to run this command:
 # env -i /bin/bash -lc colors

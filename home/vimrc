@@ -93,6 +93,10 @@ if has('mksession')
     set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize,resize,winpos
 endif
 
+if has('title')
+    let &titlestring=hostname() . ": %t%( %M%) (%f)"
+endif
+
 if has('wildignore')
     " ignore files that typically aren't interesting to text editors like vim
     " FWIW, these lines don't need trailing commas

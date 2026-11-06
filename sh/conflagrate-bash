@@ -14,7 +14,7 @@ conflagrate() {
     local color1="$CSI;--$SGR" color2="$CSI--;${fg:-97}$SGR"
     local reset="$hide$CSI$SGR$show"
     if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
-        [ "$t" = tmux ] && title="$cwd" || title="$host: $cwd"
+        title="$host: $cwd"
         title="${OSC}2;$title$BEL" # set the terminal title
         sanity="$ESC$G0$USASCII$SI$sanity" # reset charsets
     fi

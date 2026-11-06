@@ -15,10 +15,7 @@ conflagrate() {
     precmd() {}
     if [ "$t" = xterm ] || [ "$t" = screen ] || [ "$t" = tmux ]; then
         # set window title
-        if [ "$t" = tmux ] # don't include host, tmux prepends it
-        then precmd() { print -Pn "\e]2;%~\a" }
-        else precmd() { print -Pn "\e]2;%M: %~\a" }
-        fi
+        precmd() { print -Pn "\e]2;%M: %~\a"; }
     elif [ "$t" = alacritty ]; then
         # Alacritty-v0.17.0-portable.exe -t "MinGW x64" -e "usr/bin/env" PATH="/usr/local/sbin:/usr/local/bin:/usr/bin" MSYSTEM=MINGW64 TERM=alacritty shelly
         chset= # displays as U+263C for some reason

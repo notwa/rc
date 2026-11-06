@@ -4,14 +4,16 @@
 conflagrate() {
     if [ "${TERM-vt100}" = vt100 ]; then
         #PS1='\[\e[0;1;$(($??31:32));7m\]\$\[\e[m\] '
+        local title=
         local one='\[\e[0;1;$(($??31:32));7m\] \[\e[m\]\n'
         local two='\[\e[1;$(($??31:32));7m\]\$\[\e[m\] '
     else
         #PS1='\[\e[0;$(($??41:42));97m\]\$\[\e[m\] '
+        local title='\[\e]2;\h: \w\a\]'
         local one='\[\e[0;$(($??41:42))m\] \[\e[m\]\n'
         local two='\[\e[$(($??41:42));97m\]\$\[\e[m\] '
     fi
-    PS1=$one$two
+    PS1=$title$one$two
 }
 
 ${preload+:} conflagrate "$@"

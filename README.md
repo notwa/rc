@@ -270,7 +270,7 @@ $ e /etc/sudoers
 **NOTE:** there also exists an e(1) program provided by
 the *e-wrapper* package that i don't use.
 
-### [ea](/sh/ea#L24)
+### [ea](/sh/ea#L32)
 
 **TODO:** document.
 

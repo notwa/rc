@@ -21,11 +21,20 @@ __ea_urlencode() {
     done
 } 2>&- # send bash's complaints to the abyss
 
+__ea_sign_mini() (
+    cd -- "${1%/*}" && minisign -QSm "${1##*/}"
+)
+
+__ea_sign_rsa() {
+    openssl dgst -sign "$2" -keyform PEM -sha256 -out "$1.sig" -binary -- "$1"
+}
+
 __ea() { ### @ ea - **TODO:** document.
     set -fu +e
-    unset LC_ALL cmd dst src trg x
+    unset LC_ALL cmd dst key src trg x
     export LC_ALL=C
     : "${EA_AUTH:?}" "${EA_DIR:?}" "${EA_DOMAIN:?}"
+    key=${XDG_DATA_HOME:-${HOME:-/what/the/fuck}/.local/share}/grab-secret.pem
     cmd="${1:?missing subcommand}"; shift
     case "$cmd" in
     (head)
@@ -46,6 +55,13 @@ __ea() { ### @ ea - **TODO:** document.
 
     (puts)
         x=0
+        if ! command -v minisign 2>/dev/null >&2; then
+            printf >&2 '%s: missing minisign\n' ea
+            return 1
+        elif ! [ -f "$key" ]; then
+            printf >&2 '%s: missing RSA secret key\n' ea
+            return 1
+        fi
         for src; do
             dst="$EA_DOMAIN/$EA_AUTH/"
             src="$(readlink -f -- "$src")" || return
@@ -53,15 +69,16 @@ __ea() { ### @ ea - **TODO:** document.
                 printf >&2 '%s: skipping %s\n' ea "$src"
                 continue
             fi
-            (cd -- "${src%/*}" && minisign -QSm "${src##*/}") || return
-            __ea_curl -f -g -n -T "$src" -T "$src.minisig" "$dst" "$dst" ||
+            set -- -T "$src" "$dst" -T "$src.minisig" "$dst" -T "$src.sig" "$dst"
+            __ea_sign_mini "$src" && __ea_sign_rsa "$src" "$key" &&
+            __ea_curl -f -g -n "$@" ||
             {
                 x=$?
-                rm "$src.minisig"
+                rm -f -- "$src.minisig" "$src.sig"
                 printf >&2 '%s: failed to upload %s\n' ea "${src##*/}"
                 continue
             }
-            rm "$src.minisig"
+            rm -f -- "$src.minisig" "$src.sig"
             trg="$(__ea_urlencode "${src##*/}")" &&
             printf >&2 '%s: uploaded %25s => %s\n' ea "${src##*/}" "$EA_DOMAIN/$EA_DIR/$trg"
         done

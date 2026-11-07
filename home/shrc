@@ -141,11 +141,6 @@ clean() {
 do_clean() { printf >&2 'Warning: $%s is set. Run `clean` to unset it.\n' "$@"; }
 clean && do_clean() { unset "$@"; } # perform cleaning the next time clean is run
 
-[ "$DESKTOP_SESSION" != xfce ] || export QT_QPA_PLATFORMTHEME= # unhide menu bar
-#[ "$TERM" != vt102 ] || export TERM="xterm" # PuTTY over serial
-export EDITOR=vim PAGER=less LESS='-QRSci' LESS_UNSUPPORT='-eEFX'
-export PYTHONIOENCODING=utf-8 # damnit python!
-
 # $LANG has been my bane whenever i forget to set it properly, so check it.
 if ! case "$LANG" in (en_US.UTF-8) :;; (en_CA.UTF-8) :;;
 (C.UTF-8) ! [ -e /usr/bin/locale ];; (*) ! :;; esac then

@@ -4,10 +4,10 @@
 
 " 1. install fzy: https://github.com/jhawthorn/fzy/
 " 2. drop this script in your ~/.vim/autoload directory
-" 3. map DizzySelect to something in your ~/.vimrc:
-"    nn <leader>e :call DizzySelect(":e")<cr>
+" 3. map dizzy#Select to something in your ~/.vimrc:
+"    nn <leader>e :call dizzy#Select(":e")<cr>
 
-fun! DizzyFlagsNow()
+fun! dizzy#FlagsNow()
     silent let discard = system('find -maxdepth 0 -regextype posix-basic')
     if v:shell_error == 0 " GNU find defaults to emacs
         let flags = ' -regextype posix-basic'
@@ -51,14 +51,14 @@ fun! DizzyFlagsNow()
     return flags
 endfun
 
-fun! DizzyFlags()
+fun! dizzy#Flags()
     if !exists('g:dizzyflags')
-        let g:dizzyflags = DizzyFlagsNow()
+        let g:dizzyflags = dizzy#FlagsNow()
     endif
     return g:dizzyflags
 endfun
 
-fun! FuzzySelect(choice_command, vim_command)
+fun! dizzy#Fuzzy(choice_command, vim_command)
     " https://github.com/jhawthorn/fzy/#use-with-vim
     try
         let output = system(a:choice_command .. " | fzy ")
@@ -71,11 +71,11 @@ fun! FuzzySelect(choice_command, vim_command)
     endif
 endfun
 
-fun! DizzySelect(vim_command)
+fun! dizzy#Select(vim_command)
     if !exists('g:dizzydepth')
         let depth = 5
     else
         let depth = g:dizzydepth
     endif
-    call FuzzySelect('find . -maxdepth '..depth..' -type f' .. DizzyFlags(), a:vim_command)
+    call dizzy#Fuzzy('find . -maxdepth '..depth..' -type f' .. dizzy#Flags(), a:vim_command)
 endfun

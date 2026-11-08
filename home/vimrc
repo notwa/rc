@@ -396,7 +396,9 @@ nn <Leader>l Odef<space>lament(*args,<space>**kwargs):<cr><space><space><space><
 vn <silent> & :call GlobalReplace()<cr>
 
 if Has('fzy') && Has('find')
-    nn <leader>e :call DizzySelect(":e")<cr>
+    nn <leader>e :call dizzy#Select(":e")<cr>
+else
+    nn <leader>e :echoerr "you don't have fzy installed!"
 endif
 
 " TODO:

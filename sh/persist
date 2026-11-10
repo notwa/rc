@@ -10,9 +10,9 @@ persist__mkdir() { if ! [ -d "$1" ]; then mkdir -- "$1"; fi; }
 persist__do_where() {
     # ASIDE: mkdir'ing XDG base dirs puts the user at the mercy of umask.
     #        this might be undesirable... https://stackoverflow.com/a/36808456
-    if [ -z "${PERSIST_AT++}" ]; then # if it's unset
-        if [ -z "${XDG_STATE_HOME++}" ]; then
-            [ -n "${HOME++}" ]                                  || return 10
+    if ! [ ${PERSIST_AT++} ]; then # if it's unset
+        if ! [ ${XDG_STATE_HOME++} ]; then
+            [ ${HOME++} ]                                       || return 10
             [ -d "$HOME" ]                                      || return 11
             persist__mkdir "$HOME/.local"                       || return 12
             persist__mkdir "$HOME/.local/state"                 || return 13
@@ -26,7 +26,7 @@ persist__do_where() {
             persist__mkdir "$XDG_STATE_HOME/persistence"        || return 24
             PERSIST_AT="$XDG_STATE_HOME/persistence"
         fi
-    elif [ -z "${PERSIST_AT:++}" ]; then # if it's empty
+    elif ! [ ${PERSIST_AT:++} ]; then # if it's empty
         return 0 # not an error, persistence is turned off
     fi
 
@@ -62,7 +62,7 @@ persist__where() {
 
 persist__lock() {
     __no=0 # re-using this variable name from persist__load_file
-    [ -d /C/ ] && __line=/C/swapfile.sys || __line=/dev/null # temp
+    [ -d /C/ ] && __line=/C/swapfile.sys || __line=/dev/null # temp var
     __line="$(exec stat -c %Y "$__line" 2>/dev/null)" && true # not temp
     case ${__line:-0} in (*[!0-9]*) false;; (0) false;; esac || return
     until [ $((__no+=1)) = 60 ]; do # technically this only runs 59 times
@@ -153,7 +153,7 @@ persist__preload() {
             return 1
         fi
 
-        case ",${persist__ance=}" in
+        case ,${persist__ance=} in
         (*",$__alias="*)
             # TODO: put persist in an error state? or, something gentler...
             persist__failed_to "ensure unique alias: $__alias"
@@ -224,7 +224,7 @@ persist__save() {
                 set -- "$@" "$__variable=$__value"
             fi
         done
-        if [ $# != 1 ] && [ -n "${PERSIST_AT:++}" ]; then
+        if [ $# != 1 ] && [ ${PERSIST_AT:++} ]; then
             # TODO: detect potential write failure here:
             printf %s\\n "$@" >>"$PERSIST_AT/$__namespace"
         fi
@@ -246,7 +246,7 @@ __persist() {
 }
 
 persist() {
-    [ -z "${ZSH_VERSION++}" ] || setopt LOCAL_OPTIONS SH_WORD_SPLIT || return 70
+    ! [ ${ZSH_VERSION++} ] || setopt LOCAL_OPTIONS SH_WORD_SPLIT || return 70
 
     # reset, also checks for readonly issues:
     __alias= __boot= __key= __line= __namespace= __no= __pair= __pairs= \

@@ -147,7 +147,7 @@ katagana() ### @- convert katakana codepoints to their equivalent hiragana.
   { perlu -MUnicode::Normalize -pe\''$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r''\' "$@"; }
 
 makepkgf() ### @- make the freakin' package!
-  { makepkg -Af --skipchecksums --skippgpcheck "$@"; }
+  { makepkg --force --ignorearch --skipchecksums --skippgpcheck "$@"; }
 
 rakef() ### @- make the freakin' gem!
   { rake && gem build *.gemspec && gem install *.gem "$@"; }

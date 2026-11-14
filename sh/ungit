@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+ungit() { ### @- remove the cruft from the diffs produced by git.
+    ### all arguments are passed to sed, so use `-i` for in-place editing.
+    sed -e 's@^--- [^/]\+/@--- a/@' -e 's@^+++ [^/]\+/@+++ b/@' \
+        -e '/^diff /d' -e '/^index /d' -e 's/^\(@@.*@@\).*/\1/' "$@"
+}
+
+${preload+:} ungit "$@"

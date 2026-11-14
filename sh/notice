@@ -184,7 +184,7 @@ __notice_upload_to_net_filebin() {
 	target=filebin.net
 	# defaults: 7 days, permament (but can be deleted by anyone with the link)
 	# note that the site says 6 days, but this is rounded down. the API shows 7 days.
-	# spaces are converted to underscores, and perhaps other characters are as well.
+	# spaces are converted to underscores, and possibly other characters are as well.
 	# note that you need curl -L to retrieve the files; they redirect to an s3 store.
 	__notice_generate_id "$(exec date -u +%s)" || return
 	aux="https://$target/$REPLY"

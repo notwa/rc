@@ -33,7 +33,7 @@ persist__do_where() {
     if [ "${PERSIST_AT:-/}" -ef / ]; then
         return 2
     fi
-    PERSIST_AT="$(exec readlink -f -- "$PERSIST_AT")" || return 3
+    PERSIST_AT=$(exec readlink -f -- "$PERSIST_AT") || return 3
     touch -- "$PERSIST_AT/.lock" || return 4
 }
 
@@ -63,7 +63,7 @@ persist__where() {
 persist__lock() {
     __no=0 # re-using this variable name from persist__load_file
     [ -d /C/ ] && __line=/C/swapfile.sys || __line=/dev/null # temp var
-    __line="$(exec stat -c %Y "$__line" 2>/dev/null)" && true # not temp
+    __line=$(exec stat -c %Y "$__line" 2>/dev/null) && true # not temp
     case ${__line:-0} in (*[!0-9]*) false;; (0) false;; esac || return
     until [ $((__no+=1)) = 60 ]; do # technically this only runs 59 times
         # NOTE: this assumes `set -C` was run at some point!
@@ -94,7 +94,7 @@ persist__lock() {
 persist__unlock() {
     # note that, unlike the lock function, this only makes a single attempt.
     [ -d /C/ ] && __line=/C/swapfile.sys || __line=/dev/null # temp
-    __line="$(exec stat -c %Y "$__line" 2>/dev/null)" &&
+    __line=$(exec stat -c %Y "$__line" 2>/dev/null) &&
     IFS=- read -r __boot __proc < "$1" &&
     [ "$__boot" = "$__line" ] && [ "$__proc" = $$ ] &&
     rm -- "$1"
@@ -108,11 +108,11 @@ persist__load_file() {
     __no=0
     while read -r __line; do
         : $((__no+=1))
-        __line="${__line#${__line%%[! ]*}}" # ltrim
+        __line=${__line#${__line%%[! ]*}} # ltrim
         case $__line in # NOTE: we don't support tabs... rip.
         (\#*) continue;; # TODO: consider using "@$timestamp $$" and ignoring that.
         (*[!\ -~]*) persist__cry "invalid characters at $1:$__no"; continue;;
-        (?*=*) __key="${__line%%=*}" __value="${__line#*=}";;
+        (?*=*) __key=${__line%%=*} __value=${__line#*=};;
         (*) persist__cry "skipping unknown line at $1:$__no"; continue;;
         esac
 
@@ -159,7 +159,7 @@ persist__preload() {
             persist__failed_to "ensure unique variable: $__variable@$__namespace"
             return 1;;
         (*) # TODO: don't use this one anymore:
-            persist__ance="$persist__ance$__alias=$__variable@$__namespace,"
+            persist__ance=$persist__ance$__alias=$__variable@$__namespace,
             eval "persist__${__namespace}_pairs=\"\${persist__${__namespace}_pairs-}$__alias=$__variable \""
             # NOTE: pairs and queue need to be iterated in lockstep!
             persist__queue="${persist__queue-}$__alias "
@@ -192,9 +192,9 @@ persist__load() {
         eval "__pairs=\$persist__${__namespace}_pairs"
         for __pair in $__pairs; do
             [ "${__pair%=*}" = "${persist__queue%% *}" ] || continue
-            persist__queue="${persist__queue#* }"
-            __alias="${__pair%=*}" __variable="${__pair#*=}"
-            __key="persist__${__namespace:?}__${__variable:?}"
+            persist__queue=${persist__queue#* }
+            __alias=${__pair%=*} __variable=${__pair#*=}
+            __key=persist__${__namespace:?}__${__variable:?}
             if eval "[ \"\${$__key++}\" = + ]"; then
                 eval "$__alias=\$$__key" # skips having to set __value
             else
@@ -210,8 +210,8 @@ persist__save() {
         set -- "# $__timestamp:$$"
         eval "__pairs=\$persist__${__namespace}_pairs"
         for __pair in $__pairs; do
-            __alias="${__pair%=*}" __variable="${__pair#*=}"
-            __key="persist__${__namespace:?}__${__variable:?}" __value=
+            __alias=${__pair%=*} __variable=${__pair#*=}
+            __key=persist__${__namespace:?}__${__variable:?} __value=
             # NOTE: no support for unsetting variables yet.
             #       unsetting just creates an empty string.
             #       also, if \$$__key is unset, it is treated as empty.
@@ -233,7 +233,7 @@ __persist() {
 
     # note that time may pass since setting this variable.
     # this is only set at the start of each invocation.
-    __timestamp="$(exec date +%s)" || return
+    __timestamp=$(exec date +%s) || return
 
     if [ $# = 0 ]; then
         persist__save || return

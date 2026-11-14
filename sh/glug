@@ -40,8 +40,7 @@ glug() ( # note the subshell syntax. this allows us to abuse globals like crazy.
     else
         esc="$(printf '\033')"
         # shells strip trailing newlines from captures, so work around that:
-        nl="$(printf '\nx')"; nl="${nl%x}"
-        cr="$(printf '\rx')"; cr="${cr%x}"
+        cr=$(printf '\n\r') && nl=${cr%?} cr=${cr#?} || return 1
     fi
 
     limit=200 # maximum number of git commits to look back on

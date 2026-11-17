@@ -36,9 +36,13 @@ cache=$XDG_CACHE_HOME/shrc/sh-$$ && mkdirs "${cache%/*}" || die prepare cache
 esc "$cache" && pl '#!/usr/bin/env false' > "$cache" || die create cache file
 printf %s "$cache" && trap - INT EXIT && exec >> "$cache" || die incite cache
 
-[ ${ENV++} ] && [ -f "$ENV" ] || ENV=$HOME/.shrc
-for rc in "${ENV%/.shrc}/rc" "${ENV%/*}" "$HOME"
-do [ -d "$rc/sh" ] && break; done; __sh_cache=$a
+__sh_cache=$a
+[ -f "${ENV-}" ] || ENV=$HOME/.shrc
+case $ENV in
+(*/.shrc) rc=${ENV%/*}/rc;;
+(*/home/shrc) rc=${ENV%/*/*}
+esac
+[ -d "$rc" ] || rc=$HOME
 
 give() { eval "esc \"\$$1\" && pl \"$1='\$a'\"" || die give variable to cache; }
 ex() { for v; do give "$v"; done; export "$@" && pl "export $*" || die export; }

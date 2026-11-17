@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+# compat: +ash +bash +dash +ksh +mksh +net +oksh +osh +posh +yash +zsh
 
 ungit() { ### @- remove the cruft from the diffs produced by git.
     ### all arguments are passed to sed, so use `-i` for in-place editing.

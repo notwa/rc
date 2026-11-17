@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+# compat: +ash +bash +dash -ksh +mksh +net +oksh +osh +posh +yash +zsh
+
+entrypoint() {
+    depends argc baknow ungit
+    execute diffit "$@"
+}
+
+diffit_diff() {
+    [ ${FILTER:++} ] && set -- --diff-filter="$FILTER" "$@"
+    set -- git --no-pager diff --no-ext-diff --exit-code "$@"
+    if "$@"
+    then return
+    else [ $? = 1 ] # FIXME: why is git returning 1 even without --exit-code?
+    fi
+}
+
+diffit() {
+    argc $# -le 2 diffit || return
+    __program='/^\+\+\+ |^--- /{next}/^\+/{a+=1}/^-/{r+=1}END{printf "+%d,-%d\t",a,r}'
+    [ $# = 2 ] && p=${1##*/}.patch || p=../${PWD##*/}.patch
+    if [ $# != 2 ]; then
+        r=$(git rev-list --count HEAD) && c=$(git rev-parse --short=7 HEAD) &&
+        p=../${PWD##*/}-r$r.$c.patch || p=../${PWD##*/}.patch # a la archlinux
+    fi
+    ! [ -e "$p" ] || baknow "$p" && if [ $# != 2 ]
+    then diffit_diff "${1:-HEAD}" --
+    else diffit_diff --no-index --no-prefix -- "${1:?}" "${2:?}"
+    fi >|"$p" && ungit -i "$p" && awk "$__program" "$p" && realpath -- "$p"
+}
+
+${preload+:} . "${SH:=$HOME/sh}/bootstrap"

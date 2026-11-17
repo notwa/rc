@@ -711,6 +711,12 @@ extract the contents of an archive file in one of many formats.
 
 borrowed from [prezto.](https://github.com/sorin-ionescu/prezto)
 
+### [ungit](/sh/ungit#L4)
+
+remove the cruft from the diffs produced by git.
+
+all arguments are passed to sed, so use `-i` for in-place editing.
+
 ### [unwrap](/sh/unwrap#L4)
 
 join paragraphs into one line each.
@@ -930,23 +936,23 @@ return 0, ignoring arguments.
 
 reload the current shell -- runs initctl when passed arguments.
 
-### [pl (shrc)](/home/shrc#L69)
+### [pl (shrc)](/home/shrc#L73)
 
 print each argument on its own line.
 
-### [refresh (shrc)](/home/shrc#L70)
+### [refresh (shrc)](/home/shrc#L74)
 
 invoke `hash -r`.
 
-### [ADDPATH (shrc)](/home/shrc#L74)
+### [ADDPATH (shrc)](/home/shrc#L78)
 
 append a directory to `$PATH` if it isn't already present.
 
-### [PREPATH (shrc)](/home/shrc#L86)
+### [PREPATH (shrc)](/home/shrc#L90)
 
 prepend entries to `$PATH` and remove their duplications.
 
-### [findsbin (shrc)](/home/shrc#L102)
+### [findsbin (shrc)](/home/shrc#L106)
 
 automatically append sbin directories after bin directories.
 
@@ -985,6 +991,7 @@ automatically append sbin directories after bin directories.
 | [decently](#decently)                         |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [dedupe](#dedupe)                             |       *sh* | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [dfu](#dfu)                                   |       *sh* | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
+| [diffit](#diffit)                             |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [document](#document)                         |       dash | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [e](#e)                                       |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [ea](#ea)                                     |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
@@ -1045,6 +1052,7 @@ automatically append sbin directories after bin directories.
 | [trash](#trash)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [trunc](#trunc)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [unarchive](#unarchive)                       |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
+| [ungit](#ungit)                               |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [unwrap](#unwrap)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [v_domap](#v_domap)                           |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [v_lower](#v_lower)                           |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    |

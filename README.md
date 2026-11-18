@@ -455,6 +455,11 @@ $ printf '%s\n' "$this" "$garbage"
 /dev/shm/junk.0ymIZXsU8G
 ```
 
+### [modpeek](/sh/modpeek#L4)
+
+given module names, print which ones are loaded.
+returns the number of modules that aren't loaded.
+
 ### [monitor](/sh/monitor#L4)
 
 this is [watch(1)](https://www.man7.org/linux/man-pages/man1/watch.1.html)
@@ -554,9 +559,7 @@ $ pre | grep char
 
 ### [preload](/sh/preload#L7)
 
-handle dependencies within the [`~/sh/`](/sh) directory.
-
-this function contains more comments than code, so you should read it.
+old dependency handler, deprecated by [`bootstrap`.](#bootstrap)
 
 ### [psbm](/sh/psbm#L4)
 
@@ -866,42 +869,50 @@ convert katakana codepoints to their equivalent hiragana.
 
 this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
 
-### [makepkgf (sh/zzz)](/sh/zzz#L149)
+### [agga (sh/zzz)](/sh/zzz#L149)
+
+run `apt-get` with settings to make it less obnoxious.
+
+### [makepkgf (sh/zzz)](/sh/zzz#L153)
 
 make the freakin' package!
 
-### [rakef (sh/zzz)](/sh/zzz#L152)
+### [rakef (sh/zzz)](/sh/zzz#L156)
 
 make the freakin' gem!
 
-### [relog (sh/zzz)](/sh/zzz#L155)
+### [relog (sh/zzz)](/sh/zzz#L159)
 
 log on again to refresh your unix groups, etc.
 
-### [shi7 (sh/zzz)](/sh/zzz#L158)
+### [shi7 (sh/zzz)](/sh/zzz#L162)
 
 invoke `sha1sum` but only output the first 7 characters of each hash, a la git.
 
-### [carry (sh/zzz)](/sh/zzz#L161)
+### [shit (sh/zzz)](/sh/zzz#L165)
+
+`sh` it! receive files to `~/sh/` with `croc`.
+
+### [carry (sh/zzz)](/sh/zzz#L168)
 
 copy files in a plain way using rsync. affected by umask.
 
-### [xxl (sh/zzz)](/sh/zzz#L164)
+### [xxl (sh/zzz)](/sh/zzz#L171)
 
 dump a file with `xxd` and view it in `less`. includes colors.
 
-### [xxl1 (sh/zzz)](/sh/zzz#L167)
+### [xxl1 (sh/zzz)](/sh/zzz#L174)
 
 like `xxl`, but don't group bytes by two.
 
-### [colors (sh/zzz)](/sh/zzz#L179)
+### [colors (sh/zzz)](/sh/zzz#L186)
 
 display all combinations of foreground and background terminal colors.
 this only includes the basic 16-color palette.
 
 ![terminal colors](https://eaguru.guru/t/terminal-colors-2024.png)
 
-### [morecolors (sh/zzz)](/sh/zzz#L221)
+### [morecolors (sh/zzz)](/sh/zzz#L228)
 
 print all 256 colors that are available on most terminals.
 
@@ -1018,6 +1029,7 @@ automatically append sbin directories after bin directories.
 | [maybesudo](#maybesudo)                       |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [minutemaid](#minutemaid)                     |       dash | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [mkdirt](#mkdirt)                             |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    |
+| [modpeek](#modpeek)                           |       *sh* | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |
 | [monitor](#monitor)                           |        zsh | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ⭕    | ✔️    |
 | [noccom](#noccom)                             |       *sh* | ✔️    | ✔️    | ✔️    | ❔    | ❔    | ❔    | ❔    | ❔    | ❔    | ✔️    |
 | [note](#note)                                 |       *sh* | ✔️    | ✔️    | ✔️    | ⭕    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    | ✔️    |

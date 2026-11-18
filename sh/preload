@@ -4,26 +4,26 @@
 # but it *is* compatible with the usual 4 shells, so:
 # FAKE_COMPAT
 
-preload() { ### @- handle dependencies within the [`~/sh/`](/sh) directory.
-    ### this function contains more comments than code, so you should read it.
+preload() { ### @-
+    ### old dependency handler, deprecated by [`bootstrap`.](#bootstrap)
     # all sourced files from within the preload function will instead
     # append to the list of files to preload (i.e. dependencies).
     # dash and ash have no arrays besides $@, so we must use it.
     local preload='set -- $@'
     # we want to iterate over $@ like a queue; pushing and popping.
     # `for` would create a local copy and leave $@ unmodified, so it's no good.
-    while [ $# -gt 0 ]; do
+    while [ $# != 0 ]; do
         # NOTE: there's no quotes here since the surrounding method uses eval,
         #       so paths-with-spaces is already doomed from the start.
         #       however, $HOME can still safely contain spaces.
         # NOTE: it's important to use an absolute path here.
         . ~/sh/$1 # yes, you can source files from within functions,
                   # and they even respect your locals.
-        [ $? -eq 0 ] \
-        || exit 2 # this `exit 2` is just for zsh and bash;
-                  # dash and ash do it automatically.
-                  # zsh actually uses some other exit code,
-                  # but we use 2 anyway since everything else uses 2.
+        [ $? = 0 ] ||
+        exit 2 # this `exit 2` is just for zsh and bash;
+               # dash and ash do it automatically.
+               # zsh actually uses some other exit code,
+               # but we use 2 anyway since everything else uses 2.
         shift # pop the queue
     done
 }

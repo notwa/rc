@@ -1,0 +1,64 @@
+#!/usr/bin/env sh
+# compat: +ash +bash +dash +ksh +mksh +net +oksh +osh +posh +yash +zsh
+
+modpeek() { ### @-
+    ### given module names, print which ones are loaded.
+    ### returns the number of modules that aren't loaded.
+
+    if [ $# = 0 ] && [ -t 2 ]; then
+        printf >&2 '%s: %s\n' modpeek "usage: modpeek {modules...}"
+        return 0
+    fi
+
+    if command -v systemd-detect-virt 2>/dev/null >&2 \
+    && systemd-detect-virt --container --quiet; then
+        printf >&2 '%s: %s\n' modpeek "this script does not work in containers"
+        return 255
+    fi
+
+    modinfo=modinfo modprobe=modprobe
+    { # don't rely on the user having /usr/sbin in their PATH:
+        ! command -v modinfo  && [ -x /usr/sbin/modinfo  ] &&  modinfo=/usr/sbin/modinfo
+        ! command -v modprobe && [ -x /usr/sbin/modprobe ] && modprobe=/usr/sbin/modprobe
+    } 2>/dev/null >&2
+
+    # since we'll be squelching errors and lifting exit codes,
+    # we should ensure these programs are runnable beforehand.
+    { "$modinfo" --help && "$modprobe" --help || return 255; } >/dev/null
+
+    y=0
+    for module; do
+        [ ${module:++} ] || { : $((y+=1)); continue; } # handle empty arguments
+
+        # adapted from: https://stackoverflow.com/a/30311688
+        # this may behave incorrectly when modules are deleted while loaded.
+        # that's what Arch Linux does during an update; make sure to reboot!
+        "$modinfo" -- "$module" 2>/dev/null >&2 &&
+        ! "$modprobe" --dry-run --first-time -- "$module" 2>/dev/null
+        x=$? # don't forget that 0 is `true` in the world of shell
+
+        # another option is to read and match the lines in /proc/modules.
+        # the problem? not every module name is 1-to-1 with its filename.
+        # for instance, snd_pcm is stored in snd-pcm.ko.zst on my system.
+        # our method of using modinfo and modprobe handles both variants.
+
+        if [ -t 1 ] && [ -t 2 ]; then
+            # CLI usage, just tell the user outright:
+            [ "$x" = 0 ] && words=loaded || words=not\ loaded
+            # 23 characters is enough to handle roughly 98% of all module names.
+            printf >&2 '%-23s \033[%sm%s\033[m\n' "$module" $((x?35:36)) "$words"
+        elif [ "$x" = 0 ]; then # only print the names of loaded modules
+            printf '%s\n' "$module"
+        fi
+
+        : $((y+=!!x)) # count the number of misses
+    done
+    unset x
+
+    [ -t 1 ] && [ -t 2 ] && unset words
+    unset modinfo modprobe module
+
+    return $((y>255?255:y)) # return the number of modules that weren't loaded
+}
+
+${preload+:} modpeek "$@"

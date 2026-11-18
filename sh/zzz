@@ -146,6 +146,10 @@ katagana() ### @- convert katakana codepoints to their equivalent hiragana.
 ### this is occasionally useful when translating [debug text from ancient games.](https://tcrf.net/)
   { perlu -MUnicode::Normalize -pe\''$_=NFKD($_)=~y/ァ-ヶ /ぁ-ゖ　/r''\' "$@"; }
 
+agga() ### @- run `apt-get` with settings to make it less obnoxious.
+  { maybesudo DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get \
+    --no-install-recommends --no-show-upgraded "$@"; }
+
 makepkgf() ### @- make the freakin' package!
   { makepkg --force --ignorearch --skipchecksums --skippgpcheck "$@"; }
 

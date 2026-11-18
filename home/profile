@@ -70,8 +70,8 @@ unset -f user home
 cd -- "$__pwd"
 unset __pwd
 
-cmd vi && export EDITOR=vi
-cmd vim && export EDITOR=vim
+cmd vi && export VISUAL=vi EDITOR=vi
+cmd vim && export VISUAL=vim EDITOR=vim
 cmd less && export PAGER=less
 export SSH_AUTH_SOCK=0 # info: https://0x0.st/NUnw
 export PYTHONIOENCODING=utf-8 # damnit python!

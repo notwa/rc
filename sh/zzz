@@ -158,6 +158,9 @@ relog() ### @- log on again to refresh your unix groups, etc.
 shi7() ### @- invoke `sha1sum` but only output the first 7 characters of each hash, a la git.
   { sha1sum -- "$@" | cut -c 1-7,41,43-; }
 
+shit() ### @- `sh` it! receive files to `~/sh/` with `croc`.
+  { croc --yes --overwrite --out "${HOME:?}/sh/"; }
+
 carry() ### @- copy files in a plain way using rsync. affected by umask.
   { rsync -HOlrt --no-p --no-g --chmod=ugo=rwX "$@"; }
 
